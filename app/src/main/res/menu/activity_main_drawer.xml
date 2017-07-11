@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:title="Caixa">
+        <menu>
+            <item
+                android:id="@+id/nav_action_vender"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Vender" />
+
+            <item
+                android:id="@+id/nav_action_entrada"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Entrada" />
+            <item
+                android:id="@+id/nav_Action_retirada"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Retirada" />
+            <item
+                android:id="@+id/nav_action_saldo_inicial"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Saldo Inicial" />
+        </menu>
+    </item>
+
+    <item android:title="Cadastros">
+        <menu>
+            <item
+                android:id="@+id/nav_action_list_prod"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Produtos" />
+
+        </menu>
+    </item>
+
+</menu>

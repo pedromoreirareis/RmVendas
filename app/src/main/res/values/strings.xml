@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">Rm Vendas</string>
+
+    <!-- Title Activitys -->
+    <string name="tela_prod_list">Produtos cadastrados</string>
+    <string name="tela_prod_cad_adicionar">Adicionar produto</string>
+    <string name="tela_prod_cad_editar">Editar produto</string>
+    <string name="tela_saldo_ent_ret_entrada">Entrada</string>
+    <string name="tela_saldo_ent_ret_retirada">Retirada</string>
+    <string name="tela_saldo_ent_ret_saldo">Saldo inicial</string>
+    <string name="tela_ret_list">Entradas</string>
+    <string name="tela_ent_list">Retiradas</string>
+    <string name="tela_ent_cad_adicionar">Adicionar entrada</string>
+    <string name="tela_ret_cad_adicionar">Adicionar retirada</string>
+    <string name="tela_ent_cad_editar">Editar entrada</string>
+    <string name="tela_ret_cad_editar">Editar retirada</string>
+
+
+    <!-- Drawer -->
+    <string name="navigation_drawer_open">Abrir</string>
+    <string name="navigation_drawer_close">Fechar</string>
+
+    <!-- Drawer Menu -->
+    <string name="action_settings">Configurações</string>
+
+
+    <!-- Menu -->
+    <string name="action_salvar">Salvar</string>
+    <string name="action_pesquisar">Pesquisar</string>
+    <string name="hint_action_pesquisar">Pesquisar produtos</string>
+
+    <!-- Hints -->
+    <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
+    <string name="hint_prod_esc_quant_valor_cobertura">Valor R$</string>
+    <string name="hint_prod_esc_quant_valor_desconto">Valor R$</string>
+    <string name="hint_prod_cad_nome">Nome do produto</string>
+    <string name="hint_prod_cad_preco">Preço R$</string>
+    <string name="hint_saldo_ent_ret_valor">Valor R$</string>
+    <string name="hint_saldo_ent_ret_descricao">Descrição</string>
+
+
+    <!-- Text -->
+    <string name="text_prod_esc_quant_cobertura">Cobertura</string>
+    <string name="text_prod_esc_quant_desconto">Desconto</string>
+    <string name="text_prod_esc_quant_valor_total">Valor Total:  </string>
+    <string name="text_prod_list_msg_empty">Nenhum produto cadastrado</string>
+    <string name="text_prod_selec_msg_empty">Nenhum produto cadastrado</string>
+    <string name="text_content_main_venda">Vender</string>
+    <string name="text_content_main_entrada">Entrada</string>
+    <string name="text_content_main_retirada">Retirada</string>
+    <string name="text_content_main_saldo_inicial">Saldo Inicial</string>
+    <string name="text_content_main_fechamento">Fechamento</string>
+
+    <!-- Toast -->
+    <string name="toast_prod_cad_max_caract">O nome do produto só pode ter 50 caracteres</string>
+    <string name="toast_saldo_ent_ret_max_caract">A descrição só pode ter 50 caracteres</string>
+    <string name="toast_prod_cad_add_sucesso">Adicionado com sucesso</string>
+    <string name="toast_prod_cad_edit_sucesso">Editado com sucesso</string>
+    <string name="toast_prod_cad_add_erro">Erro ao adicionar</string>
+    <string name="toast_prod_cad_edit_erro">Erro ao editar</string>
+
+
+    <!-- setError -->
+    <string name="error_prod_cad_nome_digitar">O nome do produto deve ser digitado</string>
+    <string name="error_prod_cad_preco_digitar">O preço do produto deve ser digitado</string>
+    <string name="error_prod_cad_preco_positivo">O valor deve ser maior que zero</string>
+    <string name="error_saldo_ent_ret_valor_digitar">O valor deve ser digitado</string>
+    <string name="error_saldo_ent_ret_valor_positivo">O valor deve ser maior que zero</string>
+    <string name="error_saldo_ent_ret_descr_digitar">A descrição deve ser digitada</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_prod_cad_alt_titulo">Descartar as alterações?</string>
+    <string name="dialog_prod_cad_alt_descatar">Descartar</string>
+    <string name="dialog_prod_cad_alt_continuar">Continuar editando</string>
+    <string name="dialog_prod_list_esc_ee_tilte">O que deseja?</string>
+    <string name="dialog_prod_list_esc_ee_excluido_sucesso">Produto excluido com sucesso</string>
+    <string name="dialog_prod_list_esc_ee_excluido_erro">Erro ao excluir o produto </string>
+    <string name="dialog_prod_list_esc_ee_conf_excluir_title">Realmente deseja excluir:</string>
+    <string name="dialog_prod_list_esc_ee_conf_excluir_excluir">Excluir</string>
+    <string name="dialog_prod_list_esc_ee_conf_excluir_cancelar">Cancelar</string>
+
+    <!-- Providers -->
+    <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>
+    <string name="provider_log_inserir_prod">Erro ao inserir no banco de dados. Com Uri: </string>
+    <string name="provider_log_inserir_ent_ret">Erro ao inserir no banco de dados. Com Uri: </string>
+    <string name="provider_exception_query">Erro na pesquisa - Pesquisa invalida para o Uri: </string>
+    <string name="provider_exception_getType_uri">Erro: Uri desconhecido. Provider getType inválido - Uri: </string>
+    <string name="provider_exception_getType_match"> match: </string>
+    <string name="provider_exception_insert">Erro ao incluir no banco de dados com Uri: </string>
+    <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
+    <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

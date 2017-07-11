@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#9C27B0</color>
+    <color name="colorPrimaryDark">#7B1FA2</color>
+    <color name="colorAccent">#4CAF50</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorRed">#D32F2F</color> <!--Red 700-->
+    <color name="colorBlue">#1976D2</color> <!--Blue 700-->
+
+
+
+    <!--
+        Cores usadas no App
+
+    https://material.io/guidelines/style/color.html#color-color-palette
+
+    colorPrimary     - Purple 500 - #9C27B0
+    colorPrimaryDark - Purple 700 - #7B1FA2
+    colorAccent      - green  500 - #4CAF50
+
+    colorPrymaryLight  - Purple 100 - #E1BEE7
+    colorPrimaryText   - Grey   900 - #212121
+    colorSecundaryText - Grey   600 - #757575
+    colorIcons         - white      - #FFFFFF
+    colorDivider       - Grey   400 - #BDBDBD
+    -->
+</resources>

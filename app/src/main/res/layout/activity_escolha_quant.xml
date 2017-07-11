@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.pedromoreirareisgmail.rmvendas.activity.EscolhaQuantActivity">
+
+    <TextView
+        android:id="@+id/tv_nome_prod_escolha_quant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Bolo de banana com canela" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_quant_prod_escolha_quant"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:digits=".0123456789"
+            android:hint="@string/hint_prod_esc_quant_quantidade"
+            android:inputType="number"
+            android:selectAllOnFocus="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Switch
+        android:id="@+id/switch_cobertura_prod_escolha_quant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/text_prod_esc_quant_cobertura" />
+
+    <FrameLayout
+        android:id="@+id/fl_cobertura_prod_escolha_quant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_valor_cobertura_prod_escolha_quant"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:digits=".0123456789"
+                android:hint="@string/hint_prod_esc_quant_valor_cobertura"
+                android:inputType="number"
+                android:selectAllOnFocus="true" />
+
+        </android.support.design.widget.TextInputLayout>
+    </FrameLayout>
+
+    <Switch
+        android:id="@+id/switch_desconto_prod_escolha_quant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/text_prod_esc_quant_desconto" />
+
+    <FrameLayout
+        android:id="@+id/fl_desconto_prod_escolha_quant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_valor_desconto_prod_escolha_quant"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:digits=".0123456789"
+                android:hint="@string/text_prod_esc_quant_desconto"
+                android:inputType="number"
+                android:selectAllOnFocus="true" />
+
+        </android.support.design.widget.TextInputLayout>
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tv_valor_total_prod_escolha_quant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="@string/text_prod_esc_quant_valor_total" />
+
+
+</LinearLayout>
