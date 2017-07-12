@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/listView_prod_selec"
+        android:id="@+id/listView_venda_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
@@ -12,13 +12,13 @@
 
 
     <RelativeLayout
-        android:id="@+id/empty_view_prod_selec"
+        android:id="@+id/empty_view_venda_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
         <ImageView
-            android:id="@+id/iv_empty_produtos_selec"
+            android:id="@+id/iv_empty_venda_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_empty_produtos_selec"
+            android:layout_below="@+id/iv_empty_venda_list"
             android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:text="@string/text_prod_selec_msg_empty" />

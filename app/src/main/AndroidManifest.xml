@@ -37,20 +37,57 @@
                 android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.ProdutosSelecActivity"
-            android:parentActivityName=".activity.MainActivity"
+            android:name=".activity.VendQuantActivity"
+            android:parentActivityName=".activity.VendListActivity"
             android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.VendListActivity" />
+        </activity>
+        <activity
+            android:name=".activity.RetListActivity"
+            android:label="@string/tela_ret_list"
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.EscolhaQuantActivity"
-            android:parentActivityName=".activity.ProdutosSelecActivity"
-            android:screenOrientation="portrait">
+            android:name=".activity.EntListActivity"
+            android:label="@string/tela_ent_list"
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ProdutosSelecActivity" />
+                android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.SaldoListActivity"
+            android:label="@string/tela_saldo_list"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.EntCadActivity"
+            android:parentActivityName=".activity.EntListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.EntListActivity" />
+        </activity>
+        <activity
+            android:name=".activity.RetCadActivity"
+            android:parentActivityName=".activity.RetListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.SaldoCadActivity"
+            android:parentActivityName=".activity.SaldoListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
         </activity>
 
         <provider
@@ -58,14 +95,8 @@
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
 
-        <activity
-            android:name=".activity.RetListActivity"
-            android:label="@string/tela_ret_list" />
-        <activity
-            android:name=".activity.EntListActivity"
-            android:label="@string/tela_ent_list" />
-        <activity android:name=".activity.EntCadActivity" />
-        <activity android:name=".activity.RetCadActivity"></activity>
+        <activity android:name=".activity.VendListActivity" />
+        <activity android:name=".activity.FechamentoActivity"></activity>
     </application>
 
 </manifest>

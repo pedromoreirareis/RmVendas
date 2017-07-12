@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <item android:title="Caixa">
         <menu>
             <item
@@ -21,6 +20,11 @@
                 android:id="@+id/nav_action_saldo_inicial"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Saldo Inicial" />
+
+            <item
+                android:id="@+id/nav_action_fechamento"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Fechamento" />
         </menu>
     </item>
 
@@ -29,7 +33,7 @@
             <item
                 android:id="@+id/nav_action_list_prod"
                 android:icon="@drawable/ic_menu_camera"
-                android:title="Produtos" />
+                android:title="Produtos"/>
 
         </menu>
     </item>

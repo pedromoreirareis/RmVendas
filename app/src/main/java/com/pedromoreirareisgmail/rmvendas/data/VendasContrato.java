@@ -22,6 +22,8 @@ public class VendasContrato {
      */
     public static final String PATH_PRODUTOS = AcessoProdutos.NOME_TABELA_PRODUTO;
     public static final String PATH_ENT_RET = AcessoEntRet.NOME_TABELA_ENT_RET;
+    public static final String PATH_SALDO = AcessoSaldo.NOME_TABELA_SALDO;
+    public static final String PATH_VENDA = AcessoVenda.NOME_TABELA_VENDA;
 
     private static final String TAG = VendasContrato.class.getSimpleName();
 
@@ -72,7 +74,7 @@ public class VendasContrato {
         /**
          * Constante do Provider - CONTENT URI
          */
-        public static final Uri CONTENTENT_URI_ENT_RET = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ENT_RET);
+        public static final Uri CONTENT_URI_ENT_RET = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ENT_RET);
 
         /**
          * Nome da Tabela
@@ -106,5 +108,72 @@ public class VendasContrato {
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
                         "/" + PATH_ENT_RET;
+    }
+
+    public static final class AcessoSaldo implements BaseColumns{
+
+        public static final Uri CONTENT_URI_SALDO = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SALDO);
+
+        public static final String NOME_TABELA_SALDO = "saldo_inicial";
+
+        public static final String _ID = BaseColumns._ID;
+        public static final String COLUNA_SALDO_VALOR = "valor";
+        public static final String COLUNA_SALDO_DATA = "data";
+
+        public static final String CRIAR_TABELA_SALDO =
+                "CREATE TABLE IF NOT EXISTS " + NOME_TABELA_SALDO + " ( "
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUNA_SALDO_DATA + " TEXT NOT NULL, "
+                + COLUNA_SALDO_VALOR + " REAL NOT NULL DEFAULT 0 );";
+
+        public static final String CONTENT_ITEM_TYPE_SALDO =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_SALDO;
+
+        public static final String CONTENT_TYPE_SALDO =
+                ContentResolver.CURSOR_DIR_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_SALDO;
+
+    }
+
+    public static final class AcessoVenda implements BaseColumns{
+
+        public static final Uri CONTENT_URI_VENDA = Uri.withAppendedPath(BASE_CONTENT_URI,PATH_VENDA);
+
+        public static final String NOME_TABELA_VENDA = "vendas";
+
+        public static final String _ID = BaseColumns._ID;
+        public static final String COLUNA_VENDA_NOME_PROD = "nome_prod";
+        public static final String COLUNA_VENDA_VALOR_PROD = "valor_prod";
+        public static final String COLUNA_VENDA_QUANT = "quantidade";
+        public static final String COLUNA_VENDA_TEM_COBERTURA = "tem_cobertura";
+        public static final String COLUNA_VENDA_TEM_DESCONTO = "tem_desconto";
+        public static final String COLUNA_VENDA_VALOR_COBERTURA = "valor_cobertura";
+        public static final String COLUNA_VENDA_VALOR_DESCONTO = "valor_cobertura";
+
+
+        public static final String CRIAR_TABELA_VENDA =
+                "CREATE TABLE IF NOT EXISTS " + NOME_TABELA_VENDA + " ( "
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUNA_VENDA_NOME_PROD + " TEXT NOT NULL, "
+                + COLUNA_VENDA_VALOR_PROD + " REAL NOT NULL DEFAULT 0, "
+                + COLUNA_VENDA_QUANT + " INTEGER NOT NULL, "
+                + COLUNA_VENDA_TEM_COBERTURA + " INTEGER NOT NULL, "
+                + COLUNA_VENDA_VALOR_COBERTURA + " REAL, "
+                + COLUNA_VENDA_TEM_DESCONTO + " INTEGER NOT NULL, "
+                + COLUNA_VENDA_VALOR_DESCONTO + " REAL );";
+
+
+        public static final String CONTENT_ITEM_TYPE_VENDA =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_VENDA;
+
+        public static final String CONTENT_TYPE_VENDA =
+                ContentResolver.CURSOR_DIR_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_VENDA;
     }
 }

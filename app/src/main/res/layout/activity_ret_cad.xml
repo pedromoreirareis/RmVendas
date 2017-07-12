@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pedromoreirareisgmail.rmvendas.activity.RetCadActivity">
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_valor_ret"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:digits=".0123456789"
+            android:hint="@string/hint_saldo_ent_ret_valor"
+            android:inputType="number"
+            android:nextFocusDown="@+id/et_descricao"
+            android:selectAllOnFocus="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_descricao_ret"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:hint="@string/hint_saldo_ent_ret_descricao"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:selectAllOnFocus="true" />
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>

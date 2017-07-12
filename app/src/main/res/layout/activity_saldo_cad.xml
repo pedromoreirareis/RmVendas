@@ -11,7 +11,7 @@
         android:padding="16dp">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_valor_ent"
+            android:id="@+id/et_valor_saldo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:digits=".0123456789"
@@ -22,21 +22,4 @@
 
     </android.support.design.widget.TextInputLayout>
 
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_descricao_ent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:hint="@string/hint_saldo_ent_ret_descricao"
-            android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:maxLines="1"
-            android:selectAllOnFocus="true" />
-    </android.support.design.widget.TextInputLayout>
 </LinearLayout>

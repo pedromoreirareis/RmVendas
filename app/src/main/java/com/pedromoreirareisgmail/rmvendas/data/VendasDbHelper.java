@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
 public class VendasDbHelper extends SQLiteOpenHelper {
 
@@ -40,6 +42,8 @@ public class VendasDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(AcessoProdutos.CRIAR_TABELA_PRODUTO);
         db.execSQL(AcessoEntRet.CRIAR_TABELA_ENT_RET);
+        db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO);
+        db.execSQL(AcessoVenda.CRIAR_TABELA_VENDA);
     }
 
     /**

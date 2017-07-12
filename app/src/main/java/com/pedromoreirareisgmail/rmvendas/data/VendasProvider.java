@@ -14,26 +14,25 @@ import android.util.Log;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
-import static java.security.CryptoPrimitive.MAC;
 
 public class VendasProvider extends ContentProvider {
 
     private static final String TAG = VendasProvider.class.getSimpleName();
 
-
-    /**
-     * Indica se Uri é de uma unica linha do banco de dados
-     */
+    // Indica se Uri é de uma unica linha do banco de dados - MATCH_PRODUTO_ID = 1;
+    // Indica Uri de todas as linhas do banco de dados - MATCH_PRODUTOS = 2;
     private static final int MATCH_PRODUTO_ID = 1;
-
-    /**
-     * Indica Uri de todas as linhas do banco de dados
-     */
     private static final int MATCH_PRODUTOS = 2;
-
     private static final int MATCH_ENT_RET_ID = 3;
     private static final int MATCH_ENT_RET = 4;
+    private static final int MATCH_SALDO_ID = 5;
+    private static final int MATCH_SALDO = 6;
+    private static final int MATCH_VENDA_ID = 7;
+    private static final int MATCH_VENDA = 8;
+
 
     /**
      * Inicia o UriMatcher com identificador dizendo
@@ -53,6 +52,18 @@ public class VendasProvider extends ContentProvider {
 
         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/1   - Uri especifico uma unica linha */
         sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoEntRet.NOME_TABELA_ENT_RET + "/#", MATCH_ENT_RET_ID);
+
+         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/    - Uri geral toda a tabela */
+        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO, MATCH_SALDO);
+
+        /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/1   - Uri especifico uma unica linha */
+        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO + "/#", MATCH_SALDO_ID);
+
+         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/    - Uri geral toda a tabela */
+        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA, MATCH_VENDA);
+
+        /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/1   - Uri especifico uma unica linha */
+        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA + "/#", MATCH_VENDA_ID);
     }
 
     /**
@@ -147,6 +158,66 @@ public class VendasProvider extends ContentProvider {
                 );
                 break;
 
+            case MATCH_SALDO:
+                cursor = database.query(
+                        AcessoSaldo.NOME_TABELA_SALDO,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+
+            case MATCH_SALDO_ID:
+            /* Indica a forma de acesso a pesquisa
+                Ex: pesquisar pelo _ID ou outro campo ou campos */
+                selection = AcessoSaldo._ID + "=?";
+
+                /* Passa a linha especifica que deve ser pesquisada */
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+                cursor = database.query(
+                        AcessoSaldo.NOME_TABELA_SALDO,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null, sortOrder
+                );
+                break;
+
+            case MATCH_VENDA:
+                cursor = database.query(
+                        AcessoVenda.NOME_TABELA_VENDA,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+
+            case MATCH_VENDA_ID:
+            /* Indica a forma de acesso a pesquisa
+                Ex: pesquisar pelo _ID ou outro campo ou campos */
+                selection = AcessoVenda._ID + "=?";
+
+                /* Passa a linha especifica que deve ser pesquisada */
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+                cursor = database.query(
+                        AcessoVenda.NOME_TABELA_VENDA,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null, sortOrder
+                );
+                break;
+
             /*
                 Caso o tipo de pesquisa não for de uma linha especifica e nem for geral
                 lança uma excessao que infroma que esse tipo de pesquisa foi invalida
@@ -182,6 +253,18 @@ public class VendasProvider extends ContentProvider {
                 return AcessoProdutos.CONTENT_TYPE_PRODUTO;
             case MATCH_PRODUTO_ID:
                 return AcessoProdutos.CONTENT_ITEM_TYPE_PRODUTO;
+            case MATCH_ENT_RET:
+                return AcessoEntRet.CONTENT_TYPE_ENT_RET;
+            case MATCH_ENT_RET_ID:
+                return AcessoEntRet.CONTENT_ITEM_TYPE_ENT_RET;
+            case MATCH_SALDO:
+                return AcessoSaldo.CONTENT_TYPE_SALDO;
+            case MATCH_SALDO_ID:
+                return AcessoSaldo.CONTENT_ITEM_TYPE_SALDO;
+            case MATCH_VENDA:
+                return AcessoVenda.CONTENT_TYPE_VENDA;
+            case MATCH_VENDA_ID:
+                return AcessoVenda.CONTENT_ITEM_TYPE_VENDA;
             default:
                 throw new IllegalArgumentException(getContext() != null ?
                         getContext().getString(R.string.provider_exception_getType_uri)
@@ -190,8 +273,6 @@ public class VendasProvider extends ContentProvider {
                                 + match
                         : null
                 );
-
-
         }
     }
 
@@ -212,6 +293,10 @@ public class VendasProvider extends ContentProvider {
                 return inserirProduto(uri, values);
             case MATCH_ENT_RET:
                 return inserirEntRet(uri, values);
+            case MATCH_SALDO:
+                return inserirSaldo(uri, values);
+            case MATCH_VENDA:
+                return inserirVenda(uri, values);
 
             /* Caso o Uri não for o geral ou houver um erro na inserção será lançada uma exceção */
             default:
@@ -307,6 +392,73 @@ public class VendasProvider extends ContentProvider {
 
                 /* retorna a quantidade de linhas excluida */
                 return linhasExcluidas;
+            case MATCH_SALDO:
+                /* Exclui todos os itens da tabela */
+                linhasExcluidas = database.delete(
+                        AcessoSaldo.NOME_TABELA_SALDO,
+                        selection,
+                        selectionArgs
+                );
+
+                /* Se houve exclusao */
+                if (linhasExcluidas > 0 && getContext() != null) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return linhasExcluidas;
+            case MATCH_SALDO_ID:
+                /* indica a forma de acesso a linha para exclusao */
+                selection = AcessoSaldo._ID + "=?";
+
+                /* indica a linha a ser excluida */
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+                /* exclui uma linha especifica */
+                linhasExcluidas = database.delete(
+                        AcessoSaldo.NOME_TABELA_SALDO,
+                        selection,
+                        selectionArgs);
+
+                /* se houve exclusao */
+                if (linhasExcluidas > 0 && getContext() != null) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                /* retorna a quantidade de linhas excluida */
+                return linhasExcluidas;
+
+            case MATCH_VENDA:
+                /* Exclui todos os itens da tabela */
+                linhasExcluidas = database.delete(
+                        AcessoVenda.NOME_TABELA_VENDA,
+                        selection,
+                        selectionArgs
+                );
+
+                /* Se houve exclusao */
+                if (linhasExcluidas > 0 && getContext() != null) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return linhasExcluidas;
+            case MATCH_VENDA_ID:
+                /* indica a forma de acesso a linha para exclusao */
+                selection = AcessoVenda._ID + "=?";
+
+                /* indica a linha a ser excluida */
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+                /* exclui uma linha especifica */
+                linhasExcluidas = database.delete(
+                        AcessoVenda.NOME_TABELA_VENDA,
+                        selection,
+                        selectionArgs);
+
+                /* se houve exclusao */
+                if (linhasExcluidas > 0 && getContext() != null) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                /* retorna a quantidade de linhas excluida */
+                return linhasExcluidas;
 
             default:
                 throw new IllegalArgumentException(getContext() != null ?
@@ -349,9 +501,34 @@ public class VendasProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return atualizarEntRet(uri, values, selection, selectionArgs);
 
+            case MATCH_SALDO:
+                return atualizarSaldo(
+                        uri,
+                        values,
+                        selection, selectionArgs
+                );
+
+            case MATCH_SALDO_ID:
+                selection = AcessoSaldo._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return atualizarSaldo(uri, values, selection, selectionArgs);
+
+            case MATCH_VENDA:
+                return atualizarVenda(
+                        uri,
+                        values,
+                        selection, selectionArgs
+                );
+
+            case MATCH_VENDA_ID:
+                selection = AcessoVenda._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return atualizarVenda(uri, values, selection, selectionArgs);
+
+
             default:
-                throw new IllegalArgumentException(getContext()!=null?
-                        getContext().getString(R.string.provider_exception_update)+ uri:null);
+                throw new IllegalArgumentException(getContext() != null ?
+                        getContext().getString(R.string.provider_exception_update) + uri : null);
         }
     }
 
@@ -413,6 +590,64 @@ public class VendasProvider extends ContentProvider {
         return ContentUris.withAppendedId(uri, id);
     }
 
+    private Uri inserirSaldo(Uri uri, ContentValues values) {
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        long id = database.insert(
+                AcessoSaldo.NOME_TABELA_SALDO,
+                null,
+                values
+        );
+
+        /* Se id == -1 significa que não foi possivel faz a inserção no banco de dados */
+        if (id == -1) {
+            Log.e(TAG, getContext() != null ?
+                    getContext().getString(R.string.provider_log_inserir_ent_ret) + uri : null);
+        }
+
+        /* Se a inclusão der certo será retornado
+           um id que sera o _ID desse produto e juntaremos
+           esse id com o Uri geral para formar um Uri especifico
+           que sera o endereço desse produto no banco de dados */
+
+        /* Notificando ao CursorLoader o resultado da inclusão */
+        if (getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return ContentUris.withAppendedId(uri, id);
+    }
+
+    private Uri inserirVenda(Uri uri, ContentValues values) {
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        long id = database.insert(
+                AcessoVenda.NOME_TABELA_VENDA,
+                null,
+                values
+        );
+
+        /* Se id == -1 significa que não foi possivel faz a inserção no banco de dados */
+        if (id == -1) {
+            Log.e(TAG, getContext() != null ?
+                    getContext().getString(R.string.provider_log_inserir_ent_ret) + uri : null);
+        }
+
+        /* Se a inclusão der certo será retornado
+           um id que sera o _ID desse produto e juntaremos
+           esse id com o Uri geral para formar um Uri especifico
+           que sera o endereço desse produto no banco de dados */
+
+        /* Notificando ao CursorLoader o resultado da inclusão */
+        if (getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return ContentUris.withAppendedId(uri, id);
+    }
+
     private int atualizarProduto(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 
         int linhasAtualizadas;
@@ -441,6 +676,46 @@ public class VendasProvider extends ContentProvider {
 
         linhasAtualizadas = database.update(
                 AcessoEntRet.NOME_TABELA_ENT_RET,
+                values, selection,
+                selectionArgs
+        );
+
+        /* houve atualização da tabela */
+        if (linhasAtualizadas > 0 && getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return linhasAtualizadas;
+    }
+
+    private int atualizarSaldo(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        int linhasAtualizadas;
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        linhasAtualizadas = database.update(
+                AcessoSaldo.NOME_TABELA_SALDO,
+                values, selection,
+                selectionArgs
+        );
+
+        /* houve atualização da tabela */
+        if (linhasAtualizadas > 0 && getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return linhasAtualizadas;
+    }
+
+    private int atualizarVenda(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        int linhasAtualizadas;
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        linhasAtualizadas = database.update(
+                AcessoVenda.NOME_TABELA_VENDA,
                 values, selection,
                 selectionArgs
         );
