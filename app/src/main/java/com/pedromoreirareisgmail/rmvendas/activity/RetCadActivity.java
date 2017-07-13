@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -37,6 +37,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mEtValor;
     private EditText mEtDescricao;
 
+    private String mData = "";
     private boolean mAlteracao = false;
     private final EditText.OnTouchListener mTouchListenet = new View.OnTouchListener() {
         @Override
@@ -160,9 +161,14 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
 
         values.put(VendasContrato.AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
-        values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDateTime());
         values.put(AcessoEntRet.COLUNA_ENT_RET_DESC, descricao);
         values.put(AcessoEntRet.COLUNA_ENT_RET_TIPO, Constantes.TIPO_RETIRADA);
+
+        if (mUriAtual == null) {
+            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDateTime());
+        } else {
+            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, mData);
+        }
 
 
         if(mUriAtual == null){
@@ -237,6 +243,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
         if (cursor.moveToFirst()) {
             double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
             String desc = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
+            mData = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
 
             String valor = String.valueOf(valorDouble);
 

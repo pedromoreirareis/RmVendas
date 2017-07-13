@@ -18,23 +18,27 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
 import java.util.Calendar;
 
 public class FechamentoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_ENTRADA = 3;
+    private static final int LOADER_ENTRADA_REIRADA = 3;
     private static final int LOADER_SALDO = 4;
-    public static String dataEscolhida = "";
-    public TextView mTvData;
+    private static final int LOADER_VENDAS = 16;
+    private static String dataEscolhida = "";
     double totalEntrada = 0;
     double totalRetirada = 0;
-    double totalSaldo = 0;
-    double saldoFinal = 0;
+    double totalVendas = 0;
+    double saldoInicial = 0;
+    double TotalGeral = 0;
+    private TextView mTvData;
     private TextView mTvEntrada;
     private TextView mTvRetirada;
     private TextView mTvTotal;
     private TextView mTvSaldoInicial;
+    private TextView mTvVendas;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -49,7 +53,10 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
         mTvSaldoInicial = (TextView) findViewById(R.id.tv_saldo_inicial);
         mTvTotal = (TextView) findViewById(R.id.tv_total);
         mTvData = (TextView) findViewById(R.id.tv_data);
+        mTvVendas = (TextView) findViewById(R.id.tv_vendas);
+
         mTvData.setText(dataEscolhida);
+
         mTvData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,14 +89,15 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
             }
         };
 
-        getLoaderManager().initLoader(LOADER_ENTRADA, null, this);
+        getLoaderManager().initLoader(LOADER_ENTRADA_REIRADA, null, this);
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
+        getLoaderManager().initLoader(LOADER_VENDAS, null, this);
     }
 
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        if (i == LOADER_ENTRADA) {
+        if (i == LOADER_ENTRADA_REIRADA) {
 
             String[] projection = new String[]{
                     AcessoEntRet._ID,
@@ -127,15 +135,39 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
             );
 
         }
+
+        if (i == LOADER_VENDAS) {
+
+            String[] projection = {
+                    AcessoVenda._ID,
+                    AcessoVenda.COLUNA_VENDA_NOME_PROD,
+                    AcessoVenda.COLUNA_VENDA_VALOR_PROD,
+                    AcessoVenda.COLUNA_VENDA_DATA,
+                    AcessoVenda.COLUNA_VENDA_QUANT,
+                    AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
+                    AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
+                    AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
+                    AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO
+            };
+
+            return new CursorLoader(
+                    this,
+                    AcessoVenda.CONTENT_URI_VENDA,
+                    projection,
+                    null,
+                    null,
+                    null
+            );
+        }
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        cursor.moveToFirst();
 
 
-        if (loader.getId() == LOADER_ENTRADA) {
+        if (loader.getId() == LOADER_ENTRADA_REIRADA && cursor.moveToFirst()) {
+
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
@@ -151,25 +183,35 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
                 }
 
                 cursor.moveToNext();
-            }
+                }
+
         }
 
-        if (loader.getId() == LOADER_SALDO) {
+        if (loader.getId() == LOADER_SALDO && cursor.moveToFirst()) {
+
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                totalSaldo = totalSaldo + cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
+                saldoInicial = saldoInicial + cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
 
                 cursor.moveToNext();
             }
+
+        }
+
+        if (loader.getId() == LOADER_VENDAS && cursor.moveToFirst()) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                totalVendas = totalVendas + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+            }
         }
 
 
-        saldoFinal = totalEntrada + totalSaldo - totalRetirada;
+        TotalGeral = totalEntrada + saldoInicial + totalVendas - totalRetirada;
 
         mTvEntrada.setText(String.valueOf(totalEntrada));
         mTvRetirada.setText(String.valueOf(totalRetirada));
-        mTvSaldoInicial.setText(String.valueOf(totalSaldo));
-        mTvTotal.setText(String.valueOf(saldoFinal));
+        mTvSaldoInicial.setText(String.valueOf(saldoInicial));
+        mTvVendas.setText(String.valueOf(totalVendas));
+        mTvTotal.setText(String.valueOf(TotalGeral));
 
     }
 

@@ -31,13 +31,16 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
 
 public class EntCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final int MAX_CARACT_DESC = 50;
     private static final int LOADER_ENT_CAD = 6;
 
-    private static final int MAX_CARACT_DESC = 50;
     private EditText mEtValor;
     private EditText mEtDescricao;
 
+    private Uri mUriAtual = null;
+    private String mData = "";
     private boolean mAlteracao = false;
+
     private final EditText.OnTouchListener mTouchListenet = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -45,7 +48,6 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
             return false;
         }
     };
-    private Uri mUriAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +58,13 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         mUriAtual = intent.getData();
 
         if (mUriAtual == null) {
-            setTitle(R.string.tela_ent_cad_adicionar);
+
+            setTitle(R.string.title_ent_cad_add);
+
         } else {
-            setTitle(R.string.tela_ent_cad_editar);
-            getLoaderManager().initLoader(LOADER_ENT_CAD,null,this);
+
+            setTitle(R.string.title_ent_cad_edit);
+            getLoaderManager().initLoader(LOADER_ENT_CAD, null, this);
         }
 
 
@@ -163,9 +168,14 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
 
         values.put(AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
-        values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDateTime());
         values.put(AcessoEntRet.COLUNA_ENT_RET_DESC, descricao);
         values.put(AcessoEntRet.COLUNA_ENT_RET_TIPO, Constantes.TIPO_ENTRADA);
+
+        if (mUriAtual == null) {
+            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDateTime());
+        } else {
+            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, mData);
+        }
 
 
         if (mUriAtual == null) {
@@ -241,6 +251,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         if (cursor.moveToFirst()) {
             double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
             String desc = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
+            mData = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
 
             String valor = String.valueOf(valorDouble);
 

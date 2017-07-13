@@ -1,5 +1,10 @@
 <resources>
+
+    <!-- Title Activitys -->
     <string name="app_name">Rm Vendas</string>
+    <string name="title_ent_cad_add">Adicionar entrada</string>
+    <string name="title_ent_cad_edit">Editar entrada</string>
+
 
     <!-- Title Activitys -->
     <string name="tela_prod_list">Produtos cadastrados</string>
@@ -11,11 +16,11 @@
     <string name="tela_ret_list">Entradas</string>
     <string name="tela_ent_list">Retiradas</string>
     <string name="tela_saldo_list">Saldo inicial</string>
-    <string name="tela_ent_cad_adicionar">Adicionar entrada</string>
+
     <string name="tela_ret_cad_adicionar">Adicionar retirada</string>
     <string name="tela_saldo_cad_adicionar">Adicionar saldo inicial</string>
     <string name="tela_venda_adicionar">Adicionar venda</string>
-    <string name="tela_ent_cad_editar">Editar entrada</string>
+
     <string name="tela_ret_cad_editar">Editar retirada</string>
     <string name="tela_saldo_cad_editar">Editar saldo inicial</string>
     <string name="tela_vend_editar">Editar venda</string>
@@ -75,7 +80,7 @@
     <string name="error_venda_cad_quant_digitar">A quantidade deve ser digitada</string>
     <string name="error_venda_cad_cobert_digitar">O valor da cobertura deve ser digitada</string>
     <string name="error_venda_cad_desc_digitar">O valor do desconto deve ser digitada</string>
-    <string name="error_venda_cad_quant_negativo">O valor da quantidade não pode ser negativo</string>
+    <string name="error_venda_cad_quant_menor_um">O valor da quantidade não pode ser menor que 1</string>
     <string name="error_venda_cad_cobert_negativo">O valor da cobertura não pode ser negativo</string>
     <string name="error_venda_cad_desc_negativo">O valor do desconto não pode ser negativo</string>
 

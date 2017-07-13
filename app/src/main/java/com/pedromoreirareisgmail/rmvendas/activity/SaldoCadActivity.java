@@ -11,10 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,10 +19,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
@@ -36,6 +31,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
     private static final int MAX_CARACT_DESC = 50;
     private EditText mEtValor;
 
+    private String mData = "";
     private boolean mAlteracao = false;
     private final EditText.OnTouchListener mTouchListenet = new View.OnTouchListener() {
         @Override
@@ -129,7 +125,12 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
         ContentValues values = new ContentValues();
 
         values.put(AcessoSaldo.COLUNA_SALDO_VALOR, valorDouble);
-        values.put(AcessoSaldo.COLUNA_SALDO_DATA, getDateTime());
+
+        if (mUriAtual == null) {
+            values.put(AcessoSaldo.COLUNA_SALDO_DATA, getDateTime());
+        } else {
+            values.put(AcessoSaldo.COLUNA_SALDO_DATA, mData);
+        }
 
 
         if(mUriAtual == null){
@@ -176,6 +177,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor.moveToFirst()) {
             double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
+            mData = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
 
             String valor = String.valueOf(valorDouble);
 

@@ -147,11 +147,13 @@ public class VendasContrato {
         public static final String _ID = BaseColumns._ID;
         public static final String COLUNA_VENDA_NOME_PROD = "nome_prod";
         public static final String COLUNA_VENDA_VALOR_PROD = "valor_prod";
+        public static final String COLUNA_VENDA_DATA = "data";
         public static final String COLUNA_VENDA_QUANT = "quantidade";
         public static final String COLUNA_VENDA_TEM_COBERTURA = "tem_cobertura";
         public static final String COLUNA_VENDA_TEM_DESCONTO = "tem_desconto";
         public static final String COLUNA_VENDA_VALOR_COBERTURA = "valor_cobertura";
-        public static final String COLUNA_VENDA_VALOR_DESCONTO = "valor_cobertura";
+        public static final String COLUNA_VENDA_VALOR_DESCONTO = "valor_desconto";
+
 
 
         public static final String CRIAR_TABELA_VENDA =
@@ -159,6 +161,7 @@ public class VendasContrato {
                 + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUNA_VENDA_NOME_PROD + " TEXT NOT NULL, "
                 + COLUNA_VENDA_VALOR_PROD + " REAL NOT NULL DEFAULT 0, "
+                        + COLUNA_VENDA_DATA + " TEXT NOT NULL, "
                 + COLUNA_VENDA_QUANT + " INTEGER NOT NULL, "
                 + COLUNA_VENDA_TEM_COBERTURA + " INTEGER NOT NULL, "
                 + COLUNA_VENDA_VALOR_COBERTURA + " REAL, "
