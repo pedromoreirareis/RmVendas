@@ -16,16 +16,11 @@ import android.widget.ListView;
 import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
-
-import static android.R.attr.id;
-import static android.R.attr.itemBackground;
 
 public class VendListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_PROD_LISTA = 9;
+    private static final int LOADER_PROD_LISTA = 12;
 
     private ProdAdapter mAdapter;
 
@@ -33,6 +28,14 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vend_list);
+
+        Intent newIntent = getIntent();
+
+        if (newIntent.hasExtra(Constantes.VENDA_ADICIONAR)) {
+            if (newIntent.getStringExtra(Constantes.VENDA_ADICIONAR).equals(Constantes.VENDA_ADICIONAR)) {
+                setTitle(R.string.title_vend_list);
+            }
+        }
 
         ListView listView = (ListView) findViewById(R.id.listView_venda_list);
         View emptyView = findViewById(R.id.empty_view_venda_list);
@@ -48,8 +51,8 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
                 Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTO, id);
 
                 Intent intent = new Intent(VendListActivity.this, VendQuantActivity.class);
-                intent.setData(uri);
                 intent.putExtra(Constantes.VENDA_ADICIONAR,Constantes.VENDA_ADICIONAR);
+                intent.setData(uri);
                 startActivity(intent);
 
             }
@@ -60,6 +63,7 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
         String[] projection = {
                 AcessoProdutos._ID,
                 AcessoProdutos.COLUNA_PRODUTO_NOME,
@@ -68,7 +72,6 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
 
         String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
 
-        /* CONTENT_URI_PRODUTO - uri de todos itens da tabela */
         return new CursorLoader(
                 this,
                 AcessoProdutos.CONTENT_URI_PRODUTO,

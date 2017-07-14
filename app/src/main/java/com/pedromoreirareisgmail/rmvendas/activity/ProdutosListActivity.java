@@ -21,9 +21,7 @@ import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
 
 public class ProdutosListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = ProdutosListActivity.class.getSimpleName();
-
-    private static final int LOADER_PROD_LISTA = 0;
+    private static final int LOADER_PROD_LISTA = 7;
 
     private ProdAdapter mAdapter;
 
@@ -32,11 +30,11 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produtos_list);
 
-        // Botão flutuante
         FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_prod_list);
         fabProdutos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(ProdutosListActivity.this, ProdutosCadActivity.class);
                 startActivity(intent);
             }
@@ -53,7 +51,6 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
             @Override
             public boolean onItemLongClick(final AdapterView<?> adapterView, View view, final int position, final long id) {
 
-
                 Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTO, id);
 
                 Cursor cur = mAdapter.getCursor();
@@ -63,12 +60,6 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                         ProdutosListActivity.this,
                         ProdutosCadActivity.class,
                         uri,
-                        getString(R.string.dialog_prod_list_esc_ee_tilte),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_title),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_cancelar),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_excluir),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_sucesso),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_erro),
                         nome
                 );
 
@@ -90,7 +81,6 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
 
         String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
 
-        /* CONTENT_URI_PRODUTO - uri de todos itens da tabela */
         return new CursorLoader(
                 this,
                 AcessoProdutos.CONTENT_URI_PRODUTO,

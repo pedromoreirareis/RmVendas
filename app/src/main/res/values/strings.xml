@@ -4,26 +4,54 @@
     <string name="app_name">Rm Vendas</string>
     <string name="title_ent_cad_add">Adicionar entrada</string>
     <string name="title_ent_cad_edit">Editar entrada</string>
+    <string name="title_prod_cad_add">Adicionar produto</string>
+    <string name="title_prod_cad_edit">Editar produto</string>
+    <string name="title_ret_cad_add">Adicionar retirada</string>
+    <string name="title_ret_cad_edit">Editar retirada</string>
+    <string name="title_saldo_cad_add">Adicionar saldo inicial</string>
+    <string name="title_saldo_cad_edit">Editar saldo inicial</string>
+    <string name="title_venda_add">Adicionar venda</string>
+    <string name="title_vend_edit">Editar venda</string>
+    <string name="title_vend_list">Produtos cadastrados</string>
+
+
+    <!-- msg -->
+    <string name="msg_max_caract">Esse campo deve ter no máximo 50 caracteres</string>
+    <string name="msg_inserir_sucesso">Inserido com sucesso</string>
+    <string name="msg_inserir_erro">Erro ao inserir</string>
+    <string name="msg_editado_sucesso">Editado com sucesso</string>
+    <string name="msg_editado_erro">Erro ao editar</string>
+
+    <!-- mdg dialog alterações -->
+    <string name="dialog_alt_titulo">Descartar as alterações?</string>
+    <string name="dialog_alt_continuar">Continuar editando</string>
+    <string name="dialog_alt_descatar">Descartar</string>
+
+    <!-- mdg dialog excluir -->
+    <string name="dialog_exc_edit_tilte">O que deseja?</string>
+    <string name="dialog_exc_edit_sucesso">Produto excluido com sucesso</string>
+    <string name="dialog_exc_edit_erro">Erro ao excluir o produto </string>
+    <string name="dialog_exc_edit_conf_exc_title">Realmente deseja excluir?</string>
+    <string name="dialog_exc_edit_conf_exc_excluir">Excluir</string>
+    <string name="dialog_exc_edit_conf_exc_cancelar">Cancelar</string>
+
+    <!-- setError -->
+    <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
+    <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
+    <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
+    <string name="error_valor_negativo">O valor não pode ser negativo</string>
 
 
     <!-- Title Activitys -->
     <string name="tela_prod_list">Produtos cadastrados</string>
-    <string name="tela_prod_cad_adicionar">Adicionar produto</string>
-    <string name="tela_prod_cad_editar">Editar produto</string>
+
+
     <string name="tela_saldo_ent_ret_entrada">Entrada</string>
     <string name="tela_saldo_ent_ret_retirada">Retirada</string>
     <string name="tela_saldo_ent_ret_saldo">Saldo inicial</string>
     <string name="tela_ret_list">Entradas</string>
     <string name="tela_ent_list">Retiradas</string>
     <string name="tela_saldo_list">Saldo inicial</string>
-
-    <string name="tela_ret_cad_adicionar">Adicionar retirada</string>
-    <string name="tela_saldo_cad_adicionar">Adicionar saldo inicial</string>
-    <string name="tela_venda_adicionar">Adicionar venda</string>
-
-    <string name="tela_ret_cad_editar">Editar retirada</string>
-    <string name="tela_saldo_cad_editar">Editar saldo inicial</string>
-    <string name="tela_vend_editar">Editar venda</string>
 
 
     <!-- Drawer -->
@@ -61,9 +89,7 @@
     <string name="text_content_main_saldo_inicial">Saldo Inicial</string>
     <string name="text_content_main_fechamento">Fechamento</string>
 
-    <!-- Toast -->
-    <string name="toast_prod_cad_max_caract">O nome do produto só pode ter 50 caracteres</string>
-    <string name="toast_saldo_ent_ret_max_caract">A descrição só pode ter 50 caracteres</string>
+
     <string name="toast_prod_cad_add_sucesso">Adicionado com sucesso</string>
     <string name="toast_prod_cad_edit_sucesso">Editado com sucesso</string>
     <string name="toast_prod_cad_add_erro">Erro ao adicionar</string>
@@ -71,29 +97,13 @@
 
 
     <!-- setError -->
-    <string name="error_prod_cad_nome_digitar">O nome do produto deve ser digitado</string>
-    <string name="error_prod_cad_preco_digitar">O preço do produto deve ser digitado</string>
-    <string name="error_prod_cad_preco_positivo">O valor deve ser maior que zero</string>
-    <string name="error_saldo_ent_ret_valor_digitar">O valor deve ser digitado</string>
-    <string name="error_saldo_ent_ret_valor_positivo">O valor deve ser maior que zero</string>
     <string name="error_saldo_ent_ret_descr_digitar">A descrição deve ser digitada</string>
-    <string name="error_venda_cad_quant_digitar">A quantidade deve ser digitada</string>
-    <string name="error_venda_cad_cobert_digitar">O valor da cobertura deve ser digitada</string>
-    <string name="error_venda_cad_desc_digitar">O valor do desconto deve ser digitada</string>
     <string name="error_venda_cad_quant_menor_um">O valor da quantidade não pode ser menor que 1</string>
     <string name="error_venda_cad_cobert_negativo">O valor da cobertura não pode ser negativo</string>
     <string name="error_venda_cad_desc_negativo">O valor do desconto não pode ser negativo</string>
 
     <!-- Dialogs -->
-    <string name="dialog_prod_cad_alt_titulo">Descartar as alterações?</string>
-    <string name="dialog_prod_cad_alt_descatar">Descartar</string>
-    <string name="dialog_prod_cad_alt_continuar">Continuar editando</string>
-    <string name="dialog_prod_list_esc_ee_tilte">O que deseja?</string>
-    <string name="dialog_prod_list_esc_ee_excluido_sucesso">Produto excluido com sucesso</string>
-    <string name="dialog_prod_list_esc_ee_excluido_erro">Erro ao excluir o produto </string>
-    <string name="dialog_prod_list_esc_ee_conf_excluir_title">Realmente deseja excluir:</string>
-    <string name="dialog_prod_list_esc_ee_conf_excluir_excluir">Excluir</string>
-    <string name="dialog_prod_list_esc_ee_conf_excluir_cancelar">Cancelar</string>
+
 
     <!-- Providers -->
     <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>

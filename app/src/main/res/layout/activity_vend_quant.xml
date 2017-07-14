@@ -28,8 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:gravity="center"
-                android:text="@string/text_prod_esc_quant_valor_total" />
+                android:gravity="center" />
         </LinearLayout>
 
 

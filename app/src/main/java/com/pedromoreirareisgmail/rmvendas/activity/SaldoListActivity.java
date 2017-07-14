@@ -1,6 +1,5 @@
 package com.pedromoreirareisgmail.rmvendas.activity;
 
-import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.CursorLoader;
@@ -8,25 +7,21 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
-import com.pedromoreirareisgmail.rmvendas.adapter.RetAdapter;
 import com.pedromoreirareisgmail.rmvendas.adapter.SaldoAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
 
 public class SaldoListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-
-    private static final int LOADER_SALDO = 8;
+    private static final int LOADER_SALDO = 11;
     private SaldoAdapter mAdapter;
 
     @Override
@@ -62,12 +57,6 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
                         SaldoListActivity.this,
                         SaldoCadActivity.class,
                         uri,
-                        getString(R.string.dialog_prod_list_esc_ee_tilte),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_title),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_cancelar),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_excluir),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_sucesso),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_erro),
                         desc
                 );
 
@@ -80,6 +69,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
         String[] projection = {
                 AcessoSaldo._ID,
                 AcessoSaldo.COLUNA_SALDO_DATA,

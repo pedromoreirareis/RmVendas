@@ -7,8 +7,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -26,28 +24,30 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
-import java.util.Calendar;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_MAIN = 15;
+    private static final int LOADER_MAIN = 5;
 
     private MainAdapter mAdapter;
     private TextView mTvData;
+
+    private String mDataPesquisar = "";
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private String mDataPesquisar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -55,7 +55,9 @@ public class MainActivity extends AppCompatActivity
         fabProdutos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(MainActivity.this, VendListActivity.class);
+                intent.putExtra(Constantes.VENDA_ADICIONAR, Constantes.VENDA_ADICIONAR);
                 startActivity(intent);
             }
         });
@@ -70,9 +72,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mTvData = (TextView) findViewById(R.id.tv_data_main);
-
         ListView listView = (ListView) findViewById(R.id.listView_main);
         View emptyView = findViewById(R.id.empty_view_main);
+
         listView.setEmptyView(emptyView);
 
         mAdapter = new MainAdapter(this, null);
@@ -92,12 +94,6 @@ public class MainActivity extends AppCompatActivity
                         MainActivity.this,
                         VendQuantActivity.class,
                         uri,
-                        getString(R.string.dialog_prod_list_esc_ee_tilte),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_title),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_cancelar),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_excluir),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_sucesso),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_erro),
                         desc
                 );
 
@@ -108,55 +104,25 @@ public class MainActivity extends AppCompatActivity
         mTvData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // DialogFragment newFragment = new DatePickerFragment();
-                // newFragment.show(getSupportFragmentManager(), "datePicker");
 
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
+                UtilsDialog.dialogData(MainActivity.this, mDateSetListener);
 
-                DatePickerDialog dialog = new DatePickerDialog(
-                        MainActivity.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener,
-                        year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
             }
         });
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                // Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
 
-                String date = day + "/" + month + "/" + year;
+                mDataPesquisar = Datas.dateSetListenerString(year, month, day);
 
-
-                String yearString = String.valueOf(year);
-                String monthString = "";
-                String dayString = "";
-
-                if (month < 10) {
-                    monthString = "0" + String.valueOf(month);
-                } else {
-                    monthString = String.valueOf(month);
-                }
-
-                if (day < 10) {
-                    dayString = "0" + String.valueOf(day);
-                } else {
-                    dayString = String.valueOf(day);
-                }
-
-                mDataPesquisar = yearString + "-" + monthString + "-" + dayString;
-                mTvData.setText(date);
+                mTvData.setText(Datas.dateSetListenerInverseString(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
         };
+
+        mTvData.setText(Datas.getDate());
 
         mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
@@ -165,6 +131,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -198,7 +165,6 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_action_vender:
-                //  startActivity(new Intent(MainActivity.this, ));
                 break;
 
             case R.id.nav_action_entrada:
@@ -243,13 +209,6 @@ public class MainActivity extends AppCompatActivity
         String[] selectionArgs = new String[]{mDataPesquisar + "%"};
         String sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
 
-
-        /*
-
-        Posso salvar apenas a data - sem as horas - e fazer sortOrder pelo _ID
-
-         */
-
         return new CursorLoader(
                 this,
                 AcessoVenda.CONTENT_URI_VENDA,
@@ -258,7 +217,6 @@ public class MainActivity extends AppCompatActivity
                 selectionArgs,
                 sortOrder
         );
-
     }
 
     @Override

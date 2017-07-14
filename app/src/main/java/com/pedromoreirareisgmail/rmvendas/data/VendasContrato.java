@@ -71,19 +71,10 @@ public class VendasContrato {
 
     public static final class AcessoEntRet implements BaseColumns {
 
-        /**
-         * Constante do Provider - CONTENT URI
-         */
         public static final Uri CONTENT_URI_ENT_RET = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ENT_RET);
 
-        /**
-         * Nome da Tabela
-         */
         public static final String NOME_TABELA_ENT_RET = "ent_ret";
 
-        /**
-         * Nome das colunas
-         */
         public static final String _ID = BaseColumns._ID;
         public static final String COLUNA_ENT_RET_DATA = "data";
         public static final String COLUNA_ENT_RET_TIPO = "tipo";
@@ -98,7 +89,6 @@ public class VendasContrato {
                         + COLUNA_ENT_RET_VALOR + " REAL NOT NULL DEFAULT 0, "
                         + COLUNA_ENT_RET_DESC + " TEXT NOT NULL );";
 
-
         public static final String CONTENT_ITEM_TYPE_ENT_RET =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
@@ -110,7 +100,7 @@ public class VendasContrato {
                         "/" + PATH_ENT_RET;
     }
 
-    public static final class AcessoSaldo implements BaseColumns{
+    public static final class AcessoSaldo implements BaseColumns {
 
         public static final Uri CONTENT_URI_SALDO = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SALDO);
 
@@ -122,9 +112,9 @@ public class VendasContrato {
 
         public static final String CRIAR_TABELA_SALDO =
                 "CREATE TABLE IF NOT EXISTS " + NOME_TABELA_SALDO + " ( "
-                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUNA_SALDO_DATA + " TEXT NOT NULL, "
-                + COLUNA_SALDO_VALOR + " REAL NOT NULL DEFAULT 0 );";
+                        + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + COLUNA_SALDO_DATA + " TEXT NOT NULL, "
+                        + COLUNA_SALDO_VALOR + " REAL NOT NULL DEFAULT 0 );";
 
         public static final String CONTENT_ITEM_TYPE_SALDO =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
@@ -138,9 +128,9 @@ public class VendasContrato {
 
     }
 
-    public static final class AcessoVenda implements BaseColumns{
+    public static final class AcessoVenda implements BaseColumns {
 
-        public static final Uri CONTENT_URI_VENDA = Uri.withAppendedPath(BASE_CONTENT_URI,PATH_VENDA);
+        public static final Uri CONTENT_URI_VENDA = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_VENDA);
 
         public static final String NOME_TABELA_VENDA = "vendas";
 
@@ -153,21 +143,20 @@ public class VendasContrato {
         public static final String COLUNA_VENDA_TEM_DESCONTO = "tem_desconto";
         public static final String COLUNA_VENDA_VALOR_COBERTURA = "valor_cobertura";
         public static final String COLUNA_VENDA_VALOR_DESCONTO = "valor_desconto";
-
-
+        public static final String COLUNA_VENDA_PRECO_UM_BOLO = "preco_um_bolo";
 
         public static final String CRIAR_TABELA_VENDA =
                 "CREATE TABLE IF NOT EXISTS " + NOME_TABELA_VENDA + " ( "
-                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUNA_VENDA_NOME_PROD + " TEXT NOT NULL, "
-                + COLUNA_VENDA_VALOR_PROD + " REAL NOT NULL DEFAULT 0, "
+                        + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + COLUNA_VENDA_NOME_PROD + " TEXT NOT NULL, "
+                        + COLUNA_VENDA_VALOR_PROD + " REAL NOT NULL DEFAULT 0, "
+                        + COLUNA_VENDA_PRECO_UM_BOLO + " REAL NOT NULL DEFAULT 0, "
                         + COLUNA_VENDA_DATA + " TEXT NOT NULL, "
-                + COLUNA_VENDA_QUANT + " INTEGER NOT NULL, "
-                + COLUNA_VENDA_TEM_COBERTURA + " INTEGER NOT NULL, "
-                + COLUNA_VENDA_VALOR_COBERTURA + " REAL, "
-                + COLUNA_VENDA_TEM_DESCONTO + " INTEGER NOT NULL, "
-                + COLUNA_VENDA_VALOR_DESCONTO + " REAL );";
-
+                        + COLUNA_VENDA_QUANT + " INTEGER NOT NULL, "
+                        + COLUNA_VENDA_TEM_COBERTURA + " INTEGER NOT NULL, "
+                        + COLUNA_VENDA_VALOR_COBERTURA + " REAL, "
+                        + COLUNA_VENDA_TEM_DESCONTO + " INTEGER NOT NULL, "
+                        + COLUNA_VENDA_VALOR_DESCONTO + " REAL );";
 
         public static final String CONTENT_ITEM_TYPE_VENDA =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +

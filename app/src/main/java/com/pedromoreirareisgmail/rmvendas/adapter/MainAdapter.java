@@ -9,6 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
 
@@ -39,10 +40,12 @@ public class MainAdapter extends CursorAdapter {
         String vlCobert = String.valueOf(vlCoberDouble);
         String vlDesc = String.valueOf(vlDescDouble);
         String vlTotal = String.valueOf(vlTotalDouble);
+        data = Datas.formatDateTimeEmTime(data);
 
 
         holder.tvQuant.setText(quant);
         holder.tvNome.setText(nome);
+        holder.tvData.setText(data);
 
         if (vlCoberDouble == 0) {
             holder.tvVlCober.setText("--");
@@ -66,6 +69,7 @@ public class MainAdapter extends CursorAdapter {
         TextView tvVlCober;
         TextView tvVlDesc;
         TextView tvVlTotal;
+        TextView tvData;
 
         public MainViewHolder(View view) {
 
@@ -74,6 +78,7 @@ public class MainAdapter extends CursorAdapter {
             tvVlCober = view.findViewById(R.id.tv_valor_cober_main);
             tvVlDesc = view.findViewById(R.id.tv_valor_desc_main);
             tvVlTotal = view.findViewById(R.id.tv_valor_venda_main);
+            tvData = view.findViewById(R.id.tv_data_main);
         }
     }
 }

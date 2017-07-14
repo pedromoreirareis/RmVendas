@@ -18,25 +18,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
+import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Utilidades.calculaValorBolo;
+
 public class VendQuantActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_VENDA_EDITAR = 11;
-    private static final int LOADER_VENDA_ADICIONAR = 12;
+    private static final int LOADER_VENDA_EDITAR = 13;
+    private static final int LOADER_VENDA_ADICIONAR = 11;
 
     private TextView mTvNome;
     private EditText mEtQuant;
@@ -49,8 +51,11 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
     private FrameLayout mFlDesc;
 
     private Uri mUriAtual = null;
-
+    private boolean mAdicionar = false;
+    private double mPrecoBolo = 0;
+    private String mData = "";
     private boolean mAlteracao = false;
+
     private final EditText.OnTouchListener mTouchListenetEdit = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -65,11 +70,6 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             return false;
         }
     };
-    private boolean mAdicionar = false;
-    private String mNomeDoBolo = "";
-    private double mValorDoBolo = 0;
-    private double mValorDoBoloTotal = 0;
-    private String mData = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,16 +78,21 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         Intent intent = getIntent();
         mUriAtual = intent.getData();
 
-
         if (intent.hasExtra(Constantes.VENDA_ADICIONAR)) {
-            setTitle(R.string.tela_venda_adicionar);
-            mAdicionar = true;
+
+            mAdicionar = intent.getStringExtra(Constantes.VENDA_ADICIONAR).equals(Constantes.VENDA_ADICIONAR);
+
+        }
+
+        if (mAdicionar) {
+
+            setTitle(R.string.title_venda_add);
             getLoaderManager().initLoader(LOADER_VENDA_ADICIONAR, null, this);
         }
 
-        if (intent.hasExtra(Constantes.VENDA_EDITAR)) {
-            setTitle(R.string.tela_vend_editar);
-            mAdicionar = false;
+        if (!mAdicionar) {
+
+            setTitle(R.string.title_vend_edit);
             getLoaderManager().initLoader(LOADER_VENDA_EDITAR, null, this);
         }
 
@@ -101,8 +106,11 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         mFlCobet = (FrameLayout) findViewById(R.id.fl_cobertura_vend_quant);
         mFlDesc = (FrameLayout) findViewById(R.id.fl_desconto_vend_quant);
 
-        mEtCobertura.setText("0");
-        mEtDesc.setText("0");
+        if (mAdicionar) {
+            mEtCobertura.setText("0");
+            mEtDesc.setText("0");
+            mEtQuant.setText("1");
+        }
 
         mEtQuant.setOnTouchListener(mTouchListenetEdit);
         mEtCobertura.setOnTouchListener(mTouchListenetEdit);
@@ -110,139 +118,79 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         mSwitchCobertura.setOnTouchListener(mTouchListenerSwitch);
         mSwitchDesc.setOnTouchListener(mTouchListenerSwitch);
 
-        mEtQuant.setText("1");
-
         mEtQuant.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 String vlQuant = charSequence.toString().trim();
-                if (TextUtils.isEmpty(vlQuant)) {
-                    vlQuant = "0";
-                }
-
                 String vlCobert = mEtCobertura.getText().toString().trim();
-                if (TextUtils.isEmpty(vlCobert)) {
-                    vlCobert = "0";
-                }
-
                 String vlDesc = mEtDesc.getText().toString().trim();
-                if (TextUtils.isEmpty(vlDesc)) {
-                    vlDesc = "0";
-                }
 
-                double valorQ = Double.parseDouble(vlQuant);
-                double valorC = Double.parseDouble(vlCobert);
-                double valorD = Double.parseDouble(vlDesc);
-
-                double quantValor = valorQ * mValorDoBolo;
-
-                mValorDoBoloTotal = quantValor + valorC + valorD;
-
-                mTvTotal.setText(String.valueOf(mValorDoBoloTotal));
+                mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         mEtCobertura.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String vlCobert = charSequence.toString().trim();
-                if (TextUtils.isEmpty(vlCobert)) {
-                    vlCobert = "0";
-                }
-
                 String vlQuant = mEtQuant.getText().toString().trim();
-                if (TextUtils.isEmpty(vlQuant)) {
-                    vlQuant = "0";
-                }
-
+                String vlCobert = charSequence.toString().trim();
                 String vlDesc = mEtDesc.getText().toString().trim();
-                if (TextUtils.isEmpty(vlDesc)) {
-                    vlDesc = "0";
-                }
 
-                double valorQ = Double.parseDouble(vlQuant);
-                double valorC = Double.parseDouble(vlCobert);
-                double valorD = Double.parseDouble(vlDesc);
-
-                double quantValor = valorQ * mValorDoBolo;
-
-                mValorDoBoloTotal = quantValor + valorC + valorD;
-
-                mTvTotal.setText(String.valueOf(mValorDoBoloTotal));
+                mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         mEtDesc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String vlDesc = charSequence.toString().trim();
-                if (TextUtils.isEmpty(vlDesc)) {
-                    vlDesc = "0";
-                }
-
                 String vlQuant = mEtQuant.getText().toString().trim();
-                if (TextUtils.isEmpty(vlQuant)) {
-                    vlQuant = "0";
-                }
-
                 String vlCobert = mEtCobertura.getText().toString().trim();
-                if (TextUtils.isEmpty(vlCobert)) {
-                    vlCobert = "0";
-                }
+                String vlDesc = charSequence.toString().trim();
 
-                double valorQ = Double.parseDouble(vlQuant);
-                double valorC = Double.parseDouble(vlCobert);
-                double valorD = Double.parseDouble(vlDesc);
-
-                double quantValor = valorQ * mValorDoBolo;
-
-                mValorDoBoloTotal = quantValor + valorC + valorD;
-
-                mTvTotal.setText(String.valueOf(mValorDoBoloTotal));
+                mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
+
         mSwitchCobertura.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+
                 if (checked) {
+
                     mFlCobet.setVisibility(View.VISIBLE);
-                    fecharTeclado(mSwitchCobertura);
+                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchCobertura);
+
                 } else {
+
                     mFlCobet.setVisibility(View.GONE);
-                    fecharTeclado(mSwitchCobertura);
+                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchCobertura);
                     mEtCobertura.setText("0");
                 }
             }
@@ -251,26 +199,22 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         mSwitchDesc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+
                 if (checked) {
+
                     mFlDesc.setVisibility(View.VISIBLE);
-                    fecharTeclado(mSwitchDesc);
+                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchDesc);
+
                 } else {
+
                     mFlDesc.setVisibility(View.GONE);
-                    fecharTeclado(mSwitchDesc);
+                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchDesc);
                     mEtDesc.setText("0");
                 }
             }
         });
     }
 
-    private void fecharTeclado(Switch switchCD) {
-        // Metodo de entrada - pega servico sistema - tipo de entrada
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
-        // Esconde o teclado virtual, se curso estiver no TextView mEtPesquisa
-        imm.hideSoftInputFromWindow(switchCD.getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -289,12 +233,11 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 return true;
             case android.R.id.home:
                 if (!mAlteracao) {
-                    /* Não teve alteração */
+
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
-                /* Teve alteração */
                 DialogInterface.OnClickListener descartarButClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -305,9 +248,6 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                 UtilsDialog.confirmarAlteracao(
                         VendQuantActivity.this,
-                        getString(R.string.dialog_prod_cad_alt_titulo),
-                        getString(R.string.dialog_prod_cad_alt_continuar),
-                        getString(R.string.dialog_prod_cad_alt_descatar),
                         descartarButClickListener
                 );
 
@@ -319,85 +259,75 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
     private void adicionar() {
 
-
-        String nome = "";
-        String quantString = "0";
-        String valorCobertString = "0";
-        String valorDescString = "0";
-        String valorTotalString = "0";
-        boolean temCobert = false;
-        boolean temDesc = false;
-        int quant = 0;
-        double valorCobert = 0;
-        double valorDesconto = 0;
-        double valorTotal = 0;
-
+        String nome;
+        String quantString;
+        String vlCobertString;
+        String vlDescString;
+        String vlTotalString;
+        boolean temCobert;
+        boolean temDesc;
+        int quant;
+        double valorCobert;
+        double valorDesconto;
+        double valorTotal;
 
         nome = mTvNome.getText().toString().trim();
         quantString = mEtQuant.getText().toString().trim();
         temCobert = mSwitchCobertura.isChecked();
         temDesc = mSwitchDesc.isChecked();
-        valorTotalString = mTvTotal.getText().toString().trim();
-
-        if (temCobert) {
-            valorCobertString = mEtCobertura.getText().toString().trim();
-        }
-
-        if (temDesc) {
-            valorDescString = mEtDesc.getText().toString().trim();
-        }
-
+        vlTotalString = mTvTotal.getText().toString().trim();
+        vlCobertString = mEtCobertura.getText().toString().trim();
+        vlDescString = mEtDesc.getText().toString().trim();
 
         if (TextUtils.isEmpty(quantString)) {
             quantString = "0";
         }
 
-        if (TextUtils.isEmpty(valorCobertString)) {
-            valorCobertString = "0";
+        if (TextUtils.isEmpty(vlCobertString)) {
+            vlCobertString = "0";
         }
 
-        if (TextUtils.isEmpty(valorDescString)) {
-            valorDescString = "0";
+        if (TextUtils.isEmpty(vlDescString)) {
+            vlDescString = "0";
         }
 
-        if (TextUtils.isEmpty(valorTotalString)) {
-            valorTotalString = "0";
+        if (TextUtils.isEmpty(vlTotalString)) {
+            vlTotalString = "0";
         }
+
         // Conversões
-
         quant = Integer.parseInt(quantString);
-        valorCobert = Double.parseDouble(valorCobertString);
-        valorDesconto = Double.parseDouble(valorDescString);
-        valorTotal = Double.parseDouble(valorTotalString);
-
+        valorCobert = Double.parseDouble(vlCobertString);
+        valorDesconto = Double.parseDouble(vlDescString);
+        valorTotal = Double.parseDouble(vlTotalString);
 
         // Validações
         if (TextUtils.isEmpty(quantString)) {
-            mEtQuant.setError(getString(R.string.error_venda_cad_quant_digitar));
+            mEtQuant.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
-        if (TextUtils.isEmpty(valorCobertString)) {
-            mEtCobertura.setError(getString(R.string.error_venda_cad_cobert_digitar));
+        if (TextUtils.isEmpty(vlCobertString)) {
+            mEtCobertura.setError(getString(R.string.error_campo_vazio));
             return;
         }
-        if (TextUtils.isEmpty(valorDescString)) {
-            mEtDesc.setError(getString(R.string.error_venda_cad_desc_digitar));
+        if (TextUtils.isEmpty(vlDescString)) {
+            mEtDesc.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
         if (quant < 1) {
-            mEtQuant.setError(getString(R.string.error_venda_cad_quant_menor_um));
+            mEtQuant.setError(getString(R.string.error_valor_menor_um));
             return;
         }
 
         if (valorCobert < 0) {
-            mEtCobertura.setError(getString(R.string.error_venda_cad_cobert_negativo));
+            mEtCobertura.setError(getString(R.string.error_valor_negativo));
             return;
         }
 
         if (valorDesconto < 0) {
-            mEtDesc.setError(getString(R.string.error_venda_cad_desc_negativo));
+            mEtDesc.setError(getString(R.string.error_valor_negativo));
             return;
         }
 
@@ -405,48 +335,46 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         values.put(AcessoVenda.COLUNA_VENDA_NOME_PROD, nome);
         values.put(AcessoVenda.COLUNA_VENDA_QUANT, quant);
         values.put(AcessoVenda.COLUNA_VENDA_VALOR_PROD, valorTotal);
-        if (temCobert) {
-            values.put(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA, Constantes.COBERTURA_SIM);
+        values.put(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO, mPrecoBolo);
+        values.put(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA, valorCobert);
+        values.put(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO, valorDesconto);
 
+        if (temCobert) {
+
+            values.put(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA, Constantes.COBERTURA_SIM);
         }
+
         if (!temCobert) {
+
             values.put(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA, Constantes.COBERTURA_NAO);
         }
-        values.put(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA, valorCobert);
 
         if (temDesc) {
+
             values.put(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO, Constantes.DESCONTO_SIM);
         }
+
         if (!temDesc) {
+
             values.put(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO, Constantes.DESCONTO_NAO);
         }
 
-        values.put(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO, valorDesconto);
-
         if (mAdicionar) {
+
             values.put(AcessoVenda.COLUNA_VENDA_DATA, Datas.getDateTime());
+
         } else {
+
             values.put(AcessoVenda.COLUNA_VENDA_DATA, mData);
         }
 
         if (mAdicionar) {
 
-            Uri newUri = getContentResolver().insert(AcessoVenda.CONTENT_URI_VENDA, values);
-
-            if (newUri != null) {
-                Toast.makeText(this, "Inserido com sucesso", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Erro o inserir", Toast.LENGTH_SHORT).show();
-            }
+            Crud.inserir(VendQuantActivity.this, AcessoVenda.CONTENT_URI_VENDA, values);
 
         } else {
-            int linhasAtualizadas = getContentResolver().update(mUriAtual, values, null, null);
 
-            if (linhasAtualizadas > 0) {
-                Toast.makeText(this, "Atualizado com sucesso", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Erro ao atualizar", Toast.LENGTH_SHORT).show();
-            }
+            Crud.editar(VendQuantActivity.this, mUriAtual, values);
         }
 
         finish();
@@ -456,6 +384,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         if (i == LOADER_VENDA_ADICIONAR) {
+
             String[] projection = {
                     AcessoProdutos._ID,
                     AcessoProdutos.COLUNA_PRODUTO_PRECO,
@@ -477,11 +406,15 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             String[] projection = {
                     AcessoVenda._ID,
                     AcessoVenda.COLUNA_VENDA_NOME_PROD,
+                    AcessoVenda.COLUNA_VENDA_QUANT,
+                    AcessoVenda.COLUNA_VENDA_DATA,
                     AcessoVenda.COLUNA_VENDA_VALOR_PROD,
                     AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
                     AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
                     AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
                     AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO,
+                    AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO
+
             };
 
             return new CursorLoader(
@@ -501,6 +434,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         if (loader.getId() == LOADER_VENDA_EDITAR && cursor.moveToFirst()) {
+
             String nomeBolo = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
             int quantidade = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
             int temCobertura = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
@@ -509,28 +443,33 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
             double valorBolo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
             mData = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_DATA));
+            mPrecoBolo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO));
 
             mTvNome.setText(nomeBolo);
             mEtQuant.setText(String.valueOf(quantidade));
 
             if (temCobertura == Constantes.COBERTURA_SIM) {
+
                 mSwitchCobertura.setChecked(true);
                 mEtCobertura.setVisibility(View.VISIBLE);
                 mEtCobertura.setText(String.valueOf(valorCobertura));
             }
 
             if (temCobertura == Constantes.COBERTURA_NAO) {
+
                 mSwitchCobertura.setChecked(false);
                 mEtCobertura.setVisibility(View.GONE);
             }
 
             if (temDesconto == Constantes.DESCONTO_SIM) {
+
                 mSwitchDesc.setChecked(true);
                 mEtDesc.setVisibility(View.VISIBLE);
                 mEtDesc.setText(String.valueOf(valorDesconto));
             }
 
             if (temDesconto == Constantes.DESCONTO_NAO) {
+
                 mSwitchDesc.setChecked(false);
                 mEtDesc.setVisibility(View.GONE);
             }
@@ -540,16 +479,38 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {
 
-            mNomeDoBolo = cursor.getString(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
-            mValorDoBolo = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
+            String mNomeDoBolo = cursor.getString(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
+            mPrecoBolo = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
 
             mTvNome.setText(mNomeDoBolo);
-            mTvTotal.setText(String.valueOf(mValorDoBolo));
+            mTvTotal.setText(String.valueOf(mPrecoBolo));
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (!mAlteracao) {
+
+            super.onBackPressed();
+        }
+
+        DialogInterface.OnClickListener descartarButClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                };
+
+        UtilsDialog.confirmarAlteracao(
+                VendQuantActivity.this,
+                descartarButClickListener
+        );
     }
 }

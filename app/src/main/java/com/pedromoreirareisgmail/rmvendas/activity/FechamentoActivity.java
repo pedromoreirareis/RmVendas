@@ -5,8 +5,6 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,29 +14,34 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
+import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
-import java.util.Calendar;
+public class FechamentoActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
-public class FechamentoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int LOADER_ENTRADA_REIRADA = 2;
+    private static final int LOADER_SALDO = 3;
+    private static final int LOADER_VENDAS = 4;
 
-    private static final int LOADER_ENTRADA_REIRADA = 3;
-    private static final int LOADER_SALDO = 4;
-    private static final int LOADER_VENDAS = 16;
     private static String dataEscolhida = "";
+
     double totalEntrada = 0;
     double totalRetirada = 0;
     double totalVendas = 0;
     double saldoInicial = 0;
     double TotalGeral = 0;
+
     private TextView mTvData;
     private TextView mTvEntrada;
     private TextView mTvRetirada;
     private TextView mTvTotal;
     private TextView mTvSaldoInicial;
     private TextView mTvVendas;
+
+    private String mDataPesquisar = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -60,34 +63,25 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
         mTvData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // DialogFragment newFragment = new DatePickerFragment();
-                // newFragment.show(getSupportFragmentManager(), "datePicker");
 
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
+                UtilsDialog.dialogData(FechamentoActivity.this, mDateSetListener);
 
-                DatePickerDialog dialog = new DatePickerDialog(
-                        FechamentoActivity.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener,
-                        year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
             }
         });
+
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                // Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
 
-                String date = day + "/" + month + "/" + year;
-                mTvData.setText(date);
+
+                mDataPesquisar = Datas.dateSetListenerString(year, month, day);
+
+                mTvData.setText(Datas.dateSetListenerInverseString(year, month, day));
             }
         };
+
+        mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
 
         getLoaderManager().initLoader(LOADER_ENTRADA_REIRADA, null, this);
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
@@ -96,8 +90,9 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
 
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        if (i == LOADER_ENTRADA_REIRADA) {
+    public Loader<Cursor> onCreateLoader(int loader, Bundle bundle) {
+
+        if (loader == LOADER_ENTRADA_REIRADA) {
 
             String[] projection = new String[]{
                     AcessoEntRet._ID,
@@ -117,7 +112,7 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
             );
         }
 
-        if (i == LOADER_SALDO) {
+        if (loader == LOADER_SALDO) {
 
             String[] projection = {
                     AcessoSaldo._ID,
@@ -133,10 +128,9 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
                     null,
                     null
             );
-
         }
 
-        if (i == LOADER_VENDAS) {
+        if (loader == LOADER_VENDAS) {
 
             String[] projection = {
                     AcessoVenda._ID,
@@ -175,15 +169,18 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
                 if (Constantes.TIPO_ENTRADA ==
                         cursor.getInt(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
 
-                    totalEntrada = totalEntrada + cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+                    totalEntrada = totalEntrada
+                            + cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+
                 } else if (Constantes.TIPO_RETIRADA ==
                         cursor.getInt(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
 
-                    totalRetirada = totalRetirada + cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+                    totalRetirada = totalRetirada
+                            + cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
                 }
 
                 cursor.moveToNext();
-                }
+            }
 
         }
 
@@ -191,19 +188,21 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                saldoInicial = saldoInicial + cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
+                saldoInicial = saldoInicial
+                        + cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
 
                 cursor.moveToNext();
             }
-
         }
 
         if (loader.getId() == LOADER_VENDAS && cursor.moveToFirst()) {
+
             for (int i = 0; i < cursor.getCount(); i++) {
-                totalVendas = totalVendas + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+
+                totalVendas = totalVendas
+                        + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
             }
         }
-
 
         TotalGeral = totalEntrada + saldoInicial + totalVendas - totalRetirada;
 
@@ -212,7 +211,6 @@ public class FechamentoActivity extends AppCompatActivity implements LoaderManag
         mTvSaldoInicial.setText(String.valueOf(saldoInicial));
         mTvVendas.setText(String.valueOf(totalVendas));
         mTvTotal.setText(String.valueOf(TotalGeral));
-
     }
 
     @Override

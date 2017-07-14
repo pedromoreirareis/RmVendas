@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
@@ -32,7 +33,7 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
 public class EntCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MAX_CARACT_DESC = 50;
-    private static final int LOADER_ENT_CAD = 6;
+    private static final int LOADER_ENT_CAD = 0;
 
     private EditText mEtValor;
     private EditText mEtDescricao;
@@ -67,7 +68,6 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
             getLoaderManager().initLoader(LOADER_ENT_CAD, null, this);
         }
 
-
         mEtValor = (EditText) findViewById(R.id.et_valor_ent);
         mEtDescricao = (EditText) findViewById(R.id.et_descricao_ent);
 
@@ -76,27 +76,25 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         mEtDescricao.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 if (charSequence.toString().trim().length() > 48) {
 
                     Toast.makeText(EntCadActivity.this,
-                            R.string.toast_saldo_ent_ret_max_caract, Toast.LENGTH_SHORT).show();
+                            R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         mEtValor.setOnTouchListener(mTouchListenet);
         mEtDescricao.setOnTouchListener(mTouchListenet);
-
     }
 
     @Override
@@ -109,18 +107,19 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+
         switch (id) {
+
             case R.id.action_salvar:
                 adicionar();
                 return true;
+
             case android.R.id.home:
                 if (!mAlteracao) {
-                    /* Não teve alteração */
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
-                /* Teve alteração */
                 DialogInterface.OnClickListener descartarButClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -131,9 +130,6 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
                 UtilsDialog.confirmarAlteracao(
                         EntCadActivity.this,
-                        getString(R.string.dialog_prod_cad_alt_titulo),
-                        getString(R.string.dialog_prod_cad_alt_continuar),
-                        getString(R.string.dialog_prod_cad_alt_descatar),
                         descartarButClickListener
                 );
 
@@ -149,62 +145,55 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         String descricao = mEtDescricao.getText().toString().trim();
 
         /* validações */
+
         if (TextUtils.isEmpty(valor)) {
-            mEtValor.setError(getString(R.string.error_saldo_ent_ret_valor_digitar));
+            mEtValor.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
         double valorDouble = Double.parseDouble(valor);
         if (valorDouble <= 0) {
-            mEtValor.setError(getString(R.string.error_saldo_ent_ret_valor_positivo));
+            mEtValor.setError(getString(R.string.error_valor_maior_zero));
             return;
         }
 
         if (TextUtils.isEmpty(descricao)) {
-            mEtDescricao.setError(getString(R.string.error_saldo_ent_ret_descr_digitar));
+            mEtDescricao.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
         ContentValues values = new ContentValues();
-
         values.put(AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
         values.put(AcessoEntRet.COLUNA_ENT_RET_DESC, descricao);
         values.put(AcessoEntRet.COLUNA_ENT_RET_TIPO, Constantes.TIPO_ENTRADA);
 
         if (mUriAtual == null) {
+
             values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDateTime());
+
         } else {
+
             values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, mData);
+
         }
 
-
         if (mUriAtual == null) {
-            Uri newUri = getContentResolver().insert(AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
-            if (newUri != null) {
-                Toast.makeText(this, "Inserido com sucesso", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Erro ao inserir", Toast.LENGTH_SHORT).show();
-            }
+            Crud.inserir(EntCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
         } else {
-            int linhasAtualizadas = getContentResolver().update(mUriAtual, values, null, null);
 
-            if (linhasAtualizadas > 0) {
-                Toast.makeText(this, "Atualizado com sucesso", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Erro ao atualizar", Toast.LENGTH_SHORT).show();
-            }
+            Crud.editar(EntCadActivity.this, mUriAtual, values);
+
         }
 
         finish();
-
     }
 
     @Override
     public void onBackPressed() {
         if (!mAlteracao) {
-            /* Não houve alteração */
+
             super.onBackPressed();
         }
 
@@ -218,15 +207,13 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
         UtilsDialog.confirmarAlteracao(
                 EntCadActivity.this,
-                getString(R.string.dialog_prod_cad_alt_titulo),
-                getString(R.string.dialog_prod_cad_alt_continuar),
-                getString(R.string.dialog_prod_cad_alt_descatar),
                 descartarButClickListener
         );
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
         String[] projection = {
                 AcessoEntRet._ID,
                 AcessoEntRet.COLUNA_ENT_RET_DATA,
@@ -249,6 +236,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         if (cursor.moveToFirst()) {
+
             double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
             String desc = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
             mData = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
@@ -257,14 +245,10 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
             mEtValor.setText(valor);
             mEtDescricao.setText(desc);
-
         }
-
-
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 }

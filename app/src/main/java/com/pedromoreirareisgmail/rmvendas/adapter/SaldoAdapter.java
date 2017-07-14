@@ -2,7 +2,6 @@ package com.pedromoreirareisgmail.rmvendas.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
-
-import org.w3c.dom.Text;
 
 import java.text.NumberFormat;
 
@@ -27,6 +23,7 @@ public class SaldoAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+
         return LayoutInflater.from(context).inflate(R.layout.item_saldo_inicial, viewGroup, false);
     }
 

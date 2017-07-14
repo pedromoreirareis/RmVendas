@@ -23,7 +23,7 @@ import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 
 public class RetListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_RET = 6;
+    private static final int LOADER_RET = 9;
     private RetAdapter mAdapter;
 
     @Override
@@ -58,23 +58,19 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
                         RetListActivity.this,
                         EntCadActivity.class,
                         uri,
-                        getString(R.string.dialog_prod_list_esc_ee_tilte),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_title),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_cancelar),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_excluir),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_sucesso),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_erro),
                         desc
                 );
 
                 return true;
             }
         });
+
         getLoaderManager().initLoader(LOADER_RET, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
         String[] projection = {
                 VendasContrato.AcessoEntRet._ID,
                 AcessoEntRet.COLUNA_ENT_RET_DATA,
@@ -83,8 +79,9 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
                 AcessoEntRet.COLUNA_ENT_RET_TIPO
         };
 
-        String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + "=?";
+        String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + " =? ";
         String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_RETIRADA)};
+
         return new CursorLoader(
                 this,
                 AcessoEntRet.CONTENT_URI_ENT_RET,

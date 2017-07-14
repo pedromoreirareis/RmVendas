@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,12 +18,11 @@ import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.EntAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 
 public class EntListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_ENT = 5;
+    private static final int LOADER_ENT = 1;
     private EntAdapter mAdapter;
 
     @Override
@@ -35,8 +34,10 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intentEntrada = new Intent(EntListActivity.this, EntCadActivity.class);
                 startActivity(intentEntrada);
+
             }
         });
 
@@ -57,12 +58,6 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                         EntListActivity.this,
                         EntCadActivity.class,
                         uri,
-                        getString(R.string.dialog_prod_list_esc_ee_tilte),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_title),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_cancelar),
-                        getString(R.string.dialog_prod_list_esc_ee_conf_excluir_excluir),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_sucesso),
-                        getString(R.string.dialog_prod_list_esc_ee_excluido_erro),
                         desc
                 );
 
@@ -75,6 +70,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
         String[] projection = {
                 AcessoEntRet._ID,
                 AcessoEntRet.COLUNA_ENT_RET_DATA,
@@ -83,7 +79,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                 AcessoEntRet.COLUNA_ENT_RET_TIPO
         };
 
-        String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + "=?";
+        String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + " =? ";
         String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA)};
 
         return new CursorLoader(
