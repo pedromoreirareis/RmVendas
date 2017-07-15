@@ -31,6 +31,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     double totalEntrada = 0;
     double totalRetirada = 0;
     double totalVendas = 0;
+    double totalPrazo = 0;
     double saldoInicial = 0;
     double TotalGeral = 0;
 
@@ -40,6 +41,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     private TextView mTvTotal;
     private TextView mTvSaldoInicial;
     private TextView mTvVendas;
+    private TextView mTvPrazo;
 
     private String mDataPesquisar = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -57,6 +59,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         mTvTotal = (TextView) findViewById(R.id.tv_total);
         mTvData = (TextView) findViewById(R.id.tv_data);
         mTvVendas = (TextView) findViewById(R.id.tv_vendas);
+        mTvPrazo = (TextView) findViewById(R.id.tv_prazo);
 
         mTvData.setText(dataEscolhida);
 
@@ -135,13 +138,15 @@ public class FechamentoActivity extends AppCompatActivity implements
             String[] projection = {
                     AcessoVenda._ID,
                     AcessoVenda.COLUNA_VENDA_NOME_PROD,
-                    AcessoVenda.COLUNA_VENDA_VALOR_PROD,
-                    AcessoVenda.COLUNA_VENDA_DATA,
                     AcessoVenda.COLUNA_VENDA_QUANT,
-                    AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
-                    AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
+                    AcessoVenda.COLUNA_VENDA_DATA,
+                    AcessoVenda.COLUNA_VENDA_VALOR_PROD,
                     AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
-                    AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO
+                    AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
+                    AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO,
+                    AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
+                    AcessoVenda.COLUNA_VENDA_PRAZO,
+                    AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO
             };
 
             return new CursorLoader(
@@ -199,8 +204,19 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                totalVendas = totalVendas
-                        + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_NAO) {
+
+                    totalVendas = totalVendas
+                            + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+                }
+
+                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_SIM) {
+
+                    totalPrazo = totalPrazo
+                            + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+                }
+
+                cursor.moveToNext();
             }
         }
 
@@ -210,6 +226,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         mTvRetirada.setText(String.valueOf(totalRetirada));
         mTvSaldoInicial.setText(String.valueOf(saldoInicial));
         mTvVendas.setText(String.valueOf(totalVendas));
+        mTvPrazo.setText(String.valueOf(totalPrazo));
         mTvTotal.setText(String.valueOf(TotalGeral));
     }
 

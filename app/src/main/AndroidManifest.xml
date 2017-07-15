@@ -46,7 +46,7 @@
         </activity>
         <activity
             android:name=".activity.RetListActivity"
-            android:label="@string/tela_ret_list"
+            android:label="@string/title_ret_list"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -54,7 +54,7 @@
         </activity>
         <activity
             android:name=".activity.EntListActivity"
-            android:label="@string/tela_ent_list"
+            android:label="@string/title_ent_list"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -62,7 +62,7 @@
         </activity>
         <activity
             android:name=".activity.SaldoListActivity"
-            android:label="@string/tela_saldo_list"
+            android:label="@string/title_saldo_list"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

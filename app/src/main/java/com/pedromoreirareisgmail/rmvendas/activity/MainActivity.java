@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -149,7 +150,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
@@ -164,8 +164,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_action_vender:
-                break;
 
             case R.id.nav_action_entrada:
                 startActivity(new Intent(MainActivity.this, EntListActivity.class));
@@ -202,7 +200,9 @@ public class MainActivity extends AppCompatActivity
                 AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
                 AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
                 AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO,
-                AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA
+                AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
+                AcessoVenda.COLUNA_VENDA_PRAZO,
+                AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO
         };
 
         String selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?";

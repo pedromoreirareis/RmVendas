@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
+
+import java.text.NumberFormat;
 
 
 public class MainAdapter extends CursorAdapter {
@@ -35,31 +38,51 @@ public class MainAdapter extends CursorAdapter {
         double vlCoberDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
         double vlDescDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
         double vlTotalDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+        int temCobert = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
+        int temDesc = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO));
+        int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
 
         String quant = String.valueOf(quantInt);
-        String vlCobert = String.valueOf(vlCoberDouble);
-        String vlDesc = String.valueOf(vlDescDouble);
-        String vlTotal = String.valueOf(vlTotalDouble);
+        //String vlCobert = String.valueOf(vlCoberDouble);
+        //String vlDesc = String.valueOf(vlDescDouble);
+        //String vlTotal = String.valueOf(vlTotalDouble);
         data = Datas.formatDateTimeEmTime(data);
 
+        NumberFormat preco = NumberFormat.getCurrencyInstance();
 
         holder.tvQuant.setText(quant);
         holder.tvNome.setText(nome);
         holder.tvData.setText(data);
 
-        if (vlCoberDouble == 0) {
-            holder.tvVlCober.setText("--");
+        if (temCobert == Constantes.COBERTURA_SIM) {
+
+            holder.tvVlCober.setText(preco.format(vlCoberDouble));
+
+
         } else {
-            holder.tvVlCober.setText(vlCobert);
+
+            holder.tvVlCober.setText(preco.format(0));
+
         }
 
-        if (vlDescDouble == 0) {
-            holder.tvVlDesc.setText("--");
+        if (temDesc == Constantes.DESCONTO_SIM) {
+
+            holder.tvVlDesc.setText(preco.format(0));
+
         } else {
-            holder.tvVlDesc.setText(vlDesc);
+
+            holder.tvVlDesc.setText(preco.format(vlDescDouble));
         }
 
-        holder.tvVlTotal.setText(vlTotal);
+        if (temPrazo == Constantes.PRAZO_SIM) {
+
+            holder.tvVlTotalLabel.setText(R.string.prazo_item_main);
+            holder.tvVlTotal.setText(preco.format(vlTotalDouble));
+
+        } else {
+            holder.tvVlTotalLabel.setText(R.string.venda_item_main);
+            holder.tvVlTotal.setText(preco.format(vlTotalDouble));
+        }
     }
 
     class MainViewHolder {
@@ -70,6 +93,7 @@ public class MainAdapter extends CursorAdapter {
         TextView tvVlDesc;
         TextView tvVlTotal;
         TextView tvData;
+        TextView tvVlTotalLabel;
 
         public MainViewHolder(View view) {
 
@@ -78,6 +102,7 @@ public class MainAdapter extends CursorAdapter {
             tvVlCober = view.findViewById(R.id.tv_valor_cober_main);
             tvVlDesc = view.findViewById(R.id.tv_valor_desc_main);
             tvVlTotal = view.findViewById(R.id.tv_valor_venda_main);
+            tvVlTotalLabel = view.findViewById(R.id.tv_valor_label_venda_main);
             tvData = view.findViewById(R.id.tv_data_main);
         }
     }

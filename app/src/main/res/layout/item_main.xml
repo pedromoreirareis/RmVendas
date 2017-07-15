@@ -11,50 +11,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:orientation="horizontal">
-    <TextView
-        android:id="@+id/tv_nome_main"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="bold"
-        tools:text="Bolo de banana com canela" />
+
+        <TextView
+            android:id="@+id/tv_nome_main"
+            style="@style/TituloTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="Bolo de banana com canela" />
 
         <TextView
             android:id="@+id/tv_data_main"
+            style="@style/TituloTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             tools:text="10/10/2010" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                style="@style/DetalhesItemMainLabel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Quant." />
+                android:drawableLeft="@drawable/ic_shopping_cart_black_48px"
+                android:text="@string/quant_item_main" />
 
             <TextView
                 android:id="@+id/tv_valor_quant_main"
+                style="@style/DetalhesItemMainValor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
                 tools:text="5" />
 
         </LinearLayout>
@@ -63,62 +61,75 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tv_valor_label_venda_main"
+                style="@style/DetalhesItemMainLabel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="R$ Cobert." />
-
-            <TextView
-                android:id="@+id/tv_valor_cober_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                tools:text="R$ 32,00" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="R$ Desc." />
-
-            <TextView
-                android:id="@+id/tv_valor_desc_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                tools:text="R$ 32,00" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="R$ Venda" />
+                android:drawableLeft="@drawable/ic_attach_money_black_48px"
+                android:text="@string/venda_item_main" />
 
             <TextView
                 android:id="@+id/tv_valor_venda_main"
-                android:layout_width="match_parent"
+                style="@style/DetalhesItemMainValor"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 tools:text="R$ 32,00" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetalhesItemMainLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_attach_money_black_48px"
+                android:text="@string/cobert_item_main" />
+
+            <TextView
+                android:id="@+id/tv_valor_cober_main"
+                style="@style/DetalhesItemMainValor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="R$ 32,00" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetalhesItemMainLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_attach_money_black_48px"
+                android:text="@string/desc_item_main" />
+
+            <TextView
+                android:id="@+id/tv_valor_desc_main"
+                style="@style/DetalhesItemMainValor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="R$ 32,00" />
+
 
         </LinearLayout>
 

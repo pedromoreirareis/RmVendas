@@ -13,9 +13,22 @@
     <string name="title_venda_add">Adicionar venda</string>
     <string name="title_vend_edit">Editar venda</string>
     <string name="title_vend_list">Produtos cadastrados</string>
+    <string name="title_ret_list">Retiradas</string>
+    <string name="title_ent_list">Entradas</string>
+    <string name="title_saldo_list">Saldo inicial</string>
 
+    <!-- Menus -->
+    <string name="menu_salvar_title">Salvar</string>
+    <string name="menu_entrada_title">Entrada</string>
+    <string name="menu_retirada_title">Retirada</string>
+    <string name="menu_saldo_inicial_title">Saldo inicial</string>
+    <string name="menu_fechamento_title">Fechamento</string>
+    <string name="menu_produtos_title">Produtos</string>
+    <string name="menu_cadastros_title">Cadastros</string>
+    <string name="menu_caixa_title">Caixa</string>
+    <string name="action_settings">Configurações</string>
 
-    <!-- msg -->
+    <!-- mensagens -->
     <string name="msg_max_caract">Esse campo deve ter no máximo 50 caracteres</string>
     <string name="msg_inserir_sucesso">Inserido com sucesso</string>
     <string name="msg_inserir_erro">Erro ao inserir</string>
@@ -41,31 +54,9 @@
     <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
     <string name="error_valor_negativo">O valor não pode ser negativo</string>
 
-
-    <!-- Title Activitys -->
-    <string name="tela_prod_list">Produtos cadastrados</string>
-
-
-    <string name="tela_saldo_ent_ret_entrada">Entrada</string>
-    <string name="tela_saldo_ent_ret_retirada">Retirada</string>
-    <string name="tela_saldo_ent_ret_saldo">Saldo inicial</string>
-    <string name="tela_ret_list">Entradas</string>
-    <string name="tela_ent_list">Retiradas</string>
-    <string name="tela_saldo_list">Saldo inicial</string>
-
-
     <!-- Drawer -->
     <string name="navigation_drawer_open">Abrir</string>
     <string name="navigation_drawer_close">Fechar</string>
-
-    <!-- Drawer Menu -->
-    <string name="action_settings">Configurações</string>
-
-
-    <!-- Menu -->
-    <string name="action_salvar">Salvar</string>
-    <string name="action_pesquisar">Pesquisar</string>
-    <string name="hint_action_pesquisar">Pesquisar produtos</string>
 
     <!-- Hints -->
     <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
@@ -76,10 +67,10 @@
     <string name="hint_saldo_ent_ret_valor">Valor R$</string>
     <string name="hint_saldo_ent_ret_descricao">Descrição</string>
 
-
     <!-- Text -->
     <string name="text_prod_esc_quant_cobertura">Cobertura</string>
     <string name="text_prod_esc_quant_desconto">Desconto</string>
+    <string name="text_prod_esc_quant_prazo">A prazo</string>
     <string name="text_prod_esc_quant_valor_total">Valor Total:  </string>
     <string name="text_prod_list_msg_empty">Nenhum produto cadastrado</string>
     <string name="text_prod_selec_msg_empty">Nenhum produto cadastrado</string>
@@ -89,21 +80,17 @@
     <string name="text_content_main_saldo_inicial">Saldo Inicial</string>
     <string name="text_content_main_fechamento">Fechamento</string>
 
-
+    <!-- toast -->
     <string name="toast_prod_cad_add_sucesso">Adicionado com sucesso</string>
     <string name="toast_prod_cad_edit_sucesso">Editado com sucesso</string>
     <string name="toast_prod_cad_add_erro">Erro ao adicionar</string>
     <string name="toast_prod_cad_edit_erro">Erro ao editar</string>
-
 
     <!-- setError -->
     <string name="error_saldo_ent_ret_descr_digitar">A descrição deve ser digitada</string>
     <string name="error_venda_cad_quant_menor_um">O valor da quantidade não pode ser menor que 1</string>
     <string name="error_venda_cad_cobert_negativo">O valor da cobertura não pode ser negativo</string>
     <string name="error_venda_cad_desc_negativo">O valor do desconto não pode ser negativo</string>
-
-    <!-- Dialogs -->
-
 
     <!-- Providers -->
     <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>
@@ -116,7 +103,10 @@
     <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
     <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="venda_item_main">Total.:</string>
+    <string name="prazo_item_main">Prazo.:</string>
+    <string name="cobert_item_main">Cobert:</string>
+    <string name="desc_item_main">Desc..:</string>
+    <string name="quant_item_main">Quant.:</string>
 
 </resources>

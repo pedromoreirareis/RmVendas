@@ -138,6 +138,7 @@ public class VendasContrato {
         public static final String COLUNA_VENDA_NOME_PROD = "nome_prod";
         public static final String COLUNA_VENDA_VALOR_PROD = "valor_prod";
         public static final String COLUNA_VENDA_DATA = "data";
+        public static final String COLUNA_VENDA_PRAZO = "prazo";
         public static final String COLUNA_VENDA_QUANT = "quantidade";
         public static final String COLUNA_VENDA_TEM_COBERTURA = "tem_cobertura";
         public static final String COLUNA_VENDA_TEM_DESCONTO = "tem_desconto";
@@ -152,6 +153,7 @@ public class VendasContrato {
                         + COLUNA_VENDA_VALOR_PROD + " REAL NOT NULL DEFAULT 0, "
                         + COLUNA_VENDA_PRECO_UM_BOLO + " REAL NOT NULL DEFAULT 0, "
                         + COLUNA_VENDA_DATA + " TEXT NOT NULL, "
+                        + COLUNA_VENDA_PRAZO + " INTEGER NOT NULL, "
                         + COLUNA_VENDA_QUANT + " INTEGER NOT NULL, "
                         + COLUNA_VENDA_TEM_COBERTURA + " INTEGER NOT NULL, "
                         + COLUNA_VENDA_VALOR_COBERTURA + " REAL, "

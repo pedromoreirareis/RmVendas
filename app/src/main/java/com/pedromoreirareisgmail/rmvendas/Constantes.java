@@ -10,6 +10,8 @@ public class Constantes {
 
     public static final int COBERTURA_SIM = 1;
     public static final int COBERTURA_NAO = 0;
-    public static final int DESCONTO_NAO = 0;
     public static final int DESCONTO_SIM = 1;
+    public static final int DESCONTO_NAO = 0;
+    public static final int PRAZO_SIM = 1;
+    public static final int PRAZO_NAO = 0;
 }
