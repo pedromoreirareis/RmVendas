@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,7 +23,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity
     private static final int LOADER_MAIN = 5;
 
     private MainAdapter mAdapter;
-    private TextView mTvData;
 
     private String mDataPesquisar = "";
 
@@ -70,14 +69,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        mTvData = (TextView) findViewById(R.id.tv_data_main);
         ListView listView = (ListView) findViewById(R.id.listView_main);
         View emptyView = findViewById(R.id.empty_view_main);
 
         listView.setEmptyView(emptyView);
 
-        mAdapter = new MainAdapter(this, null);
+        mAdapter = new MainAdapter(this);
         listView.setAdapter(mAdapter);
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -101,28 +98,19 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        mTvData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                UtilsDialog.dialogData(MainActivity.this, mDateSetListener);
-
-            }
-        });
-
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
                 mDataPesquisar = Datas.dateSetListenerString(year, month, day);
 
-                mTvData.setText(Datas.dateSetListenerInverseString(year, month, day));
+                setTitle(getString(R.string.app_name) + "  " + Datas.dateSetListenerInverseString(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
         };
 
-        mTvData.setText(Datas.getDate());
+        setTitle(getString(R.string.app_name) + "  " + Datas.getDate());
 
         mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
@@ -150,7 +138,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_data) {
+
+            UtilsDialog.dialogData(MainActivity.this, mDateSetListener);
             return true;
         }
 
@@ -159,7 +149,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
 

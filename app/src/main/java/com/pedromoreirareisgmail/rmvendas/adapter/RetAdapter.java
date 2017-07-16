@@ -2,7 +2,6 @@ package com.pedromoreirareisgmail.rmvendas.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import java.text.NumberFormat;
 
 public class RetAdapter extends CursorAdapter {
 
-    public RetAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+    public RetAdapter(Context context) {
+        super(context, null, 0);
     }
 
     @Override
@@ -35,10 +34,6 @@ public class RetAdapter extends CursorAdapter {
         double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
         String dataString = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
         String descString = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
-
-        holder.valor.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
-        holder.hora.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
-        holder.desc.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
 
         NumberFormat valorFormat = NumberFormat.getCurrencyInstance();
         String horaString = Datas.formatDateTimeEmTime(dataString);

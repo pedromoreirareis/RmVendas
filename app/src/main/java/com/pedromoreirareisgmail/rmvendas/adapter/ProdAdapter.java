@@ -16,8 +16,8 @@ import java.text.NumberFormat;
 
 public class ProdAdapter extends CursorAdapter{
 
-    public ProdAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+    public ProdAdapter(Context context) {
+        super(context, null, 0);
     }
 
     @Override

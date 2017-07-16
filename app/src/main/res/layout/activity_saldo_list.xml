@@ -4,28 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_data_saldo_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Teste SALDO LIST"
-        android:textSize="22sp" />
-
     <ListView
         android:id="@+id/listview_saldo_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv_data_saldo_list"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:scrollbars="none" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_saldo_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_add_circle_outline_white_48px" />
+    <RelativeLayout
+        android:id="@+id/empty_view_saldo_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_empty_saldo_list"
+            android:layout_width="@dimen/image_empty"
+            android:layout_height="@dimen/image_empty"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/image_desc_saldo_list_empty"
+            android:src="@drawable/ic_dinheiro_duas_maos" />
+
+        <TextView
+            style="@style/TextEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_empty_saldo_list"
+            android:layout_marginTop="8dp"
+            android:text="@string/text_saldo_list_empty" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_saldo_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_add_circle_outline_white_48px" />
+    </RelativeLayout>
+
+
 </RelativeLayout>

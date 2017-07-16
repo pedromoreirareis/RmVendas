@@ -7,7 +7,21 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Dimensões de Alturas e Larguras de margin e padding -->
+    <dimen name="margin_lefth_right_itens_list">16dp</dimen>
+    <dimen name="margin_top_botton_itens_list">8dp</dimen>
+    <dimen name="margin_botton_titulo_item_main">4dp</dimen>
 
-    <dimen name="padding_itens_produto_8">8dp</dimen>
-    <dimen name="padding_itens_produto_16">16dp</dimen>
+    <dimen name="margin_cad">16dp</dimen>
+    <dimen name="margin_fechamento_botton_8">8dp</dimen>
+    <dimen name="margin_fechamento_botton_16">16dp</dimen>
+    <dimen name="margin_fechamento_botton_32">32dp</dimen>
+    <dimen name="margin_fechamento_top_16">16dp</dimen>
+    <dimen name="margin_fechamento_top_8">8dp</dimen>
+    <dimen name="margin_fechamento_top_32">32dp</dimen>
+
+    <dimen name="margin_vend_quant">16dp</dimen>
+
+    <!-- Dimensões de Alturas e Larguras de margin e padding -->
+    <dimen name="image_empty">196dp</dimen>
+
 </resources>

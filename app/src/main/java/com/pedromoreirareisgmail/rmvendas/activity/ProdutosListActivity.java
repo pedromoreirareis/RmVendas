@@ -42,7 +42,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
 
         ListView listView = (ListView) findViewById(R.id.listView_prod_list);
         View emptyView = findViewById(R.id.empty_view_prod_list);
-        mAdapter = new ProdAdapter(this, null);
+        mAdapter = new ProdAdapter(this);
 
         listView.setEmptyView(emptyView);
         listView.setAdapter(mAdapter);

@@ -16,8 +16,8 @@ import java.text.NumberFormat;
 
 public class EntAdapter extends CursorAdapter {
 
-    public EntAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+    public EntAdapter(Context context) {
+        super(context, null, 0);
     }
 
     @Override

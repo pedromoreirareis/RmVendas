@@ -26,7 +26,7 @@ public class VendasDbHelper extends SQLiteOpenHelper {
     /**
      * Construtor do Banco de dados
      *
-     * @param context
+     * @param context contexto
      */
     public VendasDbHelper(Context context) {
         super(context, NOME_BANCO_DADOS, null, VERSAO_DB);

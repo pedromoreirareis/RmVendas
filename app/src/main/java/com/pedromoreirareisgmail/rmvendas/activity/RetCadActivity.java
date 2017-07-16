@@ -15,11 +15,14 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.Constantes;
@@ -90,6 +93,19 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+
+        mEtDescricao.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    adicionar();
+                    return true;
+                }
+
+                return false;
             }
         });
 

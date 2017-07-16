@@ -4,21 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_data_ent_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Teste ENT LIST"
-        android:textSize="22sp" />
-
     <ListView
         android:id="@+id/listview_ent_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv_data_ent_list"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:scrollbars="none" />
+
+    <RelativeLayout
+        android:id="@+id/empty_view_ent_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_empty_ent_list"
+            android:layout_width="@dimen/image_empty"
+            android:layout_height="@dimen/image_empty"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/image_desc_ent_list_empty"
+            android:src="@drawable/ic_money_up" />
+
+        <TextView
+            style="@style/TextEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_empty_ent_list"
+            android:layout_marginTop="8dp"
+            android:text="@string/text_ent_list_empty" />
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_ent_list"

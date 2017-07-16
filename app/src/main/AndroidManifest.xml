@@ -47,7 +47,8 @@
         <activity
             android:name=".activity.RetListActivity"
             android:label="@string/title_ret_list"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
@@ -55,7 +56,8 @@
         <activity
             android:name=".activity.EntListActivity"
             android:label="@string/title_ent_list"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
@@ -63,28 +65,32 @@
         <activity
             android:name=".activity.SaldoListActivity"
             android:label="@string/title_saldo_list"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.EntCadActivity"
-            android:parentActivityName=".activity.EntListActivity">
+            android:parentActivityName=".activity.EntListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.EntListActivity" />
         </activity>
         <activity
             android:name=".activity.RetCadActivity"
-            android:parentActivityName=".activity.RetListActivity">
+            android:parentActivityName=".activity.RetListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.SaldoCadActivity"
-            android:parentActivityName=".activity.SaldoListActivity">
+            android:parentActivityName=".activity.SaldoListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
@@ -97,7 +103,9 @@
 
         <activity
             android:name=".activity.VendListActivity"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />

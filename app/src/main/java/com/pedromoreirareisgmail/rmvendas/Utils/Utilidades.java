@@ -42,7 +42,7 @@ public class Utilidades {
 
         double quantValor = valorQ * vlBolo;
 
-        double total = quantValor + valorC + valorD;
+        double total = quantValor + valorC - valorD;
 
         return String.valueOf(total);
     }

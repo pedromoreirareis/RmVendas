@@ -18,8 +18,8 @@ import java.text.NumberFormat;
 
 public class MainAdapter extends CursorAdapter {
 
-    public MainAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+    public MainAdapter(Context context) {
+        super(context, null, 0);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class MainAdapter extends CursorAdapter {
             holder.tvVlTotal.setText(preco.format(vlTotalDouble));
 
         } else {
-            holder.tvVlTotalLabel.setText(R.string.venda_item_main);
+            //holder.tvVlTotalLabel.setText(R.string.venda_item_main);
             holder.tvVlTotal.setText(preco.format(vlTotalDouble));
         }
     }

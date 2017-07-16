@@ -12,11 +12,14 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
@@ -42,7 +45,6 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,19 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
         mEtValor = (EditText) findViewById(R.id.et_valor_saldo);
 
         mEtValor.setOnTouchListener(mTouchListenet);
+
+        mEtValor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    adicionar();
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override

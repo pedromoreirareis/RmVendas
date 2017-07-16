@@ -16,9 +16,11 @@
     <string name="title_ret_list">Retiradas</string>
     <string name="title_ent_list">Entradas</string>
     <string name="title_saldo_list">Saldo inicial</string>
+    <string name="title_fechamento">Caixa</string>
 
     <!-- Menus -->
     <string name="menu_salvar_title">Salvar</string>
+    <string name="menu_data_title">Data</string>
     <string name="menu_entrada_title">Entrada</string>
     <string name="menu_retirada_title">Retirada</string>
     <string name="menu_saldo_inicial_title">Saldo inicial</string>
@@ -62,17 +64,35 @@
     <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
     <string name="hint_prod_esc_quant_valor_cobertura">Valor R$</string>
     <string name="hint_prod_esc_quant_valor_desconto">Valor R$</string>
-    <string name="hint_prod_cad_nome">Nome do produto</string>
-    <string name="hint_prod_cad_preco">Preço R$</string>
-    <string name="hint_saldo_ent_ret_valor">Valor R$</string>
-    <string name="hint_saldo_ent_ret_descricao">Descrição</string>
+    <string name="hint_nome">Nome</string>
+    <string name="hint_preco">Preço R$</string>
+    <string name="hint_valor">Valor R$</string>
+    <string name="hint_descricao">Descrição</string>
+    <string name="hint_pesquisar">Pesquisar</string>
+
+    <!-- Image Description -->
+    <string name="image_desc_main_empty">Imagem de um bolo</string>
+    <string name="image_desc_prod_list_empty">Imagem de uma lista vazia</string>
+    <string name="image_desc_ent_list_empty">Imagem de um cifrão e um seta para cima</string>
+    <string name="image_desc_saldo_list_empty">Imagem de duas mãos segurando um cifrão</string>
+    <string name="image_desc_ret_list_empty">Imagem de um cifrão e um seta para baixo</string>
+    <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
+
+    <!-- Text -->
+    <string name="text_main_empty">Nenhum bolo vendido no dia!!!</string>
+    <string name="text_prod_list_empty">Nenhum produto cadastrado!!!</string>
+    <string name="text_vend_list_empty">Que pena... não há produtos cadastrados!!!</string>
+    <string name="text_ent_list_empty">Nenhuma entrada cadastrada!!!</string>
+    <string name="text_saldo_list_empty">Saldo inicial não foi cadastrado!!!</string>
+    <string name="text_ret_list_empty">Nenhuma retirada cadastrada!!!</string>
+
 
     <!-- Text -->
     <string name="text_prod_esc_quant_cobertura">Cobertura</string>
     <string name="text_prod_esc_quant_desconto">Desconto</string>
     <string name="text_prod_esc_quant_prazo">A prazo</string>
     <string name="text_prod_esc_quant_valor_total">Valor Total:  </string>
-    <string name="text_prod_list_msg_empty">Nenhum produto cadastrado</string>
+
     <string name="text_prod_selec_msg_empty">Nenhum produto cadastrado</string>
     <string name="text_content_main_venda">Vender</string>
     <string name="text_content_main_entrada">Entrada</string>
@@ -103,10 +123,23 @@
     <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
     <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
 
-    <string name="venda_item_main">Total.:</string>
+    <string name="venda_item_main">Total..:</string>
     <string name="prazo_item_main">Prazo.:</string>
     <string name="cobert_item_main">Cobert:</string>
     <string name="desc_item_main">Desc..:</string>
     <string name="quant_item_main">Quant.:</string>
+
+
+    <string name="saldo_inicial_fechamento">Saldo inicial</string>
+    <string name="entradas_fechamento">Entradas</string>
+    <string name="vendas_total_fechamento">Total vendas</string>
+    <string name="retiradas_fechamento">Retiradas</string>
+    <string name="descontos_fechamento">Descontos</string>
+    <string name="prazo_fechamento">A prazo</string>
+    <string name="saldo_final_fechamento">Saldo Final</string>
+
+    <string name="bolos_vendidos_fechamento">Bolos vendidos</string>
+    <string name="bolos_vendidos_avista_fechamento">Bolos vendidos a vista</string>
+    <string name="bolos_vendidos_aprazo_fechamento">Bolos vendidos a prazo</string>
 
 </resources>

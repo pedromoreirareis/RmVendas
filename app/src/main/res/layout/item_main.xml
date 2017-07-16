@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:paddingBottom="@dimen/margin_top_botton_itens_list"
+    android:paddingLeft="@dimen/margin_lefth_right_itens_list"
+    android:paddingRight="@dimen/margin_lefth_right_itens_list"
+    android:paddingTop="@dimen/margin_top_botton_itens_list">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="@dimen/margin_botton_titulo_item_main"
         android:orientation="horizontal">
 
         <TextView
@@ -19,20 +19,19 @@
             style="@style/TituloTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="Bolo de banana com canela" />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tv_data_main"
-            style="@style/TituloTextView"
+            style="@style/DataTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="10/10/2010" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -42,18 +41,17 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/DetalhesItemMainLabel"
+                style="@style/DetalhesItemLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_shopping_cart_black_48px"
+                android:drawableStart="@drawable/ic_shopping_cart_black_48px"
                 android:text="@string/quant_item_main" />
 
             <TextView
                 android:id="@+id/tv_valor_quant_main"
-                style="@style/DetalhesItemMainValor"
+                style="@style/DetalhesItemValor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="5" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -65,18 +63,17 @@
 
             <TextView
                 android:id="@+id/tv_valor_label_venda_main"
-                style="@style/DetalhesItemMainLabel"
+                style="@style/DetalhesItemLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_attach_money_black_48px"
+                android:drawableStart="@drawable/ic_attach_money_black_48px"
                 android:text="@string/venda_item_main" />
 
             <TextView
                 android:id="@+id/tv_valor_venda_main"
-                style="@style/DetalhesItemMainValor"
+                style="@style/DetalhesItemValor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="R$ 32,00" />
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>
@@ -85,6 +82,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -94,18 +92,17 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/DetalhesItemMainLabel"
+                style="@style/DetalhesItemLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_attach_money_black_48px"
+                android:drawableStart="@drawable/ic_attach_money_black_48px"
                 android:text="@string/cobert_item_main" />
 
             <TextView
                 android:id="@+id/tv_valor_cober_main"
-                style="@style/DetalhesItemMainValor"
+                style="@style/DetalhesItemValor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="R$ 32,00" />
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>
@@ -117,18 +114,17 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/DetalhesItemMainLabel"
+                style="@style/DetalhesItemLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_attach_money_black_48px"
+                android:drawableStart="@drawable/ic_attach_money_black_48px"
                 android:text="@string/desc_item_main" />
 
             <TextView
                 android:id="@+id/tv_valor_desc_main"
-                style="@style/DetalhesItemMainValor"
+                style="@style/DetalhesItemValor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="R$ 32,00" />
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>

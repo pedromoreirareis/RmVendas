@@ -7,89 +7,234 @@
     android:padding="16dp"
     tools:context="com.pedromoreirareisgmail.rmvendas.activity.FechamentoActivity">
 
-    <TextView
-        android:id="@+id/tv_data"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:drawableRight="@android:drawable/ic_menu_more"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SALDO INICIAL"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bolos_vendidos_fechamento" />
 
-    <TextView
-        android:id="@+id/tv_saldo_inicial"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/tv_bolos_vendidos_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ENTRADAS"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_entrada"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="RETIRADAS"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bolos_vendidos_avista_fechamento" />
 
-    <TextView
-        android:id="@+id/tv_retirada"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/tv_bolos_vendidos_vista_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="PRAZO"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_prazo"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_32"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="VENDAS"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bolos_vendidos_aprazo_fechamento" />
 
-    <TextView
-        android:id="@+id/tv_vendas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/tv_bolos_vendidos_prazo_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SALDO FINAL"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_total"
+
+    <!--**********************************************************-->
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/saldo_inicial_fechamento" />
+
+        <TextView
+            android:id="@+id/tv_saldo_inicial_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/entradas_fechamento" />
+
+        <TextView
+            android:id="@+id/tv_entrada_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlue" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_32"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/vendas_total_fechamento" />
+
+        <TextView
+            android:id="@+id/tv_vendas_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlue" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/retiradas_fechamento" />
+
+        <TextView
+            android:id="@+id/tv_retirada_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorRed" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/descontos_fechamento" />
+
+        <TextView
+            android:id="@+id/tv_descontos_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorRed" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_fechamento_botton_32"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/prazo_fechamento" />
+
+        <TextView
+            android:id="@+id/tv_prazo_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorRed" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TituloFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/saldo_final_fechamento" />
+
+        <TextView
+            android:id="@+id/tv_saldo_final_fechamento"
+            style="@style/DetalhesFechamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack"
+            android:textStyle="normal" />
+
+    </LinearLayout>
+
+
 </LinearLayout>
