@@ -9,12 +9,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.MotionEvent;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.pedromoreirareisgmail.rmvendas.Constantes;
@@ -27,7 +26,6 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
     private static final int LOADER_PROD_LISTA = 12;
 
     private ProdAdapter mAdapter;
-    private EditText mEtPesquisa;
 
     private String mPesquisar = "";
 
@@ -47,7 +45,6 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
         ListView listView = (ListView) findViewById(R.id.listView_venda_list);
         View emptyView = findViewById(R.id.empty_view_vend_list);
         listView.setEmptyView(emptyView);
-        mEtPesquisa = (EditText) findViewById(R.id.et_pesquisa_vend_list);
 
         mAdapter = new ProdAdapter(this);
 
@@ -67,43 +64,40 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
             }
         });
 
-        mEtPesquisa.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                mPesquisar = charSequence.toString().trim();
-
-                if (mPesquisar.length() > 0) {
-
-                    getLoaderManager().restartLoader(LOADER_PROD_LISTA, null, VendListActivity.this);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        mEtPesquisa.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                view.setFocusableInTouchMode(true);
-
-                return false;
-            }
-        });
-
         getLoaderManager().initLoader(LOADER_PROD_LISTA, null, this);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+
+        final SearchView searchView = (SearchView) menuItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                mPesquisar = newText;
+
+                getLoaderManager().restartLoader(LOADER_PROD_LISTA, null, VendListActivity.this);
+
+                return true;
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

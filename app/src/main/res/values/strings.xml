@@ -21,6 +21,7 @@
     <!-- Menus -->
     <string name="menu_salvar_title">Salvar</string>
     <string name="menu_data_title">Data</string>
+    <string name="menu_pesquisar_title">Pesquisar</string>
     <string name="menu_entrada_title">Entrada</string>
     <string name="menu_retirada_title">Retirada</string>
     <string name="menu_saldo_inicial_title">Saldo inicial</string>
@@ -28,12 +29,9 @@
     <string name="menu_produtos_title">Produtos</string>
     <string name="menu_cadastros_title">Cadastros</string>
     <string name="menu_caixa_title">Caixa</string>
-    <string name="action_settings">Configurações</string>
 
     <!-- mensagens -->
     <string name="msg_max_caract">Esse campo deve ter no máximo 50 caracteres</string>
-    <string name="msg_inserir_sucesso">Inserido com sucesso</string>
-    <string name="msg_inserir_erro">Erro ao inserir</string>
     <string name="msg_editado_sucesso">Editado com sucesso</string>
     <string name="msg_editado_erro">Erro ao editar</string>
 
@@ -63,7 +61,6 @@
     <!-- Hints -->
     <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
     <string name="hint_prod_esc_quant_valor_cobertura">Valor R$</string>
-    <string name="hint_prod_esc_quant_valor_desconto">Valor R$</string>
     <string name="hint_nome">Nome</string>
     <string name="hint_preco">Preço R$</string>
     <string name="hint_valor">Valor R$</string>
@@ -79,43 +76,21 @@
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
 
     <!-- Text -->
-    <string name="text_main_empty">Nenhum bolo vendido no dia!!!</string>
-    <string name="text_prod_list_empty">Nenhum produto cadastrado!!!</string>
-    <string name="text_vend_list_empty">Que pena... não há produtos cadastrados!!!</string>
-    <string name="text_ent_list_empty">Nenhuma entrada cadastrada!!!</string>
-    <string name="text_saldo_list_empty">Saldo inicial não foi cadastrado!!!</string>
-    <string name="text_ret_list_empty">Nenhuma retirada cadastrada!!!</string>
-
+    <string name="text_main_empty">Nenhum bolo vendido no dia !!!</string>
+    <string name="text_prod_list_empty">Nenhum produto cadastrado !!!</string>
+    <string name="text_vend_list_empty">Que pena… não há produtos cadastrados !!!</string>
+    <string name="text_ent_list_empty">Nenhuma entrada cadastrada !!!</string>
+    <string name="text_saldo_list_empty">Saldo inicial não foi cadastrado !!!</string>
+    <string name="text_ret_list_empty">Nenhuma retirada cadastrada !!!</string>
 
     <!-- Text -->
     <string name="text_prod_esc_quant_cobertura">Cobertura</string>
     <string name="text_prod_esc_quant_desconto">Desconto</string>
     <string name="text_prod_esc_quant_prazo">A prazo</string>
-    <string name="text_prod_esc_quant_valor_total">Valor Total:  </string>
-
-    <string name="text_prod_selec_msg_empty">Nenhum produto cadastrado</string>
-    <string name="text_content_main_venda">Vender</string>
-    <string name="text_content_main_entrada">Entrada</string>
-    <string name="text_content_main_retirada">Retirada</string>
-    <string name="text_content_main_saldo_inicial">Saldo Inicial</string>
-    <string name="text_content_main_fechamento">Fechamento</string>
-
-    <!-- toast -->
-    <string name="toast_prod_cad_add_sucesso">Adicionado com sucesso</string>
-    <string name="toast_prod_cad_edit_sucesso">Editado com sucesso</string>
-    <string name="toast_prod_cad_add_erro">Erro ao adicionar</string>
-    <string name="toast_prod_cad_edit_erro">Erro ao editar</string>
-
-    <!-- setError -->
-    <string name="error_saldo_ent_ret_descr_digitar">A descrição deve ser digitada</string>
-    <string name="error_venda_cad_quant_menor_um">O valor da quantidade não pode ser menor que 1</string>
-    <string name="error_venda_cad_cobert_negativo">O valor da cobertura não pode ser negativo</string>
-    <string name="error_venda_cad_desc_negativo">O valor do desconto não pode ser negativo</string>
 
     <!-- Providers -->
     <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>
     <string name="provider_log_inserir_prod">Erro ao inserir no banco de dados. Com Uri: </string>
-    <string name="provider_log_inserir_ent_ret">Erro ao inserir no banco de dados. Com Uri: </string>
     <string name="provider_exception_query">Erro na pesquisa - Pesquisa invalida para o Uri: </string>
     <string name="provider_exception_getType_uri">Erro: Uri desconhecido. Provider getType inválido - Uri: </string>
     <string name="provider_exception_getType_match"> match: </string>
@@ -123,12 +98,12 @@
     <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
     <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
 
+    <!-- Itens de fechamento -->
     <string name="venda_item_main">Total..:</string>
     <string name="prazo_item_main">Prazo.:</string>
     <string name="cobert_item_main">Cobert:</string>
     <string name="desc_item_main">Desc..:</string>
     <string name="quant_item_main">Quant.:</string>
-
 
     <string name="saldo_inicial_fechamento">Saldo inicial</string>
     <string name="entradas_fechamento">Entradas</string>

@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,6 +27,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
     private static final int LOADER_PROD_LISTA = 7;
 
     private ProdAdapter mAdapter;
+    private String mPesquisar = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,37 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
         getLoaderManager().initLoader(LOADER_PROD_LISTA, null, this);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+
+        final SearchView searchView = (SearchView) menuItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                mPesquisar = newText;
+
+                getLoaderManager().restartLoader(LOADER_PROD_LISTA, null, ProdutosListActivity.this);
+
+                return true;
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
@@ -79,14 +114,16 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                 AcessoProdutos.COLUNA_PRODUTO_PRECO
         };
 
+        String selection = AcessoProdutos.COLUNA_PRODUTO_NOME + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
         String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
 
         return new CursorLoader(
                 this,
                 AcessoProdutos.CONTENT_URI_PRODUTO,
                 projection,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 sortOrder
         );
     }
