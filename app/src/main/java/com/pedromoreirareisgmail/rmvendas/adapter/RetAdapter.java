@@ -45,9 +45,9 @@ public class RetAdapter extends CursorAdapter {
 
     class RetViewHolder {
 
-        TextView valor;
-        TextView hora;
-        TextView desc;
+        final TextView valor;
+        final TextView hora;
+        final TextView desc;
 
         public RetViewHolder(View view) {
 

@@ -11,8 +11,6 @@ import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
 public class VendasDbHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = VendasDbHelper.class.getSimpleName();
-
     /**
      * Nome do banco de dados
      */

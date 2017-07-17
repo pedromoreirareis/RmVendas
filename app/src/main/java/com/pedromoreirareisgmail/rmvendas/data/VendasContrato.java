@@ -25,7 +25,6 @@ public class VendasContrato {
     public static final String PATH_SALDO = AcessoSaldo.NOME_TABELA_SALDO;
     public static final String PATH_VENDA = AcessoVenda.NOME_TABELA_VENDA;
 
-    private static final String TAG = VendasContrato.class.getSimpleName();
 
     private VendasContrato() {
     }

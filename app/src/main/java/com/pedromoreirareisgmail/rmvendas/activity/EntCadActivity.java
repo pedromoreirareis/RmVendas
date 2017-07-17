@@ -48,6 +48,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
     private final EditText.OnTouchListener mTouchListenet = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+
             mAlteracao = true;
             return false;
         }
@@ -164,18 +165,27 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         /* validações */
 
         if (TextUtils.isEmpty(valor)) {
+
             mEtValor.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
         double valorDouble = Double.parseDouble(valor);
         if (valorDouble <= 0) {
+
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
             return;
         }
 
         if (TextUtils.isEmpty(descricao)) {
+
             mEtDescricao.setError(getString(R.string.error_campo_vazio));
+            return;
+        }
+
+        if (descricao.length() < 10) {
+
+            mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
             return;
         }
 

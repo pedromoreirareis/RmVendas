@@ -158,17 +158,26 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         /* Validações */
 
         if (TextUtils.isEmpty(nome)) {
+
             mEtNome.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
+        if (nome.length() < 10) {
+
+            mEtNome.setError(getString(R.string.error_campo_lenght_10));
+            return;
+        }
+
         if (TextUtils.isEmpty(preco)) {
+
             mEtPreco.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
         double precoDouble = Double.parseDouble(preco);
         if (precoDouble <= 0) {
+
             mEtPreco.setError(getString(R.string.error_valor_maior_zero));
             return;
         }

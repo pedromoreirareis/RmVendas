@@ -45,8 +45,8 @@ public class SaldoAdapter extends CursorAdapter {
 
     class SaldoViewHolder {
 
-        TextView valor;
-        TextView hora;
+        final TextView valor;
+        final TextView hora;
 
         public SaldoViewHolder(View view) {
 

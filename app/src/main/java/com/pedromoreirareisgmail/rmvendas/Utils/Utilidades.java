@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Switch;
 
+import java.text.NumberFormat;
+
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class Utilidades {
@@ -44,6 +46,20 @@ public class Utilidades {
 
         double total = quantValor + valorC - valorD;
 
-        return String.valueOf(total);
+        NumberFormat preco = NumberFormat.getCurrencyInstance();
+
+        return preco.format(total);
+
+        //return String.valueOf(total);
     }
+
+    public static double calculaValorBoloDouble(double vlBolo, double valorQ, double valorC, double valorD) {
+
+
+        double quantValor = valorQ * vlBolo;
+
+        return quantValor + valorC - valorD;
+
+    }
+
 }

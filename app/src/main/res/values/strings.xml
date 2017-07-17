@@ -52,7 +52,7 @@
     <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
     <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
     <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
-    <string name="error_valor_negativo">O valor não pode ser negativo</string>
+    <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 dígitos</string>
 
     <!-- Drawer -->
     <string name="navigation_drawer_open">Abrir</string>
@@ -65,7 +65,6 @@
     <string name="hint_preco">Preço R$</string>
     <string name="hint_valor">Valor R$</string>
     <string name="hint_descricao">Descrição</string>
-    <string name="hint_pesquisar">Pesquisar</string>
 
     <!-- Image Description -->
     <string name="image_desc_main_empty">Imagem de um bolo</string>

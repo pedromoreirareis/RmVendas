@@ -43,9 +43,6 @@ public class MainAdapter extends CursorAdapter {
         int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
 
         String quant = String.valueOf(quantInt);
-        //String vlCobert = String.valueOf(vlCoberDouble);
-        //String vlDesc = String.valueOf(vlDescDouble);
-        //String vlTotal = String.valueOf(vlTotalDouble);
         data = Datas.formatDateTimeEmTime(data);
 
         NumberFormat preco = NumberFormat.getCurrencyInstance();
@@ -67,11 +64,11 @@ public class MainAdapter extends CursorAdapter {
 
         if (temDesc == Constantes.DESCONTO_SIM) {
 
-            holder.tvVlDesc.setText(preco.format(0));
+            holder.tvVlDesc.setText(preco.format(vlDescDouble));
 
         } else {
 
-            holder.tvVlDesc.setText(preco.format(vlDescDouble));
+            holder.tvVlDesc.setText(preco.format(0));
         }
 
         if (temPrazo == Constantes.PRAZO_SIM) {
@@ -87,13 +84,13 @@ public class MainAdapter extends CursorAdapter {
 
     class MainViewHolder {
 
-        TextView tvNome;
-        TextView tvQuant;
-        TextView tvVlCober;
-        TextView tvVlDesc;
-        TextView tvVlTotal;
-        TextView tvData;
-        TextView tvVlTotalLabel;
+        final TextView tvNome;
+        final TextView tvQuant;
+        final TextView tvVlCober;
+        final TextView tvVlDesc;
+        final TextView tvVlTotal;
+        final TextView tvData;
+        final TextView tvVlTotalLabel;
 
         public MainViewHolder(View view) {
 

@@ -33,6 +33,8 @@ import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
+import java.text.NumberFormat;
+
 import static com.pedromoreirareisgmail.rmvendas.Utils.Utilidades.calculaValorBolo;
 
 public class VendQuantActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -82,7 +84,6 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         if (intent.hasExtra(Constantes.VENDA_ADICIONAR)) {
 
             mAdicionar = intent.getStringExtra(Constantes.VENDA_ADICIONAR).equals(Constantes.VENDA_ADICIONAR);
-
         }
 
         if (mAdicionar) {
@@ -260,13 +261,13 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         return super.onOptionsItemSelected(item);
     }
 
+
     private void adicionar() {
 
         String nome;
         String quantString;
         String vlCobertString;
         String vlDescString;
-        String vlTotalString;
         boolean temCobert;
         boolean temDesc;
         boolean temPrazo;
@@ -280,59 +281,69 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         temCobert = mSwitchCobertura.isChecked();
         temDesc = mSwitchDesc.isChecked();
         temPrazo = mSwitchPrazo.isChecked();
-        vlTotalString = mTvTotal.getText().toString().trim();
         vlCobertString = mEtCobertura.getText().toString().trim();
         vlDescString = mEtDesc.getText().toString().trim();
 
+        // Validações
         if (TextUtils.isEmpty(quantString)) {
-            quantString = "0";
+
+            mEtQuant.setError(getString(R.string.error_campo_vazio));
+            return;
         }
 
-        if (TextUtils.isEmpty(vlCobertString)) {
+        if (temCobert) {
+
+            if (TextUtils.isEmpty(vlCobertString)) {
+
+                mEtCobertura.setError(getString(R.string.error_campo_vazio));
+                return;
+            }
+
+            if (vlCobertString.equals("0")) {
+
+                mEtCobertura.setError(getString(R.string.error_valor_maior_zero));
+                return;
+            }
+        }
+
+        if (temDesc) {
+
+            if (TextUtils.isEmpty(vlDescString)) {
+
+                mEtDesc.setError(getString(R.string.error_campo_vazio));
+                return;
+            }
+
+            if (vlDescString.equals("0")) {
+
+                mEtDesc.setError(getString(R.string.error_valor_maior_zero));
+                return;
+            }
+        }
+
+        if (TextUtils.isEmpty(quantString)) {
+
+            quantString = "1";
+        }
+
+        if (!temCobert) {
+
             vlCobertString = "0";
         }
 
-        if (TextUtils.isEmpty(vlDescString)) {
-            vlDescString = "0";
-        }
+        if (!temDesc) {
 
-        if (TextUtils.isEmpty(vlTotalString)) {
-            vlTotalString = "0";
+            vlDescString = "0";
         }
 
         // Conversões
         quant = Integer.parseInt(quantString);
         valorCobert = Double.parseDouble(vlCobertString);
         valorDesconto = Double.parseDouble(vlDescString);
-        valorTotal = Double.parseDouble(vlTotalString);
-
-        // Validações
-        if (TextUtils.isEmpty(quantString)) {
-            mEtQuant.setError(getString(R.string.error_campo_vazio));
-            return;
-        }
-
-        if (TextUtils.isEmpty(vlCobertString)) {
-            mEtCobertura.setError(getString(R.string.error_campo_vazio));
-            return;
-        }
-        if (TextUtils.isEmpty(vlDescString)) {
-            mEtDesc.setError(getString(R.string.error_campo_vazio));
-            return;
-        }
+        valorTotal = Utilidades.calculaValorBoloDouble(mPrecoBolo, quant, valorCobert, valorDesconto);
 
         if (quant < 1) {
             mEtQuant.setError(getString(R.string.error_valor_menor_um));
-            return;
-        }
-
-        if (valorCobert < 0) {
-            mEtCobertura.setError(getString(R.string.error_valor_negativo));
-            return;
-        }
-
-        if (valorDesconto < 0) {
-            mEtDesc.setError(getString(R.string.error_valor_negativo));
             return;
         }
 
@@ -374,8 +385,11 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         }
 
         if (temPrazo) {
+
             values.put(AcessoVenda.COLUNA_VENDA_PRAZO, Constantes.PRAZO_SIM);
+
         } else {
+
             values.put(AcessoVenda.COLUNA_VENDA_PRAZO, Constantes.PRAZO_NAO);
         }
 
@@ -390,6 +404,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         finish();
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -420,6 +435,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                     AcessoVenda.COLUNA_VENDA_QUANT,
                     AcessoVenda.COLUNA_VENDA_DATA,
                     AcessoVenda.COLUNA_VENDA_VALOR_PROD,
+                    AcessoVenda.COLUNA_VENDA_PRAZO,
                     AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
                     AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
                     AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
@@ -487,14 +503,18 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             }
 
             if (temPrazo == Constantes.PRAZO_SIM) {
+
                 mSwitchPrazo.setChecked(true);
             }
 
             if (temPrazo == Constantes.PRAZO_NAO) {
+
                 mSwitchPrazo.setChecked(false);
             }
 
-            mTvTotal.setText(String.valueOf(valorBolo));
+            NumberFormat preco = NumberFormat.getCurrencyInstance();
+
+            mTvTotal.setText(preco.format(valorBolo));
         }
 
         if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {
@@ -524,6 +544,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         finish();
                     }
                 };

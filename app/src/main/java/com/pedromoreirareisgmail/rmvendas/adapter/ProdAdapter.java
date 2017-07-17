@@ -42,8 +42,8 @@ public class ProdAdapter extends CursorAdapter{
 
     class ProdViewHolder{
 
-        TextView tvNome;
-        TextView tvPreco;
+        final TextView tvNome;
+        final TextView tvPreco;
 
         public ProdViewHolder(View view) {
 

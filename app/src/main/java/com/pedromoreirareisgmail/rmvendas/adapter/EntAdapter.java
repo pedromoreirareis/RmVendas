@@ -45,9 +45,9 @@ public class EntAdapter extends CursorAdapter {
 
     class EntViewHolder {
 
-        TextView valor;
-        TextView hora;
-        TextView desc;
+        final TextView valor;
+        final TextView hora;
+        final TextView desc;
 
         public EntViewHolder(View view) {
 
