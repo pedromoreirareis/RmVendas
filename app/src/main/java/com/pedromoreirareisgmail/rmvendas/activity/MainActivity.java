@@ -16,6 +16,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private MainAdapter mAdapter;
 
     private String mDataPesquisar = "";
+    private String mPesquisar = "";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -104,13 +106,13 @@ public class MainActivity extends AppCompatActivity
 
                 mDataPesquisar = Datas.dateSetListenerString(year, month, day);
 
-                setTitle(getString(R.string.app_name) + "  " + Datas.dateSetListenerInverseString(year, month, day));
+                setTitle(Datas.dateSetListenerInverseString(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
         };
 
-        setTitle(getString(R.string.app_name) + "  " + Datas.getDate());
+        setTitle(Datas.getDate());
 
         mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
@@ -129,7 +131,29 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_search, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search_main);
+
+        SearchView searchView = (SearchView) menuItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mPesquisar = newText;
+
+                getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
+
+                return true;
+
+            }
+        });
+
 
         return true;
     }
@@ -138,11 +162,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_data) {
 
-            UtilsDialog.dialogData(MainActivity.this, mDateSetListener);
-            return true;
+        switch (id) {
+
+            case R.id.action_data_main:
+                UtilsDialog.dialogData(MainActivity.this, mDateSetListener);
+                return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -195,9 +222,20 @@ public class MainActivity extends AppCompatActivity
                 AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO
         };
 
-        String selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?";
-        String[] selectionArgs = new String[]{mDataPesquisar + "%"};
-        String sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
+        String selection;
+        String[] selectionArgs;
+        String sortOrder;
+
+        if (mPesquisar.length() > 0) {
+            selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?  AND " + AcessoVenda.COLUNA_VENDA_NOME_PROD + " LIKE ?";
+            selectionArgs = new String[]{mDataPesquisar + "%", "%" + mPesquisar + "%"};
+            sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
+        } else {
+            selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?";
+            selectionArgs = new String[]{mDataPesquisar + "%"};
+            sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
+        }
+
 
         return new CursorLoader(
                 this,

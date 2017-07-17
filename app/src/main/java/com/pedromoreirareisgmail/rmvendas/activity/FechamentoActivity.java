@@ -247,9 +247,9 @@ public class FechamentoActivity extends AppCompatActivity implements
 
         if (loader.getId() == LOADER_VENDAS && cursor.moveToFirst()) {
 
-            mQuantBolo = cursor.getCount();
-
             for (int i = 0; i < cursor.getCount(); i++) {
+
+                mQuantBolo = mQuantBolo + cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
 
                 if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_SIM) {
 
