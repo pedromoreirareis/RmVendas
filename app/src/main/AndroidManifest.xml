@@ -23,7 +23,8 @@
         <activity
             android:name=".activity.ProdutosCadActivity"
             android:parentActivityName=".activity.ProdutosListActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ProdutosListActivity" />
@@ -74,7 +75,9 @@
         <activity
             android:name=".activity.EntCadActivity"
             android:parentActivityName=".activity.EntListActivity"
-            android:screenOrientation="portrait">
+
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.EntListActivity" />
@@ -82,7 +85,8 @@
         <activity
             android:name=".activity.RetCadActivity"
             android:parentActivityName=".activity.RetListActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
@@ -90,7 +94,8 @@
         <activity
             android:name=".activity.SaldoCadActivity"
             android:parentActivityName=".activity.SaldoListActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />

@@ -31,6 +31,8 @@ import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 
+import java.text.NumberFormat;
+
 import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
 
 public class EntCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -44,7 +46,6 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
     private Uri mUriAtual = null;
     private String mData = "";
     private boolean mAlteracao = false;
-
     private final EditText.OnTouchListener mTouchListenet = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -53,6 +54,8 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
             return false;
         }
     };
+    private boolean isUpdating = false;
+    private NumberFormat nf = NumberFormat.getCurrencyInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,56 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        mEtValor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                isUpdating = true;
+
+                String str = charSequence.toString().trim();
+
+                boolean hasMask =
+                        (((str.contains("R$")) || (str.contains("$"))) &&
+                                ((str.contains(".")) || (str.contains(","))));
+
+                if (hasMask) {
+
+                    str = str.replaceAll("[^\\d]", "");
+                    // str = str.replaceAll("[R$]","").replaceAll("[,]","").replaceAll("[.]","");
+
+                }
+
+                try {
+
+                    str = nf.format(Double.parseDouble(str) / 100);
+
+                    mEtValor.setText(str);
+
+                    mEtValor.setSelection(mEtValor.getText().length());
+
+                } catch (NumberFormatException e) {
+
+                    charSequence = "";
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
