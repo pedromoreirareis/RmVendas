@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
@@ -29,7 +31,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
     private static final int LOADER_SALDO = 11;
     private SaldoAdapter mAdapter;
 
-    private String mDataPesquisar = "";
+    private String mDataPesquisa = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -37,7 +39,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saldo_list);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_saldo_list);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,8 +49,15 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listview_saldo_list);
-        View emptyView = findViewById(R.id.empty_view_saldo_list);
+        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
+
+        tvEmpty.setText(R.string.text_saldo_list_empty);
+        ivEmpty.setImageResource(R.drawable.ic_dinheiro_duas_maos);
+        ivEmpty.setContentDescription(getString(R.string.image_desc_saldo_list_empty));
+
+        ListView listView = (ListView) findViewById(R.id.lv_list);
+        View emptyView = findViewById(R.id.empty_view);
         mAdapter = new SaldoAdapter(this);
 
         listView.setEmptyView(emptyView);
@@ -79,9 +88,9 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisar = Datas.dateSetListenerString(year, month, day);
+                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
 
-                setTitle(getString(R.string.title_saldo_list) + "  " + Datas.dateSetListenerInverseString(year, month, day));
+                setTitle(getString(R.string.title_saldo_list) + "  " + Datas.dateSetListenerTitle(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_SALDO, null, SaldoListActivity.this);
             }
@@ -89,7 +98,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
 
         setTitle(getString(R.string.title_saldo_list) + "  " + Datas.getDate());
 
-        mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
 
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
     }
@@ -125,7 +134,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
         };
 
         String selection = AcessoSaldo.COLUNA_SALDO_DATA + " LIKE ?";
-        String[] selectionArgs = new String[]{mDataPesquisar + "%"};
+        String[] selectionArgs = new String[]{mDataPesquisa + "%"};
 
 
         return new CursorLoader(

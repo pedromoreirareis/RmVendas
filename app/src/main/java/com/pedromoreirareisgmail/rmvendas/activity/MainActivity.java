@@ -23,10 +23,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.MainAdapter;
@@ -39,8 +41,8 @@ public class MainActivity extends AppCompatActivity
 
     private MainAdapter mAdapter;
 
-    private String mDataPesquisar = "";
-    private String mPesquisar = "";
+    private String mDataPesquisa = "";
+    private String mPesquisa = "";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_main);
+        FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_add);
         fabProdutos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,9 +73,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ListView listView = (ListView) findViewById(R.id.listView_main);
-        View emptyView = findViewById(R.id.empty_view_main);
 
+        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
+
+        tvEmpty.setText(R.string.text_main_empty);
+        ivEmpty.setImageResource(R.drawable.ic_bolo_fuba);
+        ivEmpty.setContentDescription(getString(R.string.image_desc_main_empty));
+
+        ListView listView = (ListView) findViewById(R.id.lv_list);
+        View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
 
         mAdapter = new MainAdapter(this);
@@ -104,9 +113,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisar = Datas.dateSetListenerString(year, month, day);
+                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
 
-                setTitle(Datas.dateSetListenerInverseString(year, month, day));
+                setTitle(Datas.dateSetListenerTitle(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
@@ -114,7 +123,8 @@ public class MainActivity extends AppCompatActivity
 
         setTitle(Datas.getDate());
 
-        mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
+
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }
 
@@ -123,14 +133,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
+
             drawer.closeDrawer(GravityCompat.START);
+
         } else {
+
             super.onBackPressed();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.main_search, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search_main);
@@ -145,15 +159,14 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mPesquisar = newText;
+
+                mPesquisa = newText;
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
 
                 return true;
-
             }
         });
-
 
         return true;
     }
@@ -169,7 +182,6 @@ public class MainActivity extends AppCompatActivity
                 UtilsDialog.dialogData(MainActivity.this, mDateSetListener);
                 return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -189,12 +201,15 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_Action_retirada:
                 startActivity(new Intent(MainActivity.this, RetListActivity.class));
                 break;
+
             case R.id.nav_action_saldo_inicial:
                 startActivity(new Intent(MainActivity.this, SaldoListActivity.class));
                 break;
+
             case R.id.nav_action_list_prod:
                 startActivity(new Intent(MainActivity.this, ProdutosListActivity.class));
                 break;
+
             case R.id.nav_action_fechamento:
                 startActivity(new Intent(MainActivity.this, FechamentoActivity.class));
                 break;
@@ -226,13 +241,16 @@ public class MainActivity extends AppCompatActivity
         String[] selectionArgs;
         String sortOrder;
 
-        if (mPesquisar.length() > 0) {
+        if (mPesquisa.length() > 0) {
+
             selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?  AND " + AcessoVenda.COLUNA_VENDA_NOME_PROD + " LIKE ?";
-            selectionArgs = new String[]{mDataPesquisar + "%", "%" + mPesquisar + "%"};
+            selectionArgs = new String[]{mDataPesquisa + "%", "%" + mPesquisa + "%"};
             sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
+
         } else {
+
             selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?";
-            selectionArgs = new String[]{mDataPesquisar + "%"};
+            selectionArgs = new String[]{mDataPesquisa + "%"};
             sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
         }
 

@@ -24,9 +24,11 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
@@ -41,38 +43,59 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
     private static final int LOADER_VENDA_EDITAR = 13;
     private static final int LOADER_VENDA_ADICIONAR = 11;
-
+    private final NumberFormat mPreco = NumberFormat.getCurrencyInstance();
     private TextView mTvNome;
-    private EditText mEtQuant;
-    private Switch mSwitchCobertura;
-    private EditText mEtCobertura;
-    private Switch mSwitchDesc;
-    private Switch mSwitchPrazo;
-    private EditText mEtDesc;
     private TextView mTvTotal;
-    private TextInputLayout layoutCobert;
-    private TextInputLayout layoutDesc;
-
-    private Uri mUriAtual = null;
-    private boolean mAdicionar = false;
-    private double mPrecoBolo = 0;
-    private String mData = "";
-    private boolean mAlteracao = false;
-
-    private final EditText.OnTouchListener mTouchListenetEdit = new View.OnTouchListener() {
+    private EditText mEtQuant;
+    private EditText mEtCobertura;
+    private EditText mEtDesc;
+    private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            mAlteracao = true;
-            return false;
+
+            int id = view.getId();
+
+            switch (id) {
+
+                case R.id.et_quant_vend_quant:
+                    mEtQuant.requestFocus();
+                    mEtQuant.setSelection(mEtQuant.getText().length());
+                    return true;
+
+                case R.id.et_valor_desconto_vend_quant:
+                    mEtDesc.requestFocus();
+                    mEtDesc.setSelection(mEtDesc.getText().length());
+                    return true;
+
+                case R.id.et_valor_cobertura_vend_quant:
+                    mEtCobertura.requestFocus();
+                    mEtCobertura.setSelection(mEtCobertura.getText().length());
+                    return true;
+
+                default:
+                    return false;
+            }
         }
     };
+    private Switch mSwitchCobertura;
+    private Switch mSwitchDesc;
+    private Switch mSwitchPrazo;
+    private TextInputLayout layoutCobert;
+    private TextInputLayout layoutDesc;
+    private Uri mUriAtual = null;
+    private double mPrecoBolo = 0;
+    private String mData = "";
+    private boolean mAdicionar = false;
+    private boolean isAlterado = false;
     private final Switch.OnTouchListener mTouchListenerSwitch = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            mAlteracao = true;
+
+            isAlterado = true;
             return false;
         }
     };
+    private boolean isUpdating = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,24 +122,21 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         }
 
         mTvNome = (TextView) findViewById(R.id.tv_nome_vend_quant);
+        mTvTotal = (TextView) findViewById(R.id.tv_valor_total_vend_quant);
         mEtQuant = (EditText) findViewById(R.id.et_quant_vend_quant);
-        mSwitchCobertura = (Switch) findViewById(R.id.switch_cobertura_vend_quant);
+        mEtDesc = (EditText) findViewById(R.id.et_valor_desconto_vend_quant);
         mEtCobertura = (EditText) findViewById(R.id.et_valor_cobertura_vend_quant);
+        mSwitchCobertura = (Switch) findViewById(R.id.switch_cobertura_vend_quant);
         mSwitchDesc = (Switch) findViewById(R.id.switch_desconto_vend_quant);
         mSwitchPrazo = (Switch) findViewById(R.id.switch_prazo);
-        mEtDesc = (EditText) findViewById(R.id.et_valor_desconto_vend_quant);
-        mTvTotal = (TextView) findViewById(R.id.tv_valor_total_vend_quant);
-
         layoutDesc = (TextInputLayout) findViewById(R.id.til_desc);
         layoutCobert = (TextInputLayout) findViewById(R.id.til_cobert);
 
         if (mAdicionar) {
             mEtQuant.setText("1");
+            mEtQuant.setSelection(mEtQuant.getText().length());
         }
 
-        mEtQuant.setOnTouchListener(mTouchListenetEdit);
-        mEtCobertura.setOnTouchListener(mTouchListenetEdit);
-        mEtDesc.setOnTouchListener(mTouchListenetEdit);
         mSwitchCobertura.setOnTouchListener(mTouchListenerSwitch);
         mSwitchDesc.setOnTouchListener(mTouchListenerSwitch);
 
@@ -128,11 +148,15 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                isAlterado = true;
+
                 String vlQuant = charSequence.toString().trim();
-                String vlCobert = mEtCobertura.getText().toString().trim();
-                String vlDesc = mEtDesc.getText().toString().trim();
+                String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlDesc = mEtDesc.getText().toString().trim().replaceAll("[^\\d]", "");
 
                 mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
+
+                mEtQuant.setSelection(mEtQuant.getText().length());
             }
 
             @Override
@@ -148,11 +172,23 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String vlQuant = mEtQuant.getText().toString().trim();
-                String vlCobert = charSequence.toString().trim();
-                String vlDesc = mEtDesc.getText().toString().trim();
+                isAlterado = true;
+
+                String vlQuant = mEtQuant.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlCobert = charSequence.toString().trim().replaceAll("[^\\d]", "");
+                String vlDesc = mEtDesc.getText().toString().trim().replaceAll("[^\\d]", "");
 
                 mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
+
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                isUpdating = true;
+
+                mEtCobertura.setText(Formatar.emCurrency(vlCobert));
+                mEtCobertura.setSelection(mEtCobertura.getText().length());
             }
 
             @Override
@@ -168,11 +204,24 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String vlQuant = mEtQuant.getText().toString().trim();
-                String vlCobert = mEtCobertura.getText().toString().trim();
-                String vlDesc = charSequence.toString().trim();
+                isAlterado = true;
+
+                String vlQuant = mEtQuant.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlDesc = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
                 mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
+
+
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                isUpdating = true;
+
+                mEtDesc.setText(Formatar.emCurrency(vlDesc));
+                mEtDesc.setSelection(mEtDesc.getText().length());
             }
 
             @Override
@@ -187,8 +236,12 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 if (checked) {
 
                     layoutCobert.setVisibility(View.VISIBLE);
-                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchCobertura);
-                    mEtCobertura.setText("");
+
+                    if (mAdicionar) {
+                        mEtCobertura.setText("0");
+                    }
+
+                    mEtCobertura.requestFocus();
 
                 } else {
 
@@ -206,8 +259,12 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 if (checked) {
 
                     layoutDesc.setVisibility(View.VISIBLE);
-                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchDesc);
-                    mEtDesc.setText("");
+
+                    if (mAdicionar) {
+                        mEtDesc.setText("0");
+                    }
+
+                    mEtDesc.requestFocus();
 
                 } else {
 
@@ -217,8 +274,17 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 }
             }
         });
-    }
 
+
+        mEtQuant.setOnTouchListener(mTouchListnerEditCursorFim);
+        mEtCobertura.setOnTouchListener(mTouchListnerEditCursorFim);
+        mEtDesc.setOnTouchListener(mTouchListnerEditCursorFim);
+
+        mEtQuant.setCursorVisible(false);
+        mEtQuant.setSelectAllOnFocus(false);
+        UserInterface.focoCursorSelect(mEtCobertura);
+        UserInterface.focoCursorSelect(mEtDesc);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -236,7 +302,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 adicionar();
                 return true;
             case android.R.id.home:
-                if (!mAlteracao) {
+                if (!isAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -260,7 +326,6 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         return super.onOptionsItemSelected(item);
     }
-
 
     private void adicionar() {
 
@@ -338,8 +403,8 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         // Conversões
         quant = Integer.parseInt(quantString);
-        valorCobert = Double.parseDouble(vlCobertString);
-        valorDesconto = Double.parseDouble(vlDescString);
+        valorCobert = Formatar.emDouble(vlCobertString);
+        valorDesconto = Formatar.emDouble(vlDescString);
         valorTotal = Utilidades.calculaValorBoloDouble(mPrecoBolo, quant, valorCobert, valorDesconto);
 
         if (quant < 1) {
@@ -405,6 +470,28 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (!isAlterado) {
+
+            super.onBackPressed();
+        }
+
+        DialogInterface.OnClickListener descartarButClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        finish();
+                    }
+                };
+
+        UtilsDialog.confirmarAlteracao(
+                VendQuantActivity.this,
+                descartarButClickListener
+        );
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -441,7 +528,6 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                     AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
                     AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO,
                     AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO
-
             };
 
             return new CursorLoader(
@@ -460,17 +546,20 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+
         if (loader.getId() == LOADER_VENDA_EDITAR && cursor.moveToFirst()) {
 
             String nomeBolo = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
+            mData = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_DATA));
+
             int quantidade = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
             int temCobertura = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
-            double valorCobertura = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
             int temDesconto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO));
             int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
+
+            double valorCobertura = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
             double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
             double valorBolo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
-            mData = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_DATA));
             mPrecoBolo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO));
 
             mTvNome.setText(nomeBolo);
@@ -480,7 +569,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                 mSwitchCobertura.setChecked(true);
                 layoutCobert.setVisibility(View.VISIBLE);
-                mEtCobertura.setText(String.valueOf(valorCobertura));
+                mEtCobertura.setText(mPreco.format(valorCobertura));
             }
 
             if (temCobertura == Constantes.COBERTURA_NAO) {
@@ -493,7 +582,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                 mSwitchDesc.setChecked(true);
                 layoutDesc.setVisibility(View.VISIBLE);
-                mEtDesc.setText(String.valueOf(valorDesconto));
+                mEtDesc.setText(mPreco.format(valorDesconto));
             }
 
             if (temDesconto == Constantes.DESCONTO_NAO) {
@@ -512,9 +601,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 mSwitchPrazo.setChecked(false);
             }
 
-            NumberFormat preco = NumberFormat.getCurrencyInstance();
-
-            mTvTotal.setText(preco.format(valorBolo));
+            mTvTotal.setText(mPreco.format(valorBolo));
         }
 
         if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {
@@ -523,7 +610,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             mPrecoBolo = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
 
             mTvNome.setText(mNomeDoBolo);
-            mTvTotal.setText(String.valueOf(mPrecoBolo));
+            mTvTotal.setText(mPreco.format(mPrecoBolo));
         }
     }
 
@@ -532,26 +619,5 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
     }
 
-    @Override
-    public void onBackPressed() {
 
-        if (!mAlteracao) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        finish();
-                    }
-                };
-
-        UtilsDialog.confirmarAlteracao(
-                VendQuantActivity.this,
-                descartarButClickListener
-        );
-    }
 }

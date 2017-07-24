@@ -25,33 +25,47 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
 
-public class RetCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class RetCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_RET_CAD = 8;
-    private static final int MAX_CARACT_DESC = 50;
 
     private EditText mEtValor;
-    private EditText mEtDescricao;
-
-    private boolean mAlteracao = false;
-    private final EditText.OnTouchListener mTouchListenet = new View.OnTouchListener() {
+    private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            mAlteracao = true;
-            return false;
+
+            int id = view.getId();
+
+            switch (id) {
+
+                case R.id.et_valor:
+                    mEtValor.requestFocus();
+                    mEtValor.setSelection(mEtValor.getText().length());
+                    return true;
+
+                default:
+                    return false;
+            }
         }
     };
+    private EditText mEtDescricao;
     private String mData = "";
     private Uri mUriAtual = null;
+    private boolean isAlterado = false;
+    private boolean isUpdating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +82,13 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
         } else {
 
             setTitle(R.string.title_ret_cad_edit);
-            getLoaderManager().initLoader(LOADER_RET_CAD,null,this);
+            getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
         }
 
-        mEtValor = (EditText) findViewById(R.id.et_valor_ret);
-        mEtDescricao = (EditText) findViewById(R.id.et_descricao_ret);
+        mEtValor = (EditText) findViewById(R.id.et_valor);
+        mEtDescricao = (EditText) findViewById(R.id.et_descricao);
 
-        mEtDescricao.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT_DESC)});
+        mEtDescricao.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT)});
 
         mEtDescricao.addTextChangedListener(new TextWatcher() {
             @Override
@@ -83,11 +97,42 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                isAlterado = true;
+
                 if (charSequence.toString().trim().length() > 48) {
 
                     Toast.makeText(RetCadActivity.this,
                             R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mEtValor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                isAlterado = true;
+
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                isUpdating = true;
+
+                mEtValor.setText(Formatar.emCurrency(charSequence.toString().trim()));
+                mEtValor.setSelection(mEtValor.getText().length());
             }
 
             @Override
@@ -109,25 +154,30 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        mEtValor.setOnTouchListener(mTouchListenet);
-        mEtDescricao.setOnTouchListener(mTouchListenet);
+        mEtValor.setOnTouchListener(mTouchListnerEditCursorFim);
+
+        UserInterface.focoCursorSelect(mEtValor);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_salvar,menu);
+        getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
-        switch (id){
+
+        switch (id) {
+
             case R.id.action_salvar:
                 adicionar();
                 return true;
+
             case android.R.id.home:
-                if (!mAlteracao) {
+                if (!isAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -154,20 +204,14 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
     private void adicionar() {
 
-        String valor = mEtValor.getText().toString().trim();
+        String valorStr = mEtValor.getText().toString().trim();
         String descricao = mEtDescricao.getText().toString().trim();
 
-        /* validações */
-        if (TextUtils.isEmpty(valor)) {
+        double valorDouble = Formatar.emDouble(valorStr);
+
+        if (TextUtils.isEmpty(valorStr)) {
 
             mEtValor.setError(getString(R.string.error_campo_vazio));
-            return;
-        }
-
-        double valorDouble = Double.parseDouble(valor);
-        if (valorDouble <= 0) {
-
-            mEtValor.setError(getString(R.string.error_valor_maior_zero));
             return;
         }
 
@@ -177,14 +221,20 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
-        if (descricao.length() < 10) {
+        if (valorDouble <= ZERO) {
+
+            mEtValor.setError(getString(R.string.error_valor_maior_zero));
+            return;
+        }
+
+        if (descricao.length() < MIN_QUANT_CARACT) {
 
             mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
             return;
         }
 
         ContentValues values = new ContentValues();
-        values.put(VendasContrato.AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
+        values.put(AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
         values.put(AcessoEntRet.COLUNA_ENT_RET_DESC, descricao);
         values.put(AcessoEntRet.COLUNA_ENT_RET_TIPO, Constantes.TIPO_RETIRADA);
 
@@ -197,12 +247,11 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
             values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, mData);
         }
 
-
-        if(mUriAtual == null){
+        if (mUriAtual == null) {
 
             Crud.inserir(RetCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
-        }else{
+        } else {
 
             Crud.editar(RetCadActivity.this, mUriAtual, values);
         }
@@ -212,7 +261,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onBackPressed() {
-        if (!mAlteracao) {
+        if (!isAlterado) {
 
             super.onBackPressed();
         }
@@ -257,13 +306,16 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
         if (cursor.moveToFirst()) {
 
-            double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
-            String desc = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
-            mData = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
+            double valorDouble = cursor.getDouble(
+                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
 
-            String valor = String.valueOf(valorDouble);
+            String desc = cursor.getString(
+                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
 
-            mEtValor.setText(valor);
+            mData = cursor.getString(
+                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
+
+            mEtValor.setText(String.valueOf(valorDouble * 100));
             mEtDescricao.setText(desc);
         }
     }

@@ -14,10 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
 
@@ -37,13 +39,22 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
         Intent newIntent = getIntent();
 
         if (newIntent.hasExtra(Constantes.VENDA_ADICIONAR)) {
+
             if (newIntent.getStringExtra(Constantes.VENDA_ADICIONAR).equals(Constantes.VENDA_ADICIONAR)) {
+
                 setTitle(R.string.title_vend_list);
             }
         }
 
-        ListView listView = (ListView) findViewById(R.id.listView_venda_list);
-        View emptyView = findViewById(R.id.empty_view_vend_list);
+        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
+
+        tvEmpty.setText(R.string.text_vend_list_empty);
+        ivEmpty.setImageResource(R.drawable.ic_coracao_partido);
+        ivEmpty.setContentDescription(getString(R.string.image_desc_prod_list_empty));
+
+        ListView listView = (ListView) findViewById(R.id.lv_list);
+        View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
 
         mAdapter = new ProdAdapter(this);

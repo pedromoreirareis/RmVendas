@@ -12,8 +12,8 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
@@ -28,7 +28,6 @@ public class FechamentoActivity extends AppCompatActivity implements
     private static final int LOADER_ENTRADA_RETIRADA = 2;
     private static final int LOADER_SALDO = 3;
     private static final int LOADER_VENDAS = 4;
-
     double mSaldoInicial = 0;
     double mTotalEntrada = 0;
     double mTotalVendas = 0;
@@ -39,7 +38,6 @@ public class FechamentoActivity extends AppCompatActivity implements
     int mQuantBolo = 0;
     int mQuantBoloVista = 0;
     int mQuantBoloPrazo = 0;
-
     private TextView mTvSaldoInicial;
     private TextView mTvEntrada;
     private TextView mTvVendas;
@@ -50,8 +48,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     private TextView mTvQuantBolo;
     private TextView mTvQuantBoloVista;
     private TextView mTvQuantBoloPrazo;
-
-    private String mDataPesquisar = "";
+    private String mDataPesquisa = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -75,7 +72,6 @@ public class FechamentoActivity extends AppCompatActivity implements
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-
                 mSaldoInicial = 0;
                 mTotalEntrada = 0;
                 mTotalVendas = 0;
@@ -87,21 +83,20 @@ public class FechamentoActivity extends AppCompatActivity implements
                 mQuantBoloVista = 0;
                 mQuantBoloPrazo = 0;
 
-                mDataPesquisar = Datas.dateSetListenerString(year, month, day);
+                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
 
-                setTitle(getString(R.string.title_fechamento) + "  " + Datas.dateSetListenerInverseString(year, month, day));
+                setTitle(getString(R.string.title_fechamento) + "  " + Datas.dateSetListenerTitle(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_ENTRADA_RETIRADA, null, FechamentoActivity.this);
                 getLoaderManager().restartLoader(LOADER_SALDO, null, FechamentoActivity.this);
                 getLoaderManager().restartLoader(LOADER_VENDAS, null, FechamentoActivity.this);
-
             }
         };
 
 
         setTitle(getString(R.string.title_ent_list) + "  " + Datas.getDate());
 
-        mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
 
         getLoaderManager().initLoader(LOADER_ENTRADA_RETIRADA, null, this);
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
@@ -122,6 +117,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.action_data) {
+
             UtilsDialog.dialogData(FechamentoActivity.this, mDateSetListener);
         }
 
@@ -142,7 +138,7 @@ public class FechamentoActivity extends AppCompatActivity implements
             };
 
             String selection = AcessoEntRet.COLUNA_ENT_RET_DATA + " LIKE ?";
-            String[] selectionArgs = new String[]{mDataPesquisar + "%"};
+            String[] selectionArgs = new String[]{mDataPesquisa + "%"};
 
             return new CursorLoader(
                     this,
@@ -163,7 +159,7 @@ public class FechamentoActivity extends AppCompatActivity implements
             };
 
             String selection = AcessoSaldo.COLUNA_SALDO_DATA + " LIKE ?";
-            String[] selectionArgs = new String[]{mDataPesquisar + "%"};
+            String[] selectionArgs = new String[]{mDataPesquisa + "%"};
 
             return new CursorLoader(
                     this,
@@ -192,7 +188,7 @@ public class FechamentoActivity extends AppCompatActivity implements
             };
 
             String selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?";
-            String[] selectionArgs = new String[]{mDataPesquisar + "%"};
+            String[] selectionArgs = new String[]{mDataPesquisa + "%"};
 
             return new CursorLoader(
                     this,
@@ -209,37 +205,33 @@ public class FechamentoActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-
         if (loader.getId() == LOADER_ENTRADA_RETIRADA && cursor.moveToFirst()) {
-
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
+                if (Constantes.TIPO_ENTRADA == cursor.getInt(
+                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
 
-                if (Constantes.TIPO_ENTRADA ==
-                        cursor.getInt(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
+                    mTotalEntrada = mTotalEntrada + cursor.getDouble(
+                            cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
 
-                    mTotalEntrada = mTotalEntrada
-                            + cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+                } else if (Constantes.TIPO_RETIRADA == cursor.getInt(
+                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
 
-                } else if (Constantes.TIPO_RETIRADA ==
-                        cursor.getInt(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
-
-                    mTotalRetirada = mTotalRetirada
-                            + cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+                    mTotalRetirada = mTotalRetirada + cursor.getDouble(
+                            cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
                 }
 
                 cursor.moveToNext();
             }
-
         }
 
         if (loader.getId() == LOADER_SALDO && cursor.moveToFirst()) {
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                mSaldoInicial = mSaldoInicial
-                        + cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
+                mSaldoInicial = mSaldoInicial + cursor.getDouble(
+                        cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
 
                 cursor.moveToNext();
             }
@@ -249,9 +241,11 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                mQuantBolo = mQuantBolo + cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
+                mQuantBolo = mQuantBolo + cursor.getInt(
+                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_SIM) {
+                if (cursor.getInt(
+                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_SIM) {
 
                     mQuantBoloPrazo = mQuantBoloPrazo + 1;
 
@@ -260,23 +254,26 @@ public class FechamentoActivity extends AppCompatActivity implements
                     mQuantBoloVista = mQuantBoloVista + 1;
                 }
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO)) == Constantes.DESCONTO_SIM) {
+                if (cursor.getInt(
+                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO)) == Constantes.DESCONTO_SIM) {
 
-                    mTotalDescontos = mTotalDescontos
-                            + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
+                    mTotalDescontos = mTotalDescontos + cursor.getDouble(
+                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
                 }
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_NAO) {
+                if (cursor.getInt(
+                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_NAO) {
 
-                    mTotalVendas = mTotalVendas
-                            + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+                    mTotalVendas = mTotalVendas + cursor.getDouble(
+                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
 
                 }
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_SIM) {
+                if (cursor.getInt(
+                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_SIM) {
 
-                    mTotalPrazo = mTotalPrazo
-                            + cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+                    mTotalPrazo = mTotalPrazo + cursor.getDouble(
+                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
                 }
 
                 cursor.moveToNext();

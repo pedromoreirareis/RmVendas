@@ -26,28 +26,43 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ZERO;
+
 public class ProdutosCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_PROD_CAD = 6;
-    private static final int MAX_CARACT_NOME = 50;
 
     private EditText mEtNome;
     private EditText mEtPreco;
-
-    private Uri mUriAtual = null;
-    private boolean mAlteracao = false;
-
-    private final EditText.OnTouchListener mTouchListener = new View.OnTouchListener() {
+    private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            mAlteracao = true;
-            return false;
+
+            int id = view.getId();
+
+            switch (id) {
+
+                case R.id.et_preco:
+                    mEtPreco.requestFocus();
+                    mEtPreco.setSelection(mEtPreco.getText().length());
+                    return true;
+
+                default:
+                    return false;
+            }
         }
     };
+    private Uri mUriAtual = null;
+    private boolean isAlterado = false;
+    private boolean isUpdating = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +82,10 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
         }
 
-        mEtNome = (EditText) findViewById(R.id.et_prod_nome);
-        mEtPreco = (EditText) findViewById(R.id.et_prod_preco);
+        mEtNome = (EditText) findViewById(R.id.et_nome);
+        mEtPreco = (EditText) findViewById(R.id.et_preco);
 
-        mEtNome.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT_NOME)});
+        mEtNome.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT)});
         mEtNome.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -79,11 +94,42 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                isAlterado = true;
+
                 if (charSequence.toString().trim().length() > 48) {
 
                     Toast.makeText(ProdutosCadActivity.this,
                             R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mEtPreco.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                isAlterado = true;
+
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                isUpdating = true;
+
+                mEtPreco.setText(Formatar.emCurrency(charSequence.toString().trim()));
+                mEtPreco.setSelection(mEtPreco.getText().length());
             }
 
             @Override
@@ -105,8 +151,9 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             }
         });
 
-        mEtNome.setOnTouchListener(mTouchListener);
-        mEtPreco.setOnTouchListener(mTouchListener);
+        mEtPreco.setOnTouchListener(mTouchListnerEditCursorFim);
+
+        UserInterface.focoCursorSelect(mEtPreco);
     }
 
     @Override
@@ -117,16 +164,18 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
 
         switch (id) {
+
             case R.id.action_salvar:
                 adicionar();
                 return true;
 
             case android.R.id.home:
 
-                if (!mAlteracao) {
+                if (!isAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -153,9 +202,9 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
     private void adicionar() {
 
         String nome = mEtNome.getText().toString().trim();
-        String preco = mEtPreco.getText().toString().trim();
+        String precoStr = mEtPreco.getText().toString().trim();
 
-        /* Validações */
+        double precoDouble = Formatar.emDouble(precoStr);
 
         if (TextUtils.isEmpty(nome)) {
 
@@ -163,22 +212,21 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             return;
         }
 
-        if (nome.length() < 10) {
-
-            mEtNome.setError(getString(R.string.error_campo_lenght_10));
-            return;
-        }
-
-        if (TextUtils.isEmpty(preco)) {
+        if (TextUtils.isEmpty(precoStr)) {
 
             mEtPreco.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
-        double precoDouble = Double.parseDouble(preco);
-        if (precoDouble <= 0) {
+        if (precoDouble <= ZERO) {
 
             mEtPreco.setError(getString(R.string.error_valor_maior_zero));
+            return;
+        }
+
+        if (nome.length() < MIN_QUANT_CARACT) {
+
+            mEtNome.setError(getString(R.string.error_campo_lenght_10));
             return;
         }
 
@@ -199,6 +247,28 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (!isAlterado) {
+
+            super.onBackPressed();
+        }
+
+        DialogInterface.OnClickListener descartarButClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        finish();
+                    }
+                };
+
+        UtilsDialog.confirmarAlteracao(
+                ProdutosCadActivity.this,
+                descartarButClickListener
+        );
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -224,42 +294,19 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
         if (cursor.moveToFirst()) {
 
+            double precoDouble = cursor.getDouble(
+                    cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
+
             String nome = cursor.getString(
                     cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
 
-            String preco = cursor.getString(
-                    cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
-
+            mEtPreco.setText(String.valueOf(precoDouble * 100));
             mEtNome.setText(nome);
-            mEtPreco.setText(preco);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        if (!mAlteracao) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        finish();
-                    }
-                };
-
-        UtilsDialog.confirmarAlteracao(
-                ProdutosCadActivity.this,
-                descartarButClickListener
-        );
     }
 }

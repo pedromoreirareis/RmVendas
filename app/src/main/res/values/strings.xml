@@ -60,7 +60,6 @@
 
     <!-- Hints -->
     <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
-    <string name="hint_prod_esc_quant_valor_cobertura">Valor R$</string>
     <string name="hint_nome">Nome</string>
     <string name="hint_preco">Preço R$</string>
     <string name="hint_valor">Valor R$</string>
@@ -73,6 +72,7 @@
     <string name="image_desc_saldo_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_ret_list_empty">Imagem de um cifrão e um seta para baixo</string>
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
+    <string name="image_desc_rm">Rm Vendas</string>
 
     <!-- Text -->
     <string name="text_main_empty">Nenhum bolo vendido no dia !!!</string>

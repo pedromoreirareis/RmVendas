@@ -39,8 +39,8 @@ public class Utilidades {
         }
 
         double valorQ = Double.parseDouble(vlQ);
-        double valorC = Double.parseDouble(vlC);
-        double valorD = Double.parseDouble(vlD);
+        double valorC = Double.parseDouble(vlC) / 100;
+        double valorD = Double.parseDouble(vlD) / 100;
 
         double quantValor = valorQ * vlBolo;
 

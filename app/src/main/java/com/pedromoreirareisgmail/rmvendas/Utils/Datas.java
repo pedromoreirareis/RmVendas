@@ -26,7 +26,7 @@ public class Datas {
         return dateFormat.format(date);
     }
 
-    public static String formatDateTimeEmTime(String dataHora) {
+    public static String formatTime(String dataHora) {
 
         Date novaHora = null;
 
@@ -68,7 +68,7 @@ public class Datas {
         return horaFormat.format(novaHora);
     }
 
-    public static String dateSetListenerString(int year, int month, int day) {
+    public static String dateSetListenerPesquisa(int year, int month, int day) {
 
         month = month + 1;
 
@@ -97,7 +97,7 @@ public class Datas {
         return yearString + "-" + monthString + "-" + dayString;
     }
 
-    public static String dateSetListenerInverseString(int year, int month, int day) {
+    public static String dateSetListenerTitle(int year, int month, int day) {
 
         month = month + 1;
 

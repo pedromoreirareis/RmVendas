@@ -16,10 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.EntAdapter;
@@ -30,7 +32,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
     private static final int LOADER_ENT = 1;
     private EntAdapter mAdapter;
 
-    private String mDataPesquisar = "";
+    private String mDataPesquisa = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -38,7 +40,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ent_list);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_ent_list);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,8 +50,15 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listview_ent_list);
-        View emptyView = findViewById(R.id.empty_view_ent_list);
+        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
+
+        tvEmpty.setText(R.string.text_ent_list_empty);
+        ivEmpty.setImageResource(R.drawable.ic_money_up);
+        ivEmpty.setContentDescription(getString(R.string.image_desc_ent_list_empty));
+
+        ListView listView = (ListView) findViewById(R.id.lv_list);
+        View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
 
         mAdapter = new EntAdapter(this);
@@ -62,7 +71,8 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                 Uri uri = ContentUris.withAppendedId(AcessoEntRet.CONTENT_URI_ENT_RET, id);
 
                 Cursor cur = mAdapter.getCursor();
-                String desc = mAdapter.getCursor().getString(cur.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
+                String desc = mAdapter.getCursor().getString(
+                        cur.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
 
                 UtilsDialog.editarExcluir(
                         EntListActivity.this,
@@ -79,9 +89,9 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisar = Datas.dateSetListenerString(year, month, day);
+                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
 
-                setTitle(getString(R.string.title_ent_list) + "  " + Datas.dateSetListenerInverseString(year, month, day));
+                setTitle(getString(R.string.title_ent_list) + "  " + Datas.dateSetListenerTitle(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_ENT, null, EntListActivity.this);
 
@@ -90,7 +100,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
         setTitle(getString(R.string.title_ent_list) + "  " + Datas.getDate());
 
-        mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
 
         getLoaderManager().initLoader(LOADER_ENT, null, this);
     }
@@ -108,7 +118,9 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+
         if (id == R.id.action_data) {
+
             UtilsDialog.dialogData(EntListActivity.this, mDateSetListener);
         }
         return super.onOptionsItemSelected(item);
@@ -126,7 +138,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
         };
 
         String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + " =? AND " + AcessoEntRet.COLUNA_ENT_RET_DATA + " LIKE ?";
-        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA), mDataPesquisar + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA), mDataPesquisa + "%"};
         String sortOrder = AcessoEntRet.COLUNA_ENT_RET_DATA;
 
         return new CursorLoader(

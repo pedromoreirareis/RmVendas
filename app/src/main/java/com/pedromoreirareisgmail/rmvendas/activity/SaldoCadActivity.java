@@ -11,7 +11,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,28 +24,42 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
 
 public class SaldoCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_RET_CAD = 10;
+
     private EditText mEtValor;
-
-    private Uri mUriAtual = null;
-    private String mData = "";
-    private boolean mAlteracao = false;
-
-    private final EditText.OnTouchListener mTouchListenet = new View.OnTouchListener() {
+    private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            mAlteracao = true;
-            return false;
+
+            int id = view.getId();
+
+            switch (id) {
+
+                case R.id.et_valor:
+                    mEtValor.requestFocus();
+                    mEtValor.setSelection(mEtValor.getText().length());
+                    return true;
+
+                default:
+                    return false;
+            }
         }
     };
+    private String mData = "";
+    private Uri mUriAtual = null;
+    private boolean isAlterado = false;
+    private boolean isUpdating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +79,44 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
             getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
         }
 
-        mEtValor = (EditText) findViewById(R.id.et_valor_saldo);
+        mEtValor = (EditText) findViewById(R.id.et_valor);
+        mEtValor.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        mEtValor.setOnTouchListener(mTouchListenet);
+        mEtValor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                isAlterado = true;
+
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                isUpdating = true;
+
+                mEtValor.setText(Formatar.emCurrency(charSequence.toString().trim()));
+                mEtValor.setSelection(mEtValor.getText().length());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         mEtValor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+
                     adicionar();
                     return true;
                 }
@@ -79,6 +124,10 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
                 return false;
             }
         });
+
+        mEtValor.setOnTouchListener(mTouchListnerEditCursorFim);
+
+        UserInterface.focoCursorSelect(mEtValor);
     }
 
     @Override
@@ -93,11 +142,13 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
         int id = item.getItemId();
 
         switch (id) {
+
             case R.id.action_salvar:
                 adicionar();
                 return true;
+
             case android.R.id.home:
-                if (!mAlteracao) {
+                if (!isAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -124,16 +175,18 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
     private void adicionar() {
 
-        String valor = mEtValor.getText().toString().trim();
+        String valorStr = mEtValor.getText().toString().trim();
 
-        /* validações */
-        if (TextUtils.isEmpty(valor)) {
+        double valorDouble = Formatar.emDouble(valorStr);
+
+
+        if (TextUtils.isEmpty(valorStr)) {
             mEtValor.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
-        double valorDouble = Double.parseDouble(valor);
-        if (valorDouble <= 0) {
+
+        if (valorDouble <= ZERO) {
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
             return;
         }
@@ -165,6 +218,28 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
     }
 
     @Override
+    public void onBackPressed() {
+
+        if (!isAlterado) {
+
+            super.onBackPressed();
+        }
+
+        DialogInterface.OnClickListener descartarButClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                };
+
+        UtilsDialog.confirmarAlteracao(
+                SaldoCadActivity.this,
+                descartarButClickListener
+        );
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         String[] projection = {
@@ -191,9 +266,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
             double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
             mData = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
 
-            String valor = String.valueOf(valorDouble);
-
-            mEtValor.setText(valor);
+            mEtValor.setText(String.valueOf(valorDouble * 100));
         }
     }
 
@@ -202,25 +275,5 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!mAlteracao) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                };
-
-        UtilsDialog.confirmarAlteracao(
-                SaldoCadActivity.this,
-                descartarButClickListener
-        );
-    }
 
 }

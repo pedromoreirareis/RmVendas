@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
 
 import java.text.NumberFormat;
+
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.VEZES_X;
 
 
 public class MainAdapter extends CursorAdapter {
@@ -38,16 +40,17 @@ public class MainAdapter extends CursorAdapter {
         double vlCoberDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
         double vlDescDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
         double vlTotalDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+        double vlUmBolo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO));
         int temCobert = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
         int temDesc = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO));
         int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
 
         String quant = String.valueOf(quantInt);
-        data = Datas.formatDateTimeEmTime(data);
+        data = Datas.formatTime(data);
 
         NumberFormat preco = NumberFormat.getCurrencyInstance();
 
-        holder.tvQuant.setText(quant);
+        holder.tvQuant.setText(quant + VEZES_X + preco.format(vlUmBolo));
         holder.tvNome.setText(nome);
         holder.tvData.setText(data);
 

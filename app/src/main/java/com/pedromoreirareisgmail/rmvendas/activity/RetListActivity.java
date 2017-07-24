@@ -16,10 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.pedromoreirareisgmail.rmvendas.Constantes;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.RetAdapter;
@@ -30,7 +32,7 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
     private static final int LOADER_RET = 9;
     private RetAdapter mAdapter;
 
-    private String mDataPesquisar = "";
+    private String mDataPesquisa = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -38,7 +40,7 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ret_list);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_ret_list);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,8 +50,15 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listview_ret_list);
-        View emptyView = findViewById(R.id.empty_view_ret_list);
+        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
+
+        tvEmpty.setText(R.string.text_ret_list_empty);
+        ivEmpty.setImageResource(R.drawable.ic_money_down);
+        ivEmpty.setContentDescription(getString(R.string.image_desc_ret_list_empty));
+
+        ListView listView = (ListView) findViewById(R.id.lv_list);
+        View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
 
         mAdapter = new RetAdapter(this);
@@ -79,9 +88,9 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisar = Datas.dateSetListenerString(year, month, day);
+                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
 
-                setTitle(getString(R.string.title_ret_list) + "  " + Datas.dateSetListenerInverseString(year, month, day));
+                setTitle(getString(R.string.title_ret_list) + "  " + Datas.dateSetListenerTitle(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_RET, null, RetListActivity.this);
             }
@@ -89,7 +98,7 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
 
         setTitle(getString(R.string.title_ret_list) + "  " + Datas.getDate());
 
-        mDataPesquisar = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
 
         getLoaderManager().initLoader(LOADER_RET, null, this);
     }
@@ -107,6 +116,7 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
         int id = item.getItemId();
 
         if (id == R.id.action_data) {
+
             UtilsDialog.dialogData(RetListActivity.this, mDateSetListener);
         }
 
@@ -125,7 +135,7 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
         };
 
         String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + " =? AND " + AcessoEntRet.COLUNA_ENT_RET_DATA + " LIKE ?";
-        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_RETIRADA), mDataPesquisar + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_RETIRADA), mDataPesquisa + "%"};
         String sortOrder = AcessoEntRet.COLUNA_ENT_RET_DATA;
 
         return new CursorLoader(

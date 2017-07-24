@@ -15,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
@@ -27,14 +29,14 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
     private static final int LOADER_PROD_LISTA = 7;
 
     private ProdAdapter mAdapter;
-    private String mPesquisar = "";
+    private String mPesquisa = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produtos_list);
 
-        FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_prod_list);
+        FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_add);
         fabProdutos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,8 +46,15 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listView_prod_list);
-        View emptyView = findViewById(R.id.empty_view_prod_list);
+        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
+
+        tvEmpty.setText(R.string.text_prod_list_empty);
+        ivEmpty.setImageResource(R.drawable.ic_contract_list);
+        ivEmpty.setContentDescription(getString(R.string.image_desc_prod_list_empty));
+
+        ListView listView = (ListView) findViewById(R.id.lv_list);
+        View emptyView = findViewById(R.id.empty_view);
         mAdapter = new ProdAdapter(this);
 
         listView.setEmptyView(emptyView);
@@ -58,7 +67,8 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                 Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTO, id);
 
                 Cursor cur = mAdapter.getCursor();
-                String nome = mAdapter.getCursor().getString(cur.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
+                String nome = mAdapter.getCursor().getString(
+                        cur.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
 
                 UtilsDialog.editarExcluir(
                         ProdutosListActivity.this,
@@ -93,7 +103,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                mPesquisar = newText;
+                mPesquisa = newText;
 
                 getLoaderManager().restartLoader(LOADER_PROD_LISTA, null, ProdutosListActivity.this);
 
@@ -115,7 +125,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
         };
 
         String selection = AcessoProdutos.COLUNA_PRODUTO_NOME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
+        String[] selectionArgs = new String[]{"%" + mPesquisa + "%"};
         String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
 
         return new CursorLoader(

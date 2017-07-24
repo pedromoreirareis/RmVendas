@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -75,7 +76,6 @@
         <activity
             android:name=".activity.EntCadActivity"
             android:parentActivityName=".activity.EntListActivity"
-
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
@@ -101,11 +101,6 @@
                 android:value=".activity.MainActivity" />
         </activity>
 
-        <provider
-            android:name=".data.VendasProvider"
-            android:authorities="com.pedromoreirareisgmail.rmvendas"
-            android:exported="true" />
-
         <activity
             android:name=".activity.VendListActivity"
             android:parentActivityName=".activity.MainActivity"
@@ -118,11 +113,17 @@
 
         <activity
             android:name=".activity.FechamentoActivity"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
+
+        <provider
+            android:name=".data.VendasProvider"
+            android:authorities="com.pedromoreirareisgmail.rmvendas"
+            android:exported="true" />
     </application>
 
 </manifest>

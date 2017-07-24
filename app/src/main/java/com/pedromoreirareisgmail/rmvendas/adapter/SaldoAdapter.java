@@ -36,7 +36,7 @@ public class SaldoAdapter extends CursorAdapter {
         String dataString = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
 
         NumberFormat valorFormat = NumberFormat.getCurrencyInstance();
-        String horaString = Datas.formatDateTimeEmTime(dataString);
+        String horaString = Datas.formatTime(dataString);
 
         holder.valor.setText(valorFormat.format(valorDouble));
         holder.hora.setText(horaString);

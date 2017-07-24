@@ -36,7 +36,7 @@ public class EntAdapter extends CursorAdapter {
         String descString = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
 
         NumberFormat valorFormat = NumberFormat.getCurrencyInstance();
-        String horaString = Datas.formatDateTimeEmTime(dataString);
+        String horaString = Datas.formatTime(dataString);
 
         holder.valor.setText(valorFormat.format(valorDouble));
         holder.hora.setText(horaString);
