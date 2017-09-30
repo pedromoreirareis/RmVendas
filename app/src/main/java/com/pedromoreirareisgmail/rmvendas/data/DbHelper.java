@@ -4,12 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
 
-public class VendasDbHelper extends SQLiteOpenHelper {
+public class DbHelper extends SQLiteOpenHelper {
 
     /**
      * Nome do banco de dados
@@ -26,7 +26,7 @@ public class VendasDbHelper extends SQLiteOpenHelper {
      *
      * @param context contexto
      */
-    public VendasDbHelper(Context context) {
+    public DbHelper(Context context) {
         super(context, NOME_BANCO_DADOS, null, VERSAO_DB);
     }
 

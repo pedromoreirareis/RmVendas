@@ -10,7 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 
 import java.text.NumberFormat;
 

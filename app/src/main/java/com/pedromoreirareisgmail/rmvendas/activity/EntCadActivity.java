@@ -30,8 +30,8 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;

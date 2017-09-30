@@ -4,7 +4,15 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class VendasContrato {
+public class Contrato {
+
+
+    /************************************ TABELAS *************************************************
+     * produtos         - lista com os bolos e/ou outros produtos vendidos
+     * ent_ret          - entradas e retiradas de valores do caixa em um dia especifico
+     * saldo_inicial    - saldo inicial em um dia especifico
+     * vendas           - resumo das vendas em um dia especifico
+     *********************************************************************************************/
 
     /**
      * Autoridade para o vendas provider
@@ -26,9 +34,10 @@ public class VendasContrato {
     public static final String PATH_VENDA = AcessoVenda.NOME_TABELA_VENDA;
 
 
-    private VendasContrato() {
+    private Contrato() {
     }
 
+    /********************************* PRODUTOS ***************************************************/
     public static final class AcessoProdutos implements BaseColumns {
 
         /**
@@ -68,6 +77,7 @@ public class VendasContrato {
                         "/" + PATH_PRODUTOS;
     }
 
+    /********************************** ENT_RET ***************************************************/
     public static final class AcessoEntRet implements BaseColumns {
 
         public static final Uri CONTENT_URI_ENT_RET = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ENT_RET);
@@ -99,6 +109,7 @@ public class VendasContrato {
                         "/" + PATH_ENT_RET;
     }
 
+    /******************************** SALDO_INICIAL ***********************************************/
     public static final class AcessoSaldo implements BaseColumns {
 
         public static final Uri CONTENT_URI_SALDO = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SALDO);
@@ -127,6 +138,7 @@ public class VendasContrato {
 
     }
 
+    /*********************************** VENDAS ***************************************************/
     public static final class AcessoVenda implements BaseColumns {
 
         public static final Uri CONTENT_URI_VENDA = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_VENDA);

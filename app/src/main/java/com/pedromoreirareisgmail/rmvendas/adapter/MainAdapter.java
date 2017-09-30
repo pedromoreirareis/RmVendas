@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
 
 import java.text.NumberFormat;
 

@@ -121,7 +121,7 @@
         </activity>
 
         <provider
-            android:name=".data.VendasProvider"
+            android:name=".data.Provider"
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
     </application>

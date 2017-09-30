@@ -27,8 +27,8 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;

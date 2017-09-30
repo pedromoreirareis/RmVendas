@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 
 import java.text.NumberFormat;
 

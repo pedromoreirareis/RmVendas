@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 
 public class ProdutosListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

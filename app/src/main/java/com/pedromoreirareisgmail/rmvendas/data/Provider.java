@@ -12,15 +12,15 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoProdutos;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
 
 
-public class VendasProvider extends ContentProvider {
+public class Provider extends ContentProvider {
 
-    private static final String TAG = VendasProvider.class.getSimpleName();
+    private static final String TAG = Provider.class.getSimpleName();
 
     // Indica se Uri é de uma unica linha do banco de dados - MATCH_PRODUTO_ID = 1;
     // Indica Uri de todas as linhas do banco de dados - MATCH_PRODUTOS = 2;
@@ -44,23 +44,23 @@ public class VendasProvider extends ContentProvider {
         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/       - Uri geral toda a tabela */
         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/1  _ID - Uri especifico uma unica linha */
 
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoProdutos.NOME_TABELA_PRODUTO, MATCH_PRODUTOS);
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoProdutos.NOME_TABELA_PRODUTO + "/#", MATCH_PRODUTO_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.NOME_TABELA_PRODUTO, MATCH_PRODUTOS);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.NOME_TABELA_PRODUTO + "/#", MATCH_PRODUTO_ID);
 
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoEntRet.NOME_TABELA_ENT_RET, MATCH_ENT_RET);
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoEntRet.NOME_TABELA_ENT_RET + "/#", MATCH_ENT_RET_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.NOME_TABELA_ENT_RET, MATCH_ENT_RET);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.NOME_TABELA_ENT_RET + "/#", MATCH_ENT_RET_ID);
 
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO, MATCH_SALDO);
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO + "/#", MATCH_SALDO_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO, MATCH_SALDO);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO + "/#", MATCH_SALDO_ID);
 
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA, MATCH_VENDA);
-        sUriMatcher.addURI(VendasContrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA + "/#", MATCH_VENDA_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA, MATCH_VENDA);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA + "/#", MATCH_VENDA_ID);
     }
 
     /**
-     * Cria o objeto VendasDbHelper
+     * Cria o objeto DbHelper
      */
-    private VendasDbHelper mDbHelper;
+    private DbHelper mDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -68,7 +68,7 @@ public class VendasProvider extends ContentProvider {
         /*
          * Cria uma nova instancia do banco de dados
          */
-        mDbHelper = new VendasDbHelper(getContext());
+        mDbHelper = new DbHelper(getContext());
 
         return true;
     }
@@ -304,30 +304,6 @@ public class VendasProvider extends ContentProvider {
         }
     }
 
-    private Uri inserirProvider(String nomeTabela, Uri uri, ContentValues values) {
-
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-
-        long id = database.insert(
-                nomeTabela,
-                null,
-                values
-        );
-
-        if (id == -1) {
-
-            Log.e(TAG, getContext() != null ?
-                    getContext().getString(R.string.provider_log_inserir_prod) + uri : null);
-        }
-
-        if (getContext() != null) {
-
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
-
-        return ContentUris.withAppendedId(uri, id);
-    }
-
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
 
@@ -377,46 +353,6 @@ public class VendasProvider extends ContentProvider {
 
         }
 
-    }
-
-    private int excluir(Uri uri, String nomeTabela, String selection, String[] selectionArgs) {
-
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-
-        int excluidas = database.delete(
-                nomeTabela,
-                selection,
-                selectionArgs
-        );
-
-        if (excluidas > 0 && getContext() != null) {
-
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
-
-        return excluidas;
-
-    }
-
-    private int excluirID(Uri uri, String nomeTabela, String idLinha) {
-
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-
-        String selection = idLinha + " =? ";
-
-        String[] selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-
-        int excluidas = database.delete(
-                nomeTabela,
-                selection,
-                selectionArgs);
-
-        if (excluidas > 0 && getContext() != null) {
-
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
-
-        return excluidas;
     }
 
 
@@ -471,6 +407,37 @@ public class VendasProvider extends ContentProvider {
     }
 
 
+    /******************************     UTILS - CRUD   ********************************************/
+
+    /********************************     INSERIR    **********************************************/
+
+    private Uri inserirProvider(String nomeTabela, Uri uri, ContentValues values) {
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        long id = database.insert(
+                nomeTabela,
+                null,
+                values
+        );
+
+        if (id == -1) {
+
+            Log.e(TAG, getContext() != null ?
+                    getContext().getString(R.string.provider_log_inserir_prod) + uri : null);
+        }
+
+        if (getContext() != null) {
+
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return ContentUris.withAppendedId(uri, id);
+    }
+
+
+    /********************************     EDITAR    ***********************************************/
+
     private int editarProvider(Uri uri, ContentValues values, String nomeTabela, String selection, String[] selectionArgs) {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -512,5 +479,48 @@ public class VendasProvider extends ContentProvider {
         }
 
         return editadas;
+    }
+
+
+    /********************************     EXCLUIR   ***********************************************/
+
+    private int excluir(Uri uri, String nomeTabela, String selection, String[] selectionArgs) {
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        int excluidas = database.delete(
+                nomeTabela,
+                selection,
+                selectionArgs
+        );
+
+        if (excluidas > 0 && getContext() != null) {
+
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return excluidas;
+
+    }
+
+    private int excluirID(Uri uri, String nomeTabela, String idLinha) {
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        String selection = idLinha + " =? ";
+
+        String[] selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+        int excluidas = database.delete(
+                nomeTabela,
+                selection,
+                selectionArgs);
+
+        if (excluidas > 0 && getContext() != null) {
+
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return excluidas;
     }
 }

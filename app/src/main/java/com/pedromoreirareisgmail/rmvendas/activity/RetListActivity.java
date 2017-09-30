@@ -25,7 +25,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.RetAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.VendasContrato.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
 
 public class RetListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
