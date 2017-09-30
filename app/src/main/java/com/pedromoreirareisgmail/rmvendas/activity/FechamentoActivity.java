@@ -247,11 +247,13 @@ public class FechamentoActivity extends AppCompatActivity implements
                 if (cursor.getInt(
                         cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO)) == Constantes.PRAZO_SIM) {
 
-                    mQuantBoloPrazo = mQuantBoloPrazo + 1;
+                    mQuantBoloPrazo = mQuantBoloPrazo + cursor.getInt(
+                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
 
                 } else {
 
-                    mQuantBoloVista = mQuantBoloVista + 1;
+                    mQuantBoloVista = mQuantBoloVista + cursor.getInt(
+                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
                 }
 
                 if (cursor.getInt(

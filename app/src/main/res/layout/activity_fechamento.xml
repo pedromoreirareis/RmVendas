@@ -7,6 +7,7 @@
     android:padding="16dp"
     tools:context="com.pedromoreirareisgmail.rmvendas.activity.FechamentoActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,13 +23,14 @@
 
         <TextView
             android:id="@+id/tv_bolos_vendidos_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/colorBlack" />
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +47,7 @@
 
         <TextView
             android:id="@+id/tv_bolos_vendidos_vista_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -68,7 +70,7 @@
 
         <TextView
             android:id="@+id/tv_bolos_vendidos_prazo_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -94,7 +96,7 @@
 
         <TextView
             android:id="@+id/tv_saldo_inicial_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -117,7 +119,7 @@
 
         <TextView
             android:id="@+id/tv_entrada_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -139,7 +141,7 @@
 
         <TextView
             android:id="@+id/tv_vendas_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -161,7 +163,7 @@
 
         <TextView
             android:id="@+id/tv_retirada_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -183,7 +185,7 @@
 
         <TextView
             android:id="@+id/tv_descontos_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -205,7 +207,7 @@
 
         <TextView
             android:id="@+id/tv_prazo_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -227,7 +229,7 @@
 
         <TextView
             android:id="@+id/tv_saldo_final_fechamento"
-            style="@style/DetalhesFechamento"
+            style="@style/valoresFech"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

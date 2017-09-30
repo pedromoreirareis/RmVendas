@@ -60,6 +60,16 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
+    <style name="DetalhesItemLabelEntRet">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/colorDetalhesLabel</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
     <style name="TextEmpty">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -80,16 +90,6 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="DetalhesItemLabelEntRet">
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">@color/colorDetalhesLabel</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
     <style name="TituloFechamento">
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
@@ -101,9 +101,10 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
-    <style name="DetalhesFechamento">
+    <style name="valoresFech">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAppearanceLarge">?android:attr/textAppearanceLarge</item>
