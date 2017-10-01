@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
+import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
@@ -442,7 +442,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         if (mAdicionar) {
 
-            values.put(AcessoVenda.COLUNA_VENDA_DATA, Datas.getDateTime());
+            values.put(AcessoVenda.COLUNA_VENDA_DATA, DatasHoras.getDataHoraSistema());
 
         } else {
 

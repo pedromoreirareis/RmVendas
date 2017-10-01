@@ -35,8 +35,8 @@ import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ZERO;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras.getDataHoraSistema;
 
 public class RetCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -221,7 +221,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
-        if (valorDouble <= ZERO) {
+        if (valorDouble <= NUMERO_ZERO) {
 
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
             return;
@@ -240,7 +240,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
         if (mUriAtual == null) {
 
-            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDateTime());
+            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDataHoraSistema());
 
         } else {
 

@@ -16,7 +16,7 @@ public class Constantes {
     public static final int PRAZO_NAO = 0;
 
 
-    public static final int ZERO = 0;
+    public static final int NUMERO_ZERO = 0;
     public static final int MIN_QUANT_CARACT = 10;
 
 

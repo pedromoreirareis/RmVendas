@@ -34,7 +34,7 @@ import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ZERO;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 
 public class ProdutosCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -218,7 +218,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             return;
         }
 
-        if (precoDouble <= ZERO) {
+        if (precoDouble <= NUMERO_ZERO) {
 
             mEtPreco.setError(getString(R.string.error_valor_maior_zero));
             return;

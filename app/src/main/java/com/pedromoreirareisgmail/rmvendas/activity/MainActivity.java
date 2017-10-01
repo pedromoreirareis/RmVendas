@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
+import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
@@ -113,17 +113,17 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
+                mDataPesquisa = DatasHoras.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(Datas.dateSetListenerTitle(year, month, day));
+                setTitle(DatasHoras.dateSetListenerDataTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
         };
 
-        setTitle(Datas.getDate());
+        setTitle(DatasHoras.formatDataBr());
 
-        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = DatasHoras.formatDataPesquisarBancoDados(DatasHoras.getDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }

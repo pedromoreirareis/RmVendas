@@ -30,8 +30,8 @@ import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ZERO;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Datas.getDateTime;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras.getDataHoraSistema;
 
 public class SaldoCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -186,7 +186,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
         }
 
 
-        if (valorDouble <= ZERO) {
+        if (valorDouble <= NUMERO_ZERO) {
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
             return;
         }
@@ -196,7 +196,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
         if (mUriAtual == null) {
 
-            values.put(AcessoSaldo.COLUNA_SALDO_DATA, getDateTime());
+            values.put(AcessoSaldo.COLUNA_SALDO_DATA, getDataHoraSistema());
 
         } else {
 

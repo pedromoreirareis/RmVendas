@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
+import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.adapter.RetAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
@@ -88,17 +88,17 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
+                mDataPesquisa = DatasHoras.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_ret_list) + "  " + Datas.dateSetListenerTitle(year, month, day));
+                setTitle(getString(R.string.title_ret_list) + "  " + DatasHoras.dateSetListenerDataTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_RET, null, RetListActivity.this);
             }
         };
 
-        setTitle(getString(R.string.title_ret_list) + "  " + Datas.getDate());
+        setTitle(getString(R.string.title_ret_list) + "  " + DatasHoras.formatDataBr());
 
-        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = DatasHoras.formatDataPesquisarBancoDados(DatasHoras.getDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_RET, null, this);
     }

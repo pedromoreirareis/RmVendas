@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.Datas;
+import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
 import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
@@ -83,9 +83,9 @@ public class FechamentoActivity extends AppCompatActivity implements
                 mQuantBoloVista = 0;
                 mQuantBoloPrazo = 0;
 
-                mDataPesquisa = Datas.dateSetListenerPesquisa(year, month, day);
+                mDataPesquisa = DatasHoras.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_fechamento) + "  " + Datas.dateSetListenerTitle(year, month, day));
+                setTitle(getString(R.string.title_fechamento) + "  " + DatasHoras.dateSetListenerDataTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_ENTRADA_RETIRADA, null, FechamentoActivity.this);
                 getLoaderManager().restartLoader(LOADER_SALDO, null, FechamentoActivity.this);
@@ -94,9 +94,9 @@ public class FechamentoActivity extends AppCompatActivity implements
         };
 
 
-        setTitle(getString(R.string.title_ent_list) + "  " + Datas.getDate());
+        setTitle(getString(R.string.title_ent_list) + "  " + DatasHoras.formatDataBr());
 
-        mDataPesquisa = Datas.formatDatePesquisa(Datas.getDateTime());
+        mDataPesquisa = DatasHoras.formatDataPesquisarBancoDados(DatasHoras.getDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_ENTRADA_RETIRADA, null, this);
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
