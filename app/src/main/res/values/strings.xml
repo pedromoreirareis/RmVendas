@@ -1,5 +1,11 @@
 <resources>
 
+    <!-- *******************************************************************************************
+
+                                INTERFACE - VIEWS - RECURSOS
+
+     ********************************************************************************************-->
+
     <!-- Title Activitys -->
     <string name="app_name">Rm Vendas</string>
     <string name="title_ent_cad_add">Adicionar entrada</string>
@@ -22,6 +28,8 @@
     <string name="menu_salvar_title">Salvar</string>
     <string name="menu_data_title">Data</string>
     <string name="menu_pesquisar_title">Pesquisar</string>
+
+    <!-- Menus Drawer -->
     <string name="menu_entrada_title">Entrada</string>
     <string name="menu_retirada_title">Retirada</string>
     <string name="menu_saldo_inicial_title">Saldo inicial</string>
@@ -30,47 +38,16 @@
     <string name="menu_cadastros_title">Cadastros</string>
     <string name="menu_caixa_title">Caixa</string>
 
-    <!-- mensagens -->
-    <string name="msg_max_caract">Esse campo deve ter no máximo 50 caracteres</string>
-    <string name="msg_editado_sucesso">Editado com sucesso</string>
-    <string name="msg_editado_erro">Erro ao editar</string>
-
-    <!-- mdg dialog alterações -->
-    <string name="dialog_alt_titulo">Descartar as alterações?</string>
-    <string name="dialog_alt_continuar">Continuar editando</string>
-    <string name="dialog_alt_descatar">Descartar</string>
-
-    <!-- mdg dialog excluir -->
-    <string name="dialog_exc_edit_tilte">O que deseja?</string>
-    <string name="dialog_exc_edit_sucesso">Produto excluido com sucesso</string>
-    <string name="dialog_exc_edit_erro">Erro ao excluir o produto </string>
-    <string name="dialog_exc_edit_conf_exc_title">Realmente deseja excluir?</string>
-    <string name="dialog_exc_edit_conf_exc_excluir">Excluir</string>
-    <string name="dialog_exc_edit_conf_exc_cancelar">Cancelar</string>
-
-    <!-- setError -->
-    <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
-    <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
-    <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
-    <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 dígitos</string>
-
     <!-- Drawer -->
     <string name="navigation_drawer_open">Abrir</string>
     <string name="navigation_drawer_close">Fechar</string>
-
-    <!-- Hints -->
-    <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
-    <string name="hint_nome">Nome</string>
-    <string name="hint_preco">Preço R$</string>
-    <string name="hint_valor">Valor R$</string>
-    <string name="hint_descricao">Descrição</string>
 
     <!-- Image Description -->
     <string name="image_desc_main_empty">Imagem de um bolo</string>
     <string name="image_desc_prod_list_empty">Imagem de uma lista vazia</string>
     <string name="image_desc_ent_list_empty">Imagem de um cifrão e um seta para cima</string>
-    <string name="image_desc_saldo_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_ret_list_empty">Imagem de um cifrão e um seta para baixo</string>
+    <string name="image_desc_saldo_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
 
@@ -81,21 +58,9 @@
     <string name="text_ent_list_empty">Nenhuma entrada cadastrada !!!</string>
     <string name="text_saldo_list_empty">Saldo inicial não foi cadastrado !!!</string>
     <string name="text_ret_list_empty">Nenhuma retirada cadastrada !!!</string>
-
-    <!-- Text -->
     <string name="text_prod_esc_quant_cobertura">Cobertura</string>
     <string name="text_prod_esc_quant_desconto">Desconto</string>
     <string name="text_prod_esc_quant_prazo">A prazo</string>
-
-    <!-- Providers -->
-    <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>
-    <string name="provider_log_inserir_prod">Erro ao inserir no banco de dados. Com Uri: </string>
-    <string name="provider_exception_query">Erro na pesquisa - Pesquisa invalida para o Uri: </string>
-    <string name="provider_exception_getType_uri">Erro: Uri desconhecido. Provider getType inválido - Uri: </string>
-    <string name="provider_exception_getType_match"> match: </string>
-    <string name="provider_exception_insert">Erro ao incluir no banco de dados com Uri: </string>
-    <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
-    <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
 
     <!-- Itens de fechamento -->
     <string name="venda_item_main">Total..:</string>
@@ -116,4 +81,58 @@
     <string name="bolos_vendidos_avista_fechamento">Bolos vendidos a vista</string>
     <string name="bolos_vendidos_aprazo_fechamento">Bolos vendidos a prazo</string>
 
+
+    <!-- *******************************************************************************************
+
+                                MENSAGENS - HINTS - ERROS - DIALOGOS
+
+     ********************************************************************************************-->
+
+    <!-- mensagens -->
+    <string name="msg_max_caract">Esse campo deve ter no máximo 50 caracteres</string>
+    <string name="msg_editado_sucesso">Editado com sucesso</string>
+    <string name="msg_editado_erro">Erro ao editar</string>
+
+    <!-- Hints -->
+    <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
+    <string name="hint_nome">Nome</string>
+    <string name="hint_preco">Preço R$</string>
+    <string name="hint_valor">Valor R$</string>
+    <string name="hint_descricao">Descrição</string>
+
+    <!-- mdg dialog alterações -->
+    <string name="dialog_alt_titulo">Descartar as alterações?</string>
+    <string name="dialog_alt_continuar">Continuar editando</string>
+    <string name="dialog_alt_descatar">Descartar</string>
+
+    <!-- mdg dialog excluir -->
+    <string name="dialog_exc_edit_tilte">O que deseja?</string>
+    <string name="dialog_exc_edit_sucesso">Produto excluido com sucesso</string>
+    <string name="dialog_exc_edit_erro">Erro ao excluir o produto </string>
+    <string name="dialog_exc_edit_conf_exc_title">Realmente deseja excluir?</string>
+    <string name="dialog_exc_edit_conf_exc_excluir">Excluir</string>
+    <string name="dialog_exc_edit_conf_exc_cancelar">Cancelar</string>
+
+    <!-- setError -->
+    <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
+    <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
+    <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
+    <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 dígitos</string>
+
+
+    <!-- *******************************************************************************************
+
+                           BANCO DE DADOS - MENSAGENS AO PROGRAMADOR
+
+     ********************************************************************************************-->
+
+    <!-- Providers -->
+    <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>
+    <string name="provider_log_inserir_prod">Erro ao inserir no banco de dados. Com Uri: </string>
+    <string name="provider_exception_query">Erro na pesquisa - Pesquisa invalida para o Uri: </string>
+    <string name="provider_exception_getType_uri">Erro: Uri desconhecido. Provider getType inválido - Uri: </string>
+    <string name="provider_exception_getType_match"> match: </string>
+    <string name="provider_exception_insert">Erro ao incluir no banco de dados com Uri: </string>
+    <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
+    <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
 </resources>
