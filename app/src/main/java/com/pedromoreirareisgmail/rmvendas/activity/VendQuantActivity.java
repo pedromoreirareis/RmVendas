@@ -187,7 +187,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                 isUpdating = true;
 
-                mEtCobertura.setText(Formatar.emCurrency(vlCobert));
+                mEtCobertura.setText(Formatar.formatarParaCurrency(vlCobert));
                 mEtCobertura.setSelection(mEtCobertura.getText().length());
             }
 
@@ -220,7 +220,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                 isUpdating = true;
 
-                mEtDesc.setText(Formatar.emCurrency(vlDesc));
+                mEtDesc.setText(Formatar.formatarParaCurrency(vlDesc));
                 mEtDesc.setSelection(mEtDesc.getText().length());
             }
 
@@ -403,8 +403,8 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         // Conversões
         quant = Integer.parseInt(quantString);
-        valorCobert = Formatar.emDouble(vlCobertString);
-        valorDesconto = Formatar.emDouble(vlDescString);
+        valorCobert = Formatar.formatarParaDouble(vlCobertString);
+        valorDesconto = Formatar.formatarParaDouble(vlDescString);
         valorTotal = Utilidades.calculaValorBoloDouble(mPrecoBolo, quant, valorCobert, valorDesconto);
 
         if (quant < 1) {

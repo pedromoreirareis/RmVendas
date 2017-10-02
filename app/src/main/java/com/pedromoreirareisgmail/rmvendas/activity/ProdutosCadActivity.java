@@ -128,7 +128,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
                 isUpdating = true;
 
-                mEtPreco.setText(Formatar.emCurrency(charSequence.toString().trim()));
+                mEtPreco.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
                 mEtPreco.setSelection(mEtPreco.getText().length());
             }
 
@@ -204,7 +204,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         String nome = mEtNome.getText().toString().trim();
         String precoStr = mEtPreco.getText().toString().trim();
 
-        double precoDouble = Formatar.emDouble(precoStr);
+        double precoDouble = Formatar.formatarParaDouble(precoStr);
 
         if (TextUtils.isEmpty(nome)) {
 

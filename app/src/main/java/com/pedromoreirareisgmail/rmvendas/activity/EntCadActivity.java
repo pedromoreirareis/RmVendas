@@ -129,7 +129,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
                 isUpdating = true;
 
-                mEtValor.setText(Formatar.emCurrency(charSequence.toString().trim()));
+                mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
             }
 
@@ -206,7 +206,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         String valorStr = mEtValor.getText().toString().trim();
         String descricao = mEtDescricao.getText().toString().trim();
 
-        double valorDouble = Formatar.emDouble(valorStr);
+        double valorDouble = Formatar.formatarParaDouble(valorStr);
 
         if (TextUtils.isEmpty(valorStr)) {
 

@@ -100,7 +100,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
                 isUpdating = true;
 
-                mEtValor.setText(Formatar.emCurrency(charSequence.toString().trim()));
+                mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
 
             }
@@ -177,7 +177,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
         String valorStr = mEtValor.getText().toString().trim();
 
-        double valorDouble = Formatar.emDouble(valorStr);
+        double valorDouble = Formatar.formatarParaDouble(valorStr);
 
 
         if (TextUtils.isEmpty(valorStr)) {
