@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.EntAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
 
@@ -74,7 +74,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                 String desc = mAdapter.getCursor().getString(
                         cur.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
 
-                UtilsDialog.editarExcluir(
+                Dialogos.editarExcluir(
                         EntListActivity.this,
                         EntCadActivity.class,
                         uri,
@@ -89,18 +89,18 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisa = DatasHoras.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_ent_list) + "  " + DatasHoras.dateSetListenerDataTitleBr(year, month, day));
+                setTitle(getString(R.string.title_ent_list) + "  " + DataHora.dateSetListenerDataTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_ENT, null, EntListActivity.this);
 
             }
         };
 
-        setTitle(getString(R.string.title_ent_list) + "  " + DatasHoras.formatDataBr());
+        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.formatDataBr());
 
-        mDataPesquisa = DatasHoras.formatDataPesquisarBancoDados(DatasHoras.getDataHoraSistema());
+        mDataPesquisa = DataHora.formatDataPesquisarBancoDados(DataHora.getDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_ENT, null, this);
     }
@@ -121,7 +121,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
         if (id == R.id.action_data) {
 
-            UtilsDialog.dialogData(EntListActivity.this, mDateSetListener);
+            Dialogos.dialogData(EntListActivity.this, mDateSetListener);
         }
         return super.onOptionsItemSelected(item);
     }

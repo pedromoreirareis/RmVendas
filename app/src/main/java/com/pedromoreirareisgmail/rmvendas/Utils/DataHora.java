@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class DatasHoras {
+public class DataHora {
 
     /**
      * Apenas pega o horário do sistema, não faz conversão para outro formato de data ou hora

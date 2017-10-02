@@ -25,19 +25,19 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
 import java.text.NumberFormat;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Utilidades.calculaValorBolo;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Calculos.calcularValorVendaBolo;
 
 public class VendQuantActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -154,7 +154,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlDesc = mEtDesc.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
+                mTvTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
 
                 mEtQuant.setSelection(mEtQuant.getText().length());
             }
@@ -178,7 +178,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 String vlCobert = charSequence.toString().trim().replaceAll("[^\\d]", "");
                 String vlDesc = mEtDesc.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
+                mTvTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
 
                 if (isUpdating) {
                     isUpdating = false;
@@ -210,7 +210,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlDesc = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
-                mTvTotal.setText(calculaValorBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
+                mTvTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mPrecoBolo));
 
 
                 if (isUpdating) {
@@ -243,10 +243,11 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                     mEtCobertura.requestFocus();
 
+
                 } else {
 
                     layoutCobert.setVisibility(View.GONE);
-                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchCobertura);
+                    // Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchCobertura);
                     mEtCobertura.setText("0");
                 }
             }
@@ -269,7 +270,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 } else {
 
                     layoutDesc.setVisibility(View.GONE);
-                    Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchDesc);
+                    //Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchDesc);
                     mEtDesc.setText("0");
                 }
             }
@@ -282,8 +283,8 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         mEtQuant.setCursorVisible(false);
         mEtQuant.setSelectAllOnFocus(false);
-        UserInterface.focoCursorSelect(mEtCobertura);
-        UserInterface.focoCursorSelect(mEtDesc);
+        Utilidades.semCursorFocoSelecaoZerado(mEtCobertura);
+        Utilidades.semCursorFocoSelecaoZerado(mEtDesc);
     }
 
     @Override
@@ -316,7 +317,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                             }
                         };
 
-                UtilsDialog.confirmarAlteracao(
+                Dialogos.confirmarAlteracao(
                         VendQuantActivity.this,
                         descartarButClickListener
                 );
@@ -405,7 +406,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         quant = Integer.parseInt(quantString);
         valorCobert = Formatar.formatarParaDouble(vlCobertString);
         valorDesconto = Formatar.formatarParaDouble(vlDescString);
-        valorTotal = Utilidades.calculaValorBoloDouble(mPrecoBolo, quant, valorCobert, valorDesconto);
+        valorTotal = Calculos.calcularValorVendaBoloDouble(mPrecoBolo, quant, valorCobert, valorDesconto);
 
         if (quant < 1) {
             mEtQuant.setError(getString(R.string.error_valor_menor_um));
@@ -442,7 +443,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         if (mAdicionar) {
 
-            values.put(AcessoVenda.COLUNA_VENDA_DATA, DatasHoras.getDataHoraSistema());
+            values.put(AcessoVenda.COLUNA_VENDA_DATA, DataHora.getDataHoraSistema());
 
         } else {
 
@@ -487,7 +488,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                     }
                 };
 
-        UtilsDialog.confirmarAlteracao(
+        Dialogos.confirmarAlteracao(
                 VendQuantActivity.this,
                 descartarButClickListener
         );

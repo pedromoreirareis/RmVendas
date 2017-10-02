@@ -21,8 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.SaldoAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 
@@ -73,7 +73,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
                 Cursor cur = mAdapter.getCursor();
                 String desc = mAdapter.getCursor().getString(cur.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
 
-                UtilsDialog.editarExcluir(
+                Dialogos.editarExcluir(
                         SaldoListActivity.this,
                         SaldoCadActivity.class,
                         uri,
@@ -88,17 +88,17 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisa = DatasHoras.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_saldo_list) + "  " + DatasHoras.dateSetListenerDataTitleBr(year, month, day));
+                setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.dateSetListenerDataTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_SALDO, null, SaldoListActivity.this);
             }
         };
 
-        setTitle(getString(R.string.title_saldo_list) + "  " + DatasHoras.formatDataBr());
+        setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.formatDataBr());
 
-        mDataPesquisa = DatasHoras.formatDataPesquisarBancoDados(DatasHoras.getDataHoraSistema());
+        mDataPesquisa = DataHora.formatDataPesquisarBancoDados(DataHora.getDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
     }
@@ -118,7 +118,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
 
         if (id == R.id.action_data) {
 
-            UtilsDialog.dialogData(SaldoListActivity.this, mDateSetListener);
+            Dialogos.dialogData(SaldoListActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);

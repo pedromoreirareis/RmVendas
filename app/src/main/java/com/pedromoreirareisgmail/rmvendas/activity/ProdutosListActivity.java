@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 
@@ -70,7 +70,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                 String nome = mAdapter.getCursor().getString(
                         cur.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
 
-                UtilsDialog.editarExcluir(
+                Dialogos.editarExcluir(
                         ProdutosListActivity.this,
                         ProdutosCadActivity.class,
                         uri,

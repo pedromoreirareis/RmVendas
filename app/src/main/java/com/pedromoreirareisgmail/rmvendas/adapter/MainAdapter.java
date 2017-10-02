@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
 
 import java.text.NumberFormat;
@@ -46,7 +46,7 @@ public class MainAdapter extends CursorAdapter {
         int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
 
         String quant = String.valueOf(quantInt);
-        data = DatasHoras.formatHoraMinutoBr(data);
+        data = DataHora.formatHoraMinutoBr(data);
 
         NumberFormat preco = NumberFormat.getCurrencyInstance();
 

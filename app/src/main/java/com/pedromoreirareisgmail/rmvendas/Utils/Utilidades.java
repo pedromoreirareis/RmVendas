@@ -2,16 +2,21 @@ package com.pedromoreirareisgmail.rmvendas.Utils;
 
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Switch;
-
-import java.text.NumberFormat;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class Utilidades {
 
+    /**
+     * Utilizado para fechar o teclado quando o usuario fazer uma seleção negativa com o Switch
+     * Tem um problema que ao fechar não abre mais o teclado
+     *
+     * @param context  indicar o contexto
+     * @param switchCD indicar qual botão Switch foi alterado
+     */
     public static void fecharTecladoSwitch(Context context, Switch switchCD) {
 
         InputMethodManager imm = (InputMethodManager) context.
@@ -21,45 +26,18 @@ public class Utilidades {
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public static String calculaValorBolo(String vlQ, String vlC, String vlD, double vlBolo) {
 
-        if (TextUtils.isEmpty(vlQ)) {
+    /**
+     * Zera o valor do edit escolhido, retira o cursor, e retira a selação e foco
+     *
+     * @param editText recebe um edit
+     */
+    public static void semCursorFocoSelecaoZerado(EditText editText) {
 
-            vlQ = "0";
-        }
-
-        if (TextUtils.isEmpty(vlC)) {
-
-            vlC = "0";
-        }
-
-        if (TextUtils.isEmpty(vlD)) {
-
-            vlD = "0";
-        }
-
-        double valorQ = Double.parseDouble(vlQ);
-        double valorC = Double.parseDouble(vlC) / 100;
-        double valorD = Double.parseDouble(vlD) / 100;
-
-        double quantValor = valorQ * vlBolo;
-
-        double total = quantValor + valorC - valorD;
-
-        NumberFormat preco = NumberFormat.getCurrencyInstance();
-
-        return preco.format(total);
-
-        //return String.valueOf(total);
+        editText.setText("0");
+        editText.setCursorVisible(false);
+        editText.setSelectAllOnFocus(false);
     }
 
-    public static double calculaValorBoloDouble(double vlBolo, double valorQ, double valorC, double valorD) {
-
-
-        double quantValor = valorQ * vlBolo;
-
-        return quantValor + valorC - valorD;
-
-    }
 
 }

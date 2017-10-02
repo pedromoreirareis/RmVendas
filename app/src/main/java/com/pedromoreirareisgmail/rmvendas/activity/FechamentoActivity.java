@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
@@ -83,9 +83,9 @@ public class FechamentoActivity extends AppCompatActivity implements
                 mQuantBoloVista = 0;
                 mQuantBoloPrazo = 0;
 
-                mDataPesquisa = DatasHoras.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_fechamento) + "  " + DatasHoras.dateSetListenerDataTitleBr(year, month, day));
+                setTitle(getString(R.string.title_fechamento) + "  " + DataHora.dateSetListenerDataTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_ENTRADA_RETIRADA, null, FechamentoActivity.this);
                 getLoaderManager().restartLoader(LOADER_SALDO, null, FechamentoActivity.this);
@@ -94,9 +94,9 @@ public class FechamentoActivity extends AppCompatActivity implements
         };
 
 
-        setTitle(getString(R.string.title_ent_list) + "  " + DatasHoras.formatDataBr());
+        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.formatDataBr());
 
-        mDataPesquisa = DatasHoras.formatDataPesquisarBancoDados(DatasHoras.getDataHoraSistema());
+        mDataPesquisa = DataHora.formatDataPesquisarBancoDados(DataHora.getDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_ENTRADA_RETIRADA, null, this);
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
@@ -118,7 +118,7 @@ public class FechamentoActivity extends AppCompatActivity implements
 
         if (id == R.id.action_data) {
 
-            UtilsDialog.dialogData(FechamentoActivity.this, mDateSetListener);
+            Dialogos.dialogData(FechamentoActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);

@@ -13,7 +13,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 
 import java.util.Calendar;
 
-public class UtilsDialog {
+public class Dialogos {
 
     /**
      * @param context       Contexto da Activity

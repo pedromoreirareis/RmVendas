@@ -29,8 +29,8 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
-import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
 
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
                 String desc = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT)) + "  "
                         + cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
 
-                UtilsDialog.editarExcluir(
+                Dialogos.editarExcluir(
                         MainActivity.this,
                         VendQuantActivity.class,
                         uri,
@@ -113,17 +113,17 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisa = DatasHoras.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(DatasHoras.dateSetListenerDataTitleBr(year, month, day));
+                setTitle(DataHora.dateSetListenerDataTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
         };
 
-        setTitle(DatasHoras.formatDataBr());
+        setTitle(DataHora.formatDataBr());
 
-        mDataPesquisa = DatasHoras.formatDataPesquisarBancoDados(DatasHoras.getDataHoraSistema());
+        mDataPesquisa = DataHora.formatDataPesquisarBancoDados(DataHora.getDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
 
             case R.id.action_data_main:
-                UtilsDialog.dialogData(MainActivity.this, mDateSetListener);
+                Dialogos.dialogData(MainActivity.this, mDateSetListener);
                 return true;
         }
 

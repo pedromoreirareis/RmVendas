@@ -26,9 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
@@ -153,7 +153,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
         mEtPreco.setOnTouchListener(mTouchListnerEditCursorFim);
 
-        UserInterface.focoCursorSelect(mEtPreco);
+        Utilidades.semCursorFocoSelecaoZerado(mEtPreco);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
                             }
                         };
 
-                UtilsDialog.confirmarAlteracao(
+                Dialogos.confirmarAlteracao(
                         ProdutosCadActivity.this,
                         descartarButClickListener
                 );
@@ -264,7 +264,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
                     }
                 };
 
-        UtilsDialog.confirmarAlteracao(
+        Dialogos.confirmarAlteracao(
                 ProdutosCadActivity.this,
                 descartarButClickListener
         );

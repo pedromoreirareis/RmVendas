@@ -24,14 +24,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.Utils.UserInterface;
-import com.pedromoreirareisgmail.rmvendas.Utils.UtilsDialog;
+import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
-import static com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras.getDataHoraSistema;
+import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.getDataHoraSistema;
 
 public class SaldoCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -127,7 +127,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
         mEtValor.setOnTouchListener(mTouchListnerEditCursorFim);
 
-        UserInterface.focoCursorSelect(mEtValor);
+        Utilidades.semCursorFocoSelecaoZerado(mEtValor);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
                             }
                         };
 
-                UtilsDialog.confirmarAlteracao(
+                Dialogos.confirmarAlteracao(
                         SaldoCadActivity.this,
                         descartarButClickListener
                 );
@@ -233,7 +233,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
                     }
                 };
 
-        UtilsDialog.confirmarAlteracao(
+        Dialogos.confirmarAlteracao(
                 SaldoCadActivity.this,
                 descartarButClickListener
         );

@@ -9,7 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DatasHoras;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 
 import java.text.NumberFormat;
@@ -36,7 +36,7 @@ public class SaldoAdapter extends CursorAdapter {
         String dataString = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
 
         NumberFormat valorFormat = NumberFormat.getCurrencyInstance();
-        String horaString = DatasHoras.formatHoraMinutoBr(dataString);
+        String horaString = DataHora.formatHoraMinutoBr(dataString);
 
         holder.valor.setText(valorFormat.format(valorDouble));
         holder.hora.setText(horaString);
