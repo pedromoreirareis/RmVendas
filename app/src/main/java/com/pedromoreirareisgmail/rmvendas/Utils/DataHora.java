@@ -13,7 +13,7 @@ public class DataHora {
      *
      * @return Data e hora do sistema no formato "yyyy-MM-dd HH:mm:ss"
      */
-    public static String getDataHoraSistema() {
+    public static String obterDataHoraSistema() {
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
@@ -29,7 +29,7 @@ public class DataHora {
      *
      * @return Data do Sistema no formato "dd/MM/yyyy". Converte de "yyyy-MM-dd" para "dd/MM/yyyy"
      */
-    public static String formatDataBr() {
+    public static String formatarDataBr() {
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
@@ -46,7 +46,7 @@ public class DataHora {
      * @param dataHora data e hora recebida do sistema no formato "yyyy-MM-dd HH:mm:ss"
      * @return Hora e minutos no formato "HH:mm"
      */
-    public static String formatHoraMinutoBr(String dataHora) {
+    public static String formatarHoraMinutoBr(String dataHora) {
 
         Date dataSistema = null;
 
@@ -75,7 +75,7 @@ public class DataHora {
      * @param dataHora data e hora do sistema ou escolhida no calendario no formato "yyyy-MM-dd HH:mm:ss"
      * @return data no formato "yyyy-MM-dd" para fazer a pesquisa no banco de dados
      */
-    public static String formatDataPesquisarBancoDados(String dataHora) {
+    public static String formatarDataPesquisarBancoDados(String dataHora) {
 
         Date dataPesquisaBancoDados = null;
 
@@ -145,7 +145,7 @@ public class DataHora {
      * @param day   dia
      * @return data no formato "dd-MM-yyyy", que é formato conhecido no Brasil
      */
-    public static String dateSetListenerDataTitleBr(int year, int month, int day) {
+    public static String dateSetListenerDataBrTitulo(int year, int month, int day) {
 
         month = month + 1;
 

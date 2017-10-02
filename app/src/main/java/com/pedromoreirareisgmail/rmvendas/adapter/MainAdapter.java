@@ -11,9 +11,8 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
-
-import java.text.NumberFormat;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.VEZES_X;
 
@@ -34,76 +33,72 @@ public class MainAdapter extends CursorAdapter {
 
         MainViewHolder holder = new MainViewHolder(view);
 
-        String nome = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
-        String data = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_DATA));
-        int quantInt = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
-        double vlCoberDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
-        double vlDescDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
-        double vlTotalDouble = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
-        double vlUmBolo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO));
-        int temCobert = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
-        int temDesc = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO));
+        String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
+        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_DATA));
+
+        double valorCobertura = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
+        double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
+        double valorTotalVenda = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
+        double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO));
+
+        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
+        int temCobertura = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
+        int temDesconto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO));
         int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
 
-        String quant = String.valueOf(quantInt);
-        data = DataHora.formatHoraMinutoBr(data);
+        holder.tvQuantidade.setText(String.valueOf(quantidadeProduto) + VEZES_X + Formatar.formatarDoubleParaCurrency(valorUnidadeProduto));
+        holder.tvNomeProduto.setText(nomeProduto);
+        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(dataHora));
 
-        NumberFormat preco = NumberFormat.getCurrencyInstance();
+        if (temCobertura == Constantes.COBERTURA_SIM) {
 
-        holder.tvQuant.setText(quant + VEZES_X + preco.format(vlUmBolo));
-        holder.tvNome.setText(nome);
-        holder.tvData.setText(data);
-
-        if (temCobert == Constantes.COBERTURA_SIM) {
-
-            holder.tvVlCober.setText(preco.format(vlCoberDouble));
+            holder.tvValorCobertura.setText(Formatar.formatarDoubleParaCurrency(valorCobertura));
 
 
         } else {
 
-            holder.tvVlCober.setText(preco.format(0));
+            holder.tvValorCobertura.setText(Formatar.formatarDoubleParaCurrency(0));
 
         }
 
-        if (temDesc == Constantes.DESCONTO_SIM) {
+        if (temDesconto == Constantes.DESCONTO_SIM) {
 
-            holder.tvVlDesc.setText(preco.format(vlDescDouble));
+            holder.tvValorDesconto.setText(Formatar.formatarDoubleParaCurrency(valorDesconto));
 
         } else {
 
-            holder.tvVlDesc.setText(preco.format(0));
+            holder.tvValorDesconto.setText(Formatar.formatarDoubleParaCurrency(0));
         }
 
         if (temPrazo == Constantes.PRAZO_SIM) {
 
-            holder.tvVlTotalLabel.setText(R.string.prazo_item_main);
-            holder.tvVlTotal.setText(preco.format(vlTotalDouble));
+            holder.tvValorTotalLabel.setText(R.string.prazo_item_main);
+            holder.tvValorTotalVenda.setText(Formatar.formatarDoubleParaCurrency(valorTotalVenda));
 
         } else {
-            //holder.tvVlTotalLabel.setText(R.string.venda_item_main);
-            holder.tvVlTotal.setText(preco.format(vlTotalDouble));
+            holder.tvValorTotalVenda.setText(Formatar.formatarDoubleParaCurrency(valorTotalVenda));
         }
     }
 
     class MainViewHolder {
 
-        final TextView tvNome;
-        final TextView tvQuant;
-        final TextView tvVlCober;
-        final TextView tvVlDesc;
-        final TextView tvVlTotal;
-        final TextView tvData;
-        final TextView tvVlTotalLabel;
+        final TextView tvNomeProduto;
+        final TextView tvQuantidade;
+        final TextView tvValorCobertura;
+        final TextView tvValorDesconto;
+        final TextView tvValorTotalVenda;
+        final TextView tvValorTotalLabel;
+        final TextView tvHoraMinuto;
 
         public MainViewHolder(View view) {
 
-            tvNome = view.findViewById(R.id.tv_nome_main);
-            tvQuant = view.findViewById(R.id.tv_valor_quant_main);
-            tvVlCober = view.findViewById(R.id.tv_valor_cober_main);
-            tvVlDesc = view.findViewById(R.id.tv_valor_desc_main);
-            tvVlTotal = view.findViewById(R.id.tv_valor_venda_main);
-            tvVlTotalLabel = view.findViewById(R.id.tv_valor_label_venda_main);
-            tvData = view.findViewById(R.id.tv_data_main);
+            tvNomeProduto = view.findViewById(R.id.tv_nome_main);
+            tvQuantidade = view.findViewById(R.id.tv_valor_quant_main);
+            tvValorCobertura = view.findViewById(R.id.tv_valor_cober_main);
+            tvValorDesconto = view.findViewById(R.id.tv_valor_desc_main);
+            tvValorTotalVenda = view.findViewById(R.id.tv_valor_venda_main);
+            tvValorTotalLabel = view.findViewById(R.id.tv_valor_label_venda_main);
+            tvHoraMinuto = view.findViewById(R.id.tv_data_main);
         }
     }
 }

@@ -317,7 +317,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                             }
                         };
 
-                Dialogos.confirmarAlteracao(
+                Dialogos.dialogoConfirmarAlteracao(
                         VendQuantActivity.this,
                         descartarButClickListener
                 );
@@ -443,7 +443,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         if (mAdicionar) {
 
-            values.put(AcessoVenda.COLUNA_VENDA_DATA, DataHora.getDataHoraSistema());
+            values.put(AcessoVenda.COLUNA_VENDA_DATA, DataHora.obterDataHoraSistema());
 
         } else {
 
@@ -488,7 +488,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                     }
                 };
 
-        Dialogos.confirmarAlteracao(
+        Dialogos.dialogoConfirmarAlteracao(
                 VendQuantActivity.this,
                 descartarButClickListener
         );

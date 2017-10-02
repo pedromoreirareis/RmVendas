@@ -64,4 +64,12 @@ public class Formatar {
 
     }
 
+    public static String formatarDoubleParaCurrency(double valorParaFormatar) {
+
+        NumberFormat formatarCurrency = NumberFormat.getCurrencyInstance();
+
+        return formatarCurrency.format(valorParaFormatar);
+    }
+
+
 }

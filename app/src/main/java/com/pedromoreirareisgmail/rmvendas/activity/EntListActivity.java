@@ -74,7 +74,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                 String desc = mAdapter.getCursor().getString(
                         cur.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
 
-                Dialogos.editarExcluir(
+                Dialogos.dialogoEditarExcluir(
                         EntListActivity.this,
                         EntCadActivity.class,
                         uri,
@@ -91,16 +91,16 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
                 mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_ent_list) + "  " + DataHora.dateSetListenerDataTitleBr(year, month, day));
+                setTitle(getString(R.string.title_ent_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_ENT, null, EntListActivity.this);
 
             }
         };
 
-        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.formatDataBr());
+        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.formatarDataBr());
 
-        mDataPesquisa = DataHora.formatDataPesquisarBancoDados(DataHora.getDataHoraSistema());
+        mDataPesquisa = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_ENT, null, this);
     }
@@ -121,7 +121,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
         if (id == R.id.action_data) {
 
-            Dialogos.dialogData(EntListActivity.this, mDateSetListener);
+            Dialogos.dialogoDatas(EntListActivity.this, mDateSetListener);
         }
         return super.onOptionsItemSelected(item);
     }

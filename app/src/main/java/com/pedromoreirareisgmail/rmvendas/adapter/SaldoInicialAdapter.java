@@ -10,14 +10,13 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 
-import java.text.NumberFormat;
-
-public class SaldoAdapter extends CursorAdapter {
+public class SaldoInicialAdapter extends CursorAdapter {
 
 
-    public SaldoAdapter(Context context) {
+    public SaldoInicialAdapter(Context context) {
         super(context, null, 0);
     }
 
@@ -32,26 +31,23 @@ public class SaldoAdapter extends CursorAdapter {
 
         SaldoViewHolder holder = new SaldoViewHolder(view);
 
-        double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
-        String dataString = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
+        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
+        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
 
-        NumberFormat valorFormat = NumberFormat.getCurrencyInstance();
-        String horaString = DataHora.formatHoraMinutoBr(dataString);
-
-        holder.valor.setText(valorFormat.format(valorDouble));
-        holder.hora.setText(horaString);
+        holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
+        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(dataHora));
     }
 
 
     class SaldoViewHolder {
 
-        final TextView valor;
-        final TextView hora;
+        final TextView tvValor;
+        final TextView tvHoraMinuto;
 
         public SaldoViewHolder(View view) {
 
-            valor = view.findViewById(R.id.tv_valor_saldo_inicial_list);
-            hora = view.findViewById(R.id.tv_hora_saldo_inicial_list);
+            tvValor = view.findViewById(R.id.tv_valor_saldo_inicial_list);
+            tvHoraMinuto = view.findViewById(R.id.tv_hora_saldo_inicial_list);
         }
     }
 }

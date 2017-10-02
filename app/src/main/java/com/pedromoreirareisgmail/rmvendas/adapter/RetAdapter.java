@@ -10,9 +10,8 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
-
-import java.text.NumberFormat;
 
 public class RetAdapter extends CursorAdapter {
 
@@ -31,29 +30,26 @@ public class RetAdapter extends CursorAdapter {
 
         RetViewHolder holder = new RetViewHolder(view);
 
-        double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
-        String dataString = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
-        String descString = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
+        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
+        String desccricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
 
-        NumberFormat valorFormat = NumberFormat.getCurrencyInstance();
-        String horaString = DataHora.formatHoraMinutoBr(dataString);
-
-        holder.valor.setText(valorFormat.format(valorDouble));
-        holder.hora.setText(horaString);
-        holder.desc.setText(descString);
+        holder.valor.setText(Formatar.formatarDoubleParaCurrency(valor));
+        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(dataHora));
+        holder.descricao.setText(desccricao);
     }
 
     class RetViewHolder {
 
         final TextView valor;
-        final TextView hora;
-        final TextView desc;
+        final TextView tvHoraMinuto;
+        final TextView descricao;
 
         public RetViewHolder(View view) {
 
             valor = view.findViewById(R.id.tv_valor_ent_ret_list);
-            hora = view.findViewById(R.id.tv_hora_ent_ret_list);
-            desc = view.findViewById(R.id.tv_desc_ent_ret_list);
+            tvHoraMinuto = view.findViewById(R.id.tv_hora_ent_ret_list);
+            descricao = view.findViewById(R.id.tv_desc_ent_ret_list);
         }
     }
 }

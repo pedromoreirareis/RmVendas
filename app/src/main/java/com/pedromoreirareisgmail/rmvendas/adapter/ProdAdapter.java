@@ -10,9 +10,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
-
-import java.text.NumberFormat;
 
 public class ProdAdapter extends CursorAdapter{
 
@@ -31,13 +30,11 @@ public class ProdAdapter extends CursorAdapter{
 
         ProdViewHolder holder = new ProdViewHolder(view);
 
-        String nome = cursor.getString(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
-        double precoDouble = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
+        String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
+        double preco = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
 
-        NumberFormat preco = NumberFormat.getCurrencyInstance();
-
-        holder.tvNome.setText(nome);
-        holder.tvPreco.setText(preco.format(precoDouble));
+        holder.tvNome.setText(nomeProduto);
+        holder.tvPreco.setText(Formatar.formatarDoubleParaCurrency(preco));
     }
 
     class ProdViewHolder{

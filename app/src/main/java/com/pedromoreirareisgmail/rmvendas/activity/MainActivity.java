@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
                 String desc = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT)) + "  "
                         + cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
 
-                Dialogos.editarExcluir(
+                Dialogos.dialogoEditarExcluir(
                         MainActivity.this,
                         VendQuantActivity.class,
                         uri,
@@ -115,15 +115,15 @@ public class MainActivity extends AppCompatActivity
 
                 mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(DataHora.dateSetListenerDataTitleBr(year, month, day));
+                setTitle(DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
         };
 
-        setTitle(DataHora.formatDataBr());
+        setTitle(DataHora.formatarDataBr());
 
-        mDataPesquisa = DataHora.formatDataPesquisarBancoDados(DataHora.getDataHoraSistema());
+        mDataPesquisa = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
 
             case R.id.action_data_main:
-                Dialogos.dialogData(MainActivity.this, mDateSetListener);
+                Dialogos.dialogoDatas(MainActivity.this, mDateSetListener);
                 return true;
         }
 

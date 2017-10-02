@@ -36,7 +36,7 @@ import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
-import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.getDataHoraSistema;
+import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
 
 public class RetCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -191,7 +191,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
                             }
                         };
 
-                Dialogos.confirmarAlteracao(
+                Dialogos.dialogoConfirmarAlteracao(
                         RetCadActivity.this,
                         descartarButClickListener
                 );
@@ -240,7 +240,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
         if (mUriAtual == null) {
 
-            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, getDataHoraSistema());
+            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, obterDataHoraSistema());
 
         } else {
 
@@ -274,7 +274,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
                     }
                 };
 
-        Dialogos.confirmarAlteracao(
+        Dialogos.dialogoConfirmarAlteracao(
                 RetCadActivity.this,
                 descartarButClickListener
         );

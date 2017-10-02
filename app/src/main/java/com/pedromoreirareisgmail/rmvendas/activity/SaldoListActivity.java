@@ -23,13 +23,13 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.adapter.SaldoAdapter;
+import com.pedromoreirareisgmail.rmvendas.adapter.SaldoInicialAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
 
 public class SaldoListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_SALDO = 11;
-    private SaldoAdapter mAdapter;
+    private SaldoInicialAdapter mAdapter;
 
     private String mDataPesquisa = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -58,7 +58,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
 
         ListView listView = (ListView) findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
-        mAdapter = new SaldoAdapter(this);
+        mAdapter = new SaldoInicialAdapter(this);
 
         listView.setEmptyView(emptyView);
         listView.setAdapter(mAdapter);
@@ -73,7 +73,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
                 Cursor cur = mAdapter.getCursor();
                 String desc = mAdapter.getCursor().getString(cur.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
 
-                Dialogos.editarExcluir(
+                Dialogos.dialogoEditarExcluir(
                         SaldoListActivity.this,
                         SaldoCadActivity.class,
                         uri,
@@ -90,15 +90,15 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
 
                 mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.dateSetListenerDataTitleBr(year, month, day));
+                setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_SALDO, null, SaldoListActivity.this);
             }
         };
 
-        setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.formatDataBr());
+        setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.formatarDataBr());
 
-        mDataPesquisa = DataHora.formatDataPesquisarBancoDados(DataHora.getDataHoraSistema());
+        mDataPesquisa = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
     }
@@ -118,7 +118,7 @@ public class SaldoListActivity extends AppCompatActivity implements LoaderManage
 
         if (id == R.id.action_data) {
 
-            Dialogos.dialogData(SaldoListActivity.this, mDateSetListener);
+            Dialogos.dialogoDatas(SaldoListActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);

@@ -189,7 +189,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
                             }
                         };
 
-                Dialogos.confirmarAlteracao(
+                Dialogos.dialogoConfirmarAlteracao(
                         ProdutosCadActivity.this,
                         descartarButClickListener
                 );
@@ -264,7 +264,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
                     }
                 };
 
-        Dialogos.confirmarAlteracao(
+        Dialogos.dialogoConfirmarAlteracao(
                 ProdutosCadActivity.this,
                 descartarButClickListener
         );

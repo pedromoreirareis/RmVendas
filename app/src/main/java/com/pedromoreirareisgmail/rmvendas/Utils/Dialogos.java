@@ -21,7 +21,7 @@ public class Dialogos {
      * @param uri           uri produto clicadado
      * @param nomeProd      nome do Produto do item clicado
      */
-    public static void editarExcluir(
+    public static void dialogoEditarExcluir(
             final Context context,
             final Class classActivity,
             final Uri uri,
@@ -98,7 +98,7 @@ public class Dialogos {
      * @param context                   contexto
      * @param descartarButClickListener Listener criado dizendo o que sera feito para descartar
      */
-    public static void confirmarAlteracao(
+    public static void dialogoConfirmarAlteracao(
             Context context,
             DialogInterface.OnClickListener descartarButClickListener
     ) {
@@ -120,7 +120,7 @@ public class Dialogos {
         dialog.create().show();
     }
 
-    public static void dialogData(Context context, DatePickerDialog.OnDateSetListener mDateSetListener) {
+    public static void dialogoDatas(Context context, DatePickerDialog.OnDateSetListener mDateSetListener) {
 
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);

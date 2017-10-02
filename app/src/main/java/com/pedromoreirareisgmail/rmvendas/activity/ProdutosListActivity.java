@@ -70,7 +70,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                 String nome = mAdapter.getCursor().getString(
                         cur.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
 
-                Dialogos.editarExcluir(
+                Dialogos.dialogoEditarExcluir(
                         ProdutosListActivity.this,
                         ProdutosCadActivity.class,
                         uri,
