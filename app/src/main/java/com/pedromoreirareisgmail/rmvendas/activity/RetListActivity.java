@@ -24,15 +24,16 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapter.RetAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
 
 public class RetListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_RET = 9;
+    private static final int LOADER_RETIRADA_LIST = 0;
     private RetAdapter mAdapter;
 
-    private String mDataPesquisa = "";
+    private String mDataPesquisarBD = "";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -70,14 +71,19 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
 
                 Uri uri = ContentUris.withAppendedId(AcessoEntRet.CONTENT_URI_ENT_RET, id);
 
-                Cursor cur = mAdapter.getCursor();
-                String desc = mAdapter.getCursor().getString(cur.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
+                Cursor cursor = mAdapter.getCursor();
+                String mensagemexcluir = mAdapter.getCursor().getString(
+                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC)) +
+                        getString(R.string.dialog_exc_edit_texto_excluir_valor) +
+                        " " +
+                        Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
+                                cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR)));
 
                 Dialogos.dialogoEditarExcluir(
                         RetListActivity.this,
                         EntCadActivity.class,
                         uri,
-                        desc
+                        mensagemexcluir
                 );
 
                 return true;
@@ -88,19 +94,19 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
                 setTitle(getString(R.string.title_ret_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
-                getLoaderManager().restartLoader(LOADER_RET, null, RetListActivity.this);
+                getLoaderManager().restartLoader(LOADER_RETIRADA_LIST, null, RetListActivity.this);
             }
         };
 
-        setTitle(getString(R.string.title_ret_list) + "  " + DataHora.formatarDataBr());
+        setTitle(getString(R.string.title_ret_list) + "  " + DataHora.obterFormatarDataBrTitulo());
 
-        mDataPesquisa = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
+        mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
-        getLoaderManager().initLoader(LOADER_RET, null, this);
+        getLoaderManager().initLoader(LOADER_RETIRADA_LIST, null, this);
     }
 
     @Override
@@ -134,8 +140,9 @@ public class RetListActivity extends AppCompatActivity implements LoaderManager.
                 AcessoEntRet.COLUNA_ENT_RET_TIPO
         };
 
+         /* Retorna dados cadastrados em uma data especificada e se for do tipo retirada */
         String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + " =? AND " + AcessoEntRet.COLUNA_ENT_RET_DATA + " LIKE ?";
-        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_RETIRADA), mDataPesquisa + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_RETIRADA), mDataPesquisarBD + "%"};
         String sortOrder = AcessoEntRet.COLUNA_ENT_RET_DATA;
 
         return new CursorLoader(

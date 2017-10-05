@@ -14,8 +14,8 @@
     <string name="title_prod_cad_edit">Editar produto</string>
     <string name="title_ret_cad_add">Adicionar retirada</string>
     <string name="title_ret_cad_edit">Editar retirada</string>
-    <string name="title_saldo_cad_add">Adicionar saldo inicial</string>
-    <string name="title_saldo_cad_edit">Editar saldo inicial</string>
+    <string name="title_saldo_inicial_cad_add">Adicionar saldo inicial</string>
+    <string name="title_saldo_inicial_cad_edit">Editar saldo inicial</string>
     <string name="title_venda_add">Adicionar venda</string>
     <string name="title_vend_edit">Editar venda</string>
     <string name="title_vend_list">Produtos cadastrados</string>
@@ -47,23 +47,23 @@
     <string name="image_desc_prod_list_empty">Imagem de uma lista vazia</string>
     <string name="image_desc_ent_list_empty">Imagem de um cifrão e um seta para cima</string>
     <string name="image_desc_ret_list_empty">Imagem de um cifrão e um seta para baixo</string>
-    <string name="image_desc_saldo_list_empty">Imagem de duas mãos segurando um cifrão</string>
+    <string name="image_desc_saldo_inicial_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
 
-    <!-- Text -->
+    <!-- Textos -->
     <string name="text_main_empty">Nenhum bolo vendido no dia !!!</string>
     <string name="text_prod_list_empty">Nenhum produto cadastrado !!!</string>
     <string name="text_vend_list_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_ent_list_empty">Nenhuma entrada cadastrada !!!</string>
-    <string name="text_saldo_list_empty">Saldo inicial não foi cadastrado !!!</string>
+    <string name="text_saldo_inicial_list_empty">Saldo inicial não foi cadastrado !!!</string>
     <string name="text_ret_list_empty">Nenhuma retirada cadastrada !!!</string>
     <string name="text_prod_esc_quant_cobertura">Cobertura</string>
     <string name="text_prod_esc_quant_desconto">Desconto</string>
     <string name="text_prod_esc_quant_prazo">A prazo</string>
 
     <!-- Itens de fechamento -->
-    <string name="venda_item_main">Total..:</string>
+    <string name="total_venda_vista_item_main">Total..:</string>
     <string name="prazo_item_main">Prazo.:</string>
     <string name="cobert_item_main">Cobert:</string>
     <string name="desc_item_main">Desc..:</string>
@@ -100,18 +100,22 @@
     <string name="hint_valor">Valor R$</string>
     <string name="hint_descricao">Descrição</string>
 
-    <!-- mdg dialog alterações -->
+    <!-- msg dialog alterações -->
     <string name="dialog_alt_titulo">Descartar as alterações?</string>
     <string name="dialog_alt_continuar">Continuar editando</string>
     <string name="dialog_alt_descatar">Descartar</string>
 
-    <!-- mdg dialog excluir -->
+    <!-- msg dialog excluir -->
     <string name="dialog_exc_edit_tilte">O que deseja?</string>
+    <string name="dialog_exc_edit_texto_excluir_saldo_inicial_1">O saldo inicial do dia</string>
+    <string name="dialog_exc_edit_texto_excluir_saldo_inicial_2">, no valor de</string>
+    <string name="dialog_exc_edit_texto_excluir_valor">, no valor de</string>
     <string name="dialog_exc_edit_sucesso">Produto excluido com sucesso</string>
     <string name="dialog_exc_edit_erro">Erro ao excluir o produto </string>
     <string name="dialog_exc_edit_conf_exc_title">Realmente deseja excluir?</string>
     <string name="dialog_exc_edit_conf_exc_excluir">Excluir</string>
     <string name="dialog_exc_edit_conf_exc_cancelar">Cancelar</string>
+
 
     <!-- setError -->
     <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>

@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        setTitle(DataHora.formatarDataBr());
+        setTitle(DataHora.obterFormatarDataBrTitulo());
 
         mDataPesquisa = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_action_saldo_inicial:
-                startActivity(new Intent(MainActivity.this, SaldoListActivity.class));
+                startActivity(new Intent(MainActivity.this, SaldoInicialListActivity.class));
                 break;
 
             case R.id.nav_action_list_prod:

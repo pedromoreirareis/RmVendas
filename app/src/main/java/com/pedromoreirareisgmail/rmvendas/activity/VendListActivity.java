@@ -25,11 +25,11 @@ import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 
 public class VendListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_PROD_LISTA = 12;
+    private static final int LOADER_VEND_LIST = 0;
 
     private ProdAdapter mAdapter;
 
-    private String mPesquisar = "";
+    private String mProdutoPesquisarBD = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,8 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
 
         listView.setAdapter(mAdapter);
 
+        /* ao clicar sera aberto uma nova activity para escolha da quantidade e outros detalhes da
+         venda*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
@@ -75,7 +77,7 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
             }
         });
 
-        getLoaderManager().initLoader(LOADER_PROD_LISTA, null, this);
+        getLoaderManager().initLoader(LOADER_VEND_LIST, null, this);
     }
 
 
@@ -98,9 +100,9 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                mPesquisar = newText;
+                mProdutoPesquisarBD = newText;
 
-                getLoaderManager().restartLoader(LOADER_PROD_LISTA, null, VendListActivity.this);
+                getLoaderManager().restartLoader(LOADER_VEND_LIST, null, VendListActivity.this);
 
                 return true;
             }
@@ -119,8 +121,11 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
                 AcessoProdutos.COLUNA_PRODUTO_PRECO
         };
 
+        /* A pesquisa inicial traz todos os produtos cadastrados, se clicar no menu search, sera
+        pesquisado de acordo com nome do produto digitado
+         */
         String selection = AcessoProdutos.COLUNA_PRODUTO_NOME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
+        String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
         String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
 
         return new CursorLoader(

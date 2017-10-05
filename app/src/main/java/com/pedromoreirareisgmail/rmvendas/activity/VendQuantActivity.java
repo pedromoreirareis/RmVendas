@@ -282,7 +282,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         mEtDesc.setOnTouchListener(mTouchListnerEditCursorFim);
 
         mEtQuant.setCursorVisible(false);
-        mEtQuant.setSelectAllOnFocus(false);
+        mEtQuant.setSelectAllOnFocus(true); // estava false no entanto na primeira entrada do usuario nao apaga texto anterior testando true
         Utilidades.semCursorFocoSelecaoZerado(mEtCobertura);
         Utilidades.semCursorFocoSelecaoZerado(mEtDesc);
     }

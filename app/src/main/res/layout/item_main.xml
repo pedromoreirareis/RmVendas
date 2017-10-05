@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_attach_money_black_48px"
-                android:text="@string/venda_item_main" />
+                android:text="@string/total_venda_vista_item_main" />
 
             <TextView
                 android:id="@+id/tv_valor_venda_main"

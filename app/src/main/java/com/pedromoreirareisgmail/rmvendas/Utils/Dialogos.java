@@ -16,16 +16,16 @@ import java.util.Calendar;
 public class Dialogos {
 
     /**
-     * @param context       Contexto da Activity
-     * @param classActivity Activity que sera aberta pela intent
-     * @param uri           uri produto clicadado
-     * @param nomeProd      nome do Produto do item clicado
+     * @param context        Contexto da Activity - activity atual
+     * @param classActivity  Activity que sera aberta pela intent - sera aberta se for editar
+     * @param uri            uri produto clicadado - usado para excluir ou editar
+     * @param mensagemExcluir nome ou descricao do Produto do item clicado - apresentado no dialogo
      */
     public static void dialogoEditarExcluir(
             final Context context,
             final Class classActivity,
             final Uri uri,
-            final String nomeProd
+            final String mensagemExcluir
     ) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -53,7 +53,7 @@ public class Dialogos {
                                 new AlertDialog.Builder(context);
 
                         builderExcluir.setTitle(R.string.dialog_exc_edit_conf_exc_title);
-                        builderExcluir.setMessage("\n" + nomeProd);
+                        builderExcluir.setMessage("\n" + mensagemExcluir);
 
                         builderExcluir.setPositiveButton(
                                 R.string.dialog_exc_edit_conf_exc_excluir,

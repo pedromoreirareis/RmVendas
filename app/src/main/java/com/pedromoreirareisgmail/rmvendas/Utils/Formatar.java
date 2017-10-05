@@ -64,6 +64,13 @@ public class Formatar {
 
     }
 
+    /**
+     * Faz uma formatação simples e direta de um double para um currency, retornando uma string
+     * em formato currency para apresentação para o usuario
+     *
+     * @param valorParaFormatar valor double que sera formatado para currency
+     * @return um string em formato currency
+     */
     public static String formatarDoubleParaCurrency(double valorParaFormatar) {
 
         NumberFormat formatarCurrency = NumberFormat.getCurrencyInstance();

@@ -94,7 +94,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         };
 
 
-        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.formatarDataBr());
+        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.obterFormatarDataBrTitulo());
 
         mDataPesquisa = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 

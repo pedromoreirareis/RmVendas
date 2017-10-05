@@ -24,12 +24,11 @@ public class DataHora {
 
 
     /**
-     * Pega escolhida no caléndario ou a data atual e faz a conversão do formato do sistema para o
-     * formato usado no Brasil
+     * Pega data do sistema e faz a conversão do formato do sistema para o formato usado no Brasil
      *
      * @return Data do Sistema no formato "dd/MM/yyyy". Converte de "yyyy-MM-dd" para "dd/MM/yyyy"
      */
-    public static String formatarDataBr() {
+    public static String obterFormatarDataBrTitulo() {
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
@@ -40,22 +39,22 @@ public class DataHora {
 
 
     /**
-     * Recebe uma data e hora do sistema no formato "yyyy-MM-dd HH:mm:ss" e  formata para o
+     * Recebe uma data e hora no formato "yyyy-MM-dd HH:mm:ss" e  formata para o
      * "HH:mm", que são as horas e minuto em formato do Brasil
      *
-     * @param dataHora data e hora recebida do sistema no formato "yyyy-MM-dd HH:mm:ss"
+     * @param dataHora data e hora recebida no formato "yyyy-MM-dd HH:mm:ss"
      * @return Hora e minutos no formato "HH:mm"
      */
     public static String formatarHoraMinutoBr(String dataHora) {
 
-        Date dataSistema = null;
+        Date dataHoraParse = null;
 
         SimpleDateFormat horaFormatar =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
         try {
 
-            dataSistema = horaFormatar.parse(dataHora);
+            dataHoraParse = horaFormatar.parse(dataHora);
 
         } catch (ParseException e) {
 
@@ -64,7 +63,36 @@ public class DataHora {
 
         horaFormatar = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-        return horaFormatar.format(dataSistema);
+        return horaFormatar.format(dataHoraParse);
+    }
+
+
+    /**
+     * Recebe uma data e hora no formato "yyyy-MM-dd HH:mm:ss" e  formata para o
+     * "dd-MM-yyyy", que é o tipo de data usada no Brasil
+     *
+     * @param dataHora data e hora recebida no formato "yyyy-MM-dd HH:mm:ss"
+     * @return data no formato dd-MM-yyyy"
+     */
+    public static String formatarDataBr(String dataHora) {
+
+        Date dataHoraParse = null;
+
+        SimpleDateFormat dataFormatar =
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+        try {
+
+            dataHoraParse = dataFormatar.parse(dataHora);
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
+
+        dataFormatar = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+        return dataFormatar.format(dataHoraParse);
     }
 
     /**

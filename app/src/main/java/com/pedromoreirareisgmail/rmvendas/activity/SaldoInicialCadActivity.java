@@ -33,7 +33,7 @@ import com.pedromoreirareisgmail.rmvendas.data.Crud;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
 
-public class SaldoCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SaldoInicialCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_RET_CAD = 10;
 
@@ -71,11 +71,11 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
         if (mUriAtual == null) {
 
-            setTitle(R.string.title_saldo_cad_add);
+            setTitle(R.string.title_saldo_inicial_cad_add);
 
         } else {
 
-            setTitle(R.string.title_saldo_cad_edit);
+            setTitle(R.string.title_saldo_inicial_cad_edit);
             getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
         }
 
@@ -158,12 +158,12 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(SaldoCadActivity.this);
+                                NavUtils.navigateUpFromSameTask(SaldoInicialCadActivity.this);
                             }
                         };
 
                 Dialogos.dialogoConfirmarAlteracao(
-                        SaldoCadActivity.this,
+                        SaldoInicialCadActivity.this,
                         descartarButClickListener
                 );
 
@@ -206,11 +206,11 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
 
         if (mUriAtual == null) {
 
-            Crud.inserir(SaldoCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO, values);
+            Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO, values);
 
         } else {
 
-            Crud.editar(SaldoCadActivity.this, mUriAtual, values);
+            Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
 
         }
 
@@ -234,7 +234,7 @@ public class SaldoCadActivity extends AppCompatActivity implements LoaderManager
                 };
 
         Dialogos.dialogoConfirmarAlteracao(
-                SaldoCadActivity.this,
+                SaldoInicialCadActivity.this,
                 descartarButClickListener
         );
     }

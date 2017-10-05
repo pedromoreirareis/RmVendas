@@ -21,15 +21,16 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
 import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 
 public class ProdutosListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_PROD_LISTA = 7;
+    private static final int LOADER_PRODUTOS_LIST = 0;
 
     private ProdAdapter mAdapter;
-    private String mPesquisa = "";
+    private String mProdutoPesquisarBD = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,22 +67,27 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
 
                 Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTO, id);
 
-                Cursor cur = mAdapter.getCursor();
-                String nome = mAdapter.getCursor().getString(
-                        cur.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
+                Cursor cursor = mAdapter.getCursor();
+
+                String mensagemexcluir = mAdapter.getCursor().getString(
+                        cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME)) +
+                        getString(R.string.dialog_exc_edit_texto_excluir_valor) +
+                        " " +
+                        Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
+                                cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO)));
 
                 Dialogos.dialogoEditarExcluir(
                         ProdutosListActivity.this,
                         ProdutosCadActivity.class,
                         uri,
-                        nome
+                        mensagemexcluir
                 );
 
                 return true;
             }
         });
 
-        getLoaderManager().initLoader(LOADER_PROD_LISTA, null, this);
+        getLoaderManager().initLoader(LOADER_PRODUTOS_LIST, null, this);
     }
 
 
@@ -90,6 +96,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
+        // Menu de pesquisa
         MenuItem menuItem = menu.findItem(R.id.action_search);
 
         final SearchView searchView = (SearchView) menuItem.getActionView();
@@ -103,9 +110,9 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                mPesquisa = newText;
+                mProdutoPesquisarBD = newText;
 
-                getLoaderManager().restartLoader(LOADER_PROD_LISTA, null, ProdutosListActivity.this);
+                getLoaderManager().restartLoader(LOADER_PRODUTOS_LIST, null, ProdutosListActivity.this);
 
                 return true;
             }
@@ -124,8 +131,10 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                 AcessoProdutos.COLUNA_PRODUTO_PRECO
         };
 
+        /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
+         * utilizar o menu search, sera pesquisado pelo nome do produto */
         String selection = AcessoProdutos.COLUNA_PRODUTO_NOME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mPesquisa + "%"};
+        String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
         String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
 
         return new CursorLoader(

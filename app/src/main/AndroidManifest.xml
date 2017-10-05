@@ -65,7 +65,7 @@
                 android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.SaldoListActivity"
+            android:name=".activity.SaldoInicialListActivity"
             android:label="@string/title_saldo_list"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait">
@@ -92,8 +92,8 @@
                 android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.SaldoCadActivity"
-            android:parentActivityName=".activity.SaldoListActivity"
+            android:name=".activity.SaldoInicialCadActivity"
+            android:parentActivityName=".activity.SaldoInicialListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data

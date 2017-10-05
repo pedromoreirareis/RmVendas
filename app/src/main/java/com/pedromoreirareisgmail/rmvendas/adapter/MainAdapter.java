@@ -76,6 +76,7 @@ public class MainAdapter extends CursorAdapter {
             holder.tvValorTotalVenda.setText(Formatar.formatarDoubleParaCurrency(valorTotalVenda));
 
         } else {
+            holder.tvValorTotalLabel.setText(R.string.total_venda_vista_item_main);
             holder.tvValorTotalVenda.setText(Formatar.formatarDoubleParaCurrency(valorTotalVenda));
         }
     }
