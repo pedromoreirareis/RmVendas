@@ -44,17 +44,17 @@ public class Provider extends ContentProvider {
         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/       - Uri geral toda a tabela */
         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/1  _ID - Uri especifico uma unica linha */
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.NOME_TABELA_PRODUTO, MATCH_PRODUTOS);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.NOME_TABELA_PRODUTO + "/#", MATCH_PRODUTO_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.TABELA_PRODUTOS, MATCH_PRODUTOS);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.TABELA_PRODUTOS + "/#", MATCH_PRODUTO_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.NOME_TABELA_ENT_RET, MATCH_ENT_RET);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.NOME_TABELA_ENT_RET + "/#", MATCH_ENT_RET_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET, MATCH_ENT_RET);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET + "/#", MATCH_ENT_RET_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO, MATCH_SALDO);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.NOME_TABELA_SALDO + "/#", MATCH_SALDO_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL, MATCH_SALDO);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL + "/#", MATCH_SALDO_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA, MATCH_VENDA);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.NOME_TABELA_VENDA + "/#", MATCH_VENDA_ID);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS, MATCH_VENDA);
+        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS + "/#", MATCH_VENDA_ID);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Provider extends ContentProvider {
             case MATCH_PRODUTOS:
 
                 cursor = database.query(
-                        AcessoProdutos.NOME_TABELA_PRODUTO,
+                        AcessoProdutos.TABELA_PRODUTOS,
                         projection,
                         selection,
                         selectionArgs,
@@ -106,7 +106,7 @@ public class Provider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoProdutos.NOME_TABELA_PRODUTO,
+                        AcessoProdutos.TABELA_PRODUTOS,
                         projection,
                         selection,
                         selectionArgs,
@@ -119,7 +119,7 @@ public class Provider extends ContentProvider {
             case MATCH_ENT_RET:
 
                 cursor = database.query(
-                        AcessoEntRet.NOME_TABELA_ENT_RET,
+                        AcessoEntRet.TABELA_ENT_RET,
                         projection,
                         selection,
                         selectionArgs,
@@ -136,7 +136,7 @@ public class Provider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoEntRet.NOME_TABELA_ENT_RET,
+                        AcessoEntRet.TABELA_ENT_RET,
                         projection,
                         selection,
                         selectionArgs,
@@ -149,7 +149,7 @@ public class Provider extends ContentProvider {
             case MATCH_SALDO:
 
                 cursor = database.query(
-                        AcessoSaldo.NOME_TABELA_SALDO,
+                        AcessoSaldo.TABELA_SALDO_INICIAL,
                         projection,
                         selection,
                         selectionArgs,
@@ -166,7 +166,7 @@ public class Provider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoSaldo.NOME_TABELA_SALDO,
+                        AcessoSaldo.TABELA_SALDO_INICIAL,
                         projection,
                         selection,
                         selectionArgs,
@@ -179,7 +179,7 @@ public class Provider extends ContentProvider {
             case MATCH_VENDA:
 
                 cursor = database.query(
-                        AcessoVenda.NOME_TABELA_VENDA,
+                        AcessoVenda.TABELA_VENDAS,
                         projection,
                         selection,
                         selectionArgs,
@@ -196,7 +196,7 @@ public class Provider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoVenda.NOME_TABELA_VENDA,
+                        AcessoVenda.TABELA_VENDAS,
                         projection,
                         selection,
                         selectionArgs,
@@ -236,10 +236,10 @@ public class Provider extends ContentProvider {
 
             // Produtos
             case MATCH_PRODUTOS:
-                return AcessoProdutos.CONTENT_TYPE_PRODUTO;
+                return AcessoProdutos.CONTENT_TYPE_PRODUTOS;
 
             case MATCH_PRODUTO_ID:
-                return AcessoProdutos.CONTENT_ITEM_TYPE_PRODUTO;
+                return AcessoProdutos.CONTENT_ITEM_TYPE_PRODUTOS;
 
             // Entradas e retiradas
             case MATCH_ENT_RET:
@@ -250,10 +250,10 @@ public class Provider extends ContentProvider {
 
             // Saldo inicial
             case MATCH_SALDO:
-                return AcessoSaldo.CONTENT_TYPE_SALDO;
+                return AcessoSaldo.CONTENT_TYPE_SALDO_INICIAL;
 
             case MATCH_SALDO_ID:
-                return AcessoSaldo.CONTENT_ITEM_TYPE_SALDO;
+                return AcessoSaldo.CONTENT_ITEM_TYPE_SALDO_INICIAL;
 
             // Vendas
             case MATCH_VENDA:
@@ -283,16 +283,16 @@ public class Provider extends ContentProvider {
         switch (match) {
 
             case MATCH_PRODUTOS:
-                return inserirProvider(AcessoProdutos.NOME_TABELA_PRODUTO, uri, values);
+                return inserirProvider(AcessoProdutos.TABELA_PRODUTOS, uri, values);
 
             case MATCH_ENT_RET:
-                return inserirProvider(AcessoEntRet.NOME_TABELA_ENT_RET, uri, values);
+                return inserirProvider(AcessoEntRet.TABELA_ENT_RET, uri, values);
 
             case MATCH_SALDO:
-                return inserirProvider(AcessoSaldo.NOME_TABELA_SALDO, uri, values);
+                return inserirProvider(AcessoSaldo.TABELA_SALDO_INICIAL, uri, values);
 
             case MATCH_VENDA:
-                return inserirProvider(AcessoVenda.NOME_TABELA_VENDA, uri, values);
+                return inserirProvider(AcessoVenda.TABELA_VENDAS, uri, values);
 
             default:
 
@@ -314,38 +314,38 @@ public class Provider extends ContentProvider {
             // Produtos
             case MATCH_PRODUTOS:
 
-                excluir(uri, AcessoProdutos.NOME_TABELA_PRODUTO, selection, selectionArgs);
+                excluir(uri, AcessoProdutos.TABELA_PRODUTOS, selection, selectionArgs);
 
             case MATCH_PRODUTO_ID:
 
-                return excluirID(uri, AcessoProdutos.NOME_TABELA_PRODUTO, AcessoProdutos._ID);
+                return excluirID(uri, AcessoProdutos.TABELA_PRODUTOS, AcessoProdutos._ID);
 
             // Entradas e retiradas
             case MATCH_ENT_RET:
 
-                return excluir(uri, AcessoEntRet.NOME_TABELA_ENT_RET, selection, selectionArgs);
+                return excluir(uri, AcessoEntRet.TABELA_ENT_RET, selection, selectionArgs);
 
             case MATCH_ENT_RET_ID:
 
-                return excluirID(uri, AcessoEntRet.NOME_TABELA_ENT_RET, AcessoEntRet._ID);
+                return excluirID(uri, AcessoEntRet.TABELA_ENT_RET, AcessoEntRet._ID);
 
             // Saldo inicial
             case MATCH_SALDO:
 
-                return excluir(uri, AcessoSaldo.NOME_TABELA_SALDO, selection, selectionArgs);
+                return excluir(uri, AcessoSaldo.TABELA_SALDO_INICIAL, selection, selectionArgs);
 
             case MATCH_SALDO_ID:
 
-                return excluirID(uri, AcessoSaldo.NOME_TABELA_SALDO, AcessoSaldo._ID);
+                return excluirID(uri, AcessoSaldo.TABELA_SALDO_INICIAL, AcessoSaldo._ID);
 
             // Vendas
             case MATCH_VENDA:
 
-                return excluir(uri, AcessoVenda.NOME_TABELA_VENDA, selection, selectionArgs);
+                return excluir(uri, AcessoVenda.TABELA_VENDAS, selection, selectionArgs);
 
             case MATCH_VENDA_ID:
 
-                return excluirID(uri, AcessoVenda.NOME_TABELA_VENDA, AcessoVenda._ID);
+                return excluirID(uri, AcessoVenda.TABELA_VENDAS, AcessoVenda._ID);
 
             default:
                 throw new IllegalArgumentException(getContext() != null ?
@@ -366,38 +366,38 @@ public class Provider extends ContentProvider {
             // Produtos
             case MATCH_PRODUTOS:
 
-                return editarProvider(uri, values, AcessoProdutos.NOME_TABELA_PRODUTO, selection, selectionArgs);
+                return editarProvider(uri, values, AcessoProdutos.TABELA_PRODUTOS, selection, selectionArgs);
 
             case MATCH_PRODUTO_ID:
 
-                return editarProviderID(uri, values, AcessoProdutos.NOME_TABELA_PRODUTO, AcessoProdutos._ID);
+                return editarProviderID(uri, values, AcessoProdutos.TABELA_PRODUTOS, AcessoProdutos._ID);
 
             // Entradas e retiradas
             case MATCH_ENT_RET:
 
-                return editarProvider(uri, values, AcessoEntRet.NOME_TABELA_ENT_RET, selection, selectionArgs);
+                return editarProvider(uri, values, AcessoEntRet.TABELA_ENT_RET, selection, selectionArgs);
 
             case MATCH_ENT_RET_ID:
 
-                return editarProviderID(uri, values, AcessoEntRet.NOME_TABELA_ENT_RET, AcessoEntRet._ID);
+                return editarProviderID(uri, values, AcessoEntRet.TABELA_ENT_RET, AcessoEntRet._ID);
 
             // Saldo inicial
             case MATCH_SALDO:
 
-                return editarProvider(uri, values, AcessoSaldo.NOME_TABELA_SALDO, selection, selectionArgs);
+                return editarProvider(uri, values, AcessoSaldo.TABELA_SALDO_INICIAL, selection, selectionArgs);
 
             case MATCH_SALDO_ID:
 
-                return editarProviderID(uri, values, AcessoSaldo.NOME_TABELA_SALDO, AcessoSaldo._ID);
+                return editarProviderID(uri, values, AcessoSaldo.TABELA_SALDO_INICIAL, AcessoSaldo._ID);
 
             // Vendas
             case MATCH_VENDA:
 
-                return editarProvider(uri, values, AcessoVenda.NOME_TABELA_VENDA, selection, selectionArgs);
+                return editarProvider(uri, values, AcessoVenda.TABELA_VENDAS, selection, selectionArgs);
 
             case MATCH_VENDA_ID:
 
-                return editarProviderID(uri, values, AcessoVenda.NOME_TABELA_VENDA, AcessoVenda._ID);
+                return editarProviderID(uri, values, AcessoVenda.TABELA_VENDAS, AcessoVenda._ID);
 
             default:
 

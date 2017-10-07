@@ -192,17 +192,17 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
         }
 
         ContentValues values = new ContentValues();
-        values.put(AcessoSaldo.COLUNA_SALDO_VALOR, valorDouble);
+        values.put(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR, valorDouble);
 
         if (mUriAtual == null) {
 
-            values.put(AcessoSaldo.COLUNA_SALDO_DATA, obterDataHoraSistema());
+            values.put(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA, obterDataHoraSistema());
 
-            Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO, values);
+            Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO_INICIAL, values);
 
         } else {
 
-            values.put(AcessoSaldo.COLUNA_SALDO_DATA, mDataHoraBD);
+            values.put(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA, mDataHoraBD);
 
             Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
         }
@@ -237,8 +237,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
         String[] projection = {
                 AcessoSaldo._ID,
-                AcessoSaldo.COLUNA_SALDO_DATA,
-                AcessoSaldo.COLUNA_SALDO_VALOR
+                AcessoSaldo.COLUNA_SALDO_INICIAL_DATA,
+                AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR
         };
 
         return new CursorLoader(
@@ -256,8 +256,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
         if (cursor.moveToFirst()) {
 
-            double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
+            double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR));
+            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
         }

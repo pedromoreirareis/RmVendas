@@ -76,16 +76,16 @@ public class SaldoInicialListActivity extends AppCompatActivity implements Loade
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
 
-                Uri uri = ContentUris.withAppendedId(AcessoSaldo.CONTENT_URI_SALDO, id);
+                Uri uri = ContentUris.withAppendedId(AcessoSaldo.CONTENT_URI_SALDO_INICIAL, id);
 
                 Cursor cursor = mAdapter.getCursor();
 
                 String dataExcluir = DataHora.formatarDataBr(
                         mAdapter.getCursor().getString(
-                                cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA)));
+                                cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA)));
                 String valorExcluir = Formatar.formatarDoubleParaCurrency(
                         mAdapter.getCursor().getDouble(
-                                cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR)));
+                                cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR)));
 
                 String mensagemExcluir = getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial_1) +
                         " " +
@@ -158,17 +158,17 @@ public class SaldoInicialListActivity extends AppCompatActivity implements Loade
 
         String[] projection = {
                 AcessoSaldo._ID,
-                AcessoSaldo.COLUNA_SALDO_DATA,
-                AcessoSaldo.COLUNA_SALDO_VALOR
+                AcessoSaldo.COLUNA_SALDO_INICIAL_DATA,
+                AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR
         };
 
         // Procura por todos os dados salvos na tabela com parte da data do tipo "yyyy-MM-dd"
-        String selection = AcessoSaldo.COLUNA_SALDO_DATA + " LIKE ?";
+        String selection = AcessoSaldo.COLUNA_SALDO_INICIAL_DATA + " LIKE ?";
         String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
         return new CursorLoader(
                 this,
-                AcessoSaldo.CONTENT_URI_SALDO,
+                AcessoSaldo.CONTENT_URI_SALDO_INICIAL,
                 projection,
                 selection,
                 selectionArgs,

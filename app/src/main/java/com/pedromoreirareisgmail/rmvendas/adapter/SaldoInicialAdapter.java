@@ -31,8 +31,8 @@ public class SaldoInicialAdapter extends CursorAdapter {
 
         SaldoViewHolder holder = new SaldoViewHolder(view);
 
-        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
-        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
+        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR));
+        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA));
 
         holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
         holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(dataHora));

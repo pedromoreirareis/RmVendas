@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity
                 Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
 
                 Cursor cursor = mAdapter.getCursor();
-                String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT)) + "  "
-                        + cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
+                String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA)) + "  "
+                        + cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO));
 
                 Dialogos.dialogoEditarExcluir(
                         MainActivity.this,
@@ -226,16 +226,16 @@ public class MainActivity extends AppCompatActivity
 
         String[] projection = new String[]{
                 AcessoVenda._ID,
-                AcessoVenda.COLUNA_VENDA_NOME_PROD,
-                AcessoVenda.COLUNA_VENDA_QUANT,
-                AcessoVenda.COLUNA_VENDA_DATA,
-                AcessoVenda.COLUNA_VENDA_VALOR_PROD,
-                AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
-                AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
-                AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO,
-                AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
-                AcessoVenda.COLUNA_VENDA_PRAZO,
-                AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO
+                AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO,
+                AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA,
+                AcessoVenda.COLUNA_VENDAS_DATA,
+                AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA,
+                AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO,
+                AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA,
+                AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO,
+                AcessoVenda.COLUNA_VENDAS_VALOR_COBERTURA,
+                AcessoVenda.COLUNA_VENDAS_A_PRAZO,
+                AcessoVenda.COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO
         };
 
         String selection;
@@ -244,15 +244,15 @@ public class MainActivity extends AppCompatActivity
 
         if (mProdutoPesquisarBD.length() > 0) {
 
-            selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?  AND " + AcessoVenda.COLUNA_VENDA_NOME_PROD + " LIKE ?";
+            selection = AcessoVenda.COLUNA_VENDAS_DATA + " LIKE ?  AND " + AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%", "%" + mProdutoPesquisarBD + "%"};
-            sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
+            sortOrder = AcessoVenda.COLUNA_VENDAS_DATA;
 
         } else {
 
-            selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?";
+            selection = AcessoVenda.COLUNA_VENDAS_DATA + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%"};
-            sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
+            sortOrder = AcessoVenda.COLUNA_VENDAS_DATA;
         }
 
 

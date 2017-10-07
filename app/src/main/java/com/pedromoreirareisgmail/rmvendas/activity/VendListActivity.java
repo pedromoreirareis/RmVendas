@@ -67,7 +67,7 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
 
-                Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTO, id);
+                Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTOS, id);
 
                 Intent intent = new Intent(VendListActivity.this, VendQuantActivity.class);
                 intent.putExtra(Constantes.VENDA_ADICIONAR, Constantes.VENDA_ADICIONAR);
@@ -117,20 +117,20 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
 
         String[] projection = {
                 AcessoProdutos._ID,
-                AcessoProdutos.COLUNA_PRODUTO_NOME,
-                AcessoProdutos.COLUNA_PRODUTO_PRECO
+                AcessoProdutos.COLUNA_PRODUTOS_NOME,
+                AcessoProdutos.COLUNA_PRODUTOS_VALOR
         };
 
         /* A pesquisa inicial traz todos os produtos cadastrados, se clicar no menu search, sera
         pesquisado de acordo com nome do produto digitado
          */
-        String selection = AcessoProdutos.COLUNA_PRODUTO_NOME + " LIKE ?";
+        String selection = AcessoProdutos.COLUNA_PRODUTOS_NOME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
-        String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
+        String sortOrder = AcessoProdutos.COLUNA_PRODUTOS_NOME;
 
         return new CursorLoader(
                 this,
-                AcessoProdutos.CONTENT_URI_PRODUTO,
+                AcessoProdutos.CONTENT_URI_PRODUTOS,
                 projection,
                 selection,
                 selectionArgs,

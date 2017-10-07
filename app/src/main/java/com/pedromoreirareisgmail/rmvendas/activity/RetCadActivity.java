@@ -237,7 +237,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
         ContentValues values = new ContentValues();
         values.put(AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
-        values.put(AcessoEntRet.COLUNA_ENT_RET_DESC, descricaoEditText);
+        values.put(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO, descricaoEditText);
         values.put(AcessoEntRet.COLUNA_ENT_RET_TIPO, Constantes.TIPO_RETIRADA);
 
         if (mUriAtual == null) {
@@ -284,7 +284,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
         String[] projection = {
                 AcessoEntRet._ID,
                 AcessoEntRet.COLUNA_ENT_RET_DATA,
-                AcessoEntRet.COLUNA_ENT_RET_DESC,
+                AcessoEntRet.COLUNA_ENT_RET_DESCRICAO,
                 AcessoEntRet.COLUNA_ENT_RET_TIPO,
                 AcessoEntRet.COLUNA_ENT_RET_VALOR
         };
@@ -308,7 +308,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
                     cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
 
             String descricaoBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
+                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO));
 
             mDataHoraBD = cursor.getString(
                     cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));

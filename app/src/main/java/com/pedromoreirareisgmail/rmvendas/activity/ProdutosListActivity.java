@@ -65,16 +65,16 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
             @Override
             public boolean onItemLongClick(final AdapterView<?> adapterView, View view, final int position, final long id) {
 
-                Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTO, id);
+                Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTOS, id);
 
                 Cursor cursor = mAdapter.getCursor();
 
                 String mensagemExcluir = mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME)) +
+                        cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_NOME)) +
                         getString(R.string.dialog_exc_edit_texto_excluir_valor) +
                         " " +
                         Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
-                                cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO)));
+                                cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_VALOR)));
 
                 Dialogos.dialogoEditarExcluir(
                         ProdutosListActivity.this,
@@ -127,19 +127,19 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
 
         String[] projection = {
                 AcessoProdutos._ID,
-                AcessoProdutos.COLUNA_PRODUTO_NOME,
-                AcessoProdutos.COLUNA_PRODUTO_PRECO
+                AcessoProdutos.COLUNA_PRODUTOS_NOME,
+                AcessoProdutos.COLUNA_PRODUTOS_VALOR
         };
 
         /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
          * utilizar o menu search, sera pesquisado pelo nome do produto */
-        String selection = AcessoProdutos.COLUNA_PRODUTO_NOME + " LIKE ?";
+        String selection = AcessoProdutos.COLUNA_PRODUTOS_NOME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
-        String sortOrder = AcessoProdutos.COLUNA_PRODUTO_NOME;
+        String sortOrder = AcessoProdutos.COLUNA_PRODUTOS_NOME;
 
         return new CursorLoader(
                 this,
-                AcessoProdutos.CONTENT_URI_PRODUTO,
+                AcessoProdutos.CONTENT_URI_PRODUTOS,
                 projection,
                 selection,
                 selectionArgs,

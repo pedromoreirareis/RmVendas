@@ -43,7 +43,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
     private static final int LOADER_VENDA_ADICIONAR = 0;
     private static final int LOADER_VENDA_EDITAR = 1;
-    private final NumberFormat mPreco = NumberFormat.getCurrencyInstance();
+    private final NumberFormat mValorFormatarCurrency = NumberFormat.getCurrencyInstance();
 
     private TextView mTvNomeProduto;
     private TextView mTvValorTotal;
@@ -84,7 +84,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
     private TextInputLayout layoutCobertura;
     private TextInputLayout layoutDesconto;
     private Uri mUriAtual = null;
-    private double mPrecoUnidadeProduto = 0;
+    private double mValorUnidadeProduto = 0;
     private String mDataHoraBD = "";
     private boolean mAdicionarProdutoBD = false;
     private boolean isDadosAlterado = false;
@@ -155,7 +155,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlDesc = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mPrecoUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
 
                 mEtQuantidade.setSelection(mEtQuantidade.getText().length());
             }
@@ -179,7 +179,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 String vlCobert = charSequence.toString().trim().replaceAll("[^\\d]", "");
                 String vlDesc = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mPrecoUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;
@@ -212,7 +212,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlDesc = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mPrecoUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
 
 
                 if (isFormatarCurrencyAtualizado) {
@@ -400,7 +400,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         int quantidadeInt = Integer.parseInt(quatidadeEditText);
         double valorCoberturaDouble = Formatar.formatarParaDouble(valorCoberturaEditText);
         double valorDescontoDouble = Formatar.formatarParaDouble(valorDescontoEditText);
-        double valorTotalDoouble = Calculos.calcularValorVendaBoloDouble(mPrecoUnidadeProduto, quantidadeInt, valorCoberturaDouble, valorDescontoDouble);
+        double valorTotalDoouble = Calculos.calcularValorVendaBoloDouble(mValorUnidadeProduto, quantidadeInt, valorCoberturaDouble, valorDescontoDouble);
 
         if (quantidadeInt < 1) {
             mEtQuantidade.setError(getString(R.string.error_valor_menor_um));
@@ -408,48 +408,48 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         }
 
         ContentValues values = new ContentValues();
-        values.put(AcessoVenda.COLUNA_VENDA_NOME_PROD, nomeProdutoTextView);
-        values.put(AcessoVenda.COLUNA_VENDA_QUANT, quantidadeInt);
-        values.put(AcessoVenda.COLUNA_VENDA_VALOR_PROD, valorTotalDoouble);
-        values.put(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO, mPrecoUnidadeProduto);
-        values.put(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA, valorCoberturaDouble);
-        values.put(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO, valorDescontoDouble);
+        values.put(AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO, nomeProdutoTextView);
+        values.put(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA, quantidadeInt);
+        values.put(AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA, valorTotalDoouble);
+        values.put(AcessoVenda.COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO, mValorUnidadeProduto);
+        values.put(AcessoVenda.COLUNA_VENDAS_VALOR_COBERTURA, valorCoberturaDouble);
+        values.put(AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO, valorDescontoDouble);
 
         if (temCoberturaSwitch) {
 
-            values.put(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA, Constantes.COBERTURA_SIM);
+            values.put(AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA, Constantes.COBERTURA_SIM);
         } else {
 
-            values.put(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA, Constantes.COBERTURA_NAO);
+            values.put(AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA, Constantes.COBERTURA_NAO);
         }
 
 
         if (temDescontoSwitch) {
 
-            values.put(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO, Constantes.DESCONTO_SIM);
+            values.put(AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO, Constantes.DESCONTO_SIM);
         } else {
 
-            values.put(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO, Constantes.DESCONTO_NAO);
+            values.put(AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO, Constantes.DESCONTO_NAO);
         }
 
         if (temPrazoSwitch) {
 
-            values.put(AcessoVenda.COLUNA_VENDA_PRAZO, Constantes.PRAZO_SIM);
+            values.put(AcessoVenda.COLUNA_VENDAS_A_PRAZO, Constantes.PRAZO_SIM);
 
         } else {
 
-            values.put(AcessoVenda.COLUNA_VENDA_PRAZO, Constantes.PRAZO_NAO);
+            values.put(AcessoVenda.COLUNA_VENDAS_A_PRAZO, Constantes.PRAZO_NAO);
         }
 
         if (mAdicionarProdutoBD) {
 
-            values.put(AcessoVenda.COLUNA_VENDA_DATA, DataHora.obterDataHoraSistema());
+            values.put(AcessoVenda.COLUNA_VENDAS_DATA, DataHora.obterDataHoraSistema());
 
             Crud.inserir(VendQuantActivity.this, AcessoVenda.CONTENT_URI_VENDA, values);
 
         } else {
 
-            values.put(AcessoVenda.COLUNA_VENDA_DATA, mDataHoraBD);
+            values.put(AcessoVenda.COLUNA_VENDAS_DATA, mDataHoraBD);
 
             Crud.editar(VendQuantActivity.this, mUriAtual, values);
         }
@@ -487,8 +487,8 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
             String[] projection = {
                     AcessoProdutos._ID,
-                    AcessoProdutos.COLUNA_PRODUTO_PRECO,
-                    AcessoProdutos.COLUNA_PRODUTO_NOME
+                    AcessoProdutos.COLUNA_PRODUTOS_VALOR,
+                    AcessoProdutos.COLUNA_PRODUTOS_NOME
             };
 
             return new CursorLoader(
@@ -505,16 +505,16 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
             String[] projection = {
                     AcessoVenda._ID,
-                    AcessoVenda.COLUNA_VENDA_NOME_PROD,
-                    AcessoVenda.COLUNA_VENDA_QUANT,
-                    AcessoVenda.COLUNA_VENDA_DATA,
-                    AcessoVenda.COLUNA_VENDA_VALOR_PROD,
-                    AcessoVenda.COLUNA_VENDA_PRAZO,
-                    AcessoVenda.COLUNA_VENDA_TEM_COBERTURA,
-                    AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA,
-                    AcessoVenda.COLUNA_VENDA_TEM_DESCONTO,
-                    AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO,
-                    AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO
+                    AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO,
+                    AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA,
+                    AcessoVenda.COLUNA_VENDAS_DATA,
+                    AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA,
+                    AcessoVenda.COLUNA_VENDAS_A_PRAZO,
+                    AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA,
+                    AcessoVenda.COLUNA_VENDAS_VALOR_COBERTURA,
+                    AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO,
+                    AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO,
+                    AcessoVenda.COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO
             };
 
             return new CursorLoader(
@@ -536,18 +536,18 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         if (loader.getId() == LOADER_VENDA_EDITAR && cursor.moveToFirst()) {
 
-            String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_DATA));
+            String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO));
+            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_DATA));
 
-            int quantidadeBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
-            int temCoberturaBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
-            int temDescontoBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO));
-            int temPrazoBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
+            int quantidadeBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA));
+            int temCoberturaBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA));
+            int temDescontoBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO));
+            int temPrazoBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_A_PRAZO));
 
-            double valorCoberturaBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
-            double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
-            double valorTotalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
-            mPrecoUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO));
+            double valorCoberturaBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_COBERTURA));
+            double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO));
+            double valorTotalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA));
+            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO));
 
             mTvNomeProduto.setText(nomeProdutoBD);
             mEtQuantidade.setText(String.valueOf(quantidadeBD));
@@ -556,7 +556,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                 mSwitchCobertura.setChecked(true);
                 layoutCobertura.setVisibility(View.VISIBLE);
-                mEtCobertura.setText(mPreco.format(valorCoberturaBD));
+                mEtCobertura.setText(mValorFormatarCurrency.format(valorCoberturaBD));
 
             } else {
 
@@ -569,7 +569,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
                 mSwitchDesconto.setChecked(true);
                 layoutDesconto.setVisibility(View.VISIBLE);
-                mEtDesconto.setText(mPreco.format(valorDescontoBD));
+                mEtDesconto.setText(mValorFormatarCurrency.format(valorDescontoBD));
 
             } else {
                 mSwitchDesconto.setChecked(false);
@@ -586,16 +586,16 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 mSwitchPrazo.setChecked(false);
             }
 
-            mTvValorTotal.setText(mPreco.format(valorTotalBD));
+            mTvValorTotal.setText(mValorFormatarCurrency.format(valorTotalBD));
         }
 
         if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {
 
-            String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
-            mPrecoUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
+            String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_NOME));
+            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_VALOR));
 
             mTvNomeProduto.setText(nomeProduto);
-            mTvValorTotal.setText(mPreco.format(mPrecoUnidadeProduto));
+            mTvValorTotal.setText(mValorFormatarCurrency.format(mValorUnidadeProduto));
         }
     }
 

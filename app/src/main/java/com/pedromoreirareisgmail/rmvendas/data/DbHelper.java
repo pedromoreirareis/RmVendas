@@ -38,9 +38,9 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(AcessoProdutos.CRIAR_TABELA_PRODUTO);
+        db.execSQL(AcessoProdutos.CRIAR_TABELA_PRODUTOS);
         db.execSQL(AcessoEntRet.CRIAR_TABELA_ENT_RET);
-        db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO);
+        db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO_INICIAL);
         db.execSQL(AcessoVenda.CRIAR_TABELA_VENDA);
     }
 

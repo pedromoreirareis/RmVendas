@@ -74,7 +74,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
                 Cursor cursor = mAdapter.getCursor();
                 String mensagemExcluir = mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC)) +
+                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO)) +
                         getString(R.string.dialog_exc_edit_texto_excluir_valor) +
                         " " +
                         Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
@@ -139,7 +139,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                 AcessoEntRet._ID,
                 AcessoEntRet.COLUNA_ENT_RET_DATA,
                 AcessoEntRet.COLUNA_ENT_RET_VALOR,
-                AcessoEntRet.COLUNA_ENT_RET_DESC,
+                AcessoEntRet.COLUNA_ENT_RET_DESCRICAO,
                 AcessoEntRet.COLUNA_ENT_RET_TIPO
         };
 

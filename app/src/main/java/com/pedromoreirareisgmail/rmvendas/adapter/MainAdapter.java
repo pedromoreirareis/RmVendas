@@ -33,18 +33,18 @@ public class MainAdapter extends CursorAdapter {
 
         MainViewHolder holder = new MainViewHolder(view);
 
-        String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
-        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_DATA));
+        String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO));
+        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_DATA));
 
-        double valorCobertura = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_COBERTURA));
-        double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_DESCONTO));
-        double valorTotalVenda = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_VALOR_PROD));
-        double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRECO_UM_BOLO));
+        double valorCobertura = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_COBERTURA));
+        double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO));
+        double valorTotalVenda = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA));
+        double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO));
 
-        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT));
-        int temCobertura = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_COBERTURA));
-        int temDesconto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_TEM_DESCONTO));
-        int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_PRAZO));
+        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA));
+        int temCobertura = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA));
+        int temDesconto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO));
+        int temPrazo = cursor.getInt(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_A_PRAZO));
 
         holder.tvQuantidade.setText(String.valueOf(quantidadeProduto) + VEZES_X + Formatar.formatarDoubleParaCurrency(valorUnidadeProduto));
         holder.tvNomeProduto.setText(nomeProduto);
