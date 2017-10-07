@@ -120,6 +120,12 @@ public class Dialogos {
         dialog.create().show();
     }
 
+    /**
+     * Abre o calendário para escolha de uma data
+     *
+     * @param context          activity onde o calendario sera aberto
+     * @param mDateSetListener
+     */
     public static void dialogoDatas(Context context, DatePickerDialog.OnDateSetListener mDateSetListener) {
 
         Calendar cal = Calendar.getInstance();

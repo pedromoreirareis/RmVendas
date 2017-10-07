@@ -73,7 +73,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                 Uri uri = ContentUris.withAppendedId(AcessoEntRet.CONTENT_URI_ENT_RET, id);
 
                 Cursor cursor = mAdapter.getCursor();
-                String mensagemexcluir = mAdapter.getCursor().getString(
+                String mensagemExcluir = mAdapter.getCursor().getString(
                         cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC)) +
                         getString(R.string.dialog_exc_edit_texto_excluir_valor) +
                         " " +
@@ -84,7 +84,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
                         EntListActivity.this,
                         EntCadActivity.class,
                         uri,
-                        mensagemexcluir
+                        mensagemExcluir
                 );
 
                 return true;

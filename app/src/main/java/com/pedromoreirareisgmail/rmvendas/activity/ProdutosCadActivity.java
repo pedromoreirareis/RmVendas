@@ -33,16 +33,17 @@ import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT_MSG;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 
 public class ProdutosCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_PROD_CAD = 6;
+    private static final int LOADER_PROD_CAD = 0;
 
     private EditText mEtNome;
     private EditText mEtPreco;
-    private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
+    private final EditText.OnTouchListener mTouchListnerEditFocoCursorFim = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -61,8 +62,8 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         }
     };
     private Uri mUriAtual = null;
-    private boolean isAlterado = false;
-    private boolean isUpdating = false;
+    private boolean isDadosAlterados = false;
+    private boolean isFormatarCurrencyAtualizado = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,13 +80,13 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
             setTitle(R.string.title_prod_cad_edit);
             getLoaderManager().initLoader(LOADER_PROD_CAD, null, this);
-
         }
 
         mEtNome = (EditText) findViewById(R.id.et_nome);
         mEtPreco = (EditText) findViewById(R.id.et_preco);
 
         mEtNome.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT)});
+
         mEtNome.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -95,9 +96,9 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isAlterado = true;
+                isDadosAlterados = true;
 
-                if (charSequence.toString().trim().length() > 48) {
+                if (charSequence.toString().trim().length() > MAX_CARACT_MSG) {
 
                     Toast.makeText(ProdutosCadActivity.this,
                             R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
@@ -119,14 +120,14 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isAlterado = true;
+                isDadosAlterados = true;
 
-                if (isUpdating) {
-                    isUpdating = false;
+                if (isFormatarCurrencyAtualizado) {
+                    isFormatarCurrencyAtualizado = false;
                     return;
                 }
 
-                isUpdating = true;
+                isFormatarCurrencyAtualizado = true;
 
                 mEtPreco.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
                 mEtPreco.setSelection(mEtPreco.getText().length());
@@ -143,7 +144,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    adicionar();
+                    salvarDadosBD();
                     return true;
                 }
 
@@ -151,13 +152,14 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             }
         });
 
-        mEtPreco.setOnTouchListener(mTouchListnerEditCursorFim);
+        mEtPreco.setOnTouchListener(mTouchListnerEditFocoCursorFim);
 
         Utilidades.semCursorFocoSelecaoZerado(mEtPreco);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
@@ -170,12 +172,12 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         switch (id) {
 
             case R.id.action_salvar:
-                adicionar();
+                salvarDadosBD();
                 return true;
 
             case android.R.id.home:
 
-                if (!isAlterado) {
+                if (!isDadosAlterados) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -199,20 +201,20 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         return super.onOptionsItemSelected(item);
     }
 
-    private void adicionar() {
+    private void salvarDadosBD() {
 
-        String nome = mEtNome.getText().toString().trim();
-        String precoStr = mEtPreco.getText().toString().trim();
+        String nomeEditText = mEtNome.getText().toString().trim();
+        String precoEditText = mEtPreco.getText().toString().trim();
 
-        double precoDouble = Formatar.formatarParaDouble(precoStr);
+        double precoDouble = Formatar.formatarParaDouble(precoEditText);
 
-        if (TextUtils.isEmpty(nome)) {
+        if (TextUtils.isEmpty(nomeEditText)) {
 
             mEtNome.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
-        if (TextUtils.isEmpty(precoStr)) {
+        if (TextUtils.isEmpty(precoEditText)) {
 
             mEtPreco.setError(getString(R.string.error_campo_vazio));
             return;
@@ -224,14 +226,14 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
             return;
         }
 
-        if (nome.length() < MIN_QUANT_CARACT) {
+        if (nomeEditText.length() < MIN_QUANT_CARACT) {
 
             mEtNome.setError(getString(R.string.error_campo_lenght_10));
             return;
         }
 
         ContentValues values = new ContentValues();
-        values.put(AcessoProdutos.COLUNA_PRODUTO_NOME, nome);
+        values.put(AcessoProdutos.COLUNA_PRODUTO_NOME, nomeEditText);
         values.put(AcessoProdutos.COLUNA_PRODUTO_PRECO, precoDouble);
 
         if (mUriAtual == null) {
@@ -250,7 +252,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onBackPressed() {
 
-        if (!isAlterado) {
+        if (!isDadosAlterados) {
 
             super.onBackPressed();
         }
@@ -294,14 +296,14 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
         if (cursor.moveToFirst()) {
 
-            double precoDouble = cursor.getDouble(
+            double precoBD = cursor.getDouble(
                     cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_PRECO));
 
-            String nome = cursor.getString(
+            String nomeBD = cursor.getString(
                     cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME));
 
-            mEtPreco.setText(String.valueOf(precoDouble * 100));
-            mEtNome.setText(nome);
+            mEtPreco.setText(String.valueOf(precoBD * 100));
+            mEtNome.setText(nomeBD);
         }
     }
 

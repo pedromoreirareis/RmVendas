@@ -37,12 +37,12 @@ import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_MAIN = 5;
+    private static final int LOADER_MAIN = 0;
 
     private MainAdapter mAdapter;
 
-    private String mDataPesquisa = "";
-    private String mPesquisa = "";
+    private String mDataPesquisarBD = "";
+    private String mProdutoPesquisarBD = "";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -95,14 +95,14 @@ public class MainActivity extends AppCompatActivity
                 Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
 
                 Cursor cursor = mAdapter.getCursor();
-                String desc = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT)) + "  "
+                String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_QUANT)) + "  "
                         + cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDA_NOME_PROD));
 
                 Dialogos.dialogoEditarExcluir(
                         MainActivity.this,
                         VendQuantActivity.class,
                         uri,
-                        desc
+                        mensagemExcluir
                 );
 
                 return true;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisa = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
                 setTitle(DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
@@ -123,13 +123,14 @@ public class MainActivity extends AppCompatActivity
 
         setTitle(DataHora.obterFormatarDataBrTitulo());
 
-        mDataPesquisa = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
+        mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                mPesquisa = newText;
+                mProdutoPesquisarBD = newText;
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
 
@@ -241,16 +242,16 @@ public class MainActivity extends AppCompatActivity
         String[] selectionArgs;
         String sortOrder;
 
-        if (mPesquisa.length() > 0) {
+        if (mProdutoPesquisarBD.length() > 0) {
 
             selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?  AND " + AcessoVenda.COLUNA_VENDA_NOME_PROD + " LIKE ?";
-            selectionArgs = new String[]{mDataPesquisa + "%", "%" + mPesquisa + "%"};
+            selectionArgs = new String[]{mDataPesquisarBD + "%", "%" + mProdutoPesquisarBD + "%"};
             sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
 
         } else {
 
             selection = AcessoVenda.COLUNA_VENDA_DATA + " LIKE ?";
-            selectionArgs = new String[]{mDataPesquisa + "%"};
+            selectionArgs = new String[]{mDataPesquisarBD + "%"};
             sortOrder = AcessoVenda.COLUNA_VENDA_DATA;
         }
 

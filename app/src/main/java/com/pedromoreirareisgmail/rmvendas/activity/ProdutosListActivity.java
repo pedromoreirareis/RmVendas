@@ -69,7 +69,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
 
                 Cursor cursor = mAdapter.getCursor();
 
-                String mensagemexcluir = mAdapter.getCursor().getString(
+                String mensagemExcluir = mAdapter.getCursor().getString(
                         cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTO_NOME)) +
                         getString(R.string.dialog_exc_edit_texto_excluir_valor) +
                         " " +
@@ -80,7 +80,7 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                         ProdutosListActivity.this,
                         ProdutosCadActivity.class,
                         uri,
-                        mensagemexcluir
+                        mensagemExcluir
                 );
 
                 return true;

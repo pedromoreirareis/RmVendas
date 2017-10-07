@@ -35,7 +35,7 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSis
 
 public class SaldoInicialCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_RET_CAD = 10;
+    private static final int LOADER_RET_CAD = 0;
 
     private EditText mEtValor;
     private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
@@ -56,10 +56,10 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
             }
         }
     };
-    private String mData = "";
+    private String mDataHoraBD = "";
     private Uri mUriAtual = null;
-    private boolean isAlterado = false;
-    private boolean isUpdating = false;
+    private boolean isDadosAlterado = false;
+    private boolean isFormatarCurrencyAtualizado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +80,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
         }
 
         mEtValor = (EditText) findViewById(R.id.et_valor);
+
         mEtValor.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         mEtValor.addTextChangedListener(new TextWatcher() {
@@ -91,18 +92,17 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isAlterado = true;
+                isDadosAlterado = true;
 
-                if (isUpdating) {
-                    isUpdating = false;
+                if (isFormatarCurrencyAtualizado) {
+                    isFormatarCurrencyAtualizado = false;
                     return;
                 }
 
-                isUpdating = true;
+                isFormatarCurrencyAtualizado = true;
 
                 mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
-
             }
 
             @Override
@@ -117,7 +117,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    adicionar();
+                    salvarDadosBD();
                     return true;
                 }
 
@@ -132,6 +132,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
@@ -144,11 +145,12 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
         switch (id) {
 
             case R.id.action_salvar:
-                adicionar();
+                salvarDadosBD();
                 return true;
 
             case android.R.id.home:
-                if (!isAlterado) {
+
+                if (!isDadosAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -173,18 +175,16 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
         return super.onOptionsItemSelected(item);
     }
 
-    private void adicionar() {
+    private void salvarDadosBD() {
 
-        String valorStr = mEtValor.getText().toString().trim();
+        String valorEditText = mEtValor.getText().toString().trim();
 
-        double valorDouble = Formatar.formatarParaDouble(valorStr);
+        double valorDouble = Formatar.formatarParaDouble(valorEditText);
 
-
-        if (TextUtils.isEmpty(valorStr)) {
+        if (TextUtils.isEmpty(valorEditText)) {
             mEtValor.setError(getString(R.string.error_campo_vazio));
             return;
         }
-
 
         if (valorDouble <= NUMERO_ZERO) {
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
@@ -198,20 +198,13 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
             values.put(AcessoSaldo.COLUNA_SALDO_DATA, obterDataHoraSistema());
 
-        } else {
-
-            values.put(AcessoSaldo.COLUNA_SALDO_DATA, mData);
-        }
-
-
-        if (mUriAtual == null) {
-
             Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO, values);
 
         } else {
 
-            Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
+            values.put(AcessoSaldo.COLUNA_SALDO_DATA, mDataHoraBD);
 
+            Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
         }
 
         finish();
@@ -220,7 +213,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
     @Override
     public void onBackPressed() {
 
-        if (!isAlterado) {
+        if (!isDadosAlterado) {
 
             super.onBackPressed();
         }
@@ -263,10 +256,10 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
         if (cursor.moveToFirst()) {
 
-            double valorDouble = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
-            mData = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
+            double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_VALOR));
+            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_DATA));
 
-            mEtValor.setText(String.valueOf(valorDouble * 100));
+            mEtValor.setText(String.valueOf(valorBD * 100));
         }
     }
 

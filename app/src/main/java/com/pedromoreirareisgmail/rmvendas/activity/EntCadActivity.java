@@ -34,6 +34,7 @@ import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.data.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT_MSG;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
@@ -42,7 +43,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final int LOADER_ENT_CAD = 0;
     private EditText mEtValor;
-    private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
+    private final EditText.OnTouchListener mTouchListnerEditFocoCursorFim = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -50,6 +51,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
             switch (id) {
 
+                // Recebe o foco e coloca o cursor no fim
                 case R.id.et_valor:
                     mEtValor.requestFocus();
                     mEtValor.setSelection(mEtValor.getText().length());
@@ -61,10 +63,10 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
     private EditText mEtDescricao;
-    private String mData = "";
+    private String mDataHoraBD = "";
     private Uri mUriAtual = null;
-    private boolean isAlterado = false;
-    private boolean isUpdating = false;
+    private boolean isDadosAlterado = false;
+    private boolean isFormatarCurrencyAtualizado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +99,9 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isAlterado = true;
+                isDadosAlterado = true;
 
-                if (charSequence.toString().trim().length() > 48) {
+                if (charSequence.toString().trim().length() > MAX_CARACT_MSG) {
 
                     Toast.makeText(EntCadActivity.this,
                             R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
@@ -120,14 +122,14 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isAlterado = true;
+                isDadosAlterado = true;
 
-                if (isUpdating) {
-                    isUpdating = false;
+                if (isFormatarCurrencyAtualizado) {
+                    isFormatarCurrencyAtualizado = false;
                     return;
                 }
 
-                isUpdating = true;
+                isFormatarCurrencyAtualizado = true;
 
                 mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
@@ -145,7 +147,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    adicionar();
+                    salvarDadosBD();
                     return true;
                 }
 
@@ -153,13 +155,14 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        mEtValor.setOnTouchListener(mTouchListnerEditCursorFim);
+        mEtValor.setOnTouchListener(mTouchListnerEditFocoCursorFim);
 
         Utilidades.semCursorFocoSelecaoZerado(mEtValor);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
@@ -172,11 +175,11 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         switch (id) {
 
             case R.id.action_salvar:
-                adicionar();
+                salvarDadosBD();
                 return true;
 
             case android.R.id.home:
-                if (!isAlterado) {
+                if (!isDadosAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -201,20 +204,20 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
         return super.onOptionsItemSelected(item);
     }
 
-    private void adicionar() {
+    private void salvarDadosBD() {
 
-        String valorStr = mEtValor.getText().toString().trim();
-        String descricao = mEtDescricao.getText().toString().trim();
+        String valorEditText = mEtValor.getText().toString().trim();
+        String descricaoEditText = mEtDescricao.getText().toString().trim();
 
-        double valorDouble = Formatar.formatarParaDouble(valorStr);
+        double valorDouble = Formatar.formatarParaDouble(valorEditText);
 
-        if (TextUtils.isEmpty(valorStr)) {
+        if (TextUtils.isEmpty(valorEditText)) {
 
             mEtValor.setError(getString(R.string.error_campo_vazio));
             return;
         }
 
-        if (TextUtils.isEmpty(descricao)) {
+        if (TextUtils.isEmpty(descricaoEditText)) {
 
             mEtDescricao.setError(getString(R.string.error_campo_vazio));
             return;
@@ -226,7 +229,7 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
-        if (descricao.length() < MIN_QUANT_CARACT) {
+        if (descricaoEditText.length() < MIN_QUANT_CARACT) {
 
             mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
             return;
@@ -234,26 +237,20 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
         ContentValues values = new ContentValues();
         values.put(AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
-        values.put(AcessoEntRet.COLUNA_ENT_RET_DESC, descricao);
+        values.put(AcessoEntRet.COLUNA_ENT_RET_DESC, descricaoEditText);
         values.put(AcessoEntRet.COLUNA_ENT_RET_TIPO, Constantes.TIPO_ENTRADA);
 
         if (mUriAtual == null) {
 
             values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, obterDataHoraSistema());
 
-        } else {
-
-            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, mData);
-        }
-
-        if (mUriAtual == null) {
-
             Crud.inserir(EntCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
         } else {
 
-            Crud.editar(EntCadActivity.this, mUriAtual, values);
+            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, mDataHoraBD);
 
+            Crud.editar(EntCadActivity.this, mUriAtual, values);
         }
 
         finish();
@@ -261,7 +258,8 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onBackPressed() {
-        if (!isAlterado) {
+
+        if (!isDadosAlterado) {
 
             super.onBackPressed();
         }
@@ -306,17 +304,17 @@ public class EntCadActivity extends AppCompatActivity implements LoaderManager.L
 
         if (cursor.moveToFirst()) {
 
-            double valorDouble = cursor.getDouble(
+            double valorBD = cursor.getDouble(
                     cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
 
-            String descricao = cursor.getString(
+            String descricaoBD = cursor.getString(
                     cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESC));
 
-            mData = cursor.getString(
+            mDataHoraBD = cursor.getString(
                     cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
 
-            mEtValor.setText(String.valueOf(valorDouble * 100));
-            mEtDescricao.setText(descricao);
+            mEtValor.setText(String.valueOf(valorBD * 100));
+            mEtDescricao.setText(descricaoBD);
         }
     }
 

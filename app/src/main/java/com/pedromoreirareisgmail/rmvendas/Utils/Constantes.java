@@ -4,6 +4,7 @@ package com.pedromoreirareisgmail.rmvendas.Utils;
 public class Constantes {
 
     public static final int MAX_CARACT = 50;
+    public static final int MAX_CARACT_MSG = 48;
 
     public static final int TIPO_RETIRADA = 0;
     public static final int TIPO_ENTRADA = 1;
