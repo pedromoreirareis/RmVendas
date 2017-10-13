@@ -34,10 +34,8 @@ public class Provider extends ContentProvider {
     private static final int MATCH_SALDO_INICIAL = 6;
     private static final int MATCH_VENDASS_ID = 7;
     private static final int MATCH_VENDAS = 8;
-
     private static final int MATCH_CLIENTES_ID = 9;
     private static final int MATCH_CLIENTES = 10;
-
     private static final int MATCH_A_RECEBER_ID = 11;
     private static final int MATCH_A_RECEBER = 12;
 
