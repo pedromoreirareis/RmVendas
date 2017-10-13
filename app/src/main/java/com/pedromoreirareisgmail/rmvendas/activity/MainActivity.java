@@ -32,7 +32,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.MainAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {

@@ -124,7 +124,7 @@ public class Dialogos {
      * Abre o calendário para escolha de uma data
      *
      * @param context          activity onde o calendario sera aberto
-     * @param mDateSetListener
+     * @param mDateSetListener entrada da data
      */
     public static void dialogoDatas(Context context, DatePickerDialog.OnDateSetListener mDateSetListener) {
 

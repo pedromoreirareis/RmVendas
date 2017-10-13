@@ -16,9 +16,9 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
 import java.text.NumberFormat;
 

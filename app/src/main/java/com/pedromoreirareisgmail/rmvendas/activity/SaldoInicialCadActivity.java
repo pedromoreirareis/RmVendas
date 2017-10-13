@@ -27,8 +27,8 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.data.Crud;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;

@@ -1,4 +1,4 @@
-package com.pedromoreirareisgmail.rmvendas.data;
+package com.pedromoreirareisgmail.rmvendas.db;
 
 
 import android.content.ContentValues;

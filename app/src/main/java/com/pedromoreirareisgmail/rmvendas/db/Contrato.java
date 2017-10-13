@@ -1,4 +1,4 @@
-package com.pedromoreirareisgmail.rmvendas.data;
+package com.pedromoreirareisgmail.rmvendas.db;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -7,12 +7,14 @@ import android.provider.BaseColumns;
 public class Contrato {
 
 
-    /************************************ TABELAS *************************************************
-     * produtos         - lista com os bolos e/ou outros produtos vendidos
-     * ent_ret          - entradas e retiradas de valores do caixa em um dia especifico
-     * saldo_inicial    - saldo inicial em um dia especifico
-     * vendas           - resumo das vendas em um dia especifico
-     *********************************************************************************************/
+    /*********************************** TABELAS *************************************************
+     produtos         - lista com os bolos e/ou outros produtos vendidos
+     ent_ret          - entradas e retiradas de valores do caixa em um dia especifico
+     saldo_inicial    - saldo inicial em um dia especifico
+     vendas           - resumo das vendas em um dia especifico
+     clientes         - cadastro de clientes
+     a_receber        - registro de vendas a prazo - fiado
+     */
 
     /**
      * Autoridade para o vendas provider
@@ -32,6 +34,8 @@ public class Contrato {
     public static final String PATH_ENT_RET = AcessoEntRet.TABELA_ENT_RET;
     public static final String PATH_SALDO_INICIAL = AcessoSaldo.TABELA_SALDO_INICIAL;
     public static final String PATH_VENDA = AcessoVenda.TABELA_VENDAS;
+    public static final String PATH_CLIENTES = AcessoClientes.TABELA_CLIENTES;
+    public static final String PATH_A_RECEBER = AcessoAReceber.TABELA_A_RECEBER;
 
 
     private Contrato() {
@@ -181,5 +185,74 @@ public class Contrato {
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
                         "/" + PATH_VENDA;
+    }
+
+
+    /*********************************** CLIENTES *************************************************/
+
+    public static final class AcessoClientes implements BaseColumns {
+
+
+        public static final Uri CONTENT_URI_CLIENTES = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_CLIENTES);
+
+        public static final String TABELA_CLIENTES = "clientes";
+
+        public static final String _ID = BaseColumns._ID;
+        public static final String COLUNA_CLIENTES_NOME = "nome";
+        public static final String COLUNA_CLIENTES_TELEFONE_1 = "telefone_1";
+        public static final String COLUNA_CLIENTES_TELEFONE_2 = "telefone_2";
+
+        public static final String CRIAR_TABELA_CLIENTES =
+                "CREATE TABLE IF NOT EXISTS " + TABELA_CLIENTES + " ( "
+                        + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + COLUNA_CLIENTES_NOME + "TEXT NOT NULL, "
+                        + COLUNA_CLIENTES_TELEFONE_1 + "INTEGER, "
+                        + COLUNA_CLIENTES_TELEFONE_2 + "INTEGER );";
+
+        public static final String CONTENT_ITEM_TYPE_CLIENTES =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_CLIENTES;
+
+        public static final String CONTENT_TYPE_CLIENTES =
+                ContentResolver.CURSOR_DIR_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_CLIENTES;
+
+
+    }
+
+    /*********************************** A RECEBER ************************************************/
+
+    public static final class AcessoAReceber implements BaseColumns {
+
+        public static final Uri CONTENT_URI_ARECEBER = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_A_RECEBER);
+
+        public static final String TABELA_A_RECEBER = "a_receber";
+
+        public static final String _ID = BaseColumns._ID;
+        public static final String COLUNA_A_RECEBER_CLIENTE = "cliente";
+        public static final String COLUNA_A_RECEBER_DATA = "data_hora";
+        public static final String COLUNA_A_RECEBER_TIPO = "tipo";
+        public static final String COLUNA_A_RECEBER_DESCRICAO = "descricao";
+
+        public static final String CRIAR_TABELA_A_RECEBER =
+                "CREATE TABLE IF NOT EXISTS " + TABELA_A_RECEBER + " ( "
+                        + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + COLUNA_A_RECEBER_CLIENTE + " TEXT NOT NULL, "
+                        + COLUNA_A_RECEBER_DATA + " TEXT NOT NULL, "
+                        + COLUNA_A_RECEBER_TIPO + " INTEGER NOT NULL"
+                        + COLUNA_A_RECEBER_DESCRICAO + " TEXT NOT NULL ); ";
+
+        public static final String CONTENT_ITEM_TYPE_A_RECEBER =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_A_RECEBER;
+
+        public static final String CONTENT_TYPE_A_RECEBER =
+                ContentResolver.CURSOR_DIR_BASE_TYPE +
+                        "/" + CONTENT_AUTORITY +
+                        "/" + PATH_A_RECEBER;
+
     }
 }

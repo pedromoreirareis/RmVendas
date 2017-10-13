@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 
 public class SaldoInicialAdapter extends CursorAdapter {
 

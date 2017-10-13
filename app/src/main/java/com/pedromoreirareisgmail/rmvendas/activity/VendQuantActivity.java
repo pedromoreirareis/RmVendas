@@ -31,9 +31,9 @@ import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
-import com.pedromoreirareisgmail.rmvendas.data.Crud;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import java.text.NumberFormat;
 

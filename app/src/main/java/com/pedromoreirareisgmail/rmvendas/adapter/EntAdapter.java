@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 
 public class EntAdapter extends CursorAdapter {
 

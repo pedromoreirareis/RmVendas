@@ -23,7 +23,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 
 public class ProdutosListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

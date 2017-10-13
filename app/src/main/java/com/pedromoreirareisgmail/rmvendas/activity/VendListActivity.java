@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 
 public class VendListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

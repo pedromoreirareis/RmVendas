@@ -29,8 +29,8 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
-import com.pedromoreirareisgmail.rmvendas.data.Crud;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT_MSG;

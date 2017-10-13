@@ -25,7 +25,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapter.SaldoInicialAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 
 public class SaldoInicialListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

@@ -1,13 +1,13 @@
-package com.pedromoreirareisgmail.rmvendas.data;
+package com.pedromoreirareisgmail.rmvendas.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
 public class DbHelper extends SQLiteOpenHelper {
 

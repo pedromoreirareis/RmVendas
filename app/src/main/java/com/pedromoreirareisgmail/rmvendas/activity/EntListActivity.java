@@ -26,7 +26,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapter.EntAdapter;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 
 public class EntListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

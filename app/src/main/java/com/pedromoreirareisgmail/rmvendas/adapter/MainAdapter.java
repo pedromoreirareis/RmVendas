@@ -12,7 +12,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.VEZES_X;
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.data.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 
 public class ProdAdapter extends CursorAdapter{
 
