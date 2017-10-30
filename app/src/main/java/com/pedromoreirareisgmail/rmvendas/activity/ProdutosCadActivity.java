@@ -54,6 +54,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
                 case R.id.et_preco:
                     mEtValor.requestFocus();
                     mEtValor.setSelection(mEtValor.getText().length());
+                    Utilidades.mostrarTeclado(ProdutosCadActivity.this, mEtValor);
                     return true;
 
                 default:

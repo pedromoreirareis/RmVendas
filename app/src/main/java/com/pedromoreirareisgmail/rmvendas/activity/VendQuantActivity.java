@@ -61,16 +61,19 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                 case R.id.et_quant_vend_quant:
                     mEtQuantidade.requestFocus();
                     mEtQuantidade.setSelection(mEtQuantidade.getText().length());
+                    Utilidades.mostrarTeclado(VendQuantActivity.this, mEtQuantidade);
                     return true;
 
                 case R.id.et_valor_desconto_vend_quant:
                     mEtDesconto.requestFocus();
                     mEtDesconto.setSelection(mEtDesconto.getText().length());
+                    Utilidades.mostrarTeclado(VendQuantActivity.this, mEtDesconto);
                     return true;
 
                 case R.id.et_valor_cobertura_vend_quant:
                     mEtCobertura.requestFocus();
                     mEtCobertura.setSelection(mEtCobertura.getText().length());
+                    Utilidades.mostrarTeclado(VendQuantActivity.this, mEtCobertura);
                     return true;
 
                 default:

@@ -49,6 +49,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
                 case R.id.et_valor:
                     mEtValor.requestFocus();
                     mEtValor.setSelection(mEtValor.getText().length());
+                    Utilidades.mostrarTeclado(SaldoInicialCadActivity.this, mEtValor);
                     return true;
 
                 default:

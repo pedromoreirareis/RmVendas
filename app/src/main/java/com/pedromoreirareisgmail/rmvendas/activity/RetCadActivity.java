@@ -55,6 +55,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
                 case R.id.et_valor:
                     mEtValor.requestFocus();
                     mEtValor.setSelection(mEtValor.getText().length());
+                    Utilidades.mostrarTeclado(RetCadActivity.this, mEtValor);
                     return true;
 
                 default:
