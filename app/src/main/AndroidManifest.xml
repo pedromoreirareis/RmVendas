@@ -100,7 +100,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.VendListActivity"
             android:parentActivityName=".activity.MainActivity"
@@ -110,7 +109,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.FechamentoActivity"
             android:parentActivityName=".activity.MainActivity"
@@ -124,6 +122,29 @@
             android:name=".db.Provider"
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
+
+        <activity
+            android:name=".activity.ClientesCadActivity"
+            android:parentActivityName=".activity.ClientesListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ClientesListActivity" />
+
+        </activity>
+
+        <activity
+            android:name=".activity.ClientesListActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

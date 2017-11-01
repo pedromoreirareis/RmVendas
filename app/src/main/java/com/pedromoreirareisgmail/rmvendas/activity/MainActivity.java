@@ -207,12 +207,16 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, SaldoInicialListActivity.class));
                 break;
 
+            case R.id.nav_action_fechamento:
+                startActivity(new Intent(MainActivity.this, FechamentoActivity.class));
+                break;
+
             case R.id.nav_action_list_prod:
                 startActivity(new Intent(MainActivity.this, ProdutosListActivity.class));
                 break;
 
-            case R.id.nav_action_fechamento:
-                startActivity(new Intent(MainActivity.this, FechamentoActivity.class));
+            case R.id.nav_action_list_clientes:
+                startActivity(new Intent(MainActivity.this, ClientesListActivity.class));
                 break;
         }
 

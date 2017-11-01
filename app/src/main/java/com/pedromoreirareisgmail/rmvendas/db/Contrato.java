@@ -199,15 +199,13 @@ public class Contrato {
 
         public static final String _ID = BaseColumns._ID;
         public static final String COLUNA_CLIENTES_NOME = "nome";
-        public static final String COLUNA_CLIENTES_TELEFONE_1 = "telefone_1";
-        public static final String COLUNA_CLIENTES_TELEFONE_2 = "telefone_2";
+        public static final String COLUNA_CLIENTES_TELEFONE = "telefone";
 
         public static final String CRIAR_TABELA_CLIENTES =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_CLIENTES + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUNA_CLIENTES_NOME + "TEXT NOT NULL, "
-                        + COLUNA_CLIENTES_TELEFONE_1 + "INTEGER, "
-                        + COLUNA_CLIENTES_TELEFONE_2 + "INTEGER );";
+                        + COLUNA_CLIENTES_TELEFONE + "INTEGER );";
 
         public static final String CONTENT_ITEM_TYPE_CLIENTES =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +

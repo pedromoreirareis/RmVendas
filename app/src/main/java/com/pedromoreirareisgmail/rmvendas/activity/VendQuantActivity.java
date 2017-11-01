@@ -287,7 +287,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         mEtCobertura.setOnTouchListener(mTouchListnerEditCursorFim);
         mEtDesconto.setOnTouchListener(mTouchListnerEditCursorFim);
 
-        mEtQuantidade.setCursorVisible(false);
+        // mEtQuantidade.setCursorVisible(false);  // Cursor fica invisivel - roberta pediu visivel
         mEtQuantidade.setSelectAllOnFocus(true); // estava false no entanto na primeira entrada do usuario nao apaga texto anterior testando true
         Utilidades.semCursorFocoSelecaoZerado(mEtCobertura);
         Utilidades.semCursorFocoSelecaoZerado(mEtDesconto);
@@ -590,6 +590,8 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             }
 
             mTvValorTotal.setText(mValorFormatarCurrency.format(valorTotalBD));
+
+            mEtQuantidade.requestFocus();
         }
 
         if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {

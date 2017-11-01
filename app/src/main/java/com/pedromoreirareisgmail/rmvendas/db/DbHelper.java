@@ -9,6 +9,8 @@ import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
+import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
+
 public class DbHelper extends SQLiteOpenHelper {
 
     /**
@@ -42,6 +44,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(AcessoEntRet.CRIAR_TABELA_ENT_RET);
         db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO_INICIAL);
         db.execSQL(AcessoVenda.CRIAR_TABELA_VENDA);
+        db.execSQL(AcessoClientes.CRIAR_TABELA_CLIENTES);
     }
 
     /**
@@ -55,6 +58,6 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int versaoAtual, int novaVersao) {
         // Implementar quando for Atualizar o banco de dados
-        // Ex: Incluir novas tabelas, incluir novas colunas
+
     }
 }

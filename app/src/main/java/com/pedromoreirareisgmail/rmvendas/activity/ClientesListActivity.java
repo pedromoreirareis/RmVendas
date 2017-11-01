@@ -21,28 +21,29 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.adapter.ProdAdapter;
-import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
+import com.pedromoreirareisgmail.rmvendas.adapter.ClientesAdapter;
 
-public class ProdutosListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 
-    private static final int LOADER_PRODUTOS_LIST = 0;
+public class ClientesListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private ProdAdapter mAdapter;
-    private String mProdutoPesquisarBD = "";
+    public static final int LOADER_CLIENTES_LIST = 0;
+    private ClientesAdapter mAdapter;
+
+    private String mPesquisar = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_produtos_list);
+        setContentView(R.layout.activity_clientes_list);
+
 
         FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_add);
         fabProdutos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(ProdutosListActivity.this, ProdutosCadActivity.class);
+                Intent intent = new Intent(ClientesListActivity.this, ClientesCadActivity.class);
                 startActivity(intent);
             }
         });
@@ -50,35 +51,31 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
         TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
         ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
 
-        tvEmpty.setText(R.string.text_prod_list_empty);
-        ivEmpty.setImageResource(R.drawable.ic_contract_list);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_prod_list_empty));
+        tvEmpty.setText("Nenhum cliente cadastrado");
+        ivEmpty.setImageResource(R.drawable.ic_money_up);
+        ivEmpty.setContentDescription("Imagem cliente");
 
         ListView listView = (ListView) findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
-        mAdapter = new ProdAdapter(this);
-
         listView.setEmptyView(emptyView);
+
+        mAdapter = new ClientesAdapter(this);
         listView.setAdapter(mAdapter);
 
+        // Com clique longo no listview, aparecera um dialog com opção de editar ou excluir
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(final AdapterView<?> adapterView, View view, final int position, final long id) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
 
-                Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTOS, id);
+                Uri uri = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, id);
 
                 Cursor cursor = mAdapter.getCursor();
-
                 String mensagemExcluir = mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_NOME)) +
-                        getString(R.string.dialog_exc_edit_texto_excluir_valor) +
-                        " " +
-                        Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
-                                cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_VALOR)));
+                        cursor.getColumnIndex(AcessoClientes.COLUNA_CLIENTES_NOME));
 
                 Dialogos.dialogoEditarExcluir(
-                        ProdutosListActivity.this,
-                        ProdutosCadActivity.class,
+                        ClientesListActivity.this,
+                        ClientesCadActivity.class,
                         uri,
                         mensagemExcluir
                 );
@@ -87,16 +84,14 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
             }
         });
 
-        getLoaderManager().initLoader(LOADER_PRODUTOS_LIST, null, this);
+        getLoaderManager().initLoader(LOADER_CLIENTES_LIST, null, this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
 
-        // Menu de pesquisa
         MenuItem menuItem = menu.findItem(R.id.action_search);
 
         final SearchView searchView = (SearchView) menuItem.getActionView();
@@ -110,51 +105,52 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                mProdutoPesquisarBD = newText;
+                mPesquisar = newText;
 
-                getLoaderManager().restartLoader(LOADER_PRODUTOS_LIST, null, ProdutosListActivity.this);
+                getLoaderManager().restartLoader(LOADER_CLIENTES_LIST, null, ClientesListActivity.this);
 
                 return true;
             }
         });
 
 
-        // return super.onCreateOptionsMenu(menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] projection = {
-                AcessoProdutos._ID,
-                AcessoProdutos.COLUNA_PRODUTOS_NOME,
-                AcessoProdutos.COLUNA_PRODUTOS_VALOR
+                AcessoClientes._ID,
+                AcessoClientes.COLUNA_CLIENTES_NOME,
+                AcessoClientes.COLUNA_CLIENTES_TELEFONE
         };
 
         /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
          * utilizar o menu search, sera pesquisado pelo nome do produto */
-        String selection = AcessoProdutos.COLUNA_PRODUTOS_NOME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
-        String sortOrder = AcessoProdutos.COLUNA_PRODUTOS_NOME;
+        String selection = AcessoClientes.COLUNA_CLIENTES_NOME + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
+        String sortOrder = AcessoClientes.COLUNA_CLIENTES_NOME;
 
         return new CursorLoader(
                 this,
-                AcessoProdutos.CONTENT_URI_PRODUTOS,
+                AcessoClientes.CONTENT_URI_CLIENTES,
                 projection,
                 selection,
                 selectionArgs,
                 sortOrder
         );
+
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mAdapter.swapCursor(cursor);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
+
     }
 }

@@ -109,7 +109,7 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
         });
 
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

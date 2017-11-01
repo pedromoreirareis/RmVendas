@@ -40,7 +40,7 @@ public class Utilidades {
     public static void semCursorFocoSelecaoZerado(EditText editText) {
 
         editText.setText("0");
-        editText.setCursorVisible(false);
+        //editText.setCursorVisible(false);
         editText.setSelectAllOnFocus(false);
     }
 

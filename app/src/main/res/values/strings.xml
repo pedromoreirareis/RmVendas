@@ -35,6 +35,7 @@
     <string name="menu_saldo_inicial_title">Saldo inicial</string>
     <string name="menu_fechamento_title">Fechamento</string>
     <string name="menu_produtos_title">Produtos</string>
+    <string name="menu_clientes_title">Clientes</string>
     <string name="menu_cadastros_title">Cadastros</string>
     <string name="menu_caixa_title">Caixa</string>
 
