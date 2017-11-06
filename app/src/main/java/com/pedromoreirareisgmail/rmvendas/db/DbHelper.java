@@ -9,6 +9,7 @@ import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
+import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoAReceber;
 import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -45,6 +46,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO_INICIAL);
         db.execSQL(AcessoVenda.CRIAR_TABELA_VENDA);
         db.execSQL(AcessoClientes.CRIAR_TABELA_CLIENTES);
+        db.execSQL(AcessoAReceber.CRIAR_TABELA_A_RECEBER);
+
     }
 
     /**

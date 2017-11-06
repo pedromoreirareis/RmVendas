@@ -29,7 +29,7 @@ public class ClientesAdapter extends CursorAdapter {
         ClientesViewHolder holder = new ClientesViewHolder(view);
 
         String nomeBD = cursor.getString(cursor.getColumnIndex(Contrato.AcessoClientes.COLUNA_CLIENTES_NOME));
-        int foneBD = cursor.getInt(cursor.getColumnIndex(Contrato.AcessoClientes.COLUNA_CLIENTES_NOME));
+        int foneBD = cursor.getInt(cursor.getColumnIndex(Contrato.AcessoClientes.COLUNA_CLIENTES_TELEFONE));
 
         holder.tvNome.setText(nomeBD);
         holder.tvFone.setText(String.valueOf(foneBD));

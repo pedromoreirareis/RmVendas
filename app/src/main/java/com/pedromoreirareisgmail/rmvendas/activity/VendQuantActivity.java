@@ -58,19 +58,19 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
             switch (id) {
 
-                case R.id.et_quant_vend_quant:
+                case R.id.et_vend_quant_quantidade:
                     mEtQuantidade.requestFocus();
                     mEtQuantidade.setSelection(mEtQuantidade.getText().length());
                     Utilidades.mostrarTeclado(VendQuantActivity.this, mEtQuantidade);
                     return true;
 
-                case R.id.et_valor_desconto_vend_quant:
+                case R.id.et_vend_quant_valor_desconto:
                     mEtDesconto.requestFocus();
                     mEtDesconto.setSelection(mEtDesconto.getText().length());
                     Utilidades.mostrarTeclado(VendQuantActivity.this, mEtDesconto);
                     return true;
 
-                case R.id.et_valor_cobertura_vend_quant:
+                case R.id.et_vend_quant_valor_cobertura:
                     mEtCobertura.requestFocus();
                     mEtCobertura.setSelection(mEtCobertura.getText().length());
                     Utilidades.mostrarTeclado(VendQuantActivity.this, mEtCobertura);
@@ -125,16 +125,16 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             getLoaderManager().initLoader(LOADER_VENDA_EDITAR, null, this);
         }
 
-        mTvNomeProduto = (TextView) findViewById(R.id.tv_nome_vend_quant);
-        mTvValorTotal = (TextView) findViewById(R.id.tv_valor_total_vend_quant);
-        mEtQuantidade = (EditText) findViewById(R.id.et_quant_vend_quant);
-        mEtDesconto = (EditText) findViewById(R.id.et_valor_desconto_vend_quant);
-        mEtCobertura = (EditText) findViewById(R.id.et_valor_cobertura_vend_quant);
-        mSwitchCobertura = (Switch) findViewById(R.id.switch_cobertura_vend_quant);
-        mSwitchDesconto = (Switch) findViewById(R.id.switch_desconto_vend_quant);
-        mSwitchPrazo = (Switch) findViewById(R.id.switch_prazo);
-        layoutDesconto = (TextInputLayout) findViewById(R.id.til_desc);
-        layoutCobertura = (TextInputLayout) findViewById(R.id.til_cobert);
+        mTvNomeProduto = (TextView) findViewById(R.id.tv_vend_quant_nome);
+        mTvValorTotal = (TextView) findViewById(R.id.tv_vend_quant_valor_total);
+        mEtQuantidade = (EditText) findViewById(R.id.et_vend_quant_quantidade);
+        mEtDesconto = (EditText) findViewById(R.id.et_vend_quant_valor_desconto);
+        mEtCobertura = (EditText) findViewById(R.id.et_vend_quant_valor_cobertura);
+        mSwitchCobertura = (Switch) findViewById(R.id.switch_vend_quant_cobertura);
+        mSwitchDesconto = (Switch) findViewById(R.id.switch_vend_quant_desconto);
+        mSwitchPrazo = (Switch) findViewById(R.id.switch_vend_quant_prazo);
+        layoutDesconto = (TextInputLayout) findViewById(R.id.til_vend_quant_desconto);
+        layoutCobertura = (TextInputLayout) findViewById(R.id.til_vend_quant_cobertura);
 
         if (mAdicionarProdutoBD) {
             mEtQuantidade.setText("1");

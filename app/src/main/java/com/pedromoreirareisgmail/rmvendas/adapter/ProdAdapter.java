@@ -44,8 +44,8 @@ public class ProdAdapter extends CursorAdapter{
 
         public ProdViewHolder(View view) {
 
-            tvNome = view.findViewById(R.id.tv_prod_nome);
-            tvPreco = view.findViewById(R.id.tv_prod_preco);
+            tvNome = view.findViewById(R.id.tv_produto_nome);
+            tvPreco = view.findViewById(R.id.tv_produto_preco);
         }
 
     }

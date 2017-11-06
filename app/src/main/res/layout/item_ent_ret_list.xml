@@ -6,21 +6,21 @@
     android:padding="@dimen/margin_lefth_right_itens_list">
 
     <TextView
-        android:id="@+id/tv_valor_ent_ret_list"
+        android:id="@+id/tv_ent_ret_valor_list"
         style="@style/TituloTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3" />
 
     <TextView
-        android:id="@+id/tv_desc_ent_ret_list"
+        android:id="@+id/tv_ent_ret_desconto_list"
         style="@style/DetalhesItemLabelEntRet"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="7" />
 
     <TextView
-        android:id="@+id/tv_hora_ent_ret_list"
+        android:id="@+id/tv_ent_ret_hora_list"
         style="@style/DataTextView"
         android:layout_width="44dp"
         android:layout_height="wrap_content" />

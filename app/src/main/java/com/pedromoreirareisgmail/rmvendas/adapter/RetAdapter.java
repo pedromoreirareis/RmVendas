@@ -47,9 +47,9 @@ public class RetAdapter extends CursorAdapter {
 
         public RetViewHolder(View view) {
 
-            valor = view.findViewById(R.id.tv_valor_ent_ret_list);
-            tvHoraMinuto = view.findViewById(R.id.tv_hora_ent_ret_list);
-            descricao = view.findViewById(R.id.tv_desc_ent_ret_list);
+            valor = view.findViewById(R.id.tv_ent_ret_valor_list);
+            tvHoraMinuto = view.findViewById(R.id.tv_ent_ret_hora_list);
+            descricao = view.findViewById(R.id.tv_ent_ret_desconto_list);
         }
     }
 }

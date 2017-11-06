@@ -47,9 +47,9 @@ public class EntAdapter extends CursorAdapter {
 
         public EntViewHolder(View view) {
 
-            tvValor = view.findViewById(R.id.tv_valor_ent_ret_list);
-            tvHoraMinuto = view.findViewById(R.id.tv_hora_ent_ret_list);
-            tvDescricao = view.findViewById(R.id.tv_desc_ent_ret_list);
+            tvValor = view.findViewById(R.id.tv_ent_ret_valor_list);
+            tvHoraMinuto = view.findViewById(R.id.tv_ent_ret_hora_list);
+            tvDescricao = view.findViewById(R.id.tv_ent_ret_desconto_list);
         }
 
     }

@@ -113,7 +113,7 @@ public class Provider extends ContentProvider {
 
             case MATCH_PRODUTOS_ID:
 
-                selection = AcessoProdutos._ID + " =? ";
+                selection = AcessoProdutos._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
@@ -173,7 +173,7 @@ public class Provider extends ContentProvider {
 
             case MATCH_SALDO_INICIAL_ID:
 
-                selection = AcessoSaldo._ID + " =? ";
+                selection = AcessoSaldo._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
@@ -203,7 +203,7 @@ public class Provider extends ContentProvider {
 
             case MATCH_VENDASS_ID:
 
-                selection = AcessoVenda._ID + " =? ";
+                selection = AcessoVenda._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
@@ -233,7 +233,7 @@ public class Provider extends ContentProvider {
 
             case MATCH_CLIENTES_ID:
 
-                selection = AcessoClientes._ID + " =? ";
+                selection = AcessoClientes._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
@@ -263,7 +263,7 @@ public class Provider extends ContentProvider {
 
             case MATCH_A_RECEBER_ID:
 
-                selection = AcessoAReceber._ID + " =? ";
+                selection = AcessoAReceber._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 

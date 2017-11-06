@@ -60,16 +60,16 @@ public class FechamentoActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_fechamento);
 
 
-        tvValorSaldoInicial = (TextView) findViewById(R.id.tv_saldo_inicial_fechamento);
-        tvValorEntradas = (TextView) findViewById(R.id.tv_entrada_fechamento);
-        tvValorTotalVendasVista = (TextView) findViewById(R.id.tv_vendas_fechamento);
-        tvValorRetiradas = (TextView) findViewById(R.id.tv_retirada_fechamento);
-        tvValorDescontos = (TextView) findViewById(R.id.tv_descontos_fechamento);
-        tvValorTotalVendasPrazo = (TextView) findViewById(R.id.tv_prazo_fechamento);
-        tvValorSaldoFinalFechamento = (TextView) findViewById(R.id.tv_saldo_final_fechamento);
-        tvQuantidadeBolosVendidos = (TextView) findViewById(R.id.tv_bolos_vendidos_fechamento);
-        tvQuantidadeBolosVendidosVista = (TextView) findViewById(R.id.tv_bolos_vendidos_vista_fechamento);
-        tvQuantidadeBolosVendidosPrazo = (TextView) findViewById(R.id.tv_bolos_vendidos_prazo_fechamento);
+        tvValorSaldoInicial = (TextView) findViewById(R.id.tv_fechamento_saldo_inicial);
+        tvValorEntradas = (TextView) findViewById(R.id.tv_fechamento_entrada);
+        tvValorTotalVendasVista = (TextView) findViewById(R.id.tv_fechamento_vendas);
+        tvValorRetiradas = (TextView) findViewById(R.id.tv_fechamento_retirada);
+        tvValorDescontos = (TextView) findViewById(R.id.tv_fechamento_descontos);
+        tvValorTotalVendasPrazo = (TextView) findViewById(R.id.tv_fechamento_prazo);
+        tvValorSaldoFinalFechamento = (TextView) findViewById(R.id.tv_fechamento_saldo_final);
+        tvQuantidadeBolosVendidos = (TextView) findViewById(R.id.tv_fechamento_bolos_vendidos);
+        tvQuantidadeBolosVendidosVista = (TextView) findViewById(R.id.tv_fechamento_bolos_vendidos_vista);
+        tvQuantidadeBolosVendidosPrazo = (TextView) findViewById(R.id.tv_fechamento_bolos_vendidos_prazo);
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override

@@ -84,13 +84,32 @@ public class ClientesListActivity extends AppCompatActivity implements LoaderMan
             }
         });
 
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Intent intent = new Intent(ClientesListActivity.this, RegistroReceberActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("clienteId", String.valueOf(id));
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+
+            }
+        });
+
         getLoaderManager().initLoader(LOADER_CLIENTES_LIST, null, this);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
 
@@ -147,6 +166,7 @@ public class ClientesListActivity extends AppCompatActivity implements LoaderMan
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
+        mAdapter.swapCursor(data);
     }
 
     @Override

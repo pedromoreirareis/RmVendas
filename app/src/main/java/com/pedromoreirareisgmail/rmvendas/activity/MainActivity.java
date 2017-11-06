@@ -218,6 +218,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_action_list_clientes:
                 startActivity(new Intent(MainActivity.this, ClientesListActivity.class));
                 break;
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -78,8 +78,8 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
             getLoaderManager().initLoader(LOADER_CLIENTES_CAD, null, this);
         }
 
-        mEtNome = (EditText) findViewById(R.id.et_nome_cliente);
-        mEtFone = (EditText) findViewById(R.id.et_num_fone);
+        mEtNome = (EditText) findViewById(R.id.et_clientes_nome);
+        mEtFone = (EditText) findViewById(R.id.et_clientes_num_fone);
 
         mEtNome.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT)});
 
@@ -126,7 +126,6 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
 
         mEtFone.setOnTouchListener(mTouchListnerEditFocoCursorFim);
 
-        Utilidades.semCursorFocoSelecaoZerado(mEtFone);
     }
 
     @Override
@@ -269,7 +268,7 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
 
 
             mEtNome.setText(nomeBD);
-            mEtFone.setText(foneBD);
+            mEtFone.setText(String.valueOf(foneBD));
         }
     }
 

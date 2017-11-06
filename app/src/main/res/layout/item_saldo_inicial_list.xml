@@ -6,14 +6,14 @@
     android:padding="@dimen/margin_lefth_right_itens_list">
 
     <TextView
-        android:id="@+id/tv_valor_saldo_inicial_list"
+        android:id="@+id/tv_saldo_inicial_valor_list"
         style="@style/TituloTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_hora_saldo_inicial_list"
+        android:id="@+id/tv_saldo_inicial_hora_list"
         style="@style/DataTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

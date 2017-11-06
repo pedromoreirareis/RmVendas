@@ -202,10 +202,10 @@ public class Contrato {
         public static final String COLUNA_CLIENTES_TELEFONE = "telefone";
 
         public static final String CRIAR_TABELA_CLIENTES =
-                "CREATE TABLE IF NOT EXISTS " + TABELA_CLIENTES + " ( "
+                " CREATE TABLE IF NOT EXISTS " + TABELA_CLIENTES + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_CLIENTES_NOME + "TEXT NOT NULL, "
-                        + COLUNA_CLIENTES_TELEFONE + "INTEGER );";
+                        + COLUNA_CLIENTES_NOME + " TEXT NOT NULL, "
+                        + COLUNA_CLIENTES_TELEFONE + " INTEGER );";
 
         public static final String CONTENT_ITEM_TYPE_CLIENTES =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
@@ -226,21 +226,28 @@ public class Contrato {
 
         public static final Uri CONTENT_URI_ARECEBER = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_A_RECEBER);
 
-        public static final String TABELA_A_RECEBER = "a_receber";
+        public static final String TABELA_A_RECEBER = "receber";
+
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUNA_A_RECEBER_CLIENTE = "cliente";
-        public static final String COLUNA_A_RECEBER_DATA = "data_hora";
-        public static final String COLUNA_A_RECEBER_TIPO = "tipo";
+        public static final String COLUNA_A_RECEBER_CLIENTE_ID = "id_cliente";
+        public static final String COLUNA_A_RECEBER_CLIENTE_NOME = "nome_cliente";
+        public static final String COLUNA_A_RECEBER_DATA_HORA = "data_hora";
+        public static final String COLUNA_A_RECEBER_TIPO_ENTRADA = "tipo_entrada";
         public static final String COLUNA_A_RECEBER_DESCRICAO = "descricao";
+        public static final String COLUNA_A_RECEBER_VALOR = "valor";
+
 
         public static final String CRIAR_TABELA_A_RECEBER =
-                "CREATE TABLE IF NOT EXISTS " + TABELA_A_RECEBER + " ( "
+                " CREATE TABLE IF NOT EXISTS " + TABELA_A_RECEBER + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_A_RECEBER_CLIENTE + " TEXT NOT NULL, "
-                        + COLUNA_A_RECEBER_DATA + " TEXT NOT NULL, "
-                        + COLUNA_A_RECEBER_TIPO + " INTEGER NOT NULL"
-                        + COLUNA_A_RECEBER_DESCRICAO + " TEXT NOT NULL ); ";
+                        + COLUNA_A_RECEBER_CLIENTE_ID + " INTEGER NOT NULL, "
+                        + COLUNA_A_RECEBER_CLIENTE_NOME + " TEXT NOT NULL, "
+                        + COLUNA_A_RECEBER_DATA_HORA + " TEXT NOT NULL, "
+                        + COLUNA_A_RECEBER_TIPO_ENTRADA + " INTEGER NOT NULL, "
+                        + COLUNA_A_RECEBER_DESCRICAO + " TEXT NOT NULL, "
+                        + COLUNA_A_RECEBER_VALOR + " REAL NOT NULL DEFAULT 0 ); ";
+
 
         public static final String CONTENT_ITEM_TYPE_A_RECEBER =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +

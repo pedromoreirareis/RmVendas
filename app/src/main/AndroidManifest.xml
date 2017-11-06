@@ -128,23 +128,26 @@
             android:parentActivityName=".activity.ClientesListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ClientesListActivity" />
-
         </activity>
-
         <activity
             android:name=".activity.ClientesListActivity"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
+        <activity
+            android:name=".activity.RegistroReceberActivity"
+            android:parentActivityName=".activity.ClientesListActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ClientesListActivity" />
+        </activity>
     </application>
 
 </manifest>

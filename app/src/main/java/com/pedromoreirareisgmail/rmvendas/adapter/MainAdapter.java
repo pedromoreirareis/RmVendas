@@ -25,7 +25,7 @@ public class MainAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return LayoutInflater.from(context).inflate(R.layout.item_main, viewGroup, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_main_list, viewGroup, false);
     }
 
     @Override
@@ -93,13 +93,13 @@ public class MainAdapter extends CursorAdapter {
 
         public MainViewHolder(View view) {
 
-            tvNomeProduto = view.findViewById(R.id.tv_nome_main);
-            tvQuantidade = view.findViewById(R.id.tv_valor_quant_main);
-            tvValorCobertura = view.findViewById(R.id.tv_valor_cober_main);
-            tvValorDesconto = view.findViewById(R.id.tv_valor_desc_main);
-            tvValorTotalVenda = view.findViewById(R.id.tv_valor_venda_main);
-            tvValorTotalLabel = view.findViewById(R.id.tv_valor_label_venda_main);
-            tvHoraMinuto = view.findViewById(R.id.tv_data_main);
+            tvNomeProduto = view.findViewById(R.id.tv_main_nome);
+            tvQuantidade = view.findViewById(R.id.tv_main_valor_quantidade);
+            tvValorCobertura = view.findViewById(R.id.tv_main_valor_cobertura);
+            tvValorDesconto = view.findViewById(R.id.tv_main_valor_desconto);
+            tvValorTotalVenda = view.findViewById(R.id.tv_main_valor_venda);
+            tvValorTotalLabel = view.findViewById(R.id.tv_main_valor_label_venda);
+            tvHoraMinuto = view.findViewById(R.id.tv_main_data);
         }
     }
 }

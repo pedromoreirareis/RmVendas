@@ -23,7 +23,7 @@ public class SaldoInicialAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
 
-        return LayoutInflater.from(context).inflate(R.layout.item_saldo_inicial, viewGroup, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_saldo_inicial_list, viewGroup, false);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class SaldoInicialAdapter extends CursorAdapter {
 
         public SaldoViewHolder(View view) {
 
-            tvValor = view.findViewById(R.id.tv_valor_saldo_inicial_list);
-            tvHoraMinuto = view.findViewById(R.id.tv_hora_saldo_inicial_list);
+            tvValor = view.findViewById(R.id.tv_saldo_inicial_valor_list);
+            tvHoraMinuto = view.findViewById(R.id.tv_saldo_inicial_hora_list);
         }
     }
 }

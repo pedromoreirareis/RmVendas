@@ -9,14 +9,14 @@
     android:paddingTop="@dimen/margin_lefth_right_itens_list">
 
     <TextView
-        android:id="@+id/tv_prod_nome"
+        android:id="@+id/tv_produto_nome"
         style="@style/TituloTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_prod_preco"
+        android:id="@+id/tv_produto_preco"
         style="@style/DetalhesItemValor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

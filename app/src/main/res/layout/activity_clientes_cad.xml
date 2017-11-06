@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_nome_cliente"
+            android:id="@+id/et_clientes_nome"
             style="@style/CampoNunberText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_num_fone"
+            android:id="@+id/et_clientes_num_fone"
             style="@style/CampoNunberText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
