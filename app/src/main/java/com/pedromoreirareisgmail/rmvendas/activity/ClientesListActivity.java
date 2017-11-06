@@ -90,10 +90,17 @@ public class ClientesListActivity extends AppCompatActivity implements LoaderMan
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
+                Cursor cursor = mAdapter.getCursor();
+
+                String nome = cursor.getString(cursor.getColumnIndex(AcessoClientes.COLUNA_CLIENTES_NOME));
+
                 Intent intent = new Intent(ClientesListActivity.this, RegistroReceberActivity.class);
+
 
                 Bundle bundle = new Bundle();
                 bundle.putString("clienteId", String.valueOf(id));
+                bundle.putString("clienteNome", nome);
+
 
                 intent.putExtras(bundle);
                 startActivity(intent);
