@@ -19,10 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
@@ -47,9 +50,11 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
     private TextView mTvNomeProduto;
     private TextView mTvValorTotal;
+    private TextView mTvCliente;
     private EditText mEtQuantidade;
     private EditText mEtCobertura;
     private EditText mEtDesconto;
+    private EditText mEtPrazo;
     private final EditText.OnTouchListener mTouchListnerEditCursorFim = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -76,16 +81,24 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
                     Utilidades.mostrarTeclado(VendQuantActivity.this, mEtCobertura);
                     return true;
 
+                case R.id.et_vend_quant_valor_prazo:
+                    mEtPrazo.requestFocus();
+                    mEtPrazo.setSelection(mEtPrazo.getText().length());
+                    Utilidades.mostrarTeclado(VendQuantActivity.this, mEtPrazo);
+                    return true;
+
                 default:
                     return false;
             }
         }
     };
+    private Button mButCliente;
     private Switch mSwitchCobertura;
     private Switch mSwitchDesconto;
     private Switch mSwitchPrazo;
     private TextInputLayout layoutCobertura;
     private TextInputLayout layoutDesconto;
+    private LinearLayout layoutPrazo;
     private Uri mUriAtual = null;
     private double mValorUnidadeProduto = 0;
     private String mDataHoraBD = "";
@@ -125,16 +138,20 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             getLoaderManager().initLoader(LOADER_VENDA_EDITAR, null, this);
         }
 
-        mTvNomeProduto = (TextView) findViewById(R.id.tv_vend_quant_nome);
+        mTvNomeProduto = (TextView) findViewById(R.id.tv_vend_quant_nome_produto);
         mTvValorTotal = (TextView) findViewById(R.id.tv_vend_quant_valor_total);
+        mTvCliente = (TextView) findViewById(R.id.tv_vend_quant_cliente);
+        mButCliente = (Button) findViewById(R.id.but_vend_quant_cliente);
         mEtQuantidade = (EditText) findViewById(R.id.et_vend_quant_quantidade);
         mEtDesconto = (EditText) findViewById(R.id.et_vend_quant_valor_desconto);
         mEtCobertura = (EditText) findViewById(R.id.et_vend_quant_valor_cobertura);
+        mEtPrazo = (EditText) findViewById(R.id.et_vend_quant_valor_prazo);
         mSwitchCobertura = (Switch) findViewById(R.id.switch_vend_quant_cobertura);
         mSwitchDesconto = (Switch) findViewById(R.id.switch_vend_quant_desconto);
         mSwitchPrazo = (Switch) findViewById(R.id.switch_vend_quant_prazo);
         layoutDesconto = (TextInputLayout) findViewById(R.id.til_vend_quant_desconto);
         layoutCobertura = (TextInputLayout) findViewById(R.id.til_vend_quant_cobertura);
+        layoutPrazo = (LinearLayout) findViewById(R.id.ll_vend_quant_prazo);
 
         if (mAdicionarProdutoBD) {
             mEtQuantidade.setText("1");
@@ -143,6 +160,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         mSwitchCobertura.setOnTouchListener(mTouchListenerSwitch);
         mSwitchDesconto.setOnTouchListener(mTouchListenerSwitch);
+        mSwitchPrazo.setOnTouchListener(mTouchListenerSwitch);
 
         mEtQuantidade.addTextChangedListener(new TextWatcher() {
             @Override
@@ -235,11 +253,52 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             }
         });
 
+
+        mEtPrazo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+
+                isDadosAlterado = true;
+                Toast.makeText(VendQuantActivity.this, "Teste Prazo - Implementar", Toast.LENGTH_SHORT).show();
+
+                String vlPrazo = charSequence.toString().trim().replaceAll("[^\\d]", "");
+               /* String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlDesc = charSequence.toString().trim().replaceAll("[^\\d]", "");
+
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
+                */
+
+                if (isFormatarCurrencyAtualizado) {
+                    isFormatarCurrencyAtualizado = false;
+                    return;
+                }
+
+                isFormatarCurrencyAtualizado = true;
+
+                mEtPrazo.setText(Formatar.formatarParaCurrency(vlPrazo));
+
+                mEtPrazo.setSelection(mEtPrazo.getText().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
         mSwitchCobertura.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
-                if (checked) {
+                if (isChecked) {
 
                     layoutCobertura.setVisibility(View.VISIBLE);
 
@@ -261,9 +320,9 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         mSwitchDesconto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
-                if (checked) {
+                if (isChecked) {
 
                     layoutDesconto.setVisibility(View.VISIBLE);
 
@@ -282,15 +341,48 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             }
         });
 
+        mSwitchPrazo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+
+                    layoutPrazo.setVisibility(View.VISIBLE);
+
+                    if (mAdicionarProdutoBD) {
+                        mEtPrazo.setText("0");
+                    }
+
+                    mEtPrazo.requestFocus();
+
+                } else {
+
+                    layoutPrazo.setVisibility(View.GONE);
+                    //Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchDesconto);
+                    mEtPrazo.setText("0");
+                }
+
+            }
+        });
+
+        mButCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utilidades.fecharTecladoView(VendQuantActivity.this, mButCliente);
+            }
+        });
+
 
         mEtQuantidade.setOnTouchListener(mTouchListnerEditCursorFim);
         mEtCobertura.setOnTouchListener(mTouchListnerEditCursorFim);
         mEtDesconto.setOnTouchListener(mTouchListnerEditCursorFim);
+        mEtPrazo.setOnTouchListener(mTouchListnerEditCursorFim);
 
         // mEtQuantidade.setCursorVisible(false);  // Cursor fica invisivel - roberta pediu visivel
         mEtQuantidade.setSelectAllOnFocus(true); // estava false no entanto na primeira entrada do usuario nao apaga texto anterior testando true
         Utilidades.semCursorFocoSelecaoZerado(mEtCobertura);
         Utilidades.semCursorFocoSelecaoZerado(mEtDesconto);
+        Utilidades.semCursorFocoSelecaoZerado(mEtPrazo);
     }
 
     @Override
