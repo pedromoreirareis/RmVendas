@@ -58,14 +58,14 @@ public class Contrato {
          * Nome das colunas
          */
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUNA_PRODUTOS_NOME = "nome";
-        public static final String COLUNA_PRODUTOS_VALOR = "preco";
+        public static final String NOME = "nome";
+        public static final String VALOR = "preco";
 
         public static final String CRIAR_TABELA_PRODUTOS =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_PRODUTOS + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_PRODUTOS_NOME + " TEXT NOT NULL, "
-                        + COLUNA_PRODUTOS_VALOR + " REAL NOT NULL DEFAULT 0 );";
+                        + NOME + " TEXT NOT NULL, "
+                        + VALOR + " REAL NOT NULL DEFAULT 0 );";
 
         /**
          * Constante do MIME - tabela de Produtos
@@ -89,18 +89,18 @@ public class Contrato {
         public static final String TABELA_ENT_RET = "ent_ret";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUNA_ENT_RET_DATA = "data";
-        public static final String COLUNA_ENT_RET_TIPO = "tipo";
-        public static final String COLUNA_ENT_RET_VALOR = "valor";
-        public static final String COLUNA_ENT_RET_DESCRICAO = "descricao";
+        public static final String DATA = "data";
+        public static final String TIPO = "tipo";
+        public static final String VALOR = "valor";
+        public static final String DESCRICAO = "descricao";
 
         public static final String CRIAR_TABELA_ENT_RET =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_ENT_RET + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_ENT_RET_DATA + " TEXT NOT NULL, "
-                        + COLUNA_ENT_RET_TIPO + " INTEGER NOT NULL, "
-                        + COLUNA_ENT_RET_VALOR + " REAL NOT NULL DEFAULT 0, "
-                        + COLUNA_ENT_RET_DESCRICAO + " TEXT NOT NULL );";
+                        + DATA + " TEXT NOT NULL, "
+                        + TIPO + " INTEGER NOT NULL, "
+                        + VALOR + " REAL NOT NULL DEFAULT 0, "
+                        + DESCRICAO + " TEXT NOT NULL );";
 
         public static final String CONTENT_ITEM_TYPE_ENT_RET =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
@@ -121,15 +121,15 @@ public class Contrato {
         public static final String TABELA_SALDO_INICIAL = "saldo_inicial";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUNA_SALDO_INICIAL_DATA = "data";
-        public static final String COLUNA_SALDO_INICIAL_VALOR = "valor";
+        public static final String DATA = "data";
+        public static final String VALOR = "valor";
 
 
         public static final String CRIAR_TABELA_SALDO_INICIAL =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_SALDO_INICIAL + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_SALDO_INICIAL_DATA + " TEXT NOT NULL, "
-                        + COLUNA_SALDO_INICIAL_VALOR + " REAL NOT NULL DEFAULT 0 );";
+                        + DATA + " TEXT NOT NULL, "
+                        + VALOR + " REAL NOT NULL DEFAULT 0 );";
 
         public static final String CONTENT_ITEM_TYPE_SALDO_INICIAL =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
@@ -151,30 +151,30 @@ public class Contrato {
         public static final String TABELA_VENDAS = "vendas";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUNA_VENDAS_DATA = "data";
-        public static final String COLUNA_VENDAS_NOME_PRODUTO = "nome_prod";
-        public static final String COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO = "preco_um_bolo";
-        public static final String COLUNA_VENDAS_QUANTIDADE_VENDIDA = "quantidade";
-        public static final String COLUNA_VENDAS_TEM_COBERTURA = "tem_cobertura";
-        public static final String COLUNA_VENDAS_VALOR_COBERTURA = "valor_cobertura";
-        public static final String COLUNA_VENDAS_TEM_DESCONTO = "tem_desconto";
-        public static final String COLUNA_VENDAS_VALOR_DESCONTO = "valor_desconto";
-        public static final String COLUNA_VENDAS_A_PRAZO = "prazo";
-        public static final String COLUNA_VENDAS_VALOR_TOTAL_VENDA = "valor_prod";
+        public static final String DATA = "data";
+        public static final String NOME_PRODUTO = "nome_prod";
+        public static final String VALOR_UMA_UNIDADE_PRODUTO = "preco_um_bolo";
+        public static final String QUANTIDADE_VENDIDA = "quantidade";
+        public static final String TEM_COBERTURA = "tem_cobertura";
+        public static final String VALOR_COBERTURA = "valor_cobertura";
+        public static final String TEM_DESCONTO = "tem_desconto";
+        public static final String VALOR_DESCONTO = "valor_desconto";
+        public static final String A_PRAZO = "prazo";
+        public static final String VALOR_TOTAL_VENDA = "valor_prod";
 
         public static final String CRIAR_TABELA_VENDA =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_VENDAS + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_VENDAS_DATA + " TEXT NOT NULL, "
-                        + COLUNA_VENDAS_NOME_PRODUTO + " TEXT NOT NULL, "
-                        + COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO + " REAL NOT NULL DEFAULT 0, "
-                        + COLUNA_VENDAS_QUANTIDADE_VENDIDA + " INTEGER NOT NULL, "
-                        + COLUNA_VENDAS_TEM_COBERTURA + " INTEGER NOT NULL, "
-                        + COLUNA_VENDAS_VALOR_COBERTURA + " REAL, "
-                        + COLUNA_VENDAS_TEM_DESCONTO + " INTEGER NOT NULL, "
-                        + COLUNA_VENDAS_VALOR_DESCONTO + " REAL, "
-                        + COLUNA_VENDAS_A_PRAZO + " INTEGER NOT NULL, "
-                        + COLUNA_VENDAS_VALOR_TOTAL_VENDA + " REAL NOT NULL DEFAULT 0 );";
+                        + DATA + " TEXT NOT NULL, "
+                        + NOME_PRODUTO + " TEXT NOT NULL, "
+                        + VALOR_UMA_UNIDADE_PRODUTO + " REAL NOT NULL DEFAULT 0, "
+                        + QUANTIDADE_VENDIDA + " INTEGER NOT NULL, "
+                        + TEM_COBERTURA + " INTEGER NOT NULL, "
+                        + VALOR_COBERTURA + " REAL, "
+                        + TEM_DESCONTO + " INTEGER NOT NULL, "
+                        + VALOR_DESCONTO + " REAL, "
+                        + A_PRAZO + " INTEGER NOT NULL, "
+                        + VALOR_TOTAL_VENDA + " REAL NOT NULL DEFAULT 0 );";
 
         public static final String CONTENT_ITEM_TYPE_VENDA =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
@@ -198,14 +198,14 @@ public class Contrato {
         public static final String TABELA_CLIENTES = "clientes";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUNA_CLIENTES_NOME = "nome";
-        public static final String COLUNA_CLIENTES_TELEFONE = "telefone";
+        public static final String NOME = "nome";
+        public static final String TELEFONE = "telefone";
 
         public static final String CRIAR_TABELA_CLIENTES =
                 " CREATE TABLE IF NOT EXISTS " + TABELA_CLIENTES + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_CLIENTES_NOME + " TEXT NOT NULL, "
-                        + COLUNA_CLIENTES_TELEFONE + " INTEGER );";
+                        + NOME + " TEXT NOT NULL, "
+                        + TELEFONE + " INTEGER );";
 
         public static final String CONTENT_ITEM_TYPE_CLIENTES =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
@@ -230,23 +230,23 @@ public class Contrato {
 
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUNA_A_RECEBER_CLIENTE_ID = "id_cliente";
-        public static final String COLUNA_A_RECEBER_CLIENTE_NOME = "nome_cliente";
-        public static final String COLUNA_A_RECEBER_DATA_HORA = "data_hora";
-        public static final String COLUNA_A_RECEBER_TIPO_ENTRADA = "tipo_entrada";
-        public static final String COLUNA_A_RECEBER_DESCRICAO = "descricao";
-        public static final String COLUNA_A_RECEBER_VALOR = "valor";
+        public static final String CLIENTE_ID = "id_cliente";
+        public static final String CLIENTE_NOME = "nome_cliente";
+        public static final String DATA_HORA = "data_hora";
+        public static final String TIPO_ENTRADA = "tipo_entrada";
+        public static final String DESCRICAO = "descricao";
+        public static final String VALOR = "valor";
 
 
         public static final String CRIAR_TABELA_A_RECEBER =
                 " CREATE TABLE IF NOT EXISTS " + TABELA_A_RECEBER + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUNA_A_RECEBER_CLIENTE_ID + " INTEGER NOT NULL, "
-                        + COLUNA_A_RECEBER_CLIENTE_NOME + " TEXT NOT NULL, "
-                        + COLUNA_A_RECEBER_DATA_HORA + " TEXT NOT NULL, "
-                        + COLUNA_A_RECEBER_TIPO_ENTRADA + " INTEGER NOT NULL, "
-                        + COLUNA_A_RECEBER_DESCRICAO + " TEXT NOT NULL, "
-                        + COLUNA_A_RECEBER_VALOR + " REAL NOT NULL DEFAULT 0 ); ";
+                        + CLIENTE_ID + " INTEGER NOT NULL, "
+                        + CLIENTE_NOME + " TEXT NOT NULL, "
+                        + DATA_HORA + " TEXT NOT NULL, "
+                        + TIPO_ENTRADA + " INTEGER NOT NULL, "
+                        + DESCRICAO + " TEXT NOT NULL, "
+                        + VALOR + " REAL NOT NULL DEFAULT 0 ); ";
 
 
         public static final String CONTENT_ITEM_TYPE_A_RECEBER =

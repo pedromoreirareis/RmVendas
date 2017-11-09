@@ -82,10 +82,10 @@ public class SaldoInicialListActivity extends AppCompatActivity implements Loade
 
                 String dataExcluir = DataHora.formatarDataBr(
                         mAdapter.getCursor().getString(
-                                cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA)));
+                                cursor.getColumnIndex(AcessoSaldo.DATA)));
                 String valorExcluir = Formatar.formatarDoubleParaCurrency(
                         mAdapter.getCursor().getDouble(
-                                cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR)));
+                                cursor.getColumnIndex(AcessoSaldo.VALOR)));
 
                 String mensagemExcluir = getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial_1) +
                         " " +
@@ -158,12 +158,12 @@ public class SaldoInicialListActivity extends AppCompatActivity implements Loade
 
         String[] projection = {
                 AcessoSaldo._ID,
-                AcessoSaldo.COLUNA_SALDO_INICIAL_DATA,
-                AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR
+                AcessoSaldo.DATA,
+                AcessoSaldo.VALOR
         };
 
         // Procura por todos os dados salvos na tabela com parte da data do tipo "yyyy-MM-dd"
-        String selection = AcessoSaldo.COLUNA_SALDO_INICIAL_DATA + " LIKE ?";
+        String selection = AcessoSaldo.DATA + " LIKE ?";
         String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
         return new CursorLoader(

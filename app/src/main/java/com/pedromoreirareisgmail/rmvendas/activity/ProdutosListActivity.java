@@ -70,11 +70,11 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
                 Cursor cursor = mAdapter.getCursor();
 
                 String mensagemExcluir = mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_NOME)) +
+                        cursor.getColumnIndex(AcessoProdutos.NOME)) +
                         getString(R.string.dialog_exc_edit_texto_excluir_valor) +
                         " " +
                         Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
-                                cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_VALOR)));
+                                cursor.getColumnIndex(AcessoProdutos.VALOR)));
 
                 Dialogos.dialogoEditarExcluir(
                         ProdutosListActivity.this,
@@ -128,15 +128,15 @@ public class ProdutosListActivity extends AppCompatActivity implements LoaderMan
 
         String[] projection = {
                 AcessoProdutos._ID,
-                AcessoProdutos.COLUNA_PRODUTOS_NOME,
-                AcessoProdutos.COLUNA_PRODUTOS_VALOR
+                AcessoProdutos.NOME,
+                AcessoProdutos.VALOR
         };
 
         /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
          * utilizar o menu search, sera pesquisado pelo nome do produto */
-        String selection = AcessoProdutos.COLUNA_PRODUTOS_NOME + " LIKE ?";
+        String selection = AcessoProdutos.NOME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
-        String sortOrder = AcessoProdutos.COLUNA_PRODUTOS_NOME;
+        String sortOrder = AcessoProdutos.NOME;
 
         return new CursorLoader(
                 this,

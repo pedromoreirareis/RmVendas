@@ -181,12 +181,14 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
         if (TextUtils.isEmpty(nomeEditText)) {
 
             mEtNome.setError(getString(R.string.error_campo_vazio));
+            mEtNome.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(foneEditText)) {
 
             mEtFone.setError(getString(R.string.error_campo_vazio));
+            mEtFone.requestFocus();
             return;
         }
 
@@ -195,8 +197,8 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
 
 
         ContentValues values = new ContentValues();
-        values.put(AcessoClientes.COLUNA_CLIENTES_NOME, nomeEditText);
-        values.put(AcessoClientes.COLUNA_CLIENTES_TELEFONE, foneInt);
+        values.put(AcessoClientes.NOME, nomeEditText);
+        values.put(AcessoClientes.TELEFONE, foneInt);
 
         if (mUriAtual == null) {
 
@@ -241,8 +243,8 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
 
         String[] projection = {
                 AcessoClientes._ID,
-                AcessoClientes.COLUNA_CLIENTES_NOME,
-                AcessoClientes.COLUNA_CLIENTES_TELEFONE
+                AcessoClientes.NOME,
+                AcessoClientes.TELEFONE
         };
 
         return new CursorLoader(
@@ -261,10 +263,10 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
         if (cursor.moveToFirst()) {
 
             String nomeBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoClientes.COLUNA_CLIENTES_NOME));
+                    cursor.getColumnIndex(AcessoClientes.NOME));
 
             int foneBD = cursor.getInt(
-                    cursor.getColumnIndex(AcessoClientes.COLUNA_CLIENTES_TELEFONE));
+                    cursor.getColumnIndex(AcessoClientes.TELEFONE));
 
 
             mEtNome.setText(nomeBD);

@@ -6,29 +6,35 @@
     android:orientation="vertical"
     tools:context="com.pedromoreirareisgmail.rmvendas.activity.RegistroReceberActivity">
 
+
+    <TextView
+        android:id="@+id/tv_a_receber_total"
+        style="@style/TituloTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
+        android:layout_marginEnd="@dimen/margin_padrao_16"
+        android:layout_marginStart="@dimen/margin_padrao_16"
+        android:layout_marginTop="@dimen/margin_padrao_8"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="32sp" />
+
+
     <LinearLayout
         android:id="@+id/linear_botton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
+        android:layout_marginEnd="@dimen/margin_padrao_16"
+        android:layout_marginStart="@dimen/margin_padrao_16"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_a_receber_descricao"
-                style="@style/CampoNunberText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/hint_descricao"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences|textAutoCorrect" />
-        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_padrao_8">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/et_a_receber_valor"
@@ -42,58 +48,61 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_padrao_8">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_a_receber_descricao"
+                style="@style/CampoNunberText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/hint_descricao"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences|textAutoCorrect" />
+        </android.support.design.widget.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <Button
                 android:id="@+id/but_a_receber_venda"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="Venda" />
+                android:background="@color/colorRed"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/text_a_receber_venda"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/but_a_receber_recebimento"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="Recebimento" />
+                android:background="@color/colorBlue"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/text_a_receber_recebimento"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linear_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Total: "
-
-            android:textAlignment="textEnd" />
-
-        <TextView
-            android:id="@+id/tv_a_receber_total"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="32dp" />
-
-    </LinearLayout>
 
     <ListView
         android:id="@+id/lv_list_registro_receber"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@null"
         android:scrollbars="none" />
 </LinearLayout>

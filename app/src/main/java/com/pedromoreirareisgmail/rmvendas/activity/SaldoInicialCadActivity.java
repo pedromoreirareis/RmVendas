@@ -184,26 +184,28 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
         if (TextUtils.isEmpty(valorEditText)) {
             mEtValor.setError(getString(R.string.error_campo_vazio));
+            mEtValor.requestFocus();
             return;
         }
 
         if (valorDouble <= NUMERO_ZERO) {
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
+            mEtValor.requestFocus();
             return;
         }
 
         ContentValues values = new ContentValues();
-        values.put(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR, valorDouble);
+        values.put(AcessoSaldo.VALOR, valorDouble);
 
         if (mUriAtual == null) {
 
-            values.put(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA, obterDataHoraSistema());
+            values.put(AcessoSaldo.DATA, obterDataHoraSistema());
 
             Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO_INICIAL, values);
 
         } else {
 
-            values.put(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA, mDataHoraBD);
+            values.put(AcessoSaldo.DATA, mDataHoraBD);
 
             Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
         }
@@ -238,8 +240,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
         String[] projection = {
                 AcessoSaldo._ID,
-                AcessoSaldo.COLUNA_SALDO_INICIAL_DATA,
-                AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR
+                AcessoSaldo.DATA,
+                AcessoSaldo.VALOR
         };
 
         return new CursorLoader(
@@ -257,8 +259,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
         if (cursor.moveToFirst()) {
 
-            double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_DATA));
+            double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR));
+            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
         }

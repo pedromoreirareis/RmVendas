@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity
                 Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
 
                 Cursor cursor = mAdapter.getCursor();
-                String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA)) + "  "
-                        + cursor.getString(cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO));
+                String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA)) + "  "
+                        + cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
 
                 Dialogos.dialogoEditarExcluir(
                         MainActivity.this,
@@ -231,16 +231,16 @@ public class MainActivity extends AppCompatActivity
 
         String[] projection = new String[]{
                 AcessoVenda._ID,
-                AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO,
-                AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA,
-                AcessoVenda.COLUNA_VENDAS_DATA,
-                AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA,
-                AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO,
-                AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA,
-                AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO,
-                AcessoVenda.COLUNA_VENDAS_VALOR_COBERTURA,
-                AcessoVenda.COLUNA_VENDAS_A_PRAZO,
-                AcessoVenda.COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO
+                AcessoVenda.NOME_PRODUTO,
+                AcessoVenda.QUANTIDADE_VENDIDA,
+                AcessoVenda.DATA,
+                AcessoVenda.VALOR_TOTAL_VENDA,
+                AcessoVenda.TEM_DESCONTO,
+                AcessoVenda.TEM_COBERTURA,
+                AcessoVenda.VALOR_DESCONTO,
+                AcessoVenda.VALOR_COBERTURA,
+                AcessoVenda.A_PRAZO,
+                AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
         };
 
         String selection;
@@ -249,15 +249,15 @@ public class MainActivity extends AppCompatActivity
 
         if (mProdutoPesquisarBD.length() > 0) {
 
-            selection = AcessoVenda.COLUNA_VENDAS_DATA + " LIKE ?  AND " + AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO + " LIKE ?";
+            selection = AcessoVenda.DATA + " LIKE ?  AND " + AcessoVenda.NOME_PRODUTO + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%", "%" + mProdutoPesquisarBD + "%"};
-            sortOrder = AcessoVenda.COLUNA_VENDAS_DATA;
+            sortOrder = AcessoVenda.DATA;
 
         } else {
 
-            selection = AcessoVenda.COLUNA_VENDAS_DATA + " LIKE ?";
+            selection = AcessoVenda.DATA + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%"};
-            sortOrder = AcessoVenda.COLUNA_VENDAS_DATA;
+            sortOrder = AcessoVenda.DATA;
         }
 
 

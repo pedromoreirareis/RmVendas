@@ -215,41 +215,45 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
         if (TextUtils.isEmpty(valorEditText)) {
 
             mEtValor.setError(getString(R.string.error_campo_vazio));
+            mEtValor.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(descricaoEditText)) {
 
             mEtDescricao.setError(getString(R.string.error_campo_vazio));
+            mEtDescricao.requestFocus();
             return;
         }
 
         if (valorDouble <= NUMERO_ZERO) {
 
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
+            mEtValor.requestFocus();
             return;
         }
 
         if (descricaoEditText.length() < MIN_QUANT_CARACT) {
 
             mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
+            mEtDescricao.requestFocus();
             return;
         }
 
         ContentValues values = new ContentValues();
-        values.put(AcessoEntRet.COLUNA_ENT_RET_VALOR, valorDouble);
-        values.put(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO, descricaoEditText);
-        values.put(AcessoEntRet.COLUNA_ENT_RET_TIPO, Constantes.TIPO_RETIRADA);
+        values.put(AcessoEntRet.VALOR, valorDouble);
+        values.put(AcessoEntRet.DESCRICAO, descricaoEditText);
+        values.put(AcessoEntRet.TIPO, Constantes.TIPO_RETIRADA_CAIXA);
 
         if (mUriAtual == null) {
 
-            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, obterDataHoraSistema());
+            values.put(AcessoEntRet.DATA, obterDataHoraSistema());
 
             Crud.inserir(RetCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
         } else {
 
-            values.put(AcessoEntRet.COLUNA_ENT_RET_DATA, mDataHoraBD);
+            values.put(AcessoEntRet.DATA, mDataHoraBD);
 
             Crud.editar(RetCadActivity.this, mUriAtual, values);
         }
@@ -284,10 +288,10 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
         String[] projection = {
                 AcessoEntRet._ID,
-                AcessoEntRet.COLUNA_ENT_RET_DATA,
-                AcessoEntRet.COLUNA_ENT_RET_DESCRICAO,
-                AcessoEntRet.COLUNA_ENT_RET_TIPO,
-                AcessoEntRet.COLUNA_ENT_RET_VALOR
+                AcessoEntRet.DATA,
+                AcessoEntRet.DESCRICAO,
+                AcessoEntRet.TIPO,
+                AcessoEntRet.VALOR
         };
 
         return new CursorLoader(
@@ -306,13 +310,13 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
         if (cursor.moveToFirst()) {
 
             double valorBD = cursor.getDouble(
-                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+                    cursor.getColumnIndex(AcessoEntRet.VALOR));
 
             String descricaoBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO));
+                    cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
 
             mDataHoraBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
+                    cursor.getColumnIndex(AcessoEntRet.DATA));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
             mEtDescricao.setText(descricaoBD);

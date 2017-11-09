@@ -30,9 +30,9 @@ public class RetAdapter extends CursorAdapter {
 
         RetViewHolder holder = new RetViewHolder(view);
 
-        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
-        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
-        String desccricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO));
+        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
+        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA));
+        String desccricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
 
         holder.valor.setText(Formatar.formatarDoubleParaCurrency(valor));
         holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(dataHora));

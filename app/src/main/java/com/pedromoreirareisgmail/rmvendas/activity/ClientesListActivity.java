@@ -71,7 +71,7 @@ public class ClientesListActivity extends AppCompatActivity implements LoaderMan
 
                 Cursor cursor = mAdapter.getCursor();
                 String mensagemExcluir = mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoClientes.COLUNA_CLIENTES_NOME));
+                        cursor.getColumnIndex(AcessoClientes.NOME));
 
                 Dialogos.dialogoEditarExcluir(
                         ClientesListActivity.this,
@@ -92,7 +92,7 @@ public class ClientesListActivity extends AppCompatActivity implements LoaderMan
 
                 Cursor cursor = mAdapter.getCursor();
 
-                String nome = cursor.getString(cursor.getColumnIndex(AcessoClientes.COLUNA_CLIENTES_NOME));
+                String nome = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
 
                 Intent intent = new Intent(ClientesListActivity.this, RegistroReceberActivity.class);
 
@@ -149,15 +149,15 @@ public class ClientesListActivity extends AppCompatActivity implements LoaderMan
 
         String[] projection = {
                 AcessoClientes._ID,
-                AcessoClientes.COLUNA_CLIENTES_NOME,
-                AcessoClientes.COLUNA_CLIENTES_TELEFONE
+                AcessoClientes.NOME,
+                AcessoClientes.TELEFONE
         };
 
         /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
          * utilizar o menu search, sera pesquisado pelo nome do produto */
-        String selection = AcessoClientes.COLUNA_CLIENTES_NOME + " LIKE ?";
+        String selection = AcessoClientes.NOME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
-        String sortOrder = AcessoClientes.COLUNA_CLIENTES_NOME;
+        String sortOrder = AcessoClientes.NOME;
 
         return new CursorLoader(
                 this,

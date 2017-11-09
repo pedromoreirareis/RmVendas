@@ -5,6 +5,11 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
 
+
+    <dimen name="margin_padrao_16">16dp</dimen>
+    <dimen name="margin_padrao_8">8dp</dimen>
+    <dimen name="margin_padrao_4">4dp</dimen>
+
     <!-- Dimensões de Alturas e Larguras de margin e padding -->
     <dimen name="margin_lefth_right_itens_list">16dp</dimen>
     <dimen name="margin_top_botton_itens_list">8dp</dimen>

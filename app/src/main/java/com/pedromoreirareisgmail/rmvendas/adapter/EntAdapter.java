@@ -30,9 +30,9 @@ public class EntAdapter extends CursorAdapter {
 
         EntViewHolder holder = new EntViewHolder(view);
 
-        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
-        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DATA));
-        String descricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO));
+        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
+        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA));
+        String descricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
 
         holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
         holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(dataHora));

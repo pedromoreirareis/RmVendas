@@ -30,8 +30,8 @@ public class ProdAdapter extends CursorAdapter{
 
         ProdViewHolder holder = new ProdViewHolder(view);
 
-        String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_NOME));
-        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_VALOR));
+        String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoProdutos.NOME));
+        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.VALOR));
 
         holder.tvNome.setText(nomeProduto);
         holder.tvPreco.setText(Formatar.formatarDoubleParaCurrency(valor));

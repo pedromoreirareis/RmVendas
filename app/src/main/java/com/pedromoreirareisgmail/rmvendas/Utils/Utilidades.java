@@ -2,9 +2,9 @@ package com.pedromoreirareisgmail.rmvendas.Utils;
 
 
 import android.content.Context;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Switch;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -15,14 +15,14 @@ public class Utilidades {
      * Tem um problema que ao fechar não abre mais o teclado
      *
      * @param context  indicar o contexto
-     * @param switchCD indicar qual botão Switch foi alterado
+     * @param view indicar qual botão Switch foi alterado
      */
-    public static void fecharTecladoSwitch(Context context, Switch switchCD) {
+    public static void fecharTecladoView(Context context, View view) {
 
         InputMethodManager imm = (InputMethodManager) context.
                 getSystemService(INPUT_METHOD_SERVICE);
 
-        imm.hideSoftInputFromWindow(switchCD.getWindowToken(),
+        imm.hideSoftInputFromWindow(view.getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 

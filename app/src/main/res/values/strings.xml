@@ -64,6 +64,8 @@
     <string name="text_prod_esc_quant_cobertura">Cobertura</string>
     <string name="text_prod_esc_quant_desconto">Desconto</string>
     <string name="text_prod_esc_quant_prazo">A prazo</string>
+    <string name="text_a_receber_venda">Venda</string>
+    <string name="text_a_receber_recebimento">Recebimento</string>
 
     <!-- Itens de fechamento -->
     <string name="total_venda_vista_item_main">Total..:</string>

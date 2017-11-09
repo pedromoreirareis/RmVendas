@@ -9,6 +9,9 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
+import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 
 import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoAReceber;
 
@@ -29,13 +32,33 @@ public class AReceberAdapter extends CursorAdapter {
 
         AReceberViewHolder holder = new AReceberViewHolder(view);
 
-        String descricaoBD = cursor.getString(cursor.getColumnIndex(AcessoAReceber.COLUNA_A_RECEBER_DESCRICAO));
-        String dataBD = cursor.getString(cursor.getColumnIndex(AcessoAReceber.COLUNA_A_RECEBER_DATA_HORA));
-        double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.COLUNA_A_RECEBER_VALOR));
+        int tipoEntradaBD = cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA));
 
-        holder.tvDescricao.setText(descricaoBD);
-        holder.tvData.setText(dataBD);
-        holder.tvValor.setText(String.valueOf(valorBD));
+        String dataBD = DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA)));
+        String descricaoBD = cursor.getString(cursor.getColumnIndex(AcessoAReceber.DESCRICAO));
+        String valorBD = Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR)));
+
+        if (tipoEntradaBD == Constantes.TIPO_A_RECEBER_RECEBIMENTO) {
+
+            holder.tvData.setTextColor(context.getResources().getColor(R.color.colorBlue));
+            holder.tvDescricao.setTextColor(context.getResources().getColor(R.color.colorBlue));
+            holder.tvValor.setTextColor(context.getResources().getColor(R.color.colorBlue));
+
+            holder.tvData.setText(dataBD);
+            holder.tvDescricao.setText(descricaoBD);
+            holder.tvValor.setText(valorBD);
+
+        } else {
+
+            holder.tvData.setTextColor(context.getResources().getColor(R.color.colorRed));
+            holder.tvDescricao.setTextColor(context.getResources().getColor(R.color.colorRed));
+            holder.tvValor.setTextColor(context.getResources().getColor(R.color.colorRed));
+
+            holder.tvData.setText(dataBD);
+            holder.tvDescricao.setText(descricaoBD);
+            holder.tvValor.setText(valorBD);
+        }
+
     }
 
     class AReceberViewHolder {

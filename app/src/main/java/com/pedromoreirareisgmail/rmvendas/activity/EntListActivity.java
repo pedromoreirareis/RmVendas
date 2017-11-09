@@ -74,11 +74,11 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
                 Cursor cursor = mAdapter.getCursor();
                 String mensagemExcluir = mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_DESCRICAO)) +
+                        cursor.getColumnIndex(AcessoEntRet.DESCRICAO)) +
                         getString(R.string.dialog_exc_edit_texto_excluir_valor) +
                         " " +
                         Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
-                                cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR)));
+                                cursor.getColumnIndex(AcessoEntRet.VALOR)));
 
                 Dialogos.dialogoEditarExcluir(
                         EntListActivity.this,
@@ -137,16 +137,16 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
 
         String[] projection = {
                 AcessoEntRet._ID,
-                AcessoEntRet.COLUNA_ENT_RET_DATA,
-                AcessoEntRet.COLUNA_ENT_RET_VALOR,
-                AcessoEntRet.COLUNA_ENT_RET_DESCRICAO,
-                AcessoEntRet.COLUNA_ENT_RET_TIPO
+                AcessoEntRet.DATA,
+                AcessoEntRet.VALOR,
+                AcessoEntRet.DESCRICAO,
+                AcessoEntRet.TIPO
         };
 
         /* Retorna dados cadastrados em uma data especificada e se for do tipo entrada */
-        String selection = AcessoEntRet.COLUNA_ENT_RET_TIPO + " =? AND " + AcessoEntRet.COLUNA_ENT_RET_DATA + " LIKE ?";
-        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA), mDataPesquisarBD + "%"};
-        String sortOrder = AcessoEntRet.COLUNA_ENT_RET_DATA;
+        String selection = AcessoEntRet.TIPO + " =? AND " + AcessoEntRet.DATA + " LIKE ?";
+        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA_CAIXA), mDataPesquisarBD + "%"};
+        String sortOrder = AcessoEntRet.DATA;
 
         return new CursorLoader(
                 this,

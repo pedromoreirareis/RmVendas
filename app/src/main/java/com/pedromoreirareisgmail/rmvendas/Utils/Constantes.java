@@ -6,11 +6,11 @@ public class Constantes {
     public static final int MAX_CARACT = 50;
     public static final int MAX_CARACT_MSG = 48;
 
-    public static final int TIPO_RETIRADA = 0;
-    public static final int TIPO_ENTRADA = 1;
+    public static final int TIPO_RETIRADA_CAIXA = 0;
+    public static final int TIPO_ENTRADA_CAIXA = 1;
 
-    public static final int TIPO_VENDA = 0;
-    public static final int TIPO_RECEBIMENTO = 1;
+    public static final int TIPO_A_RECEBER_VENDA = 0;
+    public static final int TIPO_A_RECEBER_RECEBIMENTO = 1;
 
     public static final int COBERTURA_SIM = 1;
     public static final int COBERTURA_NAO = 0;

@@ -9,7 +9,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.db.Contrato;
+
+import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 
 public class ClientesAdapter extends CursorAdapter {
 
@@ -28,8 +29,8 @@ public class ClientesAdapter extends CursorAdapter {
 
         ClientesViewHolder holder = new ClientesViewHolder(view);
 
-        String nomeBD = cursor.getString(cursor.getColumnIndex(Contrato.AcessoClientes.COLUNA_CLIENTES_NOME));
-        int foneBD = cursor.getInt(cursor.getColumnIndex(Contrato.AcessoClientes.COLUNA_CLIENTES_TELEFONE));
+        String nomeBD = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
+        int foneBD = cursor.getInt(cursor.getColumnIndex(AcessoClientes.TELEFONE));
 
         holder.tvNome.setText(nomeBD);
         holder.tvFone.setText(String.valueOf(foneBD));

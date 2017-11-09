@@ -212,30 +212,34 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         if (TextUtils.isEmpty(nomeEditText)) {
 
             mEtNome.setError(getString(R.string.error_campo_vazio));
+            mEtNome.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(precoEditText)) {
 
             mEtValor.setError(getString(R.string.error_campo_vazio));
+            mEtValor.requestFocus();
             return;
         }
 
         if (valorDouble <= NUMERO_ZERO) {
 
             mEtValor.setError(getString(R.string.error_valor_maior_zero));
+            mEtValor.requestFocus();
             return;
         }
 
         if (nomeEditText.length() < MIN_QUANT_CARACT) {
 
             mEtNome.setError(getString(R.string.error_campo_lenght_10));
+            mEtNome.requestFocus();
             return;
         }
 
         ContentValues values = new ContentValues();
-        values.put(AcessoProdutos.COLUNA_PRODUTOS_NOME, nomeEditText);
-        values.put(AcessoProdutos.COLUNA_PRODUTOS_VALOR, valorDouble);
+        values.put(AcessoProdutos.NOME, nomeEditText);
+        values.put(AcessoProdutos.VALOR, valorDouble);
 
         if (mUriAtual == null) {
 
@@ -278,8 +282,8 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
 
         String[] projection = {
                 AcessoProdutos._ID,
-                AcessoProdutos.COLUNA_PRODUTOS_NOME,
-                AcessoProdutos.COLUNA_PRODUTOS_VALOR
+                AcessoProdutos.NOME,
+                AcessoProdutos.VALOR
         };
 
         return new CursorLoader(
@@ -298,10 +302,10 @@ public class ProdutosCadActivity extends AppCompatActivity implements LoaderMana
         if (cursor.moveToFirst()) {
 
             double valorBD = cursor.getDouble(
-                    cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_VALOR));
+                    cursor.getColumnIndex(AcessoProdutos.VALOR));
 
             String nomeBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoProdutos.COLUNA_PRODUTOS_NOME));
+                    cursor.getColumnIndex(AcessoProdutos.NOME));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
             mEtNome.setText(nomeBD);

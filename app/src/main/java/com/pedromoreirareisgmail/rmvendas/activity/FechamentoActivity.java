@@ -134,13 +134,13 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             String[] projection = new String[]{
                     AcessoEntRet._ID,
-                    AcessoEntRet.COLUNA_ENT_RET_DATA,
-                    AcessoEntRet.COLUNA_ENT_RET_VALOR,
-                    AcessoEntRet.COLUNA_ENT_RET_DESCRICAO,
-                    AcessoEntRet.COLUNA_ENT_RET_TIPO
+                    AcessoEntRet.DATA,
+                    AcessoEntRet.VALOR,
+                    AcessoEntRet.DESCRICAO,
+                    AcessoEntRet.TIPO
             };
 
-            String selection = AcessoEntRet.COLUNA_ENT_RET_DATA + " LIKE ?";
+            String selection = AcessoEntRet.DATA + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
             return new CursorLoader(
@@ -157,11 +157,11 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             String[] projection = {
                     AcessoSaldo._ID,
-                    AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR,
-                    AcessoSaldo.COLUNA_SALDO_INICIAL_DATA
+                    AcessoSaldo.VALOR,
+                    AcessoSaldo.DATA
             };
 
-            String selection = AcessoSaldo.COLUNA_SALDO_INICIAL_DATA + " LIKE ?";
+            String selection = AcessoSaldo.DATA + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
             return new CursorLoader(
@@ -178,19 +178,19 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             String[] projection = {
                     AcessoVenda._ID,
-                    AcessoVenda.COLUNA_VENDAS_NOME_PRODUTO,
-                    AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA,
-                    AcessoVenda.COLUNA_VENDAS_DATA,
-                    AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA,
-                    AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO,
-                    AcessoVenda.COLUNA_VENDAS_TEM_COBERTURA,
-                    AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO,
-                    AcessoVenda.COLUNA_VENDAS_VALOR_COBERTURA,
-                    AcessoVenda.COLUNA_VENDAS_A_PRAZO,
-                    AcessoVenda.COLUNA_VENDAS_VALOR_UMA_UNIDADE_PRODUTO
+                    AcessoVenda.NOME_PRODUTO,
+                    AcessoVenda.QUANTIDADE_VENDIDA,
+                    AcessoVenda.DATA,
+                    AcessoVenda.VALOR_TOTAL_VENDA,
+                    AcessoVenda.TEM_DESCONTO,
+                    AcessoVenda.TEM_COBERTURA,
+                    AcessoVenda.VALOR_DESCONTO,
+                    AcessoVenda.VALOR_COBERTURA,
+                    AcessoVenda.A_PRAZO,
+                    AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
             };
 
-            String selection = AcessoVenda.COLUNA_VENDAS_DATA + " LIKE ?";
+            String selection = AcessoVenda.DATA + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
             return new CursorLoader(
@@ -212,17 +212,17 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                if (Constantes.TIPO_ENTRADA == cursor.getInt(
-                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
+                if (Constantes.TIPO_ENTRADA_CAIXA == cursor.getInt(
+                        cursor.getColumnIndex(AcessoEntRet.TIPO))) {
 
                     mValorTotalEntradas = mValorTotalEntradas + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+                            cursor.getColumnIndex(AcessoEntRet.VALOR));
 
-                } else if (Constantes.TIPO_RETIRADA == cursor.getInt(
-                        cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_TIPO))) {
+                } else if (Constantes.TIPO_RETIRADA_CAIXA == cursor.getInt(
+                        cursor.getColumnIndex(AcessoEntRet.TIPO))) {
 
                     mValorTotalRetiradas = mValorTotalRetiradas + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoEntRet.COLUNA_ENT_RET_VALOR));
+                            cursor.getColumnIndex(AcessoEntRet.VALOR));
                 }
 
                 cursor.moveToNext();
@@ -234,7 +234,7 @@ public class FechamentoActivity extends AppCompatActivity implements
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 mValorSaldoInicial = mValorSaldoInicial + cursor.getDouble(
-                        cursor.getColumnIndex(AcessoSaldo.COLUNA_SALDO_INICIAL_VALOR));
+                        cursor.getColumnIndex(AcessoSaldo.VALOR));
 
                 cursor.moveToNext();
             }
@@ -245,40 +245,40 @@ public class FechamentoActivity extends AppCompatActivity implements
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 mQuantidadeBolosVendidos = mQuantidadeBolosVendidos + cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA));
+                        cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
 
                 if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_A_PRAZO)) == Constantes.PRAZO_SIM) {
+                        cursor.getColumnIndex(AcessoVenda.A_PRAZO)) == Constantes.PRAZO_SIM) {
 
                     mQuantidadeBolosVendidosPrazo = mQuantidadeBolosVendidosPrazo + cursor.getInt(
-                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA));
+                            cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
 
                 } else {
 
                     mQuantidadeBolosVendidosVista = mQuantidadeBolosVendidosVista + cursor.getInt(
-                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_QUANTIDADE_VENDIDA));
+                            cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
                 }
 
                 if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_TEM_DESCONTO)) == Constantes.DESCONTO_SIM) {
+                        cursor.getColumnIndex(AcessoVenda.TEM_DESCONTO)) == Constantes.DESCONTO_SIM) {
 
                     mValorTotalDescontos = mValorTotalDescontos + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_DESCONTO));
+                            cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
                 }
 
                 if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_A_PRAZO)) == Constantes.PRAZO_NAO) {
+                        cursor.getColumnIndex(AcessoVenda.A_PRAZO)) == Constantes.PRAZO_NAO) {
 
                     mValorTotalVendasVista = mValorTotalVendasVista + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA));
+                            cursor.getColumnIndex(AcessoVenda.VALOR_TOTAL_VENDA));
 
                 }
 
                 if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_A_PRAZO)) == Constantes.PRAZO_SIM) {
+                        cursor.getColumnIndex(AcessoVenda.A_PRAZO)) == Constantes.PRAZO_SIM) {
 
                     mValorTotalVendasPrazo = mValorTotalVendasPrazo + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoVenda.COLUNA_VENDAS_VALOR_TOTAL_VENDA));
+                            cursor.getColumnIndex(AcessoVenda.VALOR_TOTAL_VENDA));
                 }
 
                 cursor.moveToNext();

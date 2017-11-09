@@ -117,16 +117,16 @@ public class VendListActivity extends AppCompatActivity implements LoaderManager
 
         String[] projection = {
                 AcessoProdutos._ID,
-                AcessoProdutos.COLUNA_PRODUTOS_NOME,
-                AcessoProdutos.COLUNA_PRODUTOS_VALOR
+                AcessoProdutos.NOME,
+                AcessoProdutos.VALOR
         };
 
         /* A pesquisa inicial traz todos os produtos cadastrados, se clicar no menu search, sera
         pesquisado de acordo com nome do produto digitado
          */
-        String selection = AcessoProdutos.COLUNA_PRODUTOS_NOME + " LIKE ?";
+        String selection = AcessoProdutos.NOME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
-        String sortOrder = AcessoProdutos.COLUNA_PRODUTOS_NOME;
+        String sortOrder = AcessoProdutos.NOME;
 
         return new CursorLoader(
                 this,
