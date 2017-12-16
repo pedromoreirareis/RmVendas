@@ -132,7 +132,7 @@ public class ProdutosListActivity extends AppCompatActivity implements
     /**
      * Define o que fazer com os dados retornados do BD
      *
-     * @param loader Loader com um cursor com dados da pesquisa
+     * @param loader Define o loader pesquisado
      * @param cursor Cursor com dados da pesquisa
      */
     @Override

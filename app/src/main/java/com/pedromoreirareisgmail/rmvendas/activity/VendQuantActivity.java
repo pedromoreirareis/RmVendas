@@ -367,6 +367,13 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
             @Override
             public void onClick(View v) {
 
+                //TODO: Apos ir para a VendListaClienteActivity dados sao perdidos - salvar dados com savedIntanceState
+
+
+                Intent listaClienteIntent =
+                        new Intent(VendQuantActivity.this, VendListaClienteActivity.class);
+                startActivity(listaClienteIntent);
+
                 Utilidades.fecharTecladoView(VendQuantActivity.this, mButCliente);
             }
         });

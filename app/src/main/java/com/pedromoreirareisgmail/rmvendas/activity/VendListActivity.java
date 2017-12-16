@@ -58,9 +58,6 @@ public class VendListActivity extends AppCompatActivity implements
         // Clique simples e Longo no ListView
         listView.setOnItemClickListener(this);
 
-        // Coloca o titulo e data na Activity
-        setTitle(R.string.title_vend_list);
-
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(LOADER_VEND_LIST, null, this);
     }
@@ -122,7 +119,7 @@ public class VendListActivity extends AppCompatActivity implements
     /**
      * Define o que fazer com os dados retornados do BD
      *
-     * @param loader Loader com um cursor com dados da pesquisa
+     * @param loader Define o loader pesquisado
      * @param cursor Cursor com dados da pesquisa
      */
     @Override

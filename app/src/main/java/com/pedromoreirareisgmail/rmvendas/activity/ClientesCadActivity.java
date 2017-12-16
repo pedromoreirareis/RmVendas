@@ -35,7 +35,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
     private EditText mEtFone;
 
     private Uri mUriAtual = null;
-
     private boolean isDadosAlterado = false;
 
     @Override
@@ -66,6 +65,12 @@ public class ClientesCadActivity extends AppCompatActivity implements
         mEtFone.setOnTouchListener(this);
     }
 
+    /**
+     * Cria o menu
+     *
+     * @param menu Objeto para criação do menu
+     * @return verdadeiro se menu foi inflado a partir de um Layout de menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -74,6 +79,12 @@ public class ClientesCadActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * Identifica item do menu selecionado
+     *
+     * @param item Item do menu que foi selecionado
+     * @return verdadeiro se item do menu selecionado foi ativado corretamente
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -81,17 +92,29 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
         switch (id) {
 
+            // Menu salvar
             case R.id.action_salvar:
                 salvarDadosBD();
                 return true;
 
+            /* Botão Up - Verifica alteração de dados antes de voltar a Activity que chamou
+             *
+             * Não Alterados - volta para activity que chamou a ClientesCadActivity
+             *
+             * Alterados - Abre um Dialog para confirmar se os dados alterados serão descartados e
+             * devem voltar a Activity que chamou a activity ClientesCadActivity ou se deve
+             * permanecer na Activity atual e manter os dados que estão sendo alterados
+             */
             case android.R.id.home:
+
+                // Não foi alterado - Volta a Activity que chamou a activity ClientesCadActivity
                 if (!isDadosAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
+                // Foi alterado - Abre dialog perguntando se deve descatar alterações ou não
                 DialogInterface.OnClickListener descartarButClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -111,11 +134,15 @@ public class ClientesCadActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    /* Recebe os dados que foram digitados nos Edits, faz validações, coloca em um ContentValues,
+     * verifica se deve criar um novo registro com os dados ou se é uma alteração de dados dados e
+     * depois salva no banco de dados*/
     private void salvarDadosBD() {
 
         String nomeEditText = mEtNome.getText().toString().trim();
         String foneEditText = mEtFone.getText().toString().trim();
 
+        // Campo não pode ficar vazio
         if (TextUtils.isEmpty(nomeEditText)) {
 
             mEtNome.setError(getString(R.string.error_campo_vazio));
@@ -123,6 +150,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
             return;
         }
 
+        // Campo não pode ficar vazio
         if (TextUtils.isEmpty(foneEditText)) {
 
             mEtFone.setError(getString(R.string.error_campo_vazio));
@@ -137,7 +165,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
         if (mUriAtual == null) {
 
-
             Crud.inserir(ClientesCadActivity.this, AcessoClientes.CONTENT_URI_CLIENTES, values);
 
         } else {
@@ -147,10 +174,10 @@ public class ClientesCadActivity extends AppCompatActivity implements
         }
 
         finish();
-
-
     }
 
+    /* Botão volta (embaixo) - Se os dados foram alterados abre Dialog para verificar se deseja
+     * descartar as alterações ou se deseja continuar editando*/
     @Override
     public void onBackPressed() {
 
@@ -173,9 +200,19 @@ public class ClientesCadActivity extends AppCompatActivity implements
         );
     }
 
+    /**
+     * No caso de uma Edição - Define quais são as regras para pesquisa no banco de dados
+     * Verifica quais são as colunas que retornarão dados (id é o unico obrigatorio)
+     * Quais os criterios de busca, e qauais os termos a serem buscados
+     *
+     * @param id   identificador do Loader que ira fazer as buscas
+     * @param args Argumento para as buscas
+     * @return Cursor com dados obtidos na pesquisa
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
+        // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
         String[] projection = {
                 AcessoClientes._ID,
                 AcessoClientes.NOME,
@@ -192,9 +229,16 @@ public class ClientesCadActivity extends AppCompatActivity implements
         );
     }
 
+    /**
+     * Define o que fazer com os dados obtidos na pesquisa
+     *
+     * @param loader Loader cursor com dados
+     * @param cursor Cursor com dados da pesquisa
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        // Pega nome e telefone do cliente e coloca nos Edits, caso esteja editando
         if (cursor.moveToFirst()) {
 
             String nomeBD = cursor.getString(
@@ -209,11 +253,23 @@ public class ClientesCadActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * O que fazer com dados atuais no caso de iniciar nova pesquisa
+     *
+     * @param loader loader com dados atuais
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 
+    /**
+     * Monitora o toque em Views especifica
+     *
+     * @param view Identifica pelo getId a view que deve ser monitorada
+     * @param event Evento
+     * @return Verdadeiro se a view monitorada foi tocada
+     */
     @Override
     public boolean onTouch(View view, MotionEvent event) {
 
@@ -231,6 +287,4 @@ public class ClientesCadActivity extends AppCompatActivity implements
                 return false;
         }
     }
-
-
 }

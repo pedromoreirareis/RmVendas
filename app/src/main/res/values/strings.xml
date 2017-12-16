@@ -19,10 +19,13 @@
     <string name="title_venda_add">Adicionar venda</string>
     <string name="title_vend_edit">Editar venda</string>
     <string name="title_vend_list">Produtos cadastrados</string>
+    <string name="title_produ_list">Produtos</string>
     <string name="title_ret_list">Retiradas</string>
     <string name="title_ent_list">Entradas</string>
     <string name="title_saldo_list">Saldo inicial</string>
     <string name="title_fechamento">Caixa</string>
+    <string name="title_clientes_list">Clientes</string>
+    <string name="title_vend_clientes_list">Clientes Cadastrados</string>
 
     <!-- Menus -->
     <string name="menu_salvar_title">Salvar</string>

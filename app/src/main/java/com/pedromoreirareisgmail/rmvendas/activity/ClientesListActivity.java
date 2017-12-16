@@ -73,9 +73,6 @@ public class ClientesListActivity extends AppCompatActivity implements
         listView.setOnItemLongClickListener(this);
         listView.setOnItemClickListener(this);
 
-        // Coloca o titulo e data na Activity
-        setTitle("Clientes");
-
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(LOADER_CLIENTES_LIST, null, this);
     }
@@ -136,7 +133,7 @@ public class ClientesListActivity extends AppCompatActivity implements
     /**
      * Define o que fazer com os dados retornados do BD
      *
-     * @param loader Loader com um cursor com dados da pesquisa
+     * @param loader Define o loader pesquisado
      * @param data   Cursor com dados da pesquisa
      */
     @Override

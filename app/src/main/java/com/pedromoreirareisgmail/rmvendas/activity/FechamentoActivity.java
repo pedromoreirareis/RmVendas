@@ -59,7 +59,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fechamento);
 
-
+        // Referencia os itens do layout
         tvValorSaldoInicial = (TextView) findViewById(R.id.tv_fechamento_saldo_inicial);
         tvValorEntradas = (TextView) findViewById(R.id.tv_fechamento_entrada);
         tvValorTotalVendasVista = (TextView) findViewById(R.id.tv_fechamento_vendas);
@@ -71,41 +71,27 @@ public class FechamentoActivity extends AppCompatActivity implements
         tvQuantidadeBolosVendidosVista = (TextView) findViewById(R.id.tv_fechamento_bolos_vendidos_vista);
         tvQuantidadeBolosVendidosPrazo = (TextView) findViewById(R.id.tv_fechamento_bolos_vendidos_prazo);
 
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        // pega data do calendario para uma nova pesquisa
+        getDataCalendario();
 
-                mValorSaldoInicial = 0;
-                mValorTotalEntradas = 0;
-                mValorTotalVendasVista = 0;
-                mValorTotalRetiradas = 0;
-                mValorTotalDescontos = 0;
-                mValorTotalVendasPrazo = 0;
-                mValorSaldoFinalFechamento = 0;
-                mQuantidadeBolosVendidos = 0;
-                mQuantidadeBolosVendidosVista = 0;
-                mQuantidadeBolosVendidosPrazo = 0;
+        // coloca titulo na Activity  juntamente com a data da pesquisa
+        setTitle(getString(R.string.title_fechamento) + "  " + DataHora.obterFormatarDataBrTitulo());
 
-                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
-
-                setTitle(getString(R.string.title_fechamento) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
-
-                getLoaderManager().restartLoader(LOADER_ENTRADA_RETIRADA, null, FechamentoActivity.this);
-                getLoaderManager().restartLoader(LOADER_SALDO, null, FechamentoActivity.this);
-                getLoaderManager().restartLoader(LOADER_VENDAS, null, FechamentoActivity.this);
-            }
-        };
-
-
-        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.obterFormatarDataBrTitulo());
-
+        // Data do dia para pesquisa no BD
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
+        // Inicia as pesquisas com a data do dia
         getLoaderManager().initLoader(LOADER_ENTRADA_RETIRADA, null, this);
         getLoaderManager().initLoader(LOADER_SALDO, null, this);
         getLoaderManager().initLoader(LOADER_VENDAS, null, this);
     }
 
+    /**
+     * Cria o menu
+     *
+     * @param menu Objeto do menu
+     * @return infla o menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -114,11 +100,18 @@ public class FechamentoActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * Define o que fazer com o item selecionado no menu
+     *
+     * @param item Item selecionado do menu
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
+        // Abre o Dialog de data para fazer pesquisa por data
         if (id == R.id.action_data) {
 
             Dialogos.dialogoDatas(FechamentoActivity.this, mDateSetListener);
@@ -127,9 +120,21 @@ public class FechamentoActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Define os parametros de pesquisa
+     *
+     * @param loader Define os Loaders responsaveis pela pesquisa
+     * @param bundle Argumento dentro do Loaders para pesquisa
+     * @return cursor com dados da pesquisa
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int loader, Bundle bundle) {
 
+        /* LOADER_ENTRADA_RETIRADA
+         * Esse Loader é responsavel pela pesquisa de todas as entradas e retiradas efetuadas na data
+         * pesquisada
+         *
+         */
         if (loader == LOADER_ENTRADA_RETIRADA) {
 
             String[] projection = new String[]{
@@ -140,6 +145,7 @@ public class FechamentoActivity extends AppCompatActivity implements
                     AcessoEntRet.TIPO
             };
 
+            // Pesquisa por data
             String selection = AcessoEntRet.DATA + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
@@ -153,6 +159,9 @@ public class FechamentoActivity extends AppCompatActivity implements
             );
         }
 
+        /* LOADER_SALDO
+         * Esse loader e responsavel por pesquisar o saldo inicial da data pesquisada
+         */
         if (loader == LOADER_SALDO) {
 
             String[] projection = {
@@ -161,6 +170,7 @@ public class FechamentoActivity extends AppCompatActivity implements
                     AcessoSaldo.DATA
             };
 
+            // Pesquisa por data
             String selection = AcessoSaldo.DATA + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
@@ -174,6 +184,9 @@ public class FechamentoActivity extends AppCompatActivity implements
             );
         }
 
+        /* LOADER_VENDAS
+         * Esse loader e resposavel por pesquisar todas as vendas realizada na data pesquisada
+         */
         if (loader == LOADER_VENDAS) {
 
             String[] projection = {
@@ -190,6 +203,7 @@ public class FechamentoActivity extends AppCompatActivity implements
                     AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
             };
 
+            // Pesquisa por data
             String selection = AcessoVenda.DATA + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
@@ -205,9 +219,19 @@ public class FechamentoActivity extends AppCompatActivity implements
         return null;
     }
 
+    /**
+     * Define o que fazer com os dados retornados da pesquisa
+     *
+     * @param loader Define o loader pesquisado
+     * @param cursor Dados retornados pela pesquisa
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        /* Entradas e Retiradas
+         * Soma todas as entradas e coloca valor em uma varivel
+         * Soma todas as retiradas e coloca valor em uma variavel
+         */
         if (loader.getId() == LOADER_ENTRADA_RETIRADA && cursor.moveToFirst()) {
 
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -305,5 +329,58 @@ public class FechamentoActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+
+    /*
+     * Escolha no calendário uma data que será utilizada para pesquisar no banco de dados. Essa
+     * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
+     * pesquisa para verificar se há dados para esta data
+     *
+     * Ao escolher uma nova data para pesquisa, os valores de variaveis são zerados e e reiniciada a
+     * pesquisa de todos os Loaders
+     */
+    private void getDataCalendario() {
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                zeraVariaveisValores();
+
+                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+
+                setTitle(getString(R.string.title_fechamento) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+
+                reiniciarPesquisas();
+            }
+        };
+
+    }
+
+    /* Zera os valores das variaveis
+     * Ao zera o valor evitar ter uma pesquisa com valores duplicados
+     */
+    private void zeraVariaveisValores() {
+
+        mValorSaldoInicial = 0;
+        mValorTotalEntradas = 0;
+        mValorTotalVendasVista = 0;
+        mValorTotalRetiradas = 0;
+        mValorTotalDescontos = 0;
+        mValorTotalVendasPrazo = 0;
+        mValorSaldoFinalFechamento = 0;
+        mQuantidadeBolosVendidos = 0;
+        mQuantidadeBolosVendidosVista = 0;
+        mQuantidadeBolosVendidosPrazo = 0;
+    }
+
+    /* Faz a pesquisa novamente com todos os Loaders
+     */
+    private void reiniciarPesquisas() {
+
+        getLoaderManager().restartLoader(LOADER_ENTRADA_RETIRADA, null, FechamentoActivity.this);
+        getLoaderManager().restartLoader(LOADER_SALDO, null, FechamentoActivity.this);
+        getLoaderManager().restartLoader(LOADER_VENDAS, null, FechamentoActivity.this);
     }
 }
