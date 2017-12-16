@@ -3,6 +3,7 @@ package com.pedromoreirareisgmail.rmvendas.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
@@ -14,12 +15,14 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    /**
+    private static final String TAG = DbHelper.class.getSimpleName();
+
+    /*
      * Nome do banco de dados
      */
     private static final String NOME_BANCO_DADOS = "vendas.db";
 
-    /**
+    /*
      * Versão do banco de dados
      */
     private static final int VERSAO_DB = 1;
@@ -41,12 +44,16 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        Log.v(TAG, "CRIANDO TABELAS: Inicio");
+
         db.execSQL(AcessoProdutos.CRIAR_TABELA_PRODUTOS);
         db.execSQL(AcessoEntRet.CRIAR_TABELA_ENT_RET);
         db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO_INICIAL);
         db.execSQL(AcessoVenda.CRIAR_TABELA_VENDA);
         db.execSQL(AcessoClientes.CRIAR_TABELA_CLIENTES);
         db.execSQL(AcessoAReceber.CRIAR_TABELA_A_RECEBER);
+
+        Log.v(TAG, "CRIANDO TABELAS: Fim");
 
     }
 
@@ -61,6 +68,8 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int versaoAtual, int novaVersao) {
         // Implementar quando for Atualizar o banco de dados
+
+        Log.v(TAG, "ATUALIZANDO TABELAS");
 
     }
 }

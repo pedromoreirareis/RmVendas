@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
@@ -101,7 +100,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
     private LinearLayout layoutPrazo;
     private Uri mUriAtual = null;
     private double mValorUnidadeProduto = 0;
-    private String mDataHoraBD = "";
+    private String mDataHoraBD = null;
     private boolean mAdicionarProdutoBD = false;
     private boolean isDadosAlterado = false;
     private final Switch.OnTouchListener mTouchListenerSwitch = new View.OnTouchListener() {
@@ -265,7 +264,6 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
 
                 isDadosAlterado = true;
-                Toast.makeText(VendQuantActivity.this, "Teste Prazo - Implementar", Toast.LENGTH_SHORT).show();
 
                 String vlPrazo = charSequence.toString().trim().replaceAll("[^\\d]", "");
                /* String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
@@ -368,6 +366,7 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
         mButCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Utilidades.fecharTecladoView(VendQuantActivity.this, mButCliente);
             }
         });
@@ -380,10 +379,11 @@ public class VendQuantActivity extends AppCompatActivity implements LoaderManage
 
         // mEtQuantidade.setCursorVisible(false);  // Cursor fica invisivel - roberta pediu visivel
         mEtQuantidade.setSelectAllOnFocus(true); // estava false no entanto na primeira entrada do usuario nao apaga texto anterior testando true
-        Utilidades.semCursorFocoSelecaoZerado(mEtCobertura);
-        Utilidades.semCursorFocoSelecaoZerado(mEtDesconto);
-        Utilidades.semCursorFocoSelecaoZerado(mEtPrazo);
+        Utilidades.semFocoZerado(mEtCobertura);
+        Utilidades.semFocoZerado(mEtDesconto);
+        Utilidades.semFocoZerado(mEtPrazo);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

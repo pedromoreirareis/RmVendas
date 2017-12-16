@@ -7,13 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
@@ -31,8 +31,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.adapter.AReceberAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT_MSG;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.TIPO_A_RECEBER_RECEBIMENTO;
@@ -75,6 +73,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements Loader
     private double mRecebimentos = 0;
     private double mVendas = 0;
     private String mId = null;
+    private String mNumTelefone = null;
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
 
@@ -88,6 +87,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements Loader
         Bundle bundle = intent.getExtras();
 
         mId = bundle.getString("clienteId");
+        mNumTelefone = bundle.getString("clienteFone");
 
         setTitle(bundle.getString("clienteNome"));
 
@@ -104,29 +104,6 @@ public class RegistroReceberActivity extends AppCompatActivity implements Loader
         mAdapter = new AReceberAdapter(this);
         listView.setAdapter(mAdapter);
 
-        mEtDescricao.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT)});
-
-        mEtDescricao.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-
-                if (charSequence.toString().trim().length() > MAX_CARACT_MSG) {
-
-                    Toast.makeText(RegistroReceberActivity.this,
-                            R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         mEtValor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -177,9 +154,18 @@ public class RegistroReceberActivity extends AppCompatActivity implements Loader
 
         mEtValor.setOnTouchListener(mTouchListnerEditFocoCursorFim);
 
-        Utilidades.semCursorFocoSelecaoZerado(mEtValor);
+        Utilidades.semFocoZerado(mEtValor);
 
         getLoaderManager().initLoader(LOADER_BUSCAR_CLIENTE_REGISTRO, null, this);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_fone_cliente, menu);
+
+        return true;
     }
 
     @Override
@@ -209,6 +195,18 @@ public class RegistroReceberActivity extends AppCompatActivity implements Loader
                         RegistroReceberActivity.this,
                         descartarButClickListener
                 );
+
+                return true;
+
+            case R.id.action_fone_cliente:
+
+
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + mNumTelefone));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+
 
                 return true;
         }

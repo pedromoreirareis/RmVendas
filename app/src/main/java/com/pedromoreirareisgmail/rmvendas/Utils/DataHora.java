@@ -9,11 +9,13 @@ import java.util.Locale;
 public class DataHora {
 
     /**
-     * Apenas pega o horário do sistema, não faz conversão para outro formato de data ou hora
+     * Pega a data e hora do sistema no formato - USA - "yyyy-MM-dd HH:mm:ss"
+     * Não é feita nenhuma formatação
      *
      * @return Data e hora do sistema no formato "yyyy-MM-dd HH:mm:ss"
      */
     public static String obterDataHoraSistema() {
+
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
@@ -24,9 +26,10 @@ public class DataHora {
 
 
     /**
-     * Pega data do sistema e faz a conversão do formato do sistema para o formato usado no Brasil
+     * Pega data e hora do sistema no formato - USA - "yyyy-MM-dd HH:mm:ss"
+     * e formata a data para - BR - "dd/MM/yyyy" formato de data usado no Brasil
      *
-     * @return Data do Sistema no formato "dd/MM/yyyy". Converte de "yyyy-MM-dd" para "dd/MM/yyyy"
+     * @return Retorna data do sistema no formato "dd/MM/yyyy". Formata de "yyyy-MM-dd" para "dd/MM/yyyy"
      */
     public static String obterFormatarDataBrTitulo() {
         SimpleDateFormat dateFormat =
@@ -39,8 +42,8 @@ public class DataHora {
 
 
     /**
-     * Recebe uma data e hora no formato "yyyy-MM-dd HH:mm:ss" e  formata para o
-     * "HH:mm", que são as horas e minuto em formato do Brasil
+     * Recebe uma data e hora no formato "yyyy-MM-dd HH:mm:ss" e  formata a hora para
+     * "HH:mm", que é o formtato de hora usado no Brasil
      *
      * @param dataHora data e hora recebida no formato "yyyy-MM-dd HH:mm:ss"
      * @return Hora e minutos no formato "HH:mm"
@@ -68,11 +71,11 @@ public class DataHora {
 
 
     /**
-     * Recebe uma data e hora no formato "yyyy-MM-dd HH:mm:ss" e  formata para o
-     * "dd-MM-yyyy", que é o tipo de data usada no Brasil
+     * Recebe uma data e hora no formato "yyyy-MM-dd HH:mm:ss" e  formata para a data
+     * "dd-MM-yyyy", que é o formato de data usado no Brasil
      *
      * @param dataHora data e hora recebida no formato "yyyy-MM-dd HH:mm:ss"
-     * @return data no formato dd-MM-yyyy"
+     * @return data no formato "dd-MM-yyyy"
      */
     public static String formatarDataBr(String dataHora) {
 
@@ -96,12 +99,11 @@ public class DataHora {
     }
 
     /**
-     * Recebe uma data do sistema - do dia - ou escolhida no calendario no formato "yyyy-MM-dd HH:mm:ss"
-     * e formata para "yyyy-MM-dd", que sera utilizado para fazer uma pesquisa de dados cadastrados
-     * no sistema nessa data
+     * Recebe uma data e hora(do sistema ou escolhida no calendario) no formato "yyyy-MM-dd HH:mm:ss"
+     * e formata a data para "yyyy-MM-dd", que sera utilizado para fazer uma pesquisa no BD
      *
-     * @param dataHora data e hora do sistema ou escolhida no calendario no formato "yyyy-MM-dd HH:mm:ss"
-     * @return data no formato "yyyy-MM-dd" para fazer a pesquisa no banco de dados
+     * @param dataHora data e hora no formato "yyyy-MM-dd HH:mm:ss"
+     * @return data no formato "yyyy-MM-dd" para fazer a pesquisa no BD
      */
     public static String formatarDataPesquisarBancoDados(String dataHora) {
 
@@ -126,9 +128,8 @@ public class DataHora {
 
 
     /**
-     * Pega do calendário a data escolhida e formata o ano, mes e dia, para o formato que esta salvo
-     * no banco de dados. No banco de dados a data e hora esta no formato "yyyy-MM-dd HH:mm:ss" e
-     * aqui retorna o formato "yyyy-MM-dd", que é utilizado para compara no banco de dados
+     * Recebe do calendário year(ano),month(mês), day(dia), e formata uma data no formato "yyyy-MM-dd"
+     * Essa data sera usada para fazer pesquisa no BD. No BD a data e hora esta no formato "yyyy-MM-dd HH:mm:ss"
      *
      * @param year  ano
      * @param month mes
@@ -145,6 +146,7 @@ public class DataHora {
 
         if (month < 10) {
 
+            // se month for "7" então mes fica "07"
             mes = "0" + String.valueOf(month);
 
         } else {
@@ -154,6 +156,7 @@ public class DataHora {
 
         if (day < 10) {
 
+            // se day for "9" então dia fica "09"
             dia = "0" + String.valueOf(day);
 
         } else {
@@ -183,6 +186,7 @@ public class DataHora {
 
         if (month < 10) {
 
+            // se month for "7" então mes fica "07"
             mes = "0" + String.valueOf(month);
 
         } else {
@@ -192,6 +196,7 @@ public class DataHora {
 
         if (day < 10) {
 
+            // se day for "9" então dia fica "09"
             dia = "0" + String.valueOf(day);
 
         } else {

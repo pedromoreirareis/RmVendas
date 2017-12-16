@@ -205,7 +205,7 @@ public class Contrato {
                 " CREATE TABLE IF NOT EXISTS " + TABELA_CLIENTES + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + NOME + " TEXT NOT NULL, "
-                        + TELEFONE + " INTEGER );";
+                        + TELEFONE + " TEXT );";
 
         public static final String CONTENT_ITEM_TYPE_CLIENTES =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +

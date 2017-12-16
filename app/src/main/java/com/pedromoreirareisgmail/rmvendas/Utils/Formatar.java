@@ -12,22 +12,26 @@ public class Formatar {
      * formatação para currency. Essa formatação é apenas para apresentação, já que os dados estão
      * salvos em double e não currency
      *
-     * @param str Recebe string diretamente do teclado numérico
-     * @return uma string para ser apresentada em formato currency com cifrão
+     * @param str Recebe string do teclado numérico sem formato (String - 25,95)
+     * @return String  em formato currency  (Currency - R$ 25,95)
      */
     public static String formatarParaCurrency(String str) {
 
+        //  Verifica se a String contém cifrão (R$), ponto( . ) ou virgula ( , ) Exemplo: R$25,95
         boolean hasMask =
                 (((str.contains("R$")) || (str.contains("$"))) &&
                         ((str.contains(".")) || (str.contains(","))));
 
+        //  Se tiver cifrão, ponto, ou virgula substitui esse caracteres por vazio Exemplo: 2595
         if (hasMask) {
 
             str = str.replaceAll("[^\\d]", "");
         }
 
+        // Do valor resultante, divide por 100 Exemplo: 2595/100 = 25.95
         try {
 
+            // Formata para Currency novamente Exemplo: R$ 25,95
             return formatarNumero.format(Double.parseDouble(str) / 100);
 
         } catch (NumberFormatException e) {
@@ -37,24 +41,27 @@ public class Formatar {
     }
 
     /**
-     * Pega o número apresentado na tela em formato currency e com cifrão e formata para double que
-     * é utilizado para fazer os cálculos e para salvamento no banco de dados.
+     * Recebe o valor apresentado na tela em formato currency  e formata para double que
+     * é utilizado para fazer os cálculos e para salvamento no BD
      *
-     * @param str entra uma string em formato currency
-     * @return um double que é utilizado para fazer os calculo e salvamento no banco de dados
+     * @param str Recebe uma string em formato currency (Currency - R$ 25,95)
+     * @return Double que é utilizado para fazer os calculo e salvamento no BD (Double - 25.95)
      */
     public static double formatarParaDouble(String str) {
 
+        //  Verifica se a String contém cifrão (R$), ponto( . ) ou virgula ( , )
         boolean hasMask =
                 (((str.contains("R$")) || (str.contains("$"))) &&
                         ((str.contains(".")) || (str.contains(","))));
 
+        //  Se tiver cifrão, ponto, ou virgula substitui esse caracteres por vazio
         if (hasMask) {
             str = str.replaceAll("[^\\d]", "");
         }
 
         try {
 
+            // Retorna um Double
             return (Double.parseDouble(str) / 100);
 
         } catch (NumberFormatException e) {

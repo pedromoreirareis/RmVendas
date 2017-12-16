@@ -69,11 +69,14 @@ public class Provider extends ContentProvider {
         sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoAReceber.TABELA_A_RECEBER + "/#", MATCH_A_RECEBER_ID);
     }
 
-    /**
-     * Cria o objeto DbHelper
-     */
+
     private DbHelper mDbHelper;
 
+    /**
+     * Cria o objeto DbHelper
+     *
+     * @return true se criou corretamento, false se houve erro
+     */
     @Override
     public boolean onCreate() {
 
@@ -82,9 +85,21 @@ public class Provider extends ContentProvider {
          */
         mDbHelper = new DbHelper(getContext());
 
+        Log.v(TAG, "onCreate: Criando instancia DbHelper - Para Gerênciar Banco de Dados");
+
         return true;
     }
 
+    /**
+     * Gerencia as pesquisa no Banco de dados
+     *
+     * @param uri           Uri da tabela a ser pesquisada - Endereço onde a tabela esta salva
+     * @param projection    Define quais campos será retornado na pesquisa
+     * @param selection     Define os campo onde os dados devem ser encontrados
+     * @param selectionArgs Define o que vai ser procurado
+     * @param sortOrder     Define a ordem dos dados retornados
+     * @return
+     */
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
@@ -109,6 +124,9 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
+
+                Log.v(TAG, "PRODUTOS: Pesquisando todos os produtos");
+
                 break;
 
             case MATCH_PRODUTOS_ID:
@@ -125,6 +143,9 @@ public class Provider extends ContentProvider {
                         null,
                         null, sortOrder
                 );
+
+                Log.v(TAG, "PRODUTOS: Pesquisando um unico Produto");
+
                 break;
 
             // Entradas e Retiradas
@@ -139,6 +160,9 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
+
+                Log.v(TAG, "ENTRADAS E RETIRADAS: Pesquisando todas Entradas e Retiradas");
+
                 break;
 
             case MATCH_ENT_RET_ID:
@@ -155,6 +179,9 @@ public class Provider extends ContentProvider {
                         null,
                         null, sortOrder
                 );
+
+                Log.v(TAG, "ENTRADAS E RETIRADAS: Pesquisando uma unica Entrada ou Retirada");
+
                 break;
 
             // Saldo Inicial
@@ -169,6 +196,9 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
+
+                Log.v(TAG, "SALDO INICIAL: Pesquisando todos os Saldos Iniciais");
+
                 break;
 
             case MATCH_SALDO_INICIAL_ID:
@@ -185,6 +215,9 @@ public class Provider extends ContentProvider {
                         null,
                         null, sortOrder
                 );
+
+                Log.v(TAG, "SALDO INICIAL: Pesquisando um unico Saldo inicial");
+
                 break;
 
             // Vendas
@@ -199,6 +232,9 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
+
+                Log.v(TAG, "VENDAS: Pesquisando todas as Vendas");
+
                 break;
 
             case MATCH_VENDASS_ID:
@@ -215,6 +251,9 @@ public class Provider extends ContentProvider {
                         null,
                         null, sortOrder
                 );
+
+                Log.v(TAG, "VENDAS: Pesquisando uma unica venda");
+
                 break;
 
             // Clientes
@@ -229,6 +268,9 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
+
+                Log.v(TAG, "CLIENTES: Pesquisando todos os Clientes");
+
                 break;
 
             case MATCH_CLIENTES_ID:
@@ -245,6 +287,9 @@ public class Provider extends ContentProvider {
                         null,
                         null, sortOrder
                 );
+
+                Log.v(TAG, "CLIENTES: Pesquisando um unico Cliente");
+
                 break;
 
             //A_Rceber
@@ -259,6 +304,9 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
+
+                Log.v(TAG, "A RECEBER: Pesquisando todos os A Receber");
+
                 break;
 
             case MATCH_A_RECEBER_ID:
@@ -275,6 +323,9 @@ public class Provider extends ContentProvider {
                         null,
                         null, sortOrder
                 );
+
+                Log.v(TAG, "A RECEBER: Pesquisando um unico A Receber");
+
                 break;
 
             //Padrão
@@ -295,6 +346,7 @@ public class Provider extends ContentProvider {
             Log.e(TAG, getContext() != null ?
                     getContext().getString(R.string.provider_log_query) : null);
         }
+
 
         return cursor;
     }
@@ -361,11 +413,20 @@ public class Provider extends ContentProvider {
         }
     }
 
+    /**
+     * Insere registro no banco de dados
+     *
+     * @param uri    Uri da tabela onde sera inserido o registro
+     * @param values Dados a serem inseridos
+     * @return Uri exato do registro inserido, Uri da tabela mais id do registro inserido
+     */
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
         final int match = sUriMatcher.match(uri);
+
+        Log.v(TAG, "INSERINDO UM NOVO REGISTRO");
 
         switch (match) {
 
@@ -395,12 +456,23 @@ public class Provider extends ContentProvider {
                         : null
                 );
         }
+
     }
 
+    /**
+     * Deleta um registro(s) do BD
+     *
+     * @param uri           Necessita de um Uri especifico (deleta um registro) Uri da tabela (deleta todos)
+     * @param selection     Regras a serem aplicadas para pesquisa dos registros a serem deletados
+     * @param selectionArgs Argumentos a serem pesquisados
+     * @return Quantidade de registros deletados
+     */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
+
+        Log.v(TAG, "EXCLUINDO REGISTRO(S)");
 
         switch (match) {
 
@@ -466,11 +538,21 @@ public class Provider extends ContentProvider {
 
     }
 
-
+    /**
+     * Editar registros
+     *
+     * @param uri           Uri da tabela a ser editada
+     * @param values        Dados a serem editados
+     * @param selection     Regras a serem aplicadas na pesquisa dos dados a serem editado
+     * @param selectionArgs Argumentos a serem pesquisados
+     * @return Quantidade de registros editados
+     */
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
+
+        Log.v(TAG, "ATUALIZANDO REGISTRO(S)");
 
         switch (match) {
 
@@ -539,6 +621,14 @@ public class Provider extends ContentProvider {
 
     /********************************     INSERIR    **********************************************/
 
+    /**
+     * Insere um novo registro
+     *
+     * @param nomeTabela Nome da tabela onde o registro sera inserido
+     * @param uri        Uri da tabela onde registro sera inserido
+     * @param values     Dados a serem inseridos
+     * @return Uri completo - Uri da tabela mais id do resgistro inserido
+     */
     private Uri inserirProvider(String nomeTabela, Uri uri, ContentValues values) {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -566,6 +656,16 @@ public class Provider extends ContentProvider {
 
     /********************************     EDITAR    ***********************************************/
 
+    /**
+     * Editado varios registros
+     *
+     * @param uri           Uri da tabela a ser editada
+     * @param values        Dados a serem editados
+     * @param nomeTabela    Nome da tabela a ser editada
+     * @param selection     Regras para pesquisa dos registros a serem editados
+     * @param selectionArgs Argumentos a serem pesquisados na Regras do selection
+     * @return Quantidade de registros editados
+     */
     private int editarProvider(Uri uri, ContentValues values, String nomeTabela, String selection, String[] selectionArgs) {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -586,6 +686,15 @@ public class Provider extends ContentProvider {
         return editadas;
     }
 
+    /**
+     * Editar um unico registro
+     *
+     * @param uri        Uri da tabela a ser editada
+     * @param values     Dados a serem editados
+     * @param nomeTabela Nome da tabela a ser editada
+     * @param idLinha    id a ser editado, especificando registro
+     * @return quantidade de registros editados
+     */
     private int editarProviderID(Uri uri, ContentValues values, String nomeTabela, String idLinha) {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -612,6 +721,15 @@ public class Provider extends ContentProvider {
 
     /********************************     EXCLUIR   ***********************************************/
 
+    /**
+     * Exclui varios registros ou todos de uma tabela
+     *
+     * @param uri           Uri da tabela que tera registros excluidos
+     * @param nomeTabela    Nome da tabela que tera registros excluidos
+     * @param selection     Regras para pesquisar registros a excluir
+     * @param selectionArgs Argumentos a serem pesquisados nas regras do Selection
+     * @return quantidade de registros excluidos
+     */
     private int excluir(Uri uri, String nomeTabela, String selection, String[] selectionArgs) {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -631,6 +749,14 @@ public class Provider extends ContentProvider {
 
     }
 
+    /**
+     * Faz a exclusão de um registro especifico - Uri id
+     *
+     * @param uri        Uri da tabela onde sera excluido registro
+     * @param nomeTabela Tabela que vai ser excluido registro
+     * @param idLinha    id do registro - especificando registro
+     * @return quantidade de registros excluidos
+     */
     private int excluirID(Uri uri, String nomeTabela, String idLinha) {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();

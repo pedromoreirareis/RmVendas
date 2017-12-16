@@ -11,16 +11,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
@@ -28,104 +24,46 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT_MSG;
 
-public class ClientesCadActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ClientesCadActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>,
+        EditText.OnTouchListener {
 
     public static final int LOADER_CLIENTES_CAD = 0;
 
     private EditText mEtNome;
     private EditText mEtFone;
-    private final EditText.OnTouchListener mTouchListnerEditFocoCursorFim = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
 
-            int id = view.getId();
-
-            switch (id) {
-
-                // Recebe o foco e coloca o cursor no fim
-                case R.id.et_valor:
-                    mEtFone.requestFocus();
-                    Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtFone);
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
-    };
     private Uri mUriAtual = null;
+
     private boolean isDadosAlterado = false;
-    private boolean isFormatarCurrencyAtualizado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clientes_cad);
 
+        /* Se Activity foi aberta para alteração, vair receber uma Uri*/
         Intent intent = getIntent();
         mUriAtual = intent.getData();
 
+        /* Se não foi recebido Uri, Activity vai adicionar registro. Se recebeu vai editar.*/
         if (mUriAtual == null) {
 
             setTitle("Titulo Add");
 
         } else {
 
+            /* Se for editar fara pesquisa na banco de dados para pegar dados do Uri passado*/
             setTitle("Titulo Editar");
             getLoaderManager().initLoader(LOADER_CLIENTES_CAD, null, this);
         }
 
+        // Referencia itens do layout
         mEtNome = (EditText) findViewById(R.id.et_clientes_nome);
         mEtFone = (EditText) findViewById(R.id.et_clientes_num_fone);
 
-        mEtNome.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT)});
-
-        mEtNome.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-
-                isDadosAlterado = true;
-
-                if (charSequence.toString().trim().length() > MAX_CARACT_MSG) {
-
-                    Toast.makeText(ClientesCadActivity.this,
-                            R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mEtFone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mEtFone.setOnTouchListener(mTouchListnerEditFocoCursorFim);
-
+        mEtFone.setOnTouchListener(this);
     }
 
     @Override
@@ -193,12 +131,9 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
         }
 
 
-        int foneInt = Integer.parseInt(foneEditText);
-
-
         ContentValues values = new ContentValues();
         values.put(AcessoClientes.NOME, nomeEditText);
-        values.put(AcessoClientes.TELEFONE, foneInt);
+        values.put(AcessoClientes.TELEFONE, foneEditText);
 
         if (mUriAtual == null) {
 
@@ -270,7 +205,7 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
 
 
             mEtNome.setText(nomeBD);
-            mEtFone.setText(String.valueOf(foneBD));
+            mEtFone.setText(foneBD);
         }
     }
 
@@ -278,4 +213,24 @@ public class ClientesCadActivity extends AppCompatActivity implements LoaderMana
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+
+        int id = view.getId();
+
+        switch (id) {
+
+            // Recebe o foco e coloca o cursor no fim
+            case R.id.et_valor:
+                mEtFone.requestFocus();
+                Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtFone);
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+
 }

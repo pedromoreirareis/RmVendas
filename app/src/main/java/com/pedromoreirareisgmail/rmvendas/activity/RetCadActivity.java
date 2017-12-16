@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -23,7 +22,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
@@ -33,8 +31,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MAX_CARACT_MSG;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
@@ -64,7 +60,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
     private EditText mEtDescricao;
-    private String mDataHoraBD = "";
+    private String mDataHoraBD = null;
     private Uri mUriAtual = null;
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
@@ -89,31 +85,6 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
         mEtValor = (EditText) findViewById(R.id.et_valor);
         mEtDescricao = (EditText) findViewById(R.id.et_descricao);
-
-        mEtDescricao.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CARACT)});
-
-        mEtDescricao.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                isDadosAlterado = true;
-
-                if (charSequence.toString().trim().length() > MAX_CARACT_MSG) {
-
-                    Toast.makeText(RetCadActivity.this,
-                            R.string.msg_max_caract, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
         mEtValor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -158,7 +129,7 @@ public class RetCadActivity extends AppCompatActivity implements LoaderManager.L
 
         mEtValor.setOnTouchListener(mTouchListnerEditFocoCursorFim);
 
-        Utilidades.semCursorFocoSelecaoZerado(mEtValor);
+        Utilidades.semFocoZerado(mEtValor);
     }
 
     @Override

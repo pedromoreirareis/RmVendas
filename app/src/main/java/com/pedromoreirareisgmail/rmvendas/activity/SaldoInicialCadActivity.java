@@ -57,7 +57,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
             }
         }
     };
-    private String mDataHoraBD = "";
+    private String mDataHoraBD = null;
     private Uri mUriAtual = null;
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
@@ -128,7 +128,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements Loader
 
         mEtValor.setOnTouchListener(mTouchListnerEditCursorFim);
 
-        Utilidades.semCursorFocoSelecaoZerado(mEtValor);
+        Utilidades.semFocoZerado(mEtValor);
     }
 
     @Override

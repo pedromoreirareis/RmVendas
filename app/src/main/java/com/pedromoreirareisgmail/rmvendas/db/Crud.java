@@ -10,6 +10,13 @@ import com.pedromoreirareisgmail.rmvendas.R;
 
 public class Crud {
 
+    /**
+     * Insere um registro no Banco de Dados
+     *
+     * @param context Contexto da Activity
+     * @param uri     Uri do registro a ser inserido - parte do Uri
+     * @param values  Dados a ser inserido
+     */
     public static void inserir(Context context, Uri uri, ContentValues values) {
 
         Uri newUri = context.getContentResolver().insert(uri, values);
@@ -23,6 +30,13 @@ public class Crud {
         }
     }
 
+    /**
+     * Edita um registro no BD
+     *
+     * @param context Contexto da Activity
+     * @param uri     Uri do registro a ser Editado
+     * @param values  dados a serem editados(Atualizados)
+     */
     public static void editar(Context context, Uri uri, ContentValues values) {
 
         int editadas = context.getContentResolver().update(uri, values, null, null);

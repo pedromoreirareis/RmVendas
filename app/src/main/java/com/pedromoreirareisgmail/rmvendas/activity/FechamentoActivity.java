@@ -51,7 +51,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     private int mQuantidadeBolosVendidosVista = 0;
     private int mQuantidadeBolosVendidosPrazo = 0;
 
-    private String mDataPesquisarBD = "";
+    private String mDataPesquisarBD = null;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override

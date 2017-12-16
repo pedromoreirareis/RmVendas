@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Array para o Dialog Editar ou Excluir -->
     <string-array name="array_editar_excluir_prod">
         <item>Editar</item>
         <item>Excluir</item>

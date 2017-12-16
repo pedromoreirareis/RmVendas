@@ -28,6 +28,7 @@
     <string name="menu_salvar_title">Salvar</string>
     <string name="menu_data_title">Data</string>
     <string name="menu_pesquisar_title">Pesquisar</string>
+    <string name="menu_telefone_cliente">Ligar</string>
 
     <!-- Menus Drawer -->
     <string name="menu_entrada_title">Entrada</string>
@@ -66,6 +67,8 @@
     <string name="text_prod_esc_quant_prazo">A prazo</string>
     <string name="text_a_receber_venda">Venda</string>
     <string name="text_a_receber_recebimento">Recebimento</string>
+    <string name="text_ent_ret_list_click_msg_as"> às </string>
+    <string name="text_prod_list_click_msg_prod_valor"> Valor: </string>
 
     <!-- Itens de fechamento -->
     <string name="total_venda_vista_item_main">Total..:</string>
@@ -94,7 +97,7 @@
      ********************************************************************************************-->
 
     <!-- mensagens -->
-    <string name="msg_max_caract">Esse campo deve ter no máximo 50 caracteres</string>
+    <string name="msg_max_caract">Esse campo deve ter no máximo 100 caracteres</string>
     <string name="msg_editado_sucesso">Editado com sucesso</string>
     <string name="msg_editado_erro">Erro ao editar</string>
 

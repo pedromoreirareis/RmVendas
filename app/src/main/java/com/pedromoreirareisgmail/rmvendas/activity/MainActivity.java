@@ -28,7 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.MainAdapter;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 
     private MainAdapter mAdapter;
 
-    private String mDataPesquisarBD = "";
+    private String mDataPesquisarBD = null;
     private String mProdutoPesquisarBD = "";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 Intent intent = new Intent(MainActivity.this, VendListActivity.class);
-                intent.putExtra(Constantes.VENDA_ADICIONAR, Constantes.VENDA_ADICIONAR);
                 startActivity(intent);
             }
         });

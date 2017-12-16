@@ -28,12 +28,16 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapter.EntAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 
-public class EntListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EntListActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>,
+        ListView.OnItemClickListener,
+        ListView.OnItemLongClickListener {
 
     private static final int LOADER_ENTRADA_LIST = 0;
+
     private EntAdapter mAdapter;
 
-    private String mDataPesquisarBD = "";
+    private String mDataPesquisarBD = null;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -41,6 +45,7 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ent_list);
 
+        // Trata o botão Flutuante - Abre activity EntCadActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,67 +56,43 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
+        // Referencia itens do layout
         TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
         ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
+        ListView listView = (ListView) findViewById(R.id.lv_list);
+        View emptyView = findViewById(R.id.empty_view);
 
+        // Layout vazio - Cadastro sem registros
         tvEmpty.setText(R.string.text_ent_list_empty);
         ivEmpty.setImageResource(R.drawable.ic_money_up);
         ivEmpty.setContentDescription(getString(R.string.image_desc_ent_list_empty));
-
-        ListView listView = (ListView) findViewById(R.id.lv_list);
-        View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
 
+        // Cria o adapter e colocar o adapter no Listview
         mAdapter = new EntAdapter(this);
         listView.setAdapter(mAdapter);
 
-        // Com clique longo no listview, aparecera um dialog com opção de editar ou excluir
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
+        // Clique simples e Longo no ListView
+        listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
 
-                Uri uri = ContentUris.withAppendedId(AcessoEntRet.CONTENT_URI_ENT_RET, id);
+        //  Pega data calendário do Dialog
+        getDataCalendario();
 
-                Cursor cursor = mAdapter.getCursor();
-                String mensagemExcluir = mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoEntRet.DESCRICAO)) +
-                        getString(R.string.dialog_exc_edit_texto_excluir_valor) +
-                        " " +
-                        Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
-                                cursor.getColumnIndex(AcessoEntRet.VALOR)));
-
-                Dialogos.dialogoEditarExcluir(
-                        EntListActivity.this,
-                        EntCadActivity.class,
-                        uri,
-                        mensagemExcluir
-                );
-
-                return true;
-            }
-        });
-
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-
-                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
-
-                setTitle(getString(R.string.title_ent_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
-
-                getLoaderManager().restartLoader(LOADER_ENTRADA_LIST, null, EntListActivity.this);
-
-            }
-        };
-
+        // Coloca o titulo e data na Activity, e define data da pesquisa no BD
         setTitle(getString(R.string.title_ent_list) + "  " + DataHora.obterFormatarDataBrTitulo());
-
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
+        // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(LOADER_ENTRADA_LIST, null, this);
     }
 
-
+    /**
+     * Cria o menu
+     *
+     * @param menu Interface de criação do menu
+     * @return Menu inflado
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -120,11 +101,18 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
         return true;
     }
 
+    /**
+     * Define o que fazer ao selecionar um item do menu
+     *
+     * @param item Item que foi selecionado
+     * @return verdadeiro se item foi selecionado
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
+        // Menu Calendário
         if (id == R.id.action_data) {
 
             Dialogos.dialogoDatas(EntListActivity.this, mDateSetListener);
@@ -132,6 +120,14 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * Define os parametros de pesquisa no BD
+     *
+     * @param i      Loader responsavel pela pesquisa
+     * @param bundle Conjunto de dados em um bundle
+     * @return Um Loader com um Cursor com resultado da pesquisa
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
@@ -158,13 +154,113 @@ public class EntListActivity extends AppCompatActivity implements LoaderManager.
         );
     }
 
+    /**
+     * Define o que fazer com os dados retornados do BD
+     *
+     * @param loader Loader com um cursor com dados da pesquisa
+     * @param cursor Cursor com dados da pesquisa
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        // Envia dados retornados do BD para o adapter e ListView
         mAdapter.swapCursor(cursor);
     }
 
+    /**
+     * Ao reiniciar a pesquisa o que fazer com os dados velhos
+     *
+     * @param loader Loader com dados antigos
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    /**
+     * Click simples no ListView
+     * Ao clicar vair abir um Dialog com o valor e descrição da Entrada
+     *
+     * @param parent   adaptador
+     * @param view     item do listview
+     * @param position posição da view no adaptador
+     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Cursor cursor = mAdapter.getCursor();
+
+        String tituloDialog;
+        String mensagemDialog;
+
+        tituloDialog = "Entrada";
+
+        //  Mensagem do Dialog - Descrição
+        mensagemDialog = "\nValor:    "
+                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR)))
+                + "\n\n"
+                + "Descrição:   "
+                + cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO))
+                + "\n\n"
+                + "Hora:    "
+                + DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA)));
+
+        Dialogos.dialogoExibirDados(EntListActivity.this, tituloDialog, mensagemDialog);
+    }
+
+    /**
+     * Click longo no ListView ()
+     * Ao clicar e ficar apertado vair abir um Dialog com opção Editar ou Excluir a Entrada
+     *
+     * @param parent   adaptador
+     * @param view     item do listview
+     * @param position posição da view no adaptador
+     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
+     * @return true de click longo foi efetuado com sucesso
+     */
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Uri uri = ContentUris.withAppendedId(AcessoEntRet.CONTENT_URI_ENT_RET, id);
+
+        Cursor cursor = mAdapter.getCursor();
+
+        // Mensagem ao Excluir - Descrição + valor
+        String mensagemExcluir = cursor.getString(
+                cursor.getColumnIndex(AcessoEntRet.DESCRICAO))
+                + getString(R.string.dialog_exc_edit_texto_excluir_valor)
+                + " "
+                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(
+                cursor.getColumnIndex(AcessoEntRet.VALOR)));
+
+        Dialogos.dialogoEditarExcluir(
+                EntListActivity.this,
+                EntCadActivity.class,
+                uri,
+                mensagemExcluir
+        );
+
+        return true;
+    }
+
+    /*
+     * Escolha no calendário uma data que será utilizada para pesquisar no banco de dados. Essa
+     * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
+     * pesquisa para verificar se há dados para esta data
+     */
+    private void getDataCalendario() {
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+
+                setTitle(getString(R.string.title_ent_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+
+                getLoaderManager().restartLoader(LOADER_ENTRADA_LIST, null, EntListActivity.this);
+            }
+        };
     }
 }

@@ -16,29 +16,52 @@ import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 public class SaldoInicialAdapter extends CursorAdapter {
 
 
+    /**
+     * Construtor
+     *
+     * @param context Contexto da Activity
+     */
     public SaldoInicialAdapter(Context context) {
         super(context, null, 0);
     }
 
+    /**
+     * Infla os itens do layout, reaproveitando os itens
+     *
+     * @param context   Contexto da Activity que vem do construtor
+     * @param cursor    Cursor com dados de uma pesquisa no BD
+     * @param viewGroup Layout onde sera colocado os itens
+     * @return View de um unico item do viewGroup
+     */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
 
         return LayoutInflater.from(context).inflate(R.layout.item_saldo_inicial_list, viewGroup, false);
     }
 
+    /**
+     * Coloca informações nos itens(views) do layout a partir de dados de um Cursor
+     *
+     * @param view    Um unico item do layout
+     * @param context Contexto da Activity
+     * @param cursor  Cursor com dados de uma pesquisa no BD
+     */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
         SaldoViewHolder holder = new SaldoViewHolder(view);
 
+        /* valor e hora que foi adicionado o saldo inicial */
         double valor = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR));
-        String dataHora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA));
+        String hora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA));
 
         holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
-        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(dataHora));
+        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(hora));
     }
 
-
+    /*
+     *   Cria o ViewHolder para gerenciar a criação de itens(views)
+     */
     class SaldoViewHolder {
 
         final TextView tvValor;

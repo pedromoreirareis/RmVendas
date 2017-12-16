@@ -11,11 +11,10 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public class Utilidades {
 
     /**
-     * Utilizado para fechar o teclado quando o usuario fazer uma seleção negativa com o Switch
-     * Tem um problema que ao fechar não abre mais o teclado
+     * Utilizado para fechar o teclado
      *
-     * @param context  indicar o contexto
-     * @param view indicar qual botão Switch foi alterado
+     * @param context Indicar o contexto da Activity
+     * @param view    Indica qual View esta solicitando o fechamento do teclado
      */
     public static void fecharTecladoView(Context context, View view) {
 
@@ -26,21 +25,28 @@ public class Utilidades {
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    /**
+     * Quando o teclado esta fechado, solicita a abertura
+     *
+     * @param context Indicar o contexto da Activity
+     * @param meuEdit Indica qual EditText esta solicitando a abertura do teclado
+     */
     public static void mostrarTeclado(Context context, EditText meuEdit) {
 
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm =
+                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
         imm.showSoftInput(meuEdit, InputMethodManager.SHOW_IMPLICIT);
     }
 
     /**
-     * Zera o valor do edit escolhido, retira o cursor, e retira a selação e foco
+     * Zera o valor do edit escolhido, retira o foco por completo
      *
-     * @param editText recebe um edit
+     * @param editText recebe o EditText para zerar e tirar foco
      */
-    public static void semCursorFocoSelecaoZerado(EditText editText) {
+    public static void semFocoZerado(EditText editText) {
 
         editText.setText("0");
-        //editText.setCursorVisible(false);
         editText.setSelectAllOnFocus(false);
     }
 
