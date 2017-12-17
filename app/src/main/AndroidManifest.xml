@@ -163,7 +163,7 @@
         </activity>
 
         <activity
-            android:name=".activity.VendListaClienteActivity"
+            android:name=".activity.VendListClienteActivity"
             android:label="@string/title_vend_clientes_list"
             android:parentActivityName=".activity.VendQuantActivity"
             android:screenOrientation="portrait">

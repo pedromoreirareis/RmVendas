@@ -25,8 +25,8 @@ import java.text.NumberFormat;
 public class FechamentoActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_ENTRADA_RETIRADA = 0;
-    private static final int LOADER_SALDO = 1;
+    private static final int LOADER_ENTRADAS_RETIRADAS = 0;
+    private static final int LOADER_SALDO_INICIAL = 1;
     private static final int LOADER_VENDAS = 2;
 
     private TextView tvValorSaldoInicial;
@@ -81,8 +81,8 @@ public class FechamentoActivity extends AppCompatActivity implements
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         // Inicia as pesquisas com a data do dia
-        getLoaderManager().initLoader(LOADER_ENTRADA_RETIRADA, null, this);
-        getLoaderManager().initLoader(LOADER_SALDO, null, this);
+        getLoaderManager().initLoader(LOADER_ENTRADAS_RETIRADAS, null, this);
+        getLoaderManager().initLoader(LOADER_SALDO_INICIAL, null, this);
         getLoaderManager().initLoader(LOADER_VENDAS, null, this);
     }
 
@@ -133,9 +133,8 @@ public class FechamentoActivity extends AppCompatActivity implements
         /* LOADER_ENTRADA_RETIRADA
          * Esse Loader é responsavel pela pesquisa de todas as entradas e retiradas efetuadas na data
          * pesquisada
-         *
          */
-        if (loader == LOADER_ENTRADA_RETIRADA) {
+        if (loader == LOADER_ENTRADAS_RETIRADAS) {
 
             String[] projection = new String[]{
                     AcessoEntRet._ID,
@@ -162,7 +161,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         /* LOADER_SALDO
          * Esse loader e responsavel por pesquisar o saldo inicial da data pesquisada
          */
-        if (loader == LOADER_SALDO) {
+        if (loader == LOADER_SALDO_INICIAL) {
 
             String[] projection = {
                     AcessoSaldo._ID,
@@ -228,11 +227,11 @@ public class FechamentoActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        /* Entradas e Retiradas
+        /* Entradas e Retiradas -  Todas entradas e retiradas da data pesquisada
          * Soma todas as entradas e coloca valor em uma varivel
          * Soma todas as retiradas e coloca valor em uma variavel
          */
-        if (loader.getId() == LOADER_ENTRADA_RETIRADA && cursor.moveToFirst()) {
+        if (loader.getId() == LOADER_ENTRADAS_RETIRADAS && cursor.moveToFirst()) {
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
@@ -253,7 +252,10 @@ public class FechamentoActivity extends AppCompatActivity implements
             }
         }
 
-        if (loader.getId() == LOADER_SALDO && cursor.moveToFirst()) {
+        /* Saldo Inicial - O valor do saldo inicial da data pesquisada
+         *
+         */
+        if (loader.getId() == LOADER_SALDO_INICIAL && cursor.moveToFirst()) {
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
@@ -264,6 +266,18 @@ public class FechamentoActivity extends AppCompatActivity implements
             }
         }
 
+        /* Vendas - Todas as vendas da data pesquisada
+         * É obtido todos os dados das vendas e esses dados são somados
+         *
+         * Soma a quantidade de bolos vendidos na data pesquisada
+         * Soma a quantidade de bolos vendidos a prazo
+         * Soma a quantidade de bolos vendidos a vista
+         * Soma todos os valores de descontos dados
+         * Soma todos os valores de bolos vendidos a vista
+         * Soma todos os valores de bolos vendidos a prazo
+         *
+         * Com os dados obtidos e feito o calculo do valor obtido em todas a vendas
+         */
         if (loader.getId() == LOADER_VENDAS && cursor.moveToFirst()) {
 
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -311,8 +325,10 @@ public class FechamentoActivity extends AppCompatActivity implements
 
         NumberFormat preco = NumberFormat.getCurrencyInstance();
 
+        // Calculo do valor final do caixa
         mValorSaldoFinalFechamento = mValorTotalEntradas + mValorSaldoInicial + mValorTotalVendasVista - mValorTotalRetiradas;
 
+        // Coloca nas TextView resultados dos dados obtidos
         tvQuantidadeBolosVendidos.setText(String.valueOf(mQuantidadeBolosVendidos));
         tvQuantidadeBolosVendidosVista.setText(String.valueOf(mQuantidadeBolosVendidosVista));
         tvQuantidadeBolosVendidosPrazo.setText(String.valueOf(mQuantidadeBolosVendidosPrazo));
@@ -326,6 +342,11 @@ public class FechamentoActivity extends AppCompatActivity implements
         tvValorSaldoFinalFechamento.setText(preco.format(mValorSaldoFinalFechamento));
     }
 
+    /**
+     * Define o que fazer com resultados antigos da pesquisa ao fazer uma nova pesquisa
+     *
+     * @param loader Loader da pesquisa
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
@@ -379,8 +400,8 @@ public class FechamentoActivity extends AppCompatActivity implements
      */
     private void reiniciarPesquisas() {
 
-        getLoaderManager().restartLoader(LOADER_ENTRADA_RETIRADA, null, FechamentoActivity.this);
-        getLoaderManager().restartLoader(LOADER_SALDO, null, FechamentoActivity.this);
+        getLoaderManager().restartLoader(LOADER_ENTRADAS_RETIRADAS, null, FechamentoActivity.this);
+        getLoaderManager().restartLoader(LOADER_SALDO_INICIAL, null, FechamentoActivity.this);
         getLoaderManager().restartLoader(LOADER_VENDAS, null, FechamentoActivity.this);
     }
 }
