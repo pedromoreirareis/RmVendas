@@ -23,7 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.ProdutosCadActivity"
             android:parentActivityName=".activity.ProdutosListActivity"
@@ -33,7 +32,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ProdutosListActivity" />
         </activity>
-
         <activity
             android:name=".activity.ProdutosListActivity"
             android:label="@string/title_produ_list"
@@ -43,7 +41,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.VendQuantActivity"
             android:parentActivityName=".activity.VendListActivity"
@@ -52,7 +49,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.VendListActivity" />
         </activity>
-
         <activity
             android:name=".activity.RetListActivity"
             android:label="@string/title_ret_list"
@@ -62,7 +58,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.EntListActivity"
             android:label="@string/title_ent_list"
@@ -72,7 +67,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.SaldoInicialListActivity"
             android:label="@string/title_saldo_list"
@@ -82,7 +76,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.EntCadActivity"
             android:parentActivityName=".activity.EntListActivity"
@@ -92,7 +85,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.EntListActivity" />
         </activity>
-
         <activity
             android:name=".activity.RetCadActivity"
             android:parentActivityName=".activity.RetListActivity"
@@ -102,7 +94,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.SaldoInicialCadActivity"
             android:parentActivityName=".activity.SaldoInicialListActivity"
@@ -112,7 +103,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.VendListActivity"
             android:label="@string/title_vend_list"
@@ -123,7 +113,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.FechamentoActivity"
             android:parentActivityName=".activity.MainActivity"
@@ -132,7 +121,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.ClientesCadActivity"
             android:parentActivityName=".activity.ClientesListActivity"
@@ -142,7 +130,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ClientesListActivity" />
         </activity>
-
         <activity
             android:name=".activity.ClientesListActivity"
             android:label="@string/title_clientes_list"
@@ -152,7 +139,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.RegistroReceberActivity"
             android:parentActivityName=".activity.ClientesListActivity"
@@ -161,7 +147,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ClientesListActivity" />
         </activity>
-
         <activity
             android:name=".activity.VendListClienteActivity"
             android:label="@string/title_vend_clientes_list"
@@ -172,11 +157,12 @@
                 android:value=".activity.VendQuantActivity" />
         </activity>
 
-
         <provider
             android:name=".db.Provider"
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
+
+        <activity android:name=".activity.BaseActivity"></activity>
     </application>
 
 </manifest>
