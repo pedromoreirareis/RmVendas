@@ -3,7 +3,6 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -126,27 +125,30 @@ public class ProdutosCadActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                /* Houve alteracao - Abre Dialog para confirmar se vai descatar dados alterados,
-                 * nesse caso volta para a activity ProdutosActivityLsit, se desejar continuar
-                 * alterando fica na activity ProdutosCadActivity
-                 */
-
-                DialogInterface.OnClickListener descartarButClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(ProdutosCadActivity.this);
-                            }
-                        };
-
-                Dialogos.dialogoConfirmarAlteracao(
+                Dialogos.homeDescartarConfirmar(
                         ProdutosCadActivity.this,
-                        descartarButClickListener
-                );
+                        ProdutosCadActivity.this);
 
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /* Botão voltar (embaixo)
+     * Verifica se houve alteração, se houve abre Dialog para escolher se deseja descatar dados
+     * alterados ou se deseja continua alterando, se não houve volta
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (!isDadosAlterados) {
+
+            super.onBackPressed();
+        }
+
+        Dialogos.onBackPressedDescartarConfirmar(
+                ProdutosCadActivity.this,
+                ProdutosCadActivity.this);
     }
 
     /* Recebe dados dos edits, faz validações, coloca no obejtos values e salva os dados no BD */
@@ -206,33 +208,6 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         }
 
         finish();
-    }
-
-    /* Botão voltar (embaixo)
-     * Verifica se houve alteração, se houve abre Dialog para escolher se deseja descatar dados
-     * alterados ou se deseja continua alterando, se não houve volta
-     */
-    @Override
-    public void onBackPressed() {
-
-        if (!isDadosAlterados) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        finish();
-                    }
-                };
-
-        Dialogos.dialogoConfirmarAlteracao(
-                ProdutosCadActivity.this,
-                descartarButClickListener
-        );
     }
 
     /**

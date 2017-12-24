@@ -3,7 +3,6 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -181,18 +180,9 @@ public class RegistroReceberActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                DialogInterface.OnClickListener descartarButClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(RegistroReceberActivity.this);
-                            }
-                        };
-
-                Dialogos.dialogoConfirmarAlteracao(
+                Dialogos.homeDescartarConfirmar(
                         RegistroReceberActivity.this,
-                        descartarButClickListener
-                );
+                        RegistroReceberActivity.this);
 
                 return true;
 
@@ -212,6 +202,26 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* Botao voltar (embaixo)
+     * Verifica se houve alteração, se houve abre Dialog para verificar se as alterações vao ser
+     * descartadas ou não, se forem descartadas volkta para activity ClientesListActivity, se não
+     * forem fica na activity RegistroReceberAcitivty
+     */
+    @Override
+    public void onBackPressed() {
+
+        dadosAlterados();
+
+        if (!isDadosAlterado) {
+
+            super.onBackPressed();
+        }
+
+        Dialogos.onBackPressedDescartarConfirmar(
+                RegistroReceberActivity.this,
+                RegistroReceberActivity.this);
     }
 
     /* Zera as variaveis antes de iniciar salvamento, dessa forma o novo saldo do cliente sera
@@ -412,35 +422,6 @@ public class RegistroReceberActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
-
-    /* Botao voltar (embaixo)
-     * Verifica se houve alteração, se houve abre Dialog para verificar se as alterações vao ser
-     * descartadas ou não, se forem descartadas volkta para activity ClientesListActivity, se não
-     * forem fica na activity RegistroReceberAcitivty
-     */
-    @Override
-    public void onBackPressed() {
-
-        dadosAlterados();
-
-        if (!isDadosAlterado) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                };
-
-        Dialogos.dialogoConfirmarAlteracao(
-                RegistroReceberActivity.this,
-                descartarButClickListener
-        );
     }
 
     /**

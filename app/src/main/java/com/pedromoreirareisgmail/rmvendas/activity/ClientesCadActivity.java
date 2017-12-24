@@ -3,7 +3,6 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -114,24 +113,29 @@ public class ClientesCadActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                // Foi alterado - Abre dialog perguntando se deve descatar alterações ou não
-                DialogInterface.OnClickListener descartarButClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(ClientesCadActivity.this);
-                            }
-                        };
-
-                Dialogos.dialogoConfirmarAlteracao(
+                Dialogos.homeDescartarConfirmar(
                         ClientesCadActivity.this,
-                        descartarButClickListener
-                );
+                        ClientesCadActivity.this);
 
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* Botão volta (embaixo) - Se os dados foram alterados abre Dialog para verificar se deseja
+     * descartar as alterações ou se deseja continuar editando*/
+    @Override
+    public void onBackPressed() {
+
+        if (!isDadosAlterado) {
+
+            super.onBackPressed();
+        }
+
+        Dialogos.onBackPressedDescartarConfirmar(
+                ClientesCadActivity.this,
+                ClientesCadActivity.this);
     }
 
     /* Recebe os dados que foram digitados nos Edits, faz validações, coloca em um ContentValues,
@@ -176,29 +180,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
         finish();
     }
 
-    /* Botão volta (embaixo) - Se os dados foram alterados abre Dialog para verificar se deseja
-     * descartar as alterações ou se deseja continuar editando*/
-    @Override
-    public void onBackPressed() {
-
-        if (!isDadosAlterado) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                };
-
-        Dialogos.dialogoConfirmarAlteracao(
-                ClientesCadActivity.this,
-                descartarButClickListener
-        );
-    }
 
     /**
      * No caso de uma Edição - Define quais são as regras para pesquisa no banco de dados
@@ -266,7 +247,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
     /**
      * Monitora o toque em Views especifica
      *
-     * @param view Identifica pelo getId a view que deve ser monitorada
+     * @param view  Identifica pelo getId a view que deve ser monitorada
      * @param event Evento
      * @return Verdadeiro se a view monitorada foi tocada
      */

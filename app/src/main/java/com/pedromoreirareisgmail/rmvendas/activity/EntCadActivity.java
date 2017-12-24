@@ -3,7 +3,6 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -136,27 +135,30 @@ public class EntCadActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                /* Alterado - Abre Dialog para confimar se deseja continuar alterando, nesse caso
-                 * permanece na EntCadActivity ou de deseja descartar alteração, nesse caso volta
-                 * para activity que chamou EntCadActivity
-                 */
-                DialogInterface.OnClickListener descartarButClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(EntCadActivity.this);
-                            }
-                        };
-
-                Dialogos.dialogoConfirmarAlteracao(
+                Dialogos.homeDescartarConfirmar(
                         EntCadActivity.this,
-                        descartarButClickListener
-                );
+                        EntCadActivity.this);
 
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* Botao voltar (embaixo) - Verifica se houve alteração
+     * Se houve - Abre dialog para confirmar se deseja descartar alterações ou não
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (!isDadosAlterado) {
+
+            super.onBackPressed();
+        }
+
+        Dialogos.onBackPressedDescartarConfirmar(
+                EntCadActivity.this,
+                EntCadActivity.this);
     }
 
     /* Recebe dados do Edits, faz validações, verifica se e um novo registro ou se é uma alteração
@@ -224,30 +226,6 @@ public class EntCadActivity extends AppCompatActivity implements
         finish();
     }
 
-    /* Botao voltar (embaixo) - Verifica se houve alteração
-     * Se houve - Abre dialog para confirmar se deseja descartar alterações ou não
-     */
-    @Override
-    public void onBackPressed() {
-
-        if (!isDadosAlterado) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                };
-
-        Dialogos.dialogoConfirmarAlteracao(
-                EntCadActivity.this,
-                descartarButClickListener
-        );
-    }
 
     /**
      * Define paramentros da pesquisa no BD
@@ -398,4 +376,5 @@ public class EntCadActivity extends AppCompatActivity implements
 
         return false;
     }
+
 }

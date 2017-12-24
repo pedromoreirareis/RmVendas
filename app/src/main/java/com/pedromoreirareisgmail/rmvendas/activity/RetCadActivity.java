@@ -3,7 +3,6 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -130,24 +129,31 @@ public class RetCadActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                // Abre Dialog para descartar alterações ou continuar editando
-                DialogInterface.OnClickListener descartarButClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(RetCadActivity.this);
-                            }
-                        };
-
-                Dialogos.dialogoConfirmarAlteracao(
+                Dialogos.homeDescartarConfirmar(
                         RetCadActivity.this,
-                        descartarButClickListener
-                );
+                        RetCadActivity.this);
 
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* Botão voltar (embaixo)
+     * Se tiver ocorrido alteração abre Dialog para decidir se vai descartar a alteração ou se
+     * vai continuar alterando dados
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (!isDadosAlterado) {
+
+            super.onBackPressed();
+        }
+
+        Dialogos.onBackPressedDescartarConfirmar(
+                RetCadActivity.this,
+                RetCadActivity.this);
     }
 
     /* Salva dados no BD
@@ -215,32 +221,6 @@ public class RetCadActivity extends AppCompatActivity implements
         }
 
         finish();
-    }
-
-    /* Botão voltar (embaixo)
-     * Se tiver ocorrido alteração abre Dialog para decidir se vai descartar a alteração ou se
-     * vai continuar alterando dados
-     */
-    @Override
-    public void onBackPressed() {
-
-        if (!isDadosAlterado) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                };
-
-        Dialogos.dialogoConfirmarAlteracao(
-                RetCadActivity.this,
-                descartarButClickListener
-        );
     }
 
     /**

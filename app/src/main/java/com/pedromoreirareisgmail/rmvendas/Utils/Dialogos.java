@@ -1,11 +1,13 @@
 package com.pedromoreirareisgmail.rmvendas.Utils;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
@@ -123,6 +125,78 @@ public class Dialogos {
     }
 
     /**
+     * Abre o calendário para escolha de uma data
+     *
+     * @param context          Activity onde o calendario sera aberto
+     * @param mDateSetListener Entrada da data
+     */
+    public static void dialogoDatas(Context context, DatePickerDialog.OnDateSetListener mDateSetListener) {
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dialog = new DatePickerDialog(
+                context,
+                mDateSetListener,
+                year, month, day);
+        dialog.show();
+    }
+
+
+    /**
+     * Botao voltar (embaixo) - Verifica se houve alteração
+     * Se houve - Abre dialog para confirmar se deseja descartar alterações ou não
+     *
+     * @param context  contexto da activity que vai abir o dialog
+     * @param activity activity que sera fechada caso for descartar as alterações
+     */
+    public static void onBackPressedDescartarConfirmar(final Context context, final Activity activity) {
+
+
+        DialogInterface.OnClickListener descartarButClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        activity.finish();
+                    }
+                };
+
+        Dialogos.dialogoConfirmarAlteracao(
+                context,
+                descartarButClickListener
+        );
+    }
+
+    /**
+     * Define qual item do menu foi selecionado, e o que fazer
+     *
+     * @param context  contexto da activity que vai abir o dialog
+     * @param activity activity que sera fechada caso for descartar as alterações
+     */
+    public static void homeDescartarConfirmar(Context context, final Activity activity) {
+
+        /* Alterado - Abre Dialog para confirmar se deseja continuar alterando, nesse caso
+         * permanece na Activity atual ou de deseja descartar alteração, nesse caso volta
+         * para activity que chamou a ActivityAtual
+         */
+        DialogInterface.OnClickListener descartarButClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        NavUtils.navigateUpFromSameTask(activity);
+                    }
+                };
+
+        // Chama o metodo para descartar alterações
+        Dialogos.dialogoConfirmarAlteracao(
+                context,
+                descartarButClickListener
+        );
+    }
+
+    /**
      * Dialog para confirmar se deseja descartar uma alteraçã/inclusão ou se deseja continuar
      * alterando/editando
      *
@@ -152,26 +226,5 @@ public class Dialogos {
 
         dialog.create().show();
     }
-
-    /**
-     * Abre o calendário para escolha de uma data
-     *
-     * @param context          Activity onde o calendario sera aberto
-     * @param mDateSetListener Entrada da data
-     */
-    public static void dialogoDatas(Context context, DatePickerDialog.OnDateSetListener mDateSetListener) {
-
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dialog = new DatePickerDialog(
-                context,
-                mDateSetListener,
-                year, month, day);
-        dialog.show();
-    }
-
 }
 

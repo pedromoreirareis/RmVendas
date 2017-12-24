@@ -3,7 +3,6 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -129,23 +128,31 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                DialogInterface.OnClickListener descartarButClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(SaldoInicialCadActivity.this);
-                            }
-                        };
-
-                Dialogos.dialogoConfirmarAlteracao(
+                Dialogos.homeDescartarConfirmar(
                         SaldoInicialCadActivity.this,
-                        descartarButClickListener
-                );
+                        SaldoInicialCadActivity.this);
 
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* Botão voltar (embaixo)
+     * Verifica se houve alterações, se houve abre Dialog para decidir se as alterações vao ser
+     * descartadas ou se continuara a fazendo alterações
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (!isDadosAlterado) {
+
+            super.onBackPressed();
+        }
+
+        Dialogos.onBackPressedDescartarConfirmar(
+                SaldoInicialCadActivity.this,
+                SaldoInicialCadActivity.this);
     }
 
     /* Salva dados no BD
@@ -192,31 +199,6 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         finish();
     }
 
-    /* Botão voltar (embaixo)
-     * Verifica se houve alterações, se houve abre Dialog para decidir se as alterações vao ser
-     * descartadas ou se continuara a fazendo alterações
-     */
-    @Override
-    public void onBackPressed() {
-
-        if (!isDadosAlterado) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                };
-
-        Dialogos.dialogoConfirmarAlteracao(
-                SaldoInicialCadActivity.this,
-                descartarButClickListener
-        );
-    }
 
     /**
      * Define parametros de pesquisa no BD

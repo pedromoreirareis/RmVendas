@@ -3,7 +3,6 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -206,23 +205,31 @@ public class VendQuantActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                DialogInterface.OnClickListener descartarButClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(VendQuantActivity.this);
-                            }
-                        };
-
-                Dialogos.dialogoConfirmarAlteracao(
+                Dialogos.homeDescartarConfirmar(
                         VendQuantActivity.this,
-                        descartarButClickListener
-                );
+                        VendQuantActivity.this);
 
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* Botão voltar (embaixo)
+     * Se dados foram alterados abre Dialog para decidir se ira descatar dados alterados e sair
+     * da Activity ou se deseja ficar na activity e continuar as alterações
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (!isDadosAlterado) {
+
+            super.onBackPressed();
+        }
+
+        Dialogos.onBackPressedDescartarConfirmar(
+                VendQuantActivity.this,
+                VendQuantActivity.this);
     }
 
     /* Salva dados no BD
@@ -379,33 +386,6 @@ public class VendQuantActivity extends AppCompatActivity implements
         }
 
         finish();
-    }
-
-    /* Botão voltar (embaixo)
-     * Se dados foram alterados abre Dialog para decidir se ira descatar dados alterados e sair
-     * da Activity ou se deseja ficar na activity e continuar as alterações
-     */
-    @Override
-    public void onBackPressed() {
-
-        if (!isDadosAlterado) {
-
-            super.onBackPressed();
-        }
-
-        DialogInterface.OnClickListener descartarButClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        finish();
-                    }
-                };
-
-        Dialogos.dialogoConfirmarAlteracao(
-                VendQuantActivity.this,
-                descartarButClickListener
-        );
     }
 
     /**
