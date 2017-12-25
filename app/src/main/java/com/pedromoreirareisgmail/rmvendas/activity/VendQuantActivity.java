@@ -621,7 +621,10 @@ public class VendQuantActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isDadosAlterado = true;
+                if (!isDadosAlterado) {
+
+                    isDadosAlterado = true;
+                }
 
                 String vlQuant = charSequence.toString().trim();
                 String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
@@ -645,7 +648,10 @@ public class VendQuantActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isDadosAlterado = true;
+                if (!isDadosAlterado) {
+
+                    isDadosAlterado = true;
+                }
 
                 String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlCobert = charSequence.toString().trim().replaceAll("[^\\d]", "");
@@ -678,7 +684,10 @@ public class VendQuantActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isDadosAlterado = true;
+                if (!isDadosAlterado) {
+
+                    isDadosAlterado = true;
+                }
 
                 String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
@@ -715,7 +724,10 @@ public class VendQuantActivity extends AppCompatActivity implements
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
 
 
-                isDadosAlterado = true;
+                if (!isDadosAlterado) {
+
+                    isDadosAlterado = true;
+                }
 
                 String vlPrazo = charSequence.toString().trim().replaceAll("[^\\d]", "");
                /* String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");

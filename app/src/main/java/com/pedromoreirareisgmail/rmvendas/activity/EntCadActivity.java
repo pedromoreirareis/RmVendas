@@ -80,13 +80,19 @@ public class EntCadActivity extends AppCompatActivity implements
         // Faz controle de entrada de dados no edit
         controleTextWatcher();
 
+        // Verifica se houve alteração no edit descrição
+        if (!isDadosAlterado) {
+
+            isDadosAlterado = Utilidades.verificarAlteracaoDados(mEtDescricao);
+        }
+
         // Define o que ação tomar a clicar no botão EditorAction do teclado
         mEtDescricao.setOnEditorActionListener(this);
 
         // Monitora toques no edit de valor
         mEtValor.setOnTouchListener(this);
 
-
+        // Retira o foco e coloca o valor zero
         Utilidades.semFocoZerado(mEtValor);
     }
 
@@ -336,7 +342,10 @@ public class EntCadActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isDadosAlterado = true;
+                if (!isDadosAlterado) {
+
+                    isDadosAlterado = true;
+                }
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;

@@ -11,11 +11,14 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
@@ -26,7 +29,8 @@ import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 public class ClientesCadActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
-        EditText.OnTouchListener {
+        EditText.OnTouchListener,
+        EditText.OnEditorActionListener {
 
     public static final int LOADER_CLIENTES_CAD = 0;
 
@@ -48,18 +52,27 @@ public class ClientesCadActivity extends AppCompatActivity implements
         /* Se não foi recebido Uri, Activity vai adicionar registro. Se recebeu vai editar.*/
         if (mUriAtual == null) {
 
-            setTitle("Titulo Add");
+            setTitle(getResources().getString(R.string.title_clientes_add));
 
         } else {
 
             /* Se for editar fara pesquisa na banco de dados para pegar dados do Uri passado*/
-            setTitle("Titulo Editar");
+            setTitle(getResources().getString(R.string.title_clientes_edit));
             getLoaderManager().initLoader(LOADER_CLIENTES_CAD, null, this);
         }
 
         // Referencia itens do layout
         mEtNome = (EditText) findViewById(R.id.et_clientes_nome);
         mEtFone = (EditText) findViewById(R.id.et_clientes_num_fone);
+
+        // Verifica se houve alteração nos texto do edit
+        if (!isDadosAlterado) {
+            isDadosAlterado =
+                    Utilidades.verificarAlteracaoDados(mEtFone)
+                            || Utilidades.verificarAlteracaoDados(mEtNome);
+        }
+
+        mEtFone.setOnEditorActionListener(this);
 
         mEtFone.setOnTouchListener(this);
     }
@@ -258,14 +271,34 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
         switch (id) {
 
-            // Recebe o foco e coloca o cursor no fim
-            case R.id.et_valor:
+            // Recebe foco, mostra o teclado
+            case R.id.et_clientes_nome:
+                mEtNome.requestFocus();
+                Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtNome);
+                return true;
+
+            case R.id.et_clientes_num_fone:
                 mEtFone.requestFocus();
                 Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtFone);
                 return true;
 
+
             default:
                 return false;
         }
+    }
+
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        // Salvar dados no banco de dados
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+            salvarDadosBD();
+            return true;
+        }
+
+        return false;
     }
 }

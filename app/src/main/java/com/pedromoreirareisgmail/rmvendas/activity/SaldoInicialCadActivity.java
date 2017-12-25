@@ -314,7 +314,10 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isDadosAlterado = true;
+                if (!isDadosAlterado) {
+
+                    isDadosAlterado = true;
+                }
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;

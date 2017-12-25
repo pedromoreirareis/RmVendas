@@ -25,6 +25,8 @@
     <string name="title_saldo_list">Saldo inicial</string>
     <string name="title_fechamento">Caixa</string>
     <string name="title_clientes_list">Clientes</string>
+    <string name="title_clientes_add">Adicionar Cliente</string>
+    <string name="title_clientes_edit">Editar Cliente</string>
     <string name="title_vend_clientes_list">Clientes Cadastrados</string>
 
     <!-- Menus -->
@@ -110,6 +112,8 @@
     <string name="hint_preco">Preço R$</string>
     <string name="hint_valor">Valor R$</string>
     <string name="hint_descricao">Descrição</string>
+    <string name="hint_clientes_fone">Telefone</string>
+    <string name="hint_clientes_nome">Nome do Cliente</string>
 
     <!-- msg dialog alterações -->
     <string name="dialog_alt_titulo">Descartar as alterações?</string>
@@ -121,8 +125,8 @@
     <string name="dialog_exc_edit_texto_excluir_saldo_inicial_1">O saldo inicial do dia</string>
     <string name="dialog_exc_edit_texto_excluir_saldo_inicial_2">, no valor de</string>
     <string name="dialog_exc_edit_texto_excluir_valor">, no valor de</string>
-    <string name="dialog_exc_edit_sucesso">Produto excluido com sucesso</string>
-    <string name="dialog_exc_edit_erro">Erro ao excluir o produto </string>
+    <string name="dialog_exc_edit_sucesso">Registro excluido com sucesso</string>
+    <string name="dialog_exc_edit_erro">Erro ao excluir o registro </string>
     <string name="dialog_exc_edit_conf_exc_title">Realmente deseja excluir?</string>
     <string name="dialog_exc_edit_conf_exc_excluir">Excluir</string>
     <string name="dialog_exc_edit_conf_exc_cancelar">Cancelar</string>

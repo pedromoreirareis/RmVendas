@@ -77,6 +77,12 @@ public class RetCadActivity extends AppCompatActivity implements
         // Monitora caracteres digitas no edit
         controleTextWatcher();
 
+        // Verifica se houve alteração do texto em mEtDescricao
+        if (!isDadosAlterado) {
+
+            isDadosAlterado = Utilidades.verificarAlteracaoDados(mEtDescricao);
+        }
+
         // Verifica se foi clicado um EditorAction
         mEtDescricao.setOnEditorActionListener(this);
 
@@ -346,7 +352,11 @@ public class RetCadActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isDadosAlterado = true;
+                if (!isDadosAlterado) {
+
+                    isDadosAlterado = true;
+                }
+
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;

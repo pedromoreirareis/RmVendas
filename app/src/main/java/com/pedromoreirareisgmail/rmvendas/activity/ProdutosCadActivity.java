@@ -72,6 +72,12 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         // Controle entrada de caracteres nos edits
         controleTextWatcher();
 
+        // Verifica se o texto do edit nome foi alterado
+        if (!isDadosAlterados) {
+
+            isDadosAlterados = Utilidades.verificarAlteracaoDados(mEtNome);
+        }
+
         // Monitora o EditorAction do teclado
         mEtValor.setOnEditorActionListener(this);
 
@@ -308,7 +314,10 @@ public class ProdutosCadActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                isDadosAlterados = true;
+                if (!isDadosAlterados) {
+
+                    isDadosAlterados = true;
+                }
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;
