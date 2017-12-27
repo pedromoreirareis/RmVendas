@@ -63,7 +63,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
         // Referencia itens do layout
         mEtNome = (EditText) findViewById(R.id.et_clientes_nome);
-        mEtFone = (EditText) findViewById(R.id.et_clientes_num_fone);
+        mEtFone = (EditText) findViewById(R.id.et_clientes_numero_fone);
 
         // Verifica se houve alteração nos texto do edit
         if (!isDadosAlterado) {
@@ -277,7 +277,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
                 Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtNome);
                 return true;
 
-            case R.id.et_clientes_num_fone:
+            case R.id.et_clientes_numero_fone:
                 mEtFone.requestFocus();
                 Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtFone);
                 return true;

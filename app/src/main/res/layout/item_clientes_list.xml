@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/margin_lefth_right_itens_list">
+    android:padding="@dimen/margin_padrao_16">
 
     <TextView
         android:id="@+id/tv_clientes_nome_list"
@@ -34,5 +34,6 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
 
 </LinearLayout>

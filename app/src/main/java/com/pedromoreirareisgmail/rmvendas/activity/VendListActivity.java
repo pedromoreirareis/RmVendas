@@ -46,9 +46,9 @@ public class VendListActivity extends AppCompatActivity implements
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
-        tvEmpty.setText(R.string.text_vend_list_empty);
+        tvEmpty.setText(R.string.text_venda_list_empty);
         ivEmpty.setImageResource(R.drawable.ic_coracao_partido);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_prod_list_empty));
+        ivEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
         listView.setEmptyView(emptyView);
 
         // Cria o adapter e colocar o adapter no Listview
@@ -143,7 +143,7 @@ public class VendListActivity extends AppCompatActivity implements
     /**
      * Click simples no ListView
      * Ao clicar, vai ser aberto a Activity {@link VendListActivity} , onde podera ser escolhido
-     * a quantidade do produto, se a venda sera a prazo ou a vista, se tem cobertura ou não e
+     * a quantidade do produto, se a venda sera a prazo ou a vista, se tem adicional ou não e
      * se tem desconto ou não
      *
      * @param parent   adaptador

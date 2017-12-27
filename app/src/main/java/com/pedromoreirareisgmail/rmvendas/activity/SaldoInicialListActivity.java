@@ -80,7 +80,7 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         getDataCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.obterFormatarDataBrTitulo());
+        setTitle(getString(R.string.title_saldo_inicial_list) + "  " + DataHora.obterFormatarDataBrTitulo());
 
         // O Loader utiliza mDataPesquisarBD para fazer a pesquisa no banco de dados - "yyyy-MM-dd"
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
@@ -97,7 +97,7 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_data, menu);
 
         return true;
     }
@@ -276,7 +276,7 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_saldo_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(getString(R.string.title_saldo_inicial_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_SALDO_INICIAL_LIST, null, SaldoInicialListActivity.this);
             }

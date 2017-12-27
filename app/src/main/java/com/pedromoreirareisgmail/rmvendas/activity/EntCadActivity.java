@@ -65,11 +65,11 @@ public class EntCadActivity extends AppCompatActivity implements
         // Se tiver uma Uri então deve pesquisar essa uri para editar registro
         if (mUriAtual == null) {
 
-            setTitle(R.string.title_ent_cad_add);
+            setTitle(R.string.title_entrada_cad_add);
 
         } else {
 
-            setTitle(R.string.title_ent_cad_edit);
+            setTitle(R.string.title_entrada_cad_edit);
             getLoaderManager().initLoader(LOADER_ENT_CAD, null, this);
         }
 

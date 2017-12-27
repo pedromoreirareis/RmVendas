@@ -59,9 +59,9 @@ public class ProdutosListActivity extends AppCompatActivity implements
         View emptyView = findViewById(R.id.empty_view);
 
         //  layout vazio - cadastro sem registros
-        tvEmpty.setText(R.string.text_prod_list_empty);
+        tvEmpty.setText(R.string.text_produto_list_empty);
         ivEmpty.setImageResource(R.drawable.ic_contract_list);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_prod_list_empty));
+        ivEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
         listView.setEmptyView(emptyView);
 
         // Cria o adapter e colocar o adapter no Listview

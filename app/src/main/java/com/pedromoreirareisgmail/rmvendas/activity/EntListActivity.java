@@ -63,9 +63,9 @@ public class EntListActivity extends AppCompatActivity implements
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
-        tvEmpty.setText(R.string.text_ent_list_empty);
+        tvEmpty.setText(R.string.text_entrada_list_empty);
         ivEmpty.setImageResource(R.drawable.ic_money_up);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_ent_list_empty));
+        ivEmpty.setContentDescription(getString(R.string.image_desc_entrada_list_empty));
         listView.setEmptyView(emptyView);
 
         // Cria o adapter e colocar o adapter no Listview
@@ -80,7 +80,7 @@ public class EntListActivity extends AppCompatActivity implements
         getDataCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(getString(R.string.title_ent_list) + "  " + DataHora.obterFormatarDataBrTitulo());
+        setTitle(getString(R.string.title_entrada_list) + "  " + DataHora.obterFormatarDataBrTitulo());
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
@@ -96,7 +96,7 @@ public class EntListActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_data, menu);
 
         return true;
     }
@@ -257,7 +257,7 @@ public class EntListActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_ent_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(getString(R.string.title_entrada_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_ENTRADA_LIST, null, EntListActivity.this);
             }

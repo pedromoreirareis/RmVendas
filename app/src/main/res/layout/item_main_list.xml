@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/margin_top_botton_itens_list"
-    android:paddingLeft="@dimen/margin_lefth_right_itens_list"
-    android:paddingRight="@dimen/margin_lefth_right_itens_list"
-    android:paddingTop="@dimen/margin_top_botton_itens_list">
+    android:paddingBottom="@dimen/margin_padrao_8"
+    android:paddingLeft="@dimen/margin_padrao_16"
+    android:paddingRight="@dimen/margin_padrao_16"
+    android:paddingTop="@dimen/margin_padrao_8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_botton_titulo_item_main"
+        android:layout_marginBottom="@dimen/margin_padrao_4"
         android:orientation="horizontal">
 
         <TextView
@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/tv_main_data"
-            style="@style/DataTextView"
+            style="@style/DataHoraTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_shopping_cart_black_48px"
-                android:text="@string/quant_item_main" />
+                android:text="@string/text_item_main_quantidade" />
 
             <TextView
                 android:id="@+id/tv_main_valor_quantidade"
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_attach_money_black_48px"
-                android:text="@string/total_venda_vista_item_main" />
+                android:text="@string/text_item_main_total_venda_vista" />
 
             <TextView
                 android:id="@+id/tv_main_valor_venda"
@@ -96,10 +96,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_attach_money_black_48px"
-                android:text="@string/cobert_item_main" />
+                android:text="@string/text_item_main_adicional" />
 
             <TextView
-                android:id="@+id/tv_main_valor_cobertura"
+                android:id="@+id/tv_main_valor_adicional"
                 style="@style/DetalhesItemValor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -118,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_attach_money_black_48px"
-                android:text="@string/desc_item_main" />
+                android:text="@string/text_item_main_desconto" />
 
             <TextView
                 android:id="@+id/tv_main_valor_desconto"

@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
         android:orientation="horizontal">
 
         <TextView
@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/bolos_vendidos_fechamento" />
+            android:text="@string/text_fechamento_produtos_vendidos_fechamento" />
 
         <TextView
             android:id="@+id/tv_fechamento_bolos_vendidos"
@@ -35,7 +35,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
         android:orientation="horizontal">
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/bolos_vendidos_avista_fechamento" />
+            android:text="@string/text_fechamento_produtos_vendidos_avista_fechamento" />
 
         <TextView
             android:id="@+id/tv_fechamento_bolos_vendidos_vista"
@@ -58,7 +58,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_32"
+        android:layout_marginBottom="@dimen/margin_padrao_32"
         android:orientation="horizontal">
 
         <TextView
@@ -66,7 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/bolos_vendidos_aprazo_fechamento" />
+            android:text="@string/text_fechamento_produtos_vendidos_aprazo_fechamento" />
 
         <TextView
             android:id="@+id/tv_fechamento_bolos_vendidos_prazo"
@@ -84,7 +84,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
         android:orientation="horizontal">
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/saldo_inicial_fechamento" />
+            android:text="@string/text_fechamento_saldo_inicial" />
 
         <TextView
             android:id="@+id/tv_fechamento_saldo_inicial"
@@ -107,7 +107,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
         android:orientation="horizontal">
 
         <TextView
@@ -115,7 +115,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/entradas_fechamento" />
+            android:text="@string/text_fechamento_entradas" />
 
         <TextView
             android:id="@+id/tv_fechamento_entrada"
@@ -129,7 +129,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_32"
+        android:layout_marginBottom="@dimen/margin_padrao_32"
         android:orientation="horizontal">
 
         <TextView
@@ -137,7 +137,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/vendas_total_fechamento" />
+            android:text="@string/text_fechamento_vendas_total" />
 
         <TextView
             android:id="@+id/tv_fechamento_vendas"
@@ -151,7 +151,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
         android:orientation="horizontal">
 
         <TextView
@@ -159,7 +159,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/retiradas_fechamento" />
+            android:text="@string/text_fechamento_retiradas" />
 
         <TextView
             android:id="@+id/tv_fechamento_retirada"
@@ -173,7 +173,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_8"
+        android:layout_marginBottom="@dimen/margin_padrao_8"
         android:orientation="horizontal">
 
         <TextView
@@ -181,7 +181,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/descontos_fechamento" />
+            android:text="@string/text_fechamento_descontos" />
 
         <TextView
             android:id="@+id/tv_fechamento_descontos"
@@ -195,7 +195,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_fechamento_botton_32"
+        android:layout_marginBottom="@dimen/margin_padrao_32"
         android:orientation="horizontal">
 
         <TextView
@@ -203,7 +203,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/prazo_fechamento" />
+            android:text="@string/text_fechamento_a_prazo" />
 
         <TextView
             android:id="@+id/tv_fechamento_prazo"
@@ -225,7 +225,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/saldo_final_fechamento" />
+            android:text="@string/text_fechamento_saldo_final" />
 
         <TextView
             android:id="@+id/tv_fechamento_saldo_final"

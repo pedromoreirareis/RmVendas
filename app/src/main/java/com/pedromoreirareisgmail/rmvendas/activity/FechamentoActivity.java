@@ -95,7 +95,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_data, menu);
 
         return true;
     }
@@ -195,9 +195,9 @@ public class FechamentoActivity extends AppCompatActivity implements
                     AcessoVenda.DATA,
                     AcessoVenda.VALOR_TOTAL_VENDA,
                     AcessoVenda.TEM_DESCONTO,
-                    AcessoVenda.TEM_COBERTURA,
+                    AcessoVenda.TEM_ADICIONAL,
                     AcessoVenda.VALOR_DESCONTO,
-                    AcessoVenda.VALOR_COBERTURA,
+                    AcessoVenda.VALOR_ADICIONAL,
                     AcessoVenda.A_PRAZO,
                     AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
             };

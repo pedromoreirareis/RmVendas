@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_lefth_right_itens_list">
+    android:padding="@dimen/margin_padrao_16">
 
     <TextView
         android:id="@+id/tv_ent_ret_valor_list"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/tv_ent_ret_hora_list"
-        style="@style/DataTextView"
+        style="@style/DataHoraTextView"
         android:layout_width="44dp"
         android:layout_height="wrap_content" />
 </LinearLayout>

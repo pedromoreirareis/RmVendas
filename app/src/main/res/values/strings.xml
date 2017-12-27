@@ -6,121 +6,124 @@
 
      ********************************************************************************************-->
 
-    <!-- Title Activitys -->
+    <!-- Title do App -->
     <string name="app_name">Rm Vendas</string>
-    <string name="title_ent_cad_add">Adicionar entrada</string>
-    <string name="title_ent_cad_edit">Editar entrada</string>
-    <string name="title_prod_cad_add">Adicionar produto</string>
-    <string name="title_prod_cad_edit">Editar produto</string>
-    <string name="title_ret_cad_add">Adicionar retirada</string>
-    <string name="title_ret_cad_edit">Editar retirada</string>
+
+    <!-- Title Activitys -->
+    <string name="title_entrada_cad_add">Adicionar entrada</string>
+    <string name="title_entrada_cad_edit">Editar entrada</string>
+    <string name="title_produto_cad_add">Adicionar produto</string>
+    <string name="title_produto_cad_edit">Editar produto</string>
+    <string name="title_retirada_cad_add">Adicionar retirada</string>
+    <string name="title_retirada_cad_edit">Editar retirada</string>
     <string name="title_saldo_inicial_cad_add">Adicionar saldo inicial</string>
     <string name="title_saldo_inicial_cad_edit">Editar saldo inicial</string>
     <string name="title_venda_add">Adicionar venda</string>
-    <string name="title_vend_edit">Editar venda</string>
-    <string name="title_vend_list">Produtos cadastrados</string>
-    <string name="title_produ_list">Produtos</string>
-    <string name="title_ret_list">Retiradas</string>
-    <string name="title_ent_list">Entradas</string>
-    <string name="title_saldo_list">Saldo inicial</string>
+    <string name="title_venda_edit">Editar venda</string>
+    <string name="title_venda_list">Produtos cadastrados</string>
+    <string name="title_produto_list">Produtos</string>
+    <string name="title_retirada_list">Retiradas</string>
+    <string name="title_entrada_list">Entradas</string>
+    <string name="title_saldo_inicial_list">Saldo inicial</string>
     <string name="title_fechamento">Caixa</string>
     <string name="title_clientes_list">Clientes</string>
     <string name="title_clientes_add">Adicionar Cliente</string>
     <string name="title_clientes_edit">Editar Cliente</string>
-    <string name="title_vend_clientes_list">Clientes Cadastrados</string>
+    <string name="title_venda_clientes_list">Clientes Cadastrados</string>
 
-    <!-- Menus -->
+    <!-- Menus - Title -->
     <string name="menu_salvar_title">Salvar</string>
     <string name="menu_data_title">Data</string>
     <string name="menu_pesquisar_title">Pesquisar</string>
-    <string name="menu_telefone_cliente">Ligar</string>
+    <string name="menu_telefone_cliente_title">Ligar</string>
 
-    <!-- Menus Drawer -->
-    <string name="menu_entrada_title">Entrada</string>
-    <string name="menu_retirada_title">Retirada</string>
-    <string name="menu_saldo_inicial_title">Saldo inicial</string>
-    <string name="menu_fechamento_title">Fechamento</string>
-    <string name="menu_produtos_title">Produtos</string>
-    <string name="menu_clientes_title">Clientes</string>
-    <string name="menu_registro_receber_title">Registro</string>
-    <string name="menu_cadastros_title">Cadastros</string>
-    <string name="menu_receber_title">A Receber</string>
-    <string name="menu_caixa_title">Caixa</string>
-
-    <!-- Drawer -->
+    <!-- Drawer - Toggle -->
     <string name="navigation_drawer_open">Abrir</string>
     <string name="navigation_drawer_close">Fechar</string>
 
+    <!-- Menus Navigation Drawer - Title -->
+    <string name="menu_entrada_title_drawer">Entrada</string>
+    <string name="menu_retirada_title_drawer">Retirada</string>
+    <string name="menu_saldo_inicial_title_drawer">Saldo inicial</string>
+    <string name="menu_fechamento_title_drawer">Fechamento</string>
+    <string name="menu_produtos_title_drawer">Produtos</string>
+    <string name="menu_clientes_title_drawer">Clientes</string>
+    <string name="menu_registro_receber_title_drawer">Registro</string>
+    <string name="menu_cadastros_title_drawer">Cadastros</string>
+    <string name="menu_receber_title_drawer">A Receber</string>
+    <string name="menu_caixa_title_drawer">Caixa</string>
+
     <!-- Image Description -->
     <string name="image_desc_main_empty">Imagem de um bolo</string>
-    <string name="image_desc_prod_list_empty">Imagem de uma lista vazia</string>
-    <string name="image_desc_ent_list_empty">Imagem de um cifrão e um seta para cima</string>
-    <string name="image_desc_ret_list_empty">Imagem de um cifrão e um seta para baixo</string>
+    <string name="image_desc_produto_list_empty">Imagem de uma lista vazia</string>
+    <string name="image_desc_entrada_list_empty">Imagem de um cifrão e um seta para cima</string>
+    <string name="image_desc_retirada_list_empty">Imagem de um cifrão e um seta para baixo</string>
     <string name="image_desc_saldo_inicial_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
 
     <!-- Textos -->
     <string name="text_main_empty">Nenhum bolo vendido no dia !!!</string>
-    <string name="text_prod_list_empty">Nenhum produto cadastrado !!!</string>
-    <string name="text_vend_list_empty">Que pena… não há produtos cadastrados !!!</string>
-    <string name="text_ent_list_empty">Nenhuma entrada cadastrada !!!</string>
+    <string name="text_produto_list_empty">Nenhum produto cadastrado !!!</string>
+    <string name="text_venda_list_empty">Que pena… não há produtos cadastrados !!!</string>
+    <string name="text_entrada_list_empty">Nenhuma entrada cadastrada !!!</string>
     <string name="text_saldo_inicial_list_empty">Saldo inicial não foi cadastrado !!!</string>
-    <string name="text_ret_list_empty">Nenhuma retirada cadastrada !!!</string>
-    <string name="text_prod_esc_quant_cobertura">Cobertura</string>
-    <string name="text_prod_esc_quant_desconto">Desconto</string>
-    <string name="text_prod_esc_quant_prazo">A prazo</string>
-    <string name="text_a_receber_venda">Venda</string>
-    <string name="text_a_receber_recebimento">Recebimento</string>
-    <string name="text_ent_ret_list_click_msg_as"> às </string>
-    <string name="text_prod_list_click_msg_prod_valor"> Valor: </string>
+    <string name="text_retirada_list_empty">Nenhuma retirada cadastrada !!!</string>
+    <string name="text_adicional">Cobertura</string>
+    <string name="text_desconto">Desconto</string>
+    <string name="text_a_prazo">A prazo</string>
+    <string name="text_venda">Venda</string>
+    <string name="text_recebimento">Recebimento</string>
+    <string name="text_msg_as"> às </string>
+    <string name="text_valor_dois_pontos"> Valor: </string>
 
-    <!-- Itens de fechamento -->
-    <string name="total_venda_vista_item_main">Total..:</string>
-    <string name="prazo_item_main">Prazo.:</string>
-    <string name="cobert_item_main">Cobert:</string>
-    <string name="desc_item_main">Desc..:</string>
-    <string name="quant_item_main">Quant.:</string>
+    <!-- Fechamento - Itens do Listview -->
+    <string name="text_item_main_total_venda_vista">Total..:</string>
+    <string name="text_item_main_prazo">Prazo.:</string>
+    <string name="text_item_main_adicional">Cobert:</string>
+    <string name="text_item_main_desconto">Desc..:</string>
+    <string name="text_item_main_quantidade">Quant.:</string>
 
-    <string name="saldo_inicial_fechamento">Saldo inicial</string>
-    <string name="entradas_fechamento">Entradas</string>
-    <string name="vendas_total_fechamento">Total vendas</string>
-    <string name="retiradas_fechamento">Retiradas</string>
-    <string name="descontos_fechamento">Descontos</string>
-    <string name="prazo_fechamento">A prazo</string>
-    <string name="saldo_final_fechamento">Saldo Final</string>
+    <!-- Fechamento - Activity Fechamento -->
+    <string name="text_fechamento_saldo_inicial">Saldo inicial</string>
+    <string name="text_fechamento_entradas">Entradas</string>
+    <string name="text_fechamento_vendas_total">Total vendas</string>
+    <string name="text_fechamento_retiradas">Retiradas</string>
+    <string name="text_fechamento_descontos">Descontos</string>
+    <string name="text_fechamento_a_prazo">A prazo</string>
+    <string name="text_fechamento_saldo_final">Saldo Final</string>
 
-    <string name="bolos_vendidos_fechamento">Bolos vendidos</string>
-    <string name="bolos_vendidos_avista_fechamento">Bolos vendidos a vista</string>
-    <string name="bolos_vendidos_aprazo_fechamento">Bolos vendidos a prazo</string>
+    <string name="text_fechamento_produtos_vendidos_fechamento">Bolos vendidos</string>
+    <string name="text_fechamento_produtos_vendidos_avista_fechamento">Bolos vendidos a vista</string>
+    <string name="text_fechamento_produtos_vendidos_aprazo_fechamento">Bolos vendidos a prazo</string>
 
 
     <!-- *******************************************************************************************
 
-                                MENSAGENS - HINTS - ERROS - DIALOGOS
+                                 HINTS - MENSAGENS - ERROS - DIALOGOS
 
      ********************************************************************************************-->
 
-    <!-- mensagens -->
-    <string name="msg_max_caract">Esse campo deve ter no máximo 100 caracteres</string>
-    <string name="msg_editado_sucesso">Editado com sucesso</string>
-    <string name="msg_editado_erro">Erro ao editar</string>
-
     <!-- Hints -->
-    <string name="hint_prod_esc_quant_quantidade">Quantidade</string>
+    <string name="hint_quantidade">Quantidade</string>
     <string name="hint_nome">Nome</string>
     <string name="hint_preco">Preço R$</string>
     <string name="hint_valor">Valor R$</string>
     <string name="hint_descricao">Descrição</string>
-    <string name="hint_clientes_fone">Telefone</string>
-    <string name="hint_clientes_nome">Nome do Cliente</string>
+    <string name="hint_numero_fone">Nº Telefone</string>
+    <string name="hint_nome_cliente">Nome do Cliente</string>
 
-    <!-- msg dialog alterações -->
-    <string name="dialog_alt_titulo">Descartar as alterações?</string>
-    <string name="dialog_alt_continuar">Continuar editando</string>
-    <string name="dialog_alt_descatar">Descartar</string>
+    <!-- Mensagens Edição -->
+    <string name="msg_editado_sucesso">Editado com sucesso</string>
+    <string name="msg_editado_erro">Erro ao editar</string>
 
-    <!-- msg dialog excluir -->
+    <!-- Mensagens dialog alterações -->
+    <string name="dialog_alteracao_titulo">Descartar as alterações?</string>
+    <string name="dialog_alteracao_continuar">Continuar editando</string>
+    <string name="dialog_alteracao_descatar">Descartar</string>
+
+    <!--TODO: Aqui temos que usar o Formatações de Strings String.format xliff-->
+    <!-- Mensagens dialog excluir -->
     <string name="dialog_exc_edit_tilte">O que deseja?</string>
     <string name="dialog_exc_edit_texto_excluir_saldo_inicial_1">O saldo inicial do dia</string>
     <string name="dialog_exc_edit_texto_excluir_saldo_inicial_2">, no valor de</string>
@@ -136,7 +139,7 @@
     <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
     <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
     <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
-    <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 dígitos</string>
+    <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 caracteres</string>
 
 
     <!-- *******************************************************************************************

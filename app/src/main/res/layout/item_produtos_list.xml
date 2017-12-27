@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/margin_lefth_right_itens_list"
-    android:paddingLeft="@dimen/margin_lefth_right_itens_list"
-    android:paddingRight="@dimen/margin_lefth_right_itens_list"
-    android:paddingTop="@dimen/margin_lefth_right_itens_list">
+    android:paddingBottom="@dimen/margin_padrao_16"
+    android:paddingLeft="@dimen/margin_padrao_16"
+    android:paddingRight="@dimen/margin_padrao_16"
+    android:paddingTop="@dimen/margin_padrao_16">
 
     <TextView
         android:id="@+id/tv_produto_nome"

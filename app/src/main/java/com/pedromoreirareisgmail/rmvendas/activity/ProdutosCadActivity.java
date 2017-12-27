@@ -57,11 +57,11 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         // Se tiver dados em mUriAtual, então vai editar, senão vai adicionar
         if (mUriAtual == null) {
 
-            setTitle(R.string.title_prod_cad_add);
+            setTitle(R.string.title_produto_cad_add);
 
         } else {
 
-            setTitle(R.string.title_prod_cad_edit);
+            setTitle(R.string.title_produto_cad_edit);
             getLoaderManager().initLoader(LOADER_PROD_CAD, null, this);
         }
 

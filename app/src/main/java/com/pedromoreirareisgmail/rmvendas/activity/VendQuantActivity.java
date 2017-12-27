@@ -52,14 +52,14 @@ public class VendQuantActivity extends AppCompatActivity implements
     private TextView mTvValorTotal;
     private TextView mTvCliente;
     private EditText mEtQuantidade;
-    private EditText mEtCobertura;
+    private EditText mEtAdicional;
     private EditText mEtDesconto;
     private EditText mEtPrazo;
     private Button mButCliente;
-    private Switch mSwitchCobertura;
+    private Switch mSwitchAdicional;
     private Switch mSwitchDesconto;
     private Switch mSwitchPrazo;
-    private TextInputLayout layoutCobertura;
+    private TextInputLayout layoutAdicional;
     private TextInputLayout layoutDesconto;
     private LinearLayout layoutPrazo;
     private Uri mUriAtual = null;
@@ -93,7 +93,7 @@ public class VendQuantActivity extends AppCompatActivity implements
         // Se não for para adicionar coloca titulo na activity para EDITAR
         if (!mAdicionarProdutoBD) {
 
-            setTitle(R.string.title_vend_edit);
+            setTitle(R.string.title_venda_edit);
             getLoaderManager().initLoader(LOADER_VENDA_EDITAR, null, this);
         }
 
@@ -104,13 +104,13 @@ public class VendQuantActivity extends AppCompatActivity implements
         mButCliente = (Button) findViewById(R.id.but_vend_quant_cliente);
         mEtQuantidade = (EditText) findViewById(R.id.et_vend_quant_quantidade);
         mEtDesconto = (EditText) findViewById(R.id.et_vend_quant_valor_desconto);
-        mEtCobertura = (EditText) findViewById(R.id.et_vend_quant_valor_cobertura);
+        mEtAdicional = (EditText) findViewById(R.id.et_vend_quant_valor_adicional);
         mEtPrazo = (EditText) findViewById(R.id.et_vend_quant_valor_prazo);
-        mSwitchCobertura = (Switch) findViewById(R.id.switch_vend_quant_cobertura);
+        mSwitchAdicional = (Switch) findViewById(R.id.switch_vend_quant_adicional);
         mSwitchDesconto = (Switch) findViewById(R.id.switch_vend_quant_desconto);
         mSwitchPrazo = (Switch) findViewById(R.id.switch_vend_quant_prazo);
         layoutDesconto = (TextInputLayout) findViewById(R.id.til_vend_quant_desconto);
-        layoutCobertura = (TextInputLayout) findViewById(R.id.til_vend_quant_cobertura);
+        layoutAdicional = (TextInputLayout) findViewById(R.id.til_vend_quant_adicional);
         layoutPrazo = (LinearLayout) findViewById(R.id.ll_vend_quant_prazo);
 
         // Se for para adicionar, colocar valor "1" no edit de quantidade
@@ -143,12 +143,12 @@ public class VendQuantActivity extends AppCompatActivity implements
 
         // Monitora toques nos edits
         mEtQuantidade.setOnTouchListener(this);
-        mEtCobertura.setOnTouchListener(this);
+        mEtAdicional.setOnTouchListener(this);
         mEtDesconto.setOnTouchListener(this);
         mEtPrazo.setOnTouchListener(this);
 
         // Monitora toques nos Switchs
-        mSwitchCobertura.setOnTouchListener(this);
+        mSwitchAdicional.setOnTouchListener(this);
         mSwitchDesconto.setOnTouchListener(this);
         mSwitchPrazo.setOnTouchListener(this);
 
@@ -157,7 +157,7 @@ public class VendQuantActivity extends AppCompatActivity implements
         mEtQuantidade.setSelectAllOnFocus(true);
 
         // Tira o foco e coloca valor zero nos edits
-        Utilidades.semFocoZerado(mEtCobertura);
+        Utilidades.semFocoZerado(mEtAdicional);
         Utilidades.semFocoZerado(mEtDesconto);
         Utilidades.semFocoZerado(mEtPrazo);
     }
@@ -240,10 +240,10 @@ public class VendQuantActivity extends AppCompatActivity implements
 
         String nomeProdutoTextView = mTvNomeProduto.getText().toString().trim();
         String quatidadeEditText = mEtQuantidade.getText().toString().trim();
-        String valorCoberturaEditText = mEtCobertura.getText().toString().trim();
+        String valorAdicionalEditText = mEtAdicional.getText().toString().trim();
         String valorDescontoEditText = mEtDesconto.getText().toString().trim();
 
-        boolean temCoberturaSwitch = mSwitchCobertura.isChecked();
+        boolean temAdicionalSwitch = mSwitchAdicional.isChecked();
         boolean temDescontoSwitch = mSwitchDesconto.isChecked();
         boolean temPrazoSwitch = mSwitchPrazo.isChecked();
 
@@ -257,22 +257,22 @@ public class VendQuantActivity extends AppCompatActivity implements
         }
 
 
-        // Se Switch cobertura estiver Checked
-        if (temCoberturaSwitch) {
+        // Se Switch adicional estiver Checked
+        if (temAdicionalSwitch) {
 
             // Campo valor nao pode fica vazio
-            if (TextUtils.isEmpty(valorCoberturaEditText)) {
+            if (TextUtils.isEmpty(valorAdicionalEditText)) {
 
-                mEtCobertura.setError(getString(R.string.error_campo_vazio));
-                mEtCobertura.requestFocus();
+                mEtAdicional.setError(getString(R.string.error_campo_vazio));
+                mEtAdicional.requestFocus();
                 return;
             }
 
             // O valor desse campo deve ser positivo
-            if (valorCoberturaEditText.equals("0")) {
+            if (valorAdicionalEditText.equals("0")) {
 
-                mEtCobertura.setError(getString(R.string.error_valor_maior_zero));
-                mEtCobertura.requestFocus();
+                mEtAdicional.setError(getString(R.string.error_valor_maior_zero));
+                mEtAdicional.requestFocus();
                 return;
             }
         }
@@ -303,10 +303,10 @@ public class VendQuantActivity extends AppCompatActivity implements
             quatidadeEditText = "1";
         }
 
-        // Se Switch cobertura não estiver Checked atribui o valor "0" ao valor da cobertura
-        if (!temCoberturaSwitch) {
+        // Se Switch adicional não estiver Checked atribui o valor "0" ao valor adicional
+        if (!temAdicionalSwitch) {
 
-            valorCoberturaEditText = "0";
+            valorAdicionalEditText = "0";
         }
 
         // Se Switch desconto não estiver Checked atribui o valor "0" ao valor do desconto
@@ -324,15 +324,15 @@ public class VendQuantActivity extends AppCompatActivity implements
             return;
         }
 
-        // Converte as String dos campos valorCobertura, valorDesconto para double
-        double valorCoberturaDouble = Formatar.formatarParaDouble(valorCoberturaEditText);
+        // Converte as String dos campos valorAdicional, valorDesconto para double
+        double valorAdicionalDouble = Formatar.formatarParaDouble(valorAdicionalEditText);
         double valorDescontoDouble = Formatar.formatarParaDouble(valorDescontoEditText);
 
         // Faz o calculo de qual é o valor final da venda, esse valor sera salvo no BD
         double valorTotalDoouble = Calculos.calcularValorVendaBoloDouble(
                 mValorUnidadeProduto,
                 quantidadeInt,
-                valorCoberturaDouble,
+                valorAdicionalDouble,
                 valorDescontoDouble);
 
 
@@ -342,15 +342,15 @@ public class VendQuantActivity extends AppCompatActivity implements
         values.put(AcessoVenda.QUANTIDADE_VENDIDA, quantidadeInt);
         values.put(AcessoVenda.VALOR_TOTAL_VENDA, valorTotalDoouble);
         values.put(AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO, mValorUnidadeProduto);
-        values.put(AcessoVenda.VALOR_COBERTURA, valorCoberturaDouble);
+        values.put(AcessoVenda.VALOR_ADICIONAL, valorAdicionalDouble);
         values.put(AcessoVenda.VALOR_DESCONTO, valorDescontoDouble);
 
-        if (temCoberturaSwitch) {
+        if (temAdicionalSwitch) {
 
-            values.put(AcessoVenda.TEM_COBERTURA, Constantes.COBERTURA_SIM);
+            values.put(AcessoVenda.TEM_ADICIONAL, Constantes.ADICIONAL_SIM);
         } else {
 
-            values.put(AcessoVenda.TEM_COBERTURA, Constantes.COBERTURA_NAO);
+            values.put(AcessoVenda.TEM_ADICIONAL, Constantes.ADICIONAL_NAO);
         }
 
 
@@ -433,8 +433,8 @@ public class VendQuantActivity extends AppCompatActivity implements
                     AcessoVenda.DATA,
                     AcessoVenda.VALOR_TOTAL_VENDA,
                     AcessoVenda.A_PRAZO,
-                    AcessoVenda.TEM_COBERTURA,
-                    AcessoVenda.VALOR_COBERTURA,
+                    AcessoVenda.TEM_ADICIONAL,
+                    AcessoVenda.VALOR_ADICIONAL,
                     AcessoVenda.TEM_DESCONTO,
                     AcessoVenda.VALOR_DESCONTO,
                     AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
@@ -471,11 +471,11 @@ public class VendQuantActivity extends AppCompatActivity implements
             mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA));
 
             int quantidadeBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
-            int temCoberturaBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.TEM_COBERTURA));
+            int temAdionalBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.TEM_ADICIONAL));
             int temDescontoBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.TEM_DESCONTO));
             int temPrazoBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.A_PRAZO));
 
-            double valorCoberturaBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_COBERTURA));
+            double valorAdicionalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
             double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
             double valorTotalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_TOTAL_VENDA));
             mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO));
@@ -483,16 +483,16 @@ public class VendQuantActivity extends AppCompatActivity implements
             mTvNomeProduto.setText(nomeProdutoBD);
             mEtQuantidade.setText(String.valueOf(quantidadeBD));
 
-            if (temCoberturaBD == Constantes.COBERTURA_SIM) {
+            if (temAdionalBD == Constantes.ADICIONAL_SIM) {
 
-                mSwitchCobertura.setChecked(true);
-                layoutCobertura.setVisibility(View.VISIBLE);
-                mEtCobertura.setText(mValorFormatarCurrency.format(valorCoberturaBD));
+                mSwitchAdicional.setChecked(true);
+                layoutAdicional.setVisibility(View.VISIBLE);
+                mEtAdicional.setText(mValorFormatarCurrency.format(valorAdicionalBD));
 
             } else {
 
-                mSwitchCobertura.setChecked(false);
-                layoutCobertura.setVisibility(View.GONE);
+                mSwitchAdicional.setChecked(false);
+                layoutAdicional.setVisibility(View.GONE);
             }
 
 
@@ -575,10 +575,10 @@ public class VendQuantActivity extends AppCompatActivity implements
                 Utilidades.mostrarTeclado(VendQuantActivity.this, mEtDesconto);
                 return true;
 
-            case R.id.et_vend_quant_valor_cobertura:
-                mEtCobertura.requestFocus();
-                mEtCobertura.setSelection(mEtCobertura.getText().length());
-                Utilidades.mostrarTeclado(VendQuantActivity.this, mEtCobertura);
+            case R.id.et_vend_quant_valor_adicional:
+                mEtAdicional.requestFocus();
+                mEtAdicional.setSelection(mEtAdicional.getText().length());
+                Utilidades.mostrarTeclado(VendQuantActivity.this, mEtAdicional);
                 return true;
 
             case R.id.et_vend_quant_valor_prazo:
@@ -587,7 +587,7 @@ public class VendQuantActivity extends AppCompatActivity implements
                 Utilidades.mostrarTeclado(VendQuantActivity.this, mEtPrazo);
                 return true;
 
-            case R.id.switch_vend_quant_cobertura:
+            case R.id.switch_vend_quant_adicional:
                 isDadosAlterado = true;
                 return false;
 
@@ -611,7 +611,7 @@ public class VendQuantActivity extends AppCompatActivity implements
          * Apos a entrada de caracteres, e feita a formatação para o estilo moeda para ser
          * apresentado ao usuario
          * Tambem e feito o calculo do valor de venda do produto apos a etrada da quantidade de
-         * produto, valor da cobertura e do desconto caso tenha
+         * produto, valor adicional e do desconto caso tenha
          */
         mEtQuantidade.addTextChangedListener(new TextWatcher() {
             @Override
@@ -626,11 +626,11 @@ public class VendQuantActivity extends AppCompatActivity implements
                     isDadosAlterado = true;
                 }
 
-                String vlQuant = charSequence.toString().trim();
-                String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlDesc = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlQuantidade = charSequence.toString().trim();
+                String vlAdicional = mEtAdicional.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
 
                 mEtQuantidade.setSelection(mEtQuantidade.getText().length());
             }
@@ -640,7 +640,7 @@ public class VendQuantActivity extends AppCompatActivity implements
             }
         });
 
-        mEtCobertura.addTextChangedListener(new TextWatcher() {
+        mEtAdicional.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -653,11 +653,11 @@ public class VendQuantActivity extends AppCompatActivity implements
                     isDadosAlterado = true;
                 }
 
-                String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlCobert = charSequence.toString().trim().replaceAll("[^\\d]", "");
-                String vlDesc = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlQuantidade = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlAdicional = charSequence.toString().trim().replaceAll("[^\\d]", "");
+                String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;
@@ -666,9 +666,9 @@ public class VendQuantActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtCobertura.setText(Formatar.formatarParaCurrency(vlCobert));
+                mEtAdicional.setText(Formatar.formatarParaCurrency(vlAdicional));
 
-                mEtCobertura.setSelection(mEtCobertura.getText().length());
+                mEtAdicional.setSelection(mEtAdicional.getText().length());
             }
 
             @Override
@@ -689,11 +689,11 @@ public class VendQuantActivity extends AppCompatActivity implements
                     isDadosAlterado = true;
                 }
 
-                String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlDesc = charSequence.toString().trim().replaceAll("[^\\d]", "");
+                String vlQuantidade = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlAdicional = mEtAdicional.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlDesconto = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
 
 
                 if (isFormatarCurrencyAtualizado) {
@@ -703,7 +703,7 @@ public class VendQuantActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtDesconto.setText(Formatar.formatarParaCurrency(vlDesc));
+                mEtDesconto.setText(Formatar.formatarParaCurrency(vlDesconto));
 
                 mEtDesconto.setSelection(mEtDesconto.getText().length());
             }
@@ -730,11 +730,11 @@ public class VendQuantActivity extends AppCompatActivity implements
                 }
 
                 String vlPrazo = charSequence.toString().trim().replaceAll("[^\\d]", "");
-               /* String vlQuant = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlCobert = mEtCobertura.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlDesc = charSequence.toString().trim().replaceAll("[^\\d]", "");
+               /* String vlQuantidade = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlAdicional = mEtAdional.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlDesconto = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuant, vlCobert, vlDesc, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
                 */
 
                 if (isFormatarCurrencyAtualizado) {
@@ -764,26 +764,25 @@ public class VendQuantActivity extends AppCompatActivity implements
         /* Se Switch estiver Checked fica visivel edit para entrada de valores
          * Se Switch não estiver Checked o edit para entrada de dados fica invisivel
          */
-        mSwitchCobertura.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSwitchAdicional.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
                 if (isChecked) {
 
-                    layoutCobertura.setVisibility(View.VISIBLE);
+                    layoutAdicional.setVisibility(View.VISIBLE);
 
                     if (mAdicionarProdutoBD) {
-                        mEtCobertura.setText("0");
+                        mEtAdicional.setText("0");
                     }
 
-                    mEtCobertura.requestFocus();
+                    mEtAdicional.requestFocus();
 
 
                 } else {
 
-                    layoutCobertura.setVisibility(View.GONE);
-                    // Utilidades.fecharTecladoSwitch(VendQuantActivity.this, mSwitchCobertura);
-                    mEtCobertura.setText("0");
+                    layoutAdicional.setVisibility(View.GONE);
+                    mEtAdicional.setText("0");
                 }
             }
         });

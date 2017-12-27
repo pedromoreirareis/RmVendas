@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorRed"
                 android:fontFamily="sans-serif-condensed"
-                android:text="@string/text_a_receber_venda"
+                android:text="@string/text_venda"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -89,7 +89,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorBlue"
                 android:fontFamily="sans-serif-condensed"
-                android:text="@string/text_a_receber_recebimento"
+                android:text="@string/text_recebimento"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"
                 android:textStyle="bold" />

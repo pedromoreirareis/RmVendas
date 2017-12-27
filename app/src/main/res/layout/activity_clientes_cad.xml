@@ -16,7 +16,7 @@
             style="@style/CampoNunberText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/hint_clientes_nome"
+            android:hint="@string/hint_nome_cliente"
             android:imeOptions="actionNext"
             android:inputType="textCapSentences|textAutoCorrect" />
     </android.support.design.widget.TextInputLayout>
@@ -28,12 +28,12 @@
         android:layout_marginTop="16dp">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_clientes_num_fone"
+            android:id="@+id/et_clientes_numero_fone"
             style="@style/CampoNunberText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:digits="0123456789"
-            android:hint="@string/hint_clientes_fone"
+            android:hint="@string/hint_numero_fone"
             android:imeOptions="actionDone"
             android:inputType="number" />
 

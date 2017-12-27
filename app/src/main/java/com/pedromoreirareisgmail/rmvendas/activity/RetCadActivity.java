@@ -62,11 +62,11 @@ public class RetCadActivity extends AppCompatActivity implements
         // Se mUriAtual tiver vazio, então vai adicionar
         if (mUriAtual == null) {
 
-            setTitle(R.string.title_ret_cad_add);
+            setTitle(R.string.title_retirada_cad_add);
 
         } else {
 
-            setTitle(R.string.title_ret_cad_edit);
+            setTitle(R.string.title_retirada_cad_edit);
             getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
         }
 

@@ -4,14 +4,28 @@
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorAccent">#FF0000</color>
 
+    <!-- Preto -->
     <color name="colorBlack">#000000</color>
+
+    <!-- Vermelho -->
     <color name="colorRed">#FF0000</color>
+
+    <!-- Azul -->
     <color name="colorBlue">#0000FF</color>
+
+    <!-- Branco -->
     <color name="colorWhite">#FFFFFF</color>
 
+    <!--  -->
     <color name="colorDataItemMain">#1C1C1C</color>
+
+    <!--  -->
     <color name="colorDetalhesLabel">#4F4F4F</color>
+
+    <!--  -->
     <color name="colorDetalhesValor">#828282</color>
+
+    <!--  -->
     <color name="colorTextEmpty">#B5B5B5</color>
 
 </resources>

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_vend_quant"
+        android:layout_margin="@dimen/margin_padrao_16"
         android:orientation="horizontal">
 
         <TextView
@@ -35,23 +35,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/margin_vend_quant"
-            android:paddingEnd="@dimen/margin_vend_quant"
-            android:paddingStart="@dimen/margin_vend_quant">
+            android:paddingBottom="@dimen/margin_padrao_16"
+            android:paddingEnd="@dimen/margin_padrao_16"
+            android:paddingStart="@dimen/margin_padrao_16">
 
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="@dimen/margin_vend_quant">
+                android:layout_marginTop="@dimen/margin_padrao_16">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/et_vend_quant_quantidade"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:digits="0123456789"
-                    android:hint="@string/hint_prod_esc_quant_quantidade"
+                    android:hint="@string/hint_quantidade"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:selectAllOnFocus="true" />
@@ -67,27 +67,27 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/margin_vend_quant"
+                    android:layout_marginEnd="@dimen/margin_padrao_16"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <Switch
-                        android:id="@+id/switch_vend_quant_cobertura"
+                        android:id="@+id/switch_vend_quant_adicional"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/text_prod_esc_quant_cobertura" />
+                        android:text="@string/text_adicional" />
 
 
                     <android.support.design.widget.TextInputLayout
-                        android:id="@+id/til_vend_quant_cobertura"
+                        android:id="@+id/til_vend_quant_adicional"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
-                            android:id="@+id/et_vend_quant_valor_cobertura"
+                            android:id="@+id/et_vend_quant_valor_adicional"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:digits="0123456789"
@@ -103,7 +103,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin_vend_quant"
+                    android:layout_marginStart="@dimen/margin_padrao_16"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -112,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/text_prod_esc_quant_desconto" />
+                        android:text="@string/text_desconto" />
 
 
                     <android.support.design.widget.TextInputLayout
@@ -141,14 +141,14 @@
                 android:id="@+id/switch_vend_quant_prazo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_vend_quant"
-                android:text="@string/text_prod_esc_quant_prazo" />
+                android:layout_marginTop="@dimen/margin_padrao_16"
+                android:text="@string/text_a_prazo" />
 
             <LinearLayout
                 android:id="@+id/ll_vend_quant_prazo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/margin_vend_quant"
+                android:layout_marginTop="@dimen/margin_padrao_16"
                 android:orientation="vertical"
                 android:visibility="gone">
 

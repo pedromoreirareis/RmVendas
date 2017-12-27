@@ -209,10 +209,10 @@ public class Dialogos {
     ) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-        dialog.setTitle(R.string.dialog_alt_titulo);
+        dialog.setTitle(R.string.dialog_alteracao_titulo);
 
         // Continuar editando
-        dialog.setPositiveButton(R.string.dialog_alt_continuar, new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(R.string.dialog_alteracao_continuar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (dialogInterface != null) {
@@ -222,7 +222,7 @@ public class Dialogos {
         });
 
         // Descartar edição
-        dialog.setNegativeButton(R.string.dialog_alt_descatar, descartarButClickListener);
+        dialog.setNegativeButton(R.string.dialog_alteracao_descatar, descartarButClickListener);
 
         dialog.create().show();
     }

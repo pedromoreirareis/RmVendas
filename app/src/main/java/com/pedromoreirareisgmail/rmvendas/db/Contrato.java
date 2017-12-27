@@ -7,14 +7,16 @@ import android.provider.BaseColumns;
 public class Contrato {
 
 
-    /*********************************** TABELAS *************************************************
-     produtos         - lista com os bolos e/ou outros produtos vendidos
-     ent_ret          - entradas e retiradas de valores do caixa em um dia especifico
-     saldo_inicial    - saldo inicial em um dia especifico
-     vendas           - resumo das vendas em um dia especifico
-     clientes         - cadastro de clientes
-     a_receber        - registro de vendas a prazo - fiado
-     */
+    /*********************************** TABELAS ***************************************************
+     *
+     * Produtos             - lista com os bolos e/ou outros produtos vendidos
+     * Entradas_Retiradas   - entradas e retiradas de valores do caixa em um dia especifico
+     * Saldo_Inicial        - saldo inicial em um dia especifico
+     * Vendas               - resumo das vendas em um dia especifico
+     * Clientes             - cadastro de clientes
+     * A_Receber            - registro de vendas a prazo - fiado
+     *
+     **********************************************************************************************/
 
     /**
      * Autoridade para o vendas provider
@@ -47,19 +49,20 @@ public class Contrato {
         /**
          * Constante do Provider - CONTENT URI da tabela de Produtos
          */
-        public static final Uri CONTENT_URI_PRODUTOS = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PRODUTOS);
+        public static final Uri CONTENT_URI_PRODUTOS =
+                Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PRODUTOS);
 
         /**
          * Nome da Tabela
          */
-        public static final String TABELA_PRODUTOS = "produtos";
+        public static final String TABELA_PRODUTOS = "Produtos";
 
         /**
          * Nome das colunas
          */
         public static final String _ID = BaseColumns._ID;
         public static final String NOME = "nome";
-        public static final String VALOR = "preco";
+        public static final String VALOR = "valor";
 
         public static final String CRIAR_TABELA_PRODUTOS =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_PRODUTOS + " ( "
@@ -86,10 +89,10 @@ public class Contrato {
 
         public static final Uri CONTENT_URI_ENT_RET = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ENT_RET);
 
-        public static final String TABELA_ENT_RET = "ent_ret";
+        public static final String TABELA_ENT_RET = "Entradas_Retiradas";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA = "data";
+        public static final String DATA = "data_hora";
         public static final String TIPO = "tipo";
         public static final String VALOR = "valor";
         public static final String DESCRICAO = "descricao";
@@ -118,10 +121,10 @@ public class Contrato {
 
         public static final Uri CONTENT_URI_SALDO_INICIAL = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SALDO_INICIAL);
 
-        public static final String TABELA_SALDO_INICIAL = "saldo_inicial";
+        public static final String TABELA_SALDO_INICIAL = "Saldo_Inicial";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA = "data";
+        public static final String DATA = "data_hora";
         public static final String VALOR = "valor";
 
 
@@ -148,19 +151,19 @@ public class Contrato {
 
         public static final Uri CONTENT_URI_VENDA = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_VENDA);
 
-        public static final String TABELA_VENDAS = "vendas";
+        public static final String TABELA_VENDAS = "Vendas";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA = "data";
-        public static final String NOME_PRODUTO = "nome_prod";
-        public static final String VALOR_UMA_UNIDADE_PRODUTO = "preco_um_bolo";
+        public static final String DATA = "data_hora";
+        public static final String NOME_PRODUTO = "nome_produto";
+        public static final String VALOR_UMA_UNIDADE_PRODUTO = "valor_unidade_produto";
         public static final String QUANTIDADE_VENDIDA = "quantidade";
-        public static final String TEM_COBERTURA = "tem_cobertura";
-        public static final String VALOR_COBERTURA = "valor_cobertura";
+        public static final String TEM_ADICIONAL = "tem_adicional";
+        public static final String VALOR_ADICIONAL = "valor_adicional";
         public static final String TEM_DESCONTO = "tem_desconto";
         public static final String VALOR_DESCONTO = "valor_desconto";
-        public static final String A_PRAZO = "prazo";
-        public static final String VALOR_TOTAL_VENDA = "valor_prod";
+        public static final String A_PRAZO = "tem_a_prazo";
+        public static final String VALOR_TOTAL_VENDA = "valor_total_venda";
 
         public static final String CRIAR_TABELA_VENDA =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_VENDAS + " ( "
@@ -169,8 +172,8 @@ public class Contrato {
                         + NOME_PRODUTO + " TEXT NOT NULL, "
                         + VALOR_UMA_UNIDADE_PRODUTO + " REAL NOT NULL DEFAULT 0, "
                         + QUANTIDADE_VENDIDA + " INTEGER NOT NULL, "
-                        + TEM_COBERTURA + " INTEGER NOT NULL, "
-                        + VALOR_COBERTURA + " REAL, "
+                        + TEM_ADICIONAL + " INTEGER NOT NULL, "
+                        + VALOR_ADICIONAL + " REAL, "
                         + TEM_DESCONTO + " INTEGER NOT NULL, "
                         + VALOR_DESCONTO + " REAL, "
                         + A_PRAZO + " INTEGER NOT NULL, "
@@ -195,7 +198,7 @@ public class Contrato {
 
         public static final Uri CONTENT_URI_CLIENTES = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_CLIENTES);
 
-        public static final String TABELA_CLIENTES = "clientes";
+        public static final String TABELA_CLIENTES = "Clientes";
 
         public static final String _ID = BaseColumns._ID;
         public static final String NOME = "nome";
@@ -226,7 +229,7 @@ public class Contrato {
 
         public static final Uri CONTENT_URI_ARECEBER = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_A_RECEBER);
 
-        public static final String TABELA_A_RECEBER = "receber";
+        public static final String TABELA_A_RECEBER = "A_Receber";
 
 
         public static final String _ID = BaseColumns._ID;

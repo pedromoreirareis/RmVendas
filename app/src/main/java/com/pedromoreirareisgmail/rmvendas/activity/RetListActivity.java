@@ -63,9 +63,9 @@ public class RetListActivity extends AppCompatActivity implements
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
-        tvEmpty.setText(R.string.text_ret_list_empty);
+        tvEmpty.setText(R.string.text_retirada_list_empty);
         ivEmpty.setImageResource(R.drawable.ic_money_down);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_ret_list_empty));
+        ivEmpty.setContentDescription(getString(R.string.image_desc_retirada_list_empty));
         listView.setEmptyView(emptyView);
 
 
@@ -81,7 +81,7 @@ public class RetListActivity extends AppCompatActivity implements
         getDataCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(getString(R.string.title_ret_list) + "  " + DataHora.obterFormatarDataBrTitulo());
+        setTitle(getString(R.string.title_retirada_list) + "  " + DataHora.obterFormatarDataBrTitulo());
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
@@ -97,7 +97,7 @@ public class RetListActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_data, menu);
         return true;
     }
 
@@ -254,7 +254,7 @@ public class RetListActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_ret_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(getString(R.string.title_retirada_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_RETIRADA_LIST, null, RetListActivity.this);
             }

@@ -28,7 +28,7 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
-    <style name="DataTextView">
+    <style name="DataHoraTextView">
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
