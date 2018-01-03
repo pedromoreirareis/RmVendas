@@ -60,7 +60,7 @@ public class ClientesListActivity extends AppCompatActivity implements
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
-        tvEmpty.setText("Nenhum cliente cadastrado");
+        tvEmpty.setText(getString(R.string.text_clientes_list_empty));
         ivEmpty.setImageResource(R.drawable.ic_money_up);
         ivEmpty.setContentDescription("Imagem cliente");
         listView.setEmptyView(emptyView);

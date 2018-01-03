@@ -67,6 +67,7 @@
     <string name="text_produto_list_empty">Nenhum produto cadastrado !!!</string>
     <string name="text_venda_list_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_entrada_list_empty">Nenhuma entrada cadastrada !!!</string>
+    <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
     <string name="text_saldo_inicial_list_empty">Saldo inicial não foi cadastrado !!!</string>
     <string name="text_retirada_list_empty">Nenhuma retirada cadastrada !!!</string>
     <string name="text_adicional">Cobertura</string>
@@ -125,8 +126,7 @@
     <!--TODO: Aqui temos que usar o Formatações de Strings String.format xliff-->
     <!-- Mensagens dialog excluir -->
     <string name="dialog_exc_edit_tilte">O que deseja?</string>
-    <string name="dialog_exc_edit_texto_excluir_saldo_inicial_1">O saldo inicial do dia</string>
-    <string name="dialog_exc_edit_texto_excluir_saldo_inicial_2">, no valor de</string>
+    <string name="dialog_exc_edit_texto_excluir_saldo_inicial">O saldo inicial do dia %1$s, no valor de %2$s </string>
     <string name="dialog_exc_edit_texto_excluir_valor">, no valor de</string>
     <string name="dialog_exc_edit_sucesso">Registro excluido com sucesso</string>
     <string name="dialog_exc_edit_erro">Erro ao excluir o registro </string>

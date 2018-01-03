@@ -244,13 +244,14 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
                 mAdapter.getCursor().getDouble(
                         cursor.getColumnIndex(AcessoSaldo.VALOR)));
 
-        String mensagemExcluir = getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial_1) +
+       /* String mensagemExcluir = getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial_1) +
                 " " +
                 dataExcluir +
                 getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial_2) +
                 " " +
-                valorExcluir;
+                valorExcluir; */
 
+        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial), dataExcluir, valorExcluir);
 
         Dialogos.dialogoEditarExcluir(
                 SaldoInicialListActivity.this,
