@@ -68,15 +68,26 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_registro_receber);
 
         /* Recebe dados da activity ClientesListActivity */
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
+        Intent intentDadosCliente = getIntent();
+        // Bundle bundleDadosCliente = intentDadosCliente.getExtras();
 
         /* Coloca nas variaveis mIdCliente, mNomeCliente e mNumTelefone
          * os dados que vieram da ClientesListActivity
          */
-        mIdCliente = bundle.getString("clienteId");
-        mNomeCliente = bundle.getString("clienteNome");
-        mNumTelefone = bundle.getString("clienteFone");
+        if (intentDadosCliente.hasExtra("clienteId")) {
+
+            mIdCliente = intentDadosCliente.getStringExtra("clienteId");
+        }
+
+        if (intentDadosCliente.hasExtra("clienteNome")) {
+
+            mNomeCliente = intentDadosCliente.getStringExtra("clienteNome");
+        }
+
+        if (intentDadosCliente.hasExtra("clienteFone")) {
+
+            mNumTelefone = intentDadosCliente.getStringExtra("clienteFone");
+        }
 
         /* Coloca o nome do cliente no titulo da Activity*/
         setTitle(mNomeCliente);
@@ -393,21 +404,38 @@ public class RegistroReceberActivity extends AppCompatActivity implements
                 if (mValorTotal < 0) {
 
                     mTvTotal.setTextColor(getResources().getColor(R.color.colorRed));
-                    mTvTotal.setText(Formatar.formatarDoubleParaCurrency(mValorTotal));
+                    mTvTotal.setText(
+                            String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
+                                    Formatar.formatarDoubleParaCurrency(mValorTotal)));
 
                 } else if (mValorTotal == 0) {
 
                     mTvTotal.setTextColor(getResources().getColor(R.color.colorBlack));
-                    mTvTotal.setText(Formatar.formatarDoubleParaCurrency(mValorTotal));
+                    //mTvTotal.setText(Formatar.formatarDoubleParaCurrency(mValorTotal));
+
+                    mTvTotal.setText(
+                            String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
+                                    Formatar.formatarDoubleParaCurrency(mValorTotal)));
+
 
                 } else if (mValorTotal > 0) {
 
                     mTvTotal.setTextColor(getResources().getColor(R.color.colorBlue));
-                    mTvTotal.setText(Formatar.formatarDoubleParaCurrency(mValorTotal));
+                    //mTvTotal.setText(Formatar.formatarDoubleParaCurrency(mValorTotal));
+                    mTvTotal.setText(
+                            String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
+                                    Formatar.formatarDoubleParaCurrency(mValorTotal)));
                 }
 
                 cursor.moveToNext();
             }
+
+        } else {
+
+            /* Não encontrou nenhum registro a receber para esse cliente, logo não conseguiu colocar
+             * no primeiro registro - Informa ao usuario que não a nenhum registro para esse cliente
+             */
+            mTvTotal.setText(getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente_sem_registro));
         }
 
         mAdapter.swapCursor(cursor);
@@ -499,38 +527,26 @@ public class RegistroReceberActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog;
+        String tituloDialogTipo;
         String mensagemDialog;
-        String tipoString;
         int tipoInt;
 
         tipoInt = cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA));
 
         if (tipoInt == Constantes.TIPO_A_RECEBER_RECEBIMENTO) {
 
-            tipoString = "Recebimento";
+            tituloDialogTipo = getString(R.string.text_registro_a_receber_recebimento);
         } else {
-            tipoString = "Venda";
+
+            tituloDialogTipo = getString(R.string.text_registro_a_receber_venda);
         }
 
-        // Nome do cliente mais o tipo de entrada
-        tituloDialog = mNomeCliente + ":    " + tipoString;
+        mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_registro_a_receber),
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA))),
+                cursor.getString(cursor.getColumnIndex(AcessoAReceber.DESCRICAO)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR))));
 
-        //  Mensagem do Dialog - Descrição
-        mensagemDialog = "\nData: "
-                + DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA)))
-                + "\n\n"
-                + "Hora: "
-                + DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA)))
-                + "\n\n"
-                + "Descrição: "
-                + cursor.getString(cursor.getColumnIndex(AcessoAReceber.DESCRICAO))
-                + "\n\n"
-                + "Valor:   "
-                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR)));
-
-        Dialogos.dialogoExibirDados(RegistroReceberActivity.this, tituloDialog, mensagemDialog);
-
-
+        Dialogos.dialogoExibirDados(RegistroReceberActivity.this, tituloDialogTipo, mensagemDialog);
     }
 }

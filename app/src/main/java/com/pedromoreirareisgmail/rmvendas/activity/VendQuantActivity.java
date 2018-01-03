@@ -74,13 +74,14 @@ public class VendQuantActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_vend_quant);
 
         // Recebe dados de VendListActivity
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        Intent intentDadosProduto = getIntent();
+        mUriAtual = intentDadosProduto.getData();
 
         // Verifica se os dados recebidos indica se e para Adicionar ou Editar registro
-        if (intent.hasExtra(Constantes.VENDA_ADICIONAR)) {
+        if (intentDadosProduto.hasExtra(Constantes.VENDA_ADICIONAR)) {
 
-            mAdicionarProdutoBD = intent.getStringExtra(Constantes.VENDA_ADICIONAR).equals(Constantes.VENDA_ADICIONAR);
+            mAdicionarProdutoBD = intentDadosProduto.getStringExtra(
+                    Constantes.VENDA_ADICIONAR).equals(Constantes.VENDA_ADICIONAR);
         }
 
         // Se for para adicionar coloca titulo na activity ADICIONAR
@@ -115,7 +116,8 @@ public class VendQuantActivity extends AppCompatActivity implements
 
         // Se for para adicionar, colocar valor "1" no edit de quantidade
         if (mAdicionarProdutoBD) {
-            mEtQuantidade.setText("1");
+
+            mEtQuantidade.setText(Constantes.UMA_UNIDADE);
             mEtQuantidade.setSelection(mEtQuantidade.getText().length());
         }
 

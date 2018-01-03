@@ -51,7 +51,9 @@ public class EntListActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
-                Intent intentEntrada = new Intent(EntListActivity.this, EntCadActivity.class);
+                Intent intentEntrada = new Intent(
+                        EntListActivity.this, EntCadActivity.class);
+
                 startActivity(intentEntrada);
             }
         });
@@ -80,7 +82,8 @@ public class EntListActivity extends AppCompatActivity implements
         getDataCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(getString(R.string.title_entrada_list) + "  " + DataHora.obterFormatarDataBrTitulo());
+        setTitle(String.format(getResources().getString(R.string.title_entrada_list),
+                DataHora.obterFormatarDataBrTitulo()));
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
@@ -194,17 +197,15 @@ public class EntListActivity extends AppCompatActivity implements
         String tituloDialog;
         String mensagemDialog;
 
-        tituloDialog = "Entrada";
+        tituloDialog = getString(R.string.dialog_informacao_entrada_title);
 
         //  Mensagem do Dialog - Descrição
-        mensagemDialog = "\nValor:    "
-                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR)))
-                + "\n\n"
-                + "Descrição:   "
-                + cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO))
-                + "\n\n"
-                + "Hora:    "
-                + DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA)));
+
+        mensagemDialog = String.format(
+                getResources().getString(R.string.dialog_informacao_entrada_retirada_list),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
+                cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA))));
 
         Dialogos.dialogoExibirDados(EntListActivity.this, tituloDialog, mensagemDialog);
     }
@@ -226,13 +227,11 @@ public class EntListActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        // Mensagem ao Excluir - Descrição + valor
-        String mensagemExcluir = cursor.getString(
-                cursor.getColumnIndex(AcessoEntRet.DESCRICAO))
-                + getString(R.string.dialog_exc_edit_texto_excluir_valor)
-                + " "
-                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(
-                cursor.getColumnIndex(AcessoEntRet.VALOR)));
+        String mensagemExcluir = String.format(
+                getResources().getString(R.string.dialog_exc_edit_texto_excluir_valor),
+                cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA))));
 
         Dialogos.dialogoEditarExcluir(
                 EntListActivity.this,
@@ -257,7 +256,9 @@ public class EntListActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_entrada_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(String.format(
+                        getResources().getString(R.string.title_entrada_list),
+                        DataHora.dateSetListenerDataBrTitulo(year, month, day)));
 
                 getLoaderManager().restartLoader(LOADER_ENTRADA_LIST, null, EntListActivity.this);
             }

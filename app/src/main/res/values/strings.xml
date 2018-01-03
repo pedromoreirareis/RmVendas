@@ -6,10 +6,10 @@
 
      ********************************************************************************************-->
 
-    <!-- Title do App -->
+    <!-- *****************************   Title do App *******************************************-->
     <string name="app_name">Rm Vendas</string>
 
-    <!-- Title Activitys -->
+    <!-- ***************************   Title Activitys ******************************************-->
     <string name="title_entrada_cad_add">Adicionar entrada</string>
     <string name="title_entrada_cad_edit">Editar entrada</string>
     <string name="title_produto_cad_add">Adicionar produto</string>
@@ -22,26 +22,26 @@
     <string name="title_venda_edit">Editar venda</string>
     <string name="title_venda_list">Produtos cadastrados</string>
     <string name="title_produto_list">Produtos</string>
-    <string name="title_retirada_list">Retiradas</string>
-    <string name="title_entrada_list">Entradas</string>
-    <string name="title_saldo_inicial_list">Saldo inicial</string>
-    <string name="title_fechamento">Caixa</string>
+    <string name="title_retirada_list">Retiradas  %1$s</string>
+    <string name="title_entrada_list">Entradas  %1$s</string>
+    <string name="title_saldo_inicial_list">Saldo inicial  %1$s</string>
+    <string name="title_fechamento">Caixa  %1$s</string>
     <string name="title_clientes_list">Clientes</string>
     <string name="title_clientes_add">Adicionar Cliente</string>
     <string name="title_clientes_edit">Editar Cliente</string>
     <string name="title_venda_clientes_list">Clientes Cadastrados</string>
 
-    <!-- Menus - Title -->
+    <!-- ****************************   Menus - Title *******************************************-->
     <string name="menu_salvar_title">Salvar</string>
     <string name="menu_data_title">Data</string>
     <string name="menu_pesquisar_title">Pesquisar</string>
     <string name="menu_telefone_cliente_title">Ligar</string>
 
-    <!-- Drawer - Toggle -->
+    <!-- ***************************   Drawer - Toggle ******************************************-->
     <string name="navigation_drawer_open">Abrir</string>
     <string name="navigation_drawer_close">Fechar</string>
 
-    <!-- Menus Navigation Drawer - Title -->
+    <!-- **********************    Menus Navigation Drawer - Title ***************************** -->
     <string name="menu_entrada_title_drawer">Entrada</string>
     <string name="menu_retirada_title_drawer">Retirada</string>
     <string name="menu_saldo_inicial_title_drawer">Saldo inicial</string>
@@ -53,16 +53,17 @@
     <string name="menu_receber_title_drawer">A Receber</string>
     <string name="menu_caixa_title_drawer">Caixa</string>
 
-    <!-- Image Description -->
+    <!-- ************************    Image Description ***************************************** -->
     <string name="image_desc_main_empty">Imagem de um bolo</string>
     <string name="image_desc_produto_list_empty">Imagem de uma lista vazia</string>
     <string name="image_desc_entrada_list_empty">Imagem de um cifrão e um seta para cima</string>
     <string name="image_desc_retirada_list_empty">Imagem de um cifrão e um seta para baixo</string>
+    <string name="image_desc_clientes_list_empty">Imagem cliente</string>
     <string name="image_desc_saldo_inicial_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
 
-    <!-- Textos -->
+    <!-- ************************    Textos **************************************************** -->
     <string name="text_main_empty">Nenhum bolo vendido no dia !!!</string>
     <string name="text_produto_list_empty">Nenhum produto cadastrado !!!</string>
     <string name="text_venda_list_empty">Que pena… não há produtos cadastrados !!!</string>
@@ -77,15 +78,20 @@
     <string name="text_recebimento">Recebimento</string>
     <string name="text_msg_as"> às </string>
     <string name="text_valor_dois_pontos"> Valor: </string>
+    <string name="text_registro_a_receber_recebimento">Recebimento</string>
+    <string name="text_registro_a_receber_venda">Venda</string>
+    <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente">Saldo: %1$s</string>
+    <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente_sem_registro">Não há registros!!!</string>
 
-    <!-- Fechamento - Itens do Listview -->
+
+    <!-- ************************    Fechamento - Itens do Listview **************************** -->
     <string name="text_item_main_total_venda_vista">Total..:</string>
     <string name="text_item_main_prazo">Prazo.:</string>
     <string name="text_item_main_adicional">Cobert:</string>
     <string name="text_item_main_desconto">Desc..:</string>
     <string name="text_item_main_quantidade">Quant.:</string>
 
-    <!-- Fechamento - Activity Fechamento -->
+    <!-- ************************    Fechamento - Activity Fechamento ************************** -->
     <string name="text_fechamento_saldo_inicial">Saldo inicial</string>
     <string name="text_fechamento_entradas">Entradas</string>
     <string name="text_fechamento_vendas_total">Total vendas</string>
@@ -105,7 +111,7 @@
 
      ********************************************************************************************-->
 
-    <!-- Hints -->
+    <!-- ************************    Hints -->
     <string name="hint_quantidade">Quantidade</string>
     <string name="hint_nome">Nome</string>
     <string name="hint_preco">Preço R$</string>
@@ -114,28 +120,81 @@
     <string name="hint_numero_fone">Nº Telefone</string>
     <string name="hint_nome_cliente">Nome do Cliente</string>
 
-    <!-- Mensagens Edição -->
+    <!-- ************************    Mensagens Edição ****************************************** -->
     <string name="msg_editado_sucesso">Editado com sucesso</string>
     <string name="msg_editado_erro">Erro ao editar</string>
 
-    <!-- Mensagens dialog alterações -->
+    <!-- ************************    Mensagens dialog alterações ******************************* -->
     <string name="dialog_alteracao_titulo">Descartar as alterações?</string>
     <string name="dialog_alteracao_continuar">Continuar editando</string>
     <string name="dialog_alteracao_descatar">Descartar</string>
 
+
     <!--TODO: Aqui temos que usar o Formatações de Strings String.format xliff-->
-    <!-- Mensagens dialog excluir -->
+    <!-- ************************    Mensagens dialog excluir ********************************** -->
     <string name="dialog_exc_edit_tilte">O que deseja?</string>
-    <string name="dialog_exc_edit_texto_excluir_saldo_inicial">O saldo inicial do dia %1$s, no valor de %2$s </string>
-    <string name="dialog_exc_edit_texto_excluir_valor">, no valor de</string>
     <string name="dialog_exc_edit_sucesso">Registro excluido com sucesso</string>
     <string name="dialog_exc_edit_erro">Erro ao excluir o registro </string>
     <string name="dialog_exc_edit_conf_exc_title">Realmente deseja excluir?</string>
     <string name="dialog_exc_edit_conf_exc_excluir">Excluir</string>
     <string name="dialog_exc_edit_conf_exc_cancelar">Cancelar</string>
+    <string name="dialog_exc_edit_texto_excluir_saldo_inicial">
+        Saldo inicial
+        \n\nValor: %1$s
+        \n\nData: %2$s
+    </string>
+    <string name="dialog_exc_edit_texto_excluir_valor">
+        Descrição: %1$s
+        \n\nValor: %2$s
+        \n\nHora: %3$s
+    </string>
+
+    <string name="dialog_excluir_produtos_list">
+        Nome:  %1$s
+        \n\n
+        Valor:   %2$s
+    </string>
 
 
-    <!-- setError -->
+    <!-- ************************    Mensagens dialog informações ****************************** -->
+    <string name="dialog_informacao_produto_title">Produto</string>
+    <string name="dialog_informacao_entrada_title">Entrada</string>
+    <string name="dialog_informacao_retirada_title">Retirada</string>
+    <string name="dialog_informacao_saldo_inicial_title">Saldo Inicial</string>
+    <string name="dialog_informacao_entrada_retirada_list">
+        \nValor:  %1$s
+        \n\n
+        Descrição:   %2$s
+        \n\n
+        Hora:    %3$s
+    </string>
+
+    <string name="dialog_informacao_produtos_list">
+        \nNome:  %1$s
+        \n\n
+        Valor:   %2$s
+    </string>
+
+    <string name="dialog_informacao_saldo_inicial_list">
+        \nValor:  %1$s
+        \n\n
+        Data:   %2$s
+        \n\n
+        Hora:    %3$s
+    </string>
+
+    <string name="dialog_informacao_registro_a_receber">
+        \nData:  %1$s
+        \n\n
+        Hora:   %2$s
+        \n\n
+        Descrição:    %3$s
+        \n\n
+        Valor:    %4$s
+    </string>
+
+
+    <!-- *****************************    setError ********************************************* -->
     <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
     <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
     <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
@@ -148,7 +207,7 @@
 
      ********************************************************************************************-->
 
-    <!-- Providers -->
+    <!-- *****************************    Providers  ******************************************* -->
     <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>
     <string name="provider_log_inserir_prod">Erro ao inserir no banco de dados. Com Uri: </string>
     <string name="provider_exception_query">Erro na pesquisa - Pesquisa invalida para o Uri: </string>

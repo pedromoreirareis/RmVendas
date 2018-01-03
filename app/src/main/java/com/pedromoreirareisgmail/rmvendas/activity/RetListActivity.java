@@ -81,7 +81,8 @@ public class RetListActivity extends AppCompatActivity implements
         getDataCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(getString(R.string.title_retirada_list) + "  " + DataHora.obterFormatarDataBrTitulo());
+        setTitle(String.format(getResources().getString(R.string.title_retirada_list),
+                DataHora.obterFormatarDataBrTitulo()));
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
@@ -191,17 +192,13 @@ public class RetListActivity extends AppCompatActivity implements
         String tituloDialog;
         String mensagemDialog;
 
-        tituloDialog = "Retirada";
+        tituloDialog = getString(R.string.dialog_informacao_retirada_title);
 
         //  Mensagem do Dialog - Descrição
-        mensagemDialog = "\nValor:    "
-                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR)))
-                + "\n\n"
-                + "Descrição:   "
-                + cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO))
-                + "\n\n"
-                + "Hora:    "
-                + DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA)));
+        mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_entrada_retirada_list),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
+                cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA))));
 
         Dialogos.dialogoExibirDados(RetListActivity.this, tituloDialog, mensagemDialog);
 
@@ -224,12 +221,11 @@ public class RetListActivity extends AppCompatActivity implements
         Uri uri = ContentUris.withAppendedId(AcessoEntRet.CONTENT_URI_ENT_RET, id);
 
         Cursor cursor = mAdapter.getCursor();
-        String mensagemExcluir = mAdapter.getCursor().getString(
-                cursor.getColumnIndex(AcessoEntRet.DESCRICAO)) +
-                getString(R.string.dialog_exc_edit_texto_excluir_valor) +
-                " " +
-                Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
-                        cursor.getColumnIndex(AcessoEntRet.VALOR)));
+
+        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_valor),
+                cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA))));
 
         Dialogos.dialogoEditarExcluir(
                 RetListActivity.this,
@@ -254,7 +250,8 @@ public class RetListActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_retirada_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(String.format(getResources().getString(R.string.title_retirada_list),
+                        DataHora.dateSetListenerDataBrTitulo(year, month, day)));
 
                 getLoaderManager().restartLoader(LOADER_RETIRADA_LIST, null, RetListActivity.this);
             }

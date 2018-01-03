@@ -42,13 +42,13 @@ public class ProdutosListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_produtos_list);
 
         // Trata o botão Flutuante - Abre activity ProdutosCadActivity
-        FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_add);
-        fabProdutos.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(ProdutosListActivity.this, ProdutosCadActivity.class);
-                startActivity(intent);
+                Intent intentCadastroProdutos = new Intent(ProdutosListActivity.this, ProdutosCadActivity.class);
+                startActivity(intentCadastroProdutos);
             }
         });
 
@@ -167,15 +167,13 @@ public class ProdutosListActivity extends AppCompatActivity implements
         String tituloDialog;
         String mensagemDialog;
 
-        tituloDialog = "Produto";
+        tituloDialog = getString(R.string.dialog_informacao_produto_title);
 
 
         //  Mensagem do Dialog - Descrição
-        mensagemDialog = "\nNome: "
-                + cursor.getString(cursor.getColumnIndex(AcessoProdutos.NOME))
-                + "\n\n"
-                + "Valor:   "
-                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.VALOR)));
+        mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_produtos_list),
+                cursor.getString(cursor.getColumnIndex(AcessoProdutos.NOME)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.VALOR))));
 
         Dialogos.dialogoExibirDados(ProdutosListActivity.this, tituloDialog, mensagemDialog);
     }
@@ -197,12 +195,9 @@ public class ProdutosListActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String mensagemExcluir = mAdapter.getCursor().getString(
-                cursor.getColumnIndex(AcessoProdutos.NOME)) +
-                getString(R.string.dialog_exc_edit_texto_excluir_valor) +
-                " " +
-                Formatar.formatarDoubleParaCurrency(mAdapter.getCursor().getDouble(
-                        cursor.getColumnIndex(AcessoProdutos.VALOR)));
+        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_excluir_produtos_list),
+                cursor.getString(cursor.getColumnIndex(AcessoProdutos.NOME)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.VALOR))));
 
         Dialogos.dialogoEditarExcluir(
                 ProdutosListActivity.this,

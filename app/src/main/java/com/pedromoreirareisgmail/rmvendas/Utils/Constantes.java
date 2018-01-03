@@ -25,6 +25,9 @@ public class Constantes {
     public static final int MIN_QUANT_CARACT = 10;
 
 
+    public static final String UMA_UNIDADE = "1";
+
+
     /*Informa que é um novo registro e não uma edição*/
     public static final String VENDA_ADICIONAR = "adicionar";
     public static final String VEZES_X = " x ";

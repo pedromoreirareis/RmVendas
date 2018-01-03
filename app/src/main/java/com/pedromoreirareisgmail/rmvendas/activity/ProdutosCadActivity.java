@@ -210,7 +210,6 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         } else {
 
             Crud.editar(ProdutosCadActivity.this, mUriAtual, values);
-
         }
 
         finish();
@@ -290,6 +289,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements
 
         // Salva dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {
+
             salvarDadosBD();
             return true;
         }

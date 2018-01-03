@@ -155,10 +155,11 @@ public class VendListActivity extends AppCompatActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTOS, id);
 
-        Intent intent = new Intent(VendListActivity.this, VendQuantActivity.class);
-        intent.putExtra(Constantes.VENDA_ADICIONAR, Constantes.VENDA_ADICIONAR);
-        intent.setData(uri);
-        startActivity(intent);
+        Intent intentRegistrarVenda = new Intent(
+                VendListActivity.this, VendQuantActivity.class);
+        intentRegistrarVenda.putExtra(Constantes.VENDA_ADICIONAR, Constantes.VENDA_ADICIONAR);
+        intentRegistrarVenda.setData(uri);
+        startActivity(intentRegistrarVenda);
     }
 
     /**

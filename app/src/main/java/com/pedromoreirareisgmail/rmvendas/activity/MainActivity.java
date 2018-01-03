@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Cria o fab - botão flutuante
-        FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_add);
-        fabProdutos.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(MainActivity.this, VendListActivity.class);
-                startActivity(intent);
+                Intent intentListaProdutos = new Intent(MainActivity.this, VendListActivity.class);
+                startActivity(intentListaProdutos);
             }
         });
 

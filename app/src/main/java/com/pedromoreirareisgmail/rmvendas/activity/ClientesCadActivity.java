@@ -46,8 +46,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_clientes_cad);
 
         /* Se Activity foi aberta para alteração, vair receber uma Uri*/
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        Intent intentUri = getIntent();
+        mUriAtual = intentUri.getData();
 
         /* Se não foi recebido Uri, Activity vai adicionar registro. Se recebeu vai editar.*/
         if (mUriAtual == null) {

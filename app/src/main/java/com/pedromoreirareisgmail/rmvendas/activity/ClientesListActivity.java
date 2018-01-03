@@ -43,13 +43,14 @@ public class ClientesListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_clientes_list);
 
         // Trata o botão Flutuante - Abre activity EntCadActivity
-        FloatingActionButton fabProdutos = (FloatingActionButton) findViewById(R.id.fab_add);
-        fabProdutos.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(ClientesListActivity.this, ClientesCadActivity.class);
-                startActivity(intent);
+                Intent intentCadastroClientes = new Intent(
+                        ClientesListActivity.this, ClientesCadActivity.class);
+                startActivity(intentCadastroClientes);
             }
         });
 
@@ -60,9 +61,9 @@ public class ClientesListActivity extends AppCompatActivity implements
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
-        tvEmpty.setText(getString(R.string.text_clientes_list_empty));
+        tvEmpty.setText(R.string.text_clientes_list_empty);
         ivEmpty.setImageResource(R.drawable.ic_money_up);
-        ivEmpty.setContentDescription("Imagem cliente");
+        ivEmpty.setContentDescription(getString(R.string.image_desc_clientes_list_empty));
         listView.setEmptyView(emptyView);
 
         // Cria o adapter e colocar o adapter no Listview
@@ -127,7 +128,6 @@ public class ClientesListActivity extends AppCompatActivity implements
                 selectionArgs,
                 sortOrder
         );
-
     }
 
     /**
@@ -165,20 +165,23 @@ public class ClientesListActivity extends AppCompatActivity implements
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        // No cursor pode-se obter os dados de cada cliente
         Cursor cursor = mAdapter.getCursor();
 
-        String nome = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
-        int fone = cursor.getInt(cursor.getColumnIndex(AcessoClientes.TELEFONE));
+        String nomeCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
+        int foneCliente = cursor.getInt(cursor.getColumnIndex(AcessoClientes.TELEFONE));
 
-        Intent intent = new Intent(ClientesListActivity.this, RegistroReceberActivity.class);
+        Intent intentRegistroAReceber = new Intent(
+                ClientesListActivity.this, RegistroReceberActivity.class);
 
         Bundle bundle = new Bundle();
         bundle.putString("clienteId", String.valueOf(id));
-        bundle.putString("clienteNome", nome);
-        bundle.putString("clienteFone", String.valueOf(fone));
+        bundle.putString("clienteNome", nomeCliente);
+        bundle.putString("clienteFone", String.valueOf(foneCliente));
 
-        intent.putExtras(bundle);
-        startActivity(intent);
+        intentRegistroAReceber.putExtras(bundle);
+        startActivity(intentRegistroAReceber);
 
     }
 
@@ -195,9 +198,11 @@ public class ClientesListActivity extends AppCompatActivity implements
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+        // Caminho especifico de um cliente no BD
         Uri uri = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, id);
 
         Cursor cursor = mAdapter.getCursor();
+
         String mensagemExcluir = mAdapter.getCursor().getString(
                 cursor.getColumnIndex(AcessoClientes.NOME));
 

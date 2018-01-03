@@ -329,6 +329,7 @@ public class RetCadActivity extends AppCompatActivity implements
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
+
             salvarDadosBD();
             return true;
         }

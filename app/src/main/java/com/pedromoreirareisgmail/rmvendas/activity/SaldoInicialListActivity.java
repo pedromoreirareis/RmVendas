@@ -51,8 +51,9 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
-                Intent intentSaldo = new Intent(SaldoInicialListActivity.this, SaldoInicialCadActivity.class);
-                startActivity(intentSaldo);
+                Intent intentSaldoInicial = new Intent(
+                        SaldoInicialListActivity.this, SaldoInicialCadActivity.class);
+                startActivity(intentSaldoInicial);
             }
         });
 
@@ -80,7 +81,8 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         getDataCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(getString(R.string.title_saldo_inicial_list) + "  " + DataHora.obterFormatarDataBrTitulo());
+        setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list),
+                DataHora.obterFormatarDataBrTitulo()));
 
         // O Loader utiliza mDataPesquisarBD para fazer a pesquisa no banco de dados - "yyyy-MM-dd"
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
@@ -198,18 +200,14 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         String tituloDialog;
         String mensagemDialog;
 
-        tituloDialog = "Saldo Inicial";
+        tituloDialog = getString(R.string.dialog_informacao_saldo_inicial_title);
 
         //  Mensagem do Dialog - Descrição
-        mensagemDialog = "Valor:    "
-                + Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR)))
-                + "\n\n"
-                + "Data:    "
-                + DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA)))
-                + "\n\n"
-                + "Hora:    "
-                + DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA)));
 
+        mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR))),
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA))));
 
         Dialogos.dialogoExibirDados(SaldoInicialListActivity.this, tituloDialog, mensagemDialog);
     }
@@ -237,21 +235,9 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String dataExcluir = DataHora.formatarDataBr(
-                mAdapter.getCursor().getString(
-                        cursor.getColumnIndex(AcessoSaldo.DATA)));
-        String valorExcluir = Formatar.formatarDoubleParaCurrency(
-                mAdapter.getCursor().getDouble(
-                        cursor.getColumnIndex(AcessoSaldo.VALOR)));
-
-       /* String mensagemExcluir = getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial_1) +
-                " " +
-                dataExcluir +
-                getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial_2) +
-                " " +
-                valorExcluir; */
-
-        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial), dataExcluir, valorExcluir);
+        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR))),
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA))));
 
         Dialogos.dialogoEditarExcluir(
                 SaldoInicialListActivity.this,
@@ -277,7 +263,8 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_saldo_inicial_list) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list),
+                        DataHora.dateSetListenerDataBrTitulo(year, month, day)));
 
                 getLoaderManager().restartLoader(LOADER_SALDO_INICIAL_LIST, null, SaldoInicialListActivity.this);
             }

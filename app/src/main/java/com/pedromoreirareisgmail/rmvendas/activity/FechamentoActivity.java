@@ -75,7 +75,8 @@ public class FechamentoActivity extends AppCompatActivity implements
         getDataCalendario();
 
         // coloca titulo na Activity  juntamente com a data da pesquisa
-        setTitle(getString(R.string.title_fechamento) + "  " + DataHora.obterFormatarDataBrTitulo());
+        setTitle(String.format(getResources().getString(R.string.title_fechamento),
+                DataHora.obterFormatarDataBrTitulo()));
 
         // Data do dia para pesquisa no BD
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
@@ -371,7 +372,8 @@ public class FechamentoActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(getString(R.string.title_fechamento) + "  " + DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(String.format(getResources().getString(R.string.title_fechamento),
+                        DataHora.dateSetListenerDataBrTitulo(year, month, day)));
 
                 reiniciarPesquisas();
             }

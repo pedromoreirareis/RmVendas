@@ -59,8 +59,8 @@ public class EntCadActivity extends AppCompatActivity implements
          * Tem dados - Editar
          * Não tem dados - Adicionar
          */
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        Intent intentUri = getIntent();
+        mUriAtual = intentUri.getData();
 
         // Se tiver uma Uri então deve pesquisar essa uri para editar registro
         if (mUriAtual == null) {
