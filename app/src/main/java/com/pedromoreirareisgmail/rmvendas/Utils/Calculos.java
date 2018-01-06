@@ -19,7 +19,7 @@ public class Calculos {
      * @param vlProd Valor de cada unidade do produto
      * @return uma string em formato currency do valor total
      */
-    public static String calcularValorVendaBolo(String vlQ, String vlC, String vlD, double vlProd) {
+    public static String calcularValorVendaBolo(String vlQ, String vlC, String vlD, String vlP, double vlProd) {
 
         if (TextUtils.isEmpty(vlQ)) {
 
@@ -36,13 +36,19 @@ public class Calculos {
             vlD = "0";
         }
 
+        if (TextUtils.isEmpty(vlP)) {
+
+            vlP = "0";
+        }
+
         double valorQ = Double.parseDouble(vlQ);
         double valorC = Double.parseDouble(vlC) / 100;
         double valorD = Double.parseDouble(vlD) / 100;
+        double valorP = Double.parseDouble(vlP) / 100;
 
         double quantValor = valorQ * vlProd;
 
-        double total = quantValor + valorC - valorD;
+        double total = quantValor + valorC - valorD - valorP;
 
         NumberFormat preco = NumberFormat.getCurrencyInstance();
 

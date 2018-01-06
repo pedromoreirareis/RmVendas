@@ -1,6 +1,7 @@
 package com.pedromoreirareisgmail.rmvendas.activity;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,6 +34,8 @@ import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato;
+import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
@@ -45,6 +49,18 @@ public class VendQuantActivity extends AppCompatActivity implements
 
     private static final int LOADER_VENDA_ADICIONAR = 0;
     private static final int LOADER_VENDA_EDITAR = 1;
+    private static final int LOADER_CLIENTE = 2;
+
+    private static final String URI_VALOR = "uri_valor";
+    private static final String VALOR_UNIDADE = "valor_unidade";
+    private static final String NOME_PRODUTO = "nome_produto";
+    private static final String QUANTIDADE_PRODUTO = "quantidade";
+    private static final String TEM_ADICIONAL_AD = "adicional";
+    private static final String VALOR_ADICIONAL_AD = "valor_adicional";
+    private static final String TEM_DESCONTO_D = "desconto";
+    private static final String VALOR_DESCONTO_D = "valor_desconto";
+    private static final String TEM_A_PRAZO_P = "prazo";
+    private static final String ID_CLIENTE = "id_cliente";
 
     private final NumberFormat mValorFormatarCurrency = NumberFormat.getCurrencyInstance();
 
@@ -63,15 +79,19 @@ public class VendQuantActivity extends AppCompatActivity implements
     private TextInputLayout layoutDesconto;
     private LinearLayout layoutPrazo;
     private Uri mUriAtual = null;
+    private Uri mUriCliente = null;
     private double mValorUnidadeProduto = 0;
+    private String mValorTotalBundle = "";
     private String mDataHoraBD = null;
     private boolean mAdicionarProdutoBD = false;
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
+    private long mIdCliente;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vend_quant);
+
 
         // Recebe dados de VendListActivity
         Intent intentDadosProduto = getIntent();
@@ -134,9 +154,23 @@ public class VendQuantActivity extends AppCompatActivity implements
             public void onClick(View v) {
 
                 //TODO: Apos ir para a VendListClienteActivity dados sao perdidos - salvar dados com savedIntanceState
-                Intent listaClienteIntent =
+                Intent intentListaCliente =
                         new Intent(VendQuantActivity.this, VendListClienteActivity.class);
-                startActivity(listaClienteIntent);
+
+                Bundle bundle = new Bundle();
+                bundle.putString(URI_VALOR, mUriAtual.toString());
+                bundle.putString(NOME_PRODUTO, mTvNomeProduto.getText().toString());
+                bundle.putString(VALOR_UNIDADE, String.valueOf(mValorUnidadeProduto));
+                bundle.putString(QUANTIDADE_PRODUTO, mEtQuantidade.getText().toString());
+                bundle.putBoolean(TEM_ADICIONAL_AD, mSwitchAdicional.isChecked());
+                bundle.putString(VALOR_ADICIONAL_AD, mEtAdicional.getText().toString());
+                bundle.putBoolean(TEM_DESCONTO_D, mSwitchDesconto.isChecked());
+                bundle.putString(VALOR_DESCONTO_D, mEtDesconto.getText().toString());
+                bundle.putBoolean(TEM_A_PRAZO_P, mSwitchPrazo.isChecked());
+
+                intentListaCliente.putExtras(bundle);
+
+                startActivityForResult(intentListaCliente, 101);
 
                 Utilidades.fecharTecladoView(VendQuantActivity.this, mButCliente);
             }
@@ -164,6 +198,36 @@ public class VendQuantActivity extends AppCompatActivity implements
         Utilidades.semFocoZerado(mEtPrazo);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == RESULT_OK) {
+
+            if (data != null) {
+
+
+                mIdCliente = Long.parseLong(data.getStringExtra(ID_CLIENTE));
+                mUriCliente = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, mIdCliente);
+                getLoaderManager().initLoader(LOADER_CLIENTE, null, this);
+
+                Double valor = Double.parseDouble(data.getStringExtra(VALOR_UNIDADE));
+
+
+                Log.v("Pedro", "Result");
+
+                String valorTotal = calcularValorVendaBolo(
+                        mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", ""),
+                        mEtAdicional.getText().toString().trim().replaceAll("[^\\d]", ""),
+                        mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", ""),
+                        mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", ""),
+                        valor);
+
+                mValorTotalBundle = valorTotal;
+
+            }
+        }
+    }
 
     /**
      * Cria o menu
@@ -338,6 +402,16 @@ public class VendQuantActivity extends AppCompatActivity implements
                 valorDescontoDouble);
 
 
+        // Colocando dados dentro de objeto para salvar venda a prazo
+        ContentValues valuesVendaPrazo = new ContentValues();
+        valuesVendaPrazo.put(Contrato.AcessoAReceber.CLIENTE_ID, mIdCliente);
+        valuesVendaPrazo.put(Contrato.AcessoAReceber.CLIENTE_NOME, mTvCliente.getText().toString());
+        valuesVendaPrazo.put(Contrato.AcessoAReceber.DATA_HORA, DataHora.obterDataHoraSistema());
+        valuesVendaPrazo.put(Contrato.AcessoAReceber.TIPO_ENTRADA, Constantes.TIPO_A_RECEBER_VENDA);
+        valuesVendaPrazo.put(Contrato.AcessoAReceber.DESCRICAO, "Teste Venda Direta");
+        valuesVendaPrazo.put(Contrato.AcessoAReceber.VALOR, Formatar.formatarParaDouble(mEtPrazo.getText().toString()));
+
+
         // Coloca dados em um objeto values para ser salvo no BD
         ContentValues values = new ContentValues();
         values.put(AcessoVenda.NOME_PRODUTO, nomeProdutoTextView);
@@ -379,6 +453,7 @@ public class VendQuantActivity extends AppCompatActivity implements
             values.put(AcessoVenda.DATA, DataHora.obterDataHoraSistema());
 
             Crud.inserir(VendQuantActivity.this, AcessoVenda.CONTENT_URI_VENDA, values);
+            Crud.inserir(VendQuantActivity.this, Contrato.AcessoAReceber.CONTENT_URI_ARECEBER, valuesVendaPrazo);
 
         } else {
 
@@ -452,6 +527,26 @@ public class VendQuantActivity extends AppCompatActivity implements
             );
         }
 
+        if (i == LOADER_CLIENTE) {
+
+            // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
+            String[] projection = {
+                    AcessoClientes._ID,
+                    AcessoClientes.NOME,
+                    AcessoClientes.TELEFONE
+            };
+
+            return new CursorLoader(
+                    this,
+                    mUriCliente,
+                    projection,
+                    null,
+                    null,
+                    null
+            );
+        }
+
+
         return null;
     }
 
@@ -469,6 +564,7 @@ public class VendQuantActivity extends AppCompatActivity implements
          */
         if (loader.getId() == LOADER_VENDA_EDITAR && cursor.moveToFirst()) {
 
+            Log.v("Pedro", "LOADER_VENDA_EDITAR");
             String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
             mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA));
 
@@ -529,11 +625,20 @@ public class VendQuantActivity extends AppCompatActivity implements
          */
         if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {
 
+            Log.v("Pedro", "LOADER_VENDA_ADICIONAR");
             String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoProdutos.NOME));
             mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.VALOR));
 
             mTvNomeProduto.setText(nomeProduto);
             mTvValorTotal.setText(mValorFormatarCurrency.format(mValorUnidadeProduto));
+        }
+
+        if (loader.getId() == LOADER_CLIENTE && cursor.moveToFirst()) {
+            Log.v("Pedro", "LOADER_CLIENTE");
+            String nome = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
+            mTvCliente.setText(nome);
+
+            mTvValorTotal.setText(mValorTotalBundle);
         }
     }
 
@@ -631,8 +736,9 @@ public class VendQuantActivity extends AppCompatActivity implements
                 String vlQuantidade = charSequence.toString().trim();
                 String vlAdicional = mEtAdicional.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlPrazo = mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
 
                 mEtQuantidade.setSelection(mEtQuantidade.getText().length());
             }
@@ -658,8 +764,9 @@ public class VendQuantActivity extends AppCompatActivity implements
                 String vlQuantidade = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlAdicional = charSequence.toString().trim().replaceAll("[^\\d]", "");
                 String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlPrazo = mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;
@@ -694,8 +801,9 @@ public class VendQuantActivity extends AppCompatActivity implements
                 String vlQuantidade = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlAdicional = mEtAdicional.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlDesconto = charSequence.toString().trim().replaceAll("[^\\d]", "");
+                String vlPrazo = mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
 
 
                 if (isFormatarCurrencyAtualizado) {
@@ -731,13 +839,14 @@ public class VendQuantActivity extends AppCompatActivity implements
                     isDadosAlterado = true;
                 }
 
-                String vlPrazo = charSequence.toString().trim().replaceAll("[^\\d]", "");
-               /* String vlQuantidade = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlAdicional = mEtAdional.getText().toString().trim().replaceAll("[^\\d]", "");
-                String vlDesconto = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, mValorUnidadeProduto));
-                */
+                String vlQuantidade = mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlAdicional = mEtAdicional.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
+                String vlPrazo = charSequence.toString().trim().replaceAll("[^\\d]", "");
+
+                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
+
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;

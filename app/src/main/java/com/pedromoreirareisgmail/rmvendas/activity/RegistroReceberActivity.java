@@ -408,20 +408,9 @@ public class RegistroReceberActivity extends AppCompatActivity implements
                             String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
                                     Formatar.formatarDoubleParaCurrency(mValorTotal)));
 
-                } else if (mValorTotal == 0) {
-
-                    mTvTotal.setTextColor(getResources().getColor(R.color.colorBlack));
-                    //mTvTotal.setText(Formatar.formatarDoubleParaCurrency(mValorTotal));
-
-                    mTvTotal.setText(
-                            String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
-                                    Formatar.formatarDoubleParaCurrency(mValorTotal)));
-
-
-                } else if (mValorTotal > 0) {
+                } else {
 
                     mTvTotal.setTextColor(getResources().getColor(R.color.colorBlue));
-                    //mTvTotal.setText(Formatar.formatarDoubleParaCurrency(mValorTotal));
                     mTvTotal.setText(
                             String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
                                     Formatar.formatarDoubleParaCurrency(mValorTotal)));

@@ -18,6 +18,7 @@
         android:layout_marginTop="@dimen/margin_padrao_8"
         android:gravity="center"
         android:maxLines="1"
+        android:textColor="@color/colorBlue"
         android:textSize="32sp" />
 
 

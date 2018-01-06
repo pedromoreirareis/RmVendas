@@ -75,14 +75,7 @@ public class ClientesAdapter extends CursorAdapter {
             holder.tvValorReceber.setTextColor(context.getResources().getColor(R.color.colorRed));
             holder.tvValorReceber.setText(Formatar.formatarDoubleParaCurrency(valorAReceber));
 
-        } else if (valorAReceber == 0) {
-
-            holder.tvNome.setTextColor(context.getResources().getColor(R.color.colorBlack));
-            holder.tvFone.setTextColor(context.getResources().getColor(R.color.colorBlack));
-            holder.tvValorReceber.setTextColor(context.getResources().getColor(R.color.colorBlack));
-            holder.tvValorReceber.setText(Formatar.formatarDoubleParaCurrency(valorAReceber));
-
-        } else if (valorAReceber > 0) {
+        } else {
 
             holder.tvNome.setTextColor(context.getResources().getColor(R.color.colorBlue));
             holder.tvFone.setTextColor(context.getResources().getColor(R.color.colorBlue));
