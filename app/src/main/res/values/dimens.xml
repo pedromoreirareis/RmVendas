@@ -6,6 +6,8 @@
     <dimen name="nav_header_height">160dp</dimen>
 
     <!-- Espaçamentos de margin e padding padrões -->
+    <dimen name="margin_padrao_1">1dp</dimen>
+    <dimen name="margin_padrao_2">2dp</dimen>
     <dimen name="margin_padrao_4">4dp</dimen>
     <dimen name="margin_padrao_8">8dp</dimen>
     <dimen name="margin_padrao_12">12dp</dimen>

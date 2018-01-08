@@ -40,9 +40,9 @@ public class VendListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_vend_list);
 
         // Referencia itens do layout
-        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
-        ListView listView = (ListView) findViewById(R.id.lv_list);
+        TextView tvEmpty = findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
+        ListView listView = findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
@@ -160,6 +160,7 @@ public class VendListActivity extends AppCompatActivity implements
         intentRegistrarVenda.putExtra(Constantes.VENDA_ADICIONAR, Constantes.VENDA_ADICIONAR);
         intentRegistrarVenda.setData(uri);
         startActivity(intentRegistrarVenda);
+        finish();
     }
 
     /**

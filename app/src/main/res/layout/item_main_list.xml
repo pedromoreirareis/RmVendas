@@ -1,134 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/margin_padrao_8"
-    android:paddingLeft="@dimen/margin_padrao_16"
-    android:paddingRight="@dimen/margin_padrao_16"
-    android:paddingTop="@dimen/margin_padrao_8">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_padrao_4"
-        android:orientation="horizontal">
+        android:layout_marginLeft="@dimen/margin_padrao_16"
+        android:layout_marginRight="@dimen/margin_padrao_16"
+        android:layout_marginTop="@dimen/margin_padrao_8"
+        app:cardCornerRadius="8dp"
+        app:elevation="16dp">
 
-        <TextView
-            android:id="@+id/tv_main_nome"
-            style="@style/TituloTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/tv_main_data"
-            style="@style/DataHoraTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="@dimen/margin_padrao_8">
 
-            <TextView
-                style="@style/DetalhesItemLabel"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_shopping_cart_black_48px"
-                android:text="@string/text_item_main_quantidade" />
+                android:layout_marginBottom="@dimen/margin_padrao_1"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_main_valor_quantidade"
-                style="@style/DetalhesItemValor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_main_nome"
+                    style="@style/TituloTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_main_data"
+                    style="@style/DataHoraTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/margin_padrao_4"
+                android:background="@color/colorAccent" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/DetalhesItemLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_shopping_cart_black_48px"
+                        android:text="@string/text_item_main_quantidade" />
+
+                    <TextView
+                        android:id="@+id/tv_main_valor_quantidade"
+                        style="@style/DetalhesItemValor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_main_valor_label_venda"
+                        style="@style/DetalhesItemLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px"
+                        android:text="@string/text_item_main_total_venda_vista" />
+
+                    <TextView
+                        android:id="@+id/tv_main_valor_venda"
+                        style="@style/DetalhesItemValor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/DetalhesItemLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px"
+                        android:text="@string/text_item_main_adicional" />
+
+                    <TextView
+                        android:id="@+id/tv_main_valor_adicional"
+                        style="@style/DetalhesItemValor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/DetalhesItemLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px"
+                        android:text="@string/text_item_main_desconto" />
+
+                    <TextView
+                        android:id="@+id/tv_main_valor_desconto"
+                        style="@style/DetalhesItemValor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_main_valor_label_venda"
-                style="@style/DetalhesItemLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_attach_money_black_48px"
-                android:text="@string/text_item_main_total_venda_vista" />
-
-            <TextView
-                android:id="@+id/tv_main_valor_venda"
-                style="@style/DetalhesItemValor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/DetalhesItemLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_attach_money_black_48px"
-                android:text="@string/text_item_main_adicional" />
-
-            <TextView
-                android:id="@+id/tv_main_valor_adicional"
-                style="@style/DetalhesItemValor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/DetalhesItemLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_attach_money_black_48px"
-                android:text="@string/text_item_main_desconto" />
-
-            <TextView
-                android:id="@+id/tv_main_valor_desconto"
-                style="@style/DetalhesItemValor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>
