@@ -32,7 +32,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.adapter.AReceberAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.TIPO_A_RECEBER_RECEBIMENTO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.TIPO_A_RECEBER_VENDA;
@@ -93,12 +93,12 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         setTitle(mNomeCliente);
 
         // Referencia os itens do layout
-        mButVenda = (Button) findViewById(R.id.but_a_receber_venda);
-        mButRecebimento = (Button) findViewById(R.id.but_a_receber_recebimento);
-        mEtDescricao = (EditText) findViewById(R.id.et_a_receber_descricao);
-        mEtValor = (EditText) findViewById(R.id.et_a_receber_valor);
-        mTvTotal = (TextView) findViewById(R.id.tv_a_receber_total);
-        ListView listView = (ListView) findViewById(R.id.lv_list_registro_receber);
+        mButVenda = findViewById(R.id.but_a_receber_venda);
+        mButRecebimento = findViewById(R.id.but_a_receber_recebimento);
+        mEtDescricao = findViewById(R.id.et_a_receber_descricao);
+        mEtValor = findViewById(R.id.et_a_receber_valor);
+        mTvTotal = findViewById(R.id.tv_a_receber_total);
+        ListView listView = findViewById(R.id.lv_list_registro_receber);
 
         // Controla a entrada de caracteres nos edits
         controleTextWatcher();
@@ -302,7 +302,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         }
 
         // Campo deve ter pelo menos 10 caracteres
-        if (descricaoEditText.length() < MIN_QUANT_CARACT) {
+        if (descricaoEditText.length() < MIN_QUANT_CARACT_10) {
 
             mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
             mEtDescricao.requestFocus();

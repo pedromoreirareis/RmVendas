@@ -29,7 +29,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 
 public class ProdutosCadActivity extends AppCompatActivity implements
@@ -66,8 +66,8 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         }
 
         // Referencia itens do layout
-        mEtNome = (EditText) findViewById(R.id.et_nome);
-        mEtValor = (EditText) findViewById(R.id.et_preco);
+        mEtNome = findViewById(R.id.et_nome);
+        mEtValor = findViewById(R.id.et_preco);
 
         // Controle entrada de caracteres nos edits
         controleTextWatcher();
@@ -190,7 +190,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         }
 
         // determina quantidade minima de caracteres no campo de descrição
-        if (nomeEditText.length() < MIN_QUANT_CARACT) {
+        if (nomeEditText.length() < MIN_QUANT_CARACT_10) {
 
             mEtNome.setError(getString(R.string.error_campo_lenght_10));
             mEtNome.requestFocus();

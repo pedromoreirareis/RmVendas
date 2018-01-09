@@ -18,7 +18,9 @@ public class Constantes {
     public static final int NUMERO_UM = 1;
     public static final String NUMERO_ZERO_STRING = "0";
     public static final String NUMERO_UM_STRING = "1";
-    public static final int MIN_QUANT_CARACT = 10;
+    public static final int MIN_QUANT_CARACT_10 = 10;
+    public static final int MIN_QUANT_CARACT_5 = 5;
+    public static final int MIN_DIGITOS_NUM_FONE = 8;
 
 
     public static final String UMA_UNIDADE = "1";

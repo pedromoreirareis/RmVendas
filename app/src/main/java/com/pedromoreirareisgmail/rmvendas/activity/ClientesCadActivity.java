@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
@@ -32,6 +34,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
+    public static final String TAG = ClientesCadActivity.class.getSimpleName();
     public static final int LOADER_CLIENTES_CAD = 0;
 
     private EditText mEtNome;
@@ -45,60 +48,64 @@ public class ClientesCadActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clientes_cad);
 
-        /* Se Activity foi aberta para alteração, vair receber uma Uri*/
-        Intent intentUri = getIntent();
-        mUriAtual = intentUri.getData();
+        Log.v(TAG, "onCreate");
 
-        /* Se não foi recebido Uri, Activity vai adicionar registro. Se recebeu vai editar.*/
+        initViews();
+        initIntents();
+
+        /* Se Uri vazio, Activity vai adicionar registro. Senão então editar.*/
         if (mUriAtual == null) {
 
             setTitle(getResources().getString(R.string.title_clientes_add));
-
         } else {
 
-            /* Se for editar fara pesquisa na banco de dados para pegar dados do Uri passado*/
+            /* Para editar fazer pesquisa no BD para pegar dados do Uri passado*/
             setTitle(getResources().getString(R.string.title_clientes_edit));
             getLoaderManager().initLoader(LOADER_CLIENTES_CAD, null, this);
         }
 
-        // Referencia itens do layout
-        mEtNome = (EditText) findViewById(R.id.et_clientes_nome);
-        mEtFone = (EditText) findViewById(R.id.et_clientes_numero_fone);
-
-        // Verifica se houve alteração nos texto do edit
+        // Verifica se houve alteração nos caracteres do edit
         if (!isDadosAlterado) {
-            isDadosAlterado =
-                    Utilidades.verificarAlteracaoDados(mEtFone)
-                            || Utilidades.verificarAlteracaoDados(mEtNome);
+
+            isDadosAlterado = Utilidades.verificarAlteracaoDados(mEtFone)
+                    || Utilidades.verificarAlteracaoDados(mEtNome);
         }
 
         mEtFone.setOnEditorActionListener(this);
-
         mEtFone.setOnTouchListener(this);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu Objeto para criação do menu
-     * @return verdadeiro se menu foi inflado a partir de um Layout de menu
-     */
+    private void initViews() {
+
+        // Referencia itens do layout
+        mEtNome = findViewById(R.id.et_clientes_nome);
+        mEtFone = findViewById(R.id.et_clientes_numero_fone);
+
+        Log.v(TAG, "initViews");
+    }
+
+    private void initIntents() {
+
+        /* Se Activity foi aberta para alteração, vair receber uma Uri*/
+        Intent intentUri = getIntent();
+        mUriAtual = intentUri.getData();
+
+        Log.v(TAG, "initIntents");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_salvar, menu);
+        Log.v(TAG, "onCreateOptionsMenu");
 
+        getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
 
-    /**
-     * Identifica item do menu selecionado
-     *
-     * @param item Item do menu que foi selecionado
-     * @return verdadeiro se item do menu selecionado foi ativado corretamente
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.v(TAG, "onOptionsItemSelected");
 
         int id = item.getItemId();
 
@@ -141,6 +148,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        Log.v(TAG, "onBackPressed");
+
         if (!isDadosAlterado) {
 
             super.onBackPressed();
@@ -156,13 +165,23 @@ public class ClientesCadActivity extends AppCompatActivity implements
      * depois salva no banco de dados*/
     private void salvarDadosBD() {
 
+        Log.v(TAG, "Iniciando salvar BD");
+
         String nomeEditText = mEtNome.getText().toString().trim();
         String foneEditText = mEtFone.getText().toString().trim();
 
-        // Campo não pode ficar vazio
+        // O campo nome não pode ficar vazio
         if (TextUtils.isEmpty(nomeEditText)) {
 
             mEtNome.setError(getString(R.string.error_campo_vazio));
+            mEtNome.requestFocus();
+            return;
+        }
+
+        // O campo nome deve ter pelo menos 5 caracteres
+        if (nomeEditText.length() < Constantes.MIN_QUANT_CARACT_5) {
+
+            mEtNome.setError(getString(R.string.error_campo_lenght_5));
             mEtNome.requestFocus();
             return;
         }
@@ -175,6 +194,13 @@ public class ClientesCadActivity extends AppCompatActivity implements
             return;
         }
 
+        // Campo não pode ficar vazio
+        if (foneEditText.length() < Constantes.MIN_DIGITOS_NUM_FONE) {
+
+            mEtFone.setError(getString(R.string.error_campo_lenght_fone));
+            mEtFone.requestFocus();
+            return;
+        }
 
         ContentValues values = new ContentValues();
         values.put(AcessoClientes.NOME, nomeEditText);
@@ -184,11 +210,17 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
             Crud.inserir(ClientesCadActivity.this, AcessoClientes.CONTENT_URI_CLIENTES, values);
 
+            Log.v(TAG, "Adicionar - adicionou cliente");
+
         } else {
 
 
             Crud.editar(ClientesCadActivity.this, mUriAtual, values);
+
+            Log.v(TAG, "Editando - editou cliente");
         }
+
+        Log.v(TAG, "Finalizando salvar BD");
 
         finish();
     }
@@ -205,6 +237,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
      */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        Log.v(TAG, "onCreateLoader");
 
         // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
         String[] projection = {
@@ -232,6 +266,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        Log.v(TAG, "onLoadFinished");
+
         // Pega nome e telefone do cliente e coloca nos Edits, caso esteja editando
         if (cursor.moveToFirst()) {
 
@@ -240,7 +276,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
             int foneBD = cursor.getInt(
                     cursor.getColumnIndex(AcessoClientes.TELEFONE));
-
 
             mEtNome.setText(nomeBD);
             mEtFone.setText(foneBD);
@@ -267,6 +302,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
     @Override
     public boolean onTouch(View view, MotionEvent event) {
 
+        Log.v(TAG, "onTouch");
+
         int id = view.getId();
 
         switch (id) {
@@ -282,7 +319,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
                 Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtFone);
                 return true;
 
-
             default:
                 return false;
         }
@@ -291,6 +327,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        Log.v(TAG, "onEditorAction");
 
         // Salvar dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {

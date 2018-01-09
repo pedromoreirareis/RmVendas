@@ -97,7 +97,7 @@
     <string name="text_item_main_valor_total">Total.......:  %1$s</string>
     <string name="text_item_main_valor_a_vista">A Vista....:  %1$s</string>
     <string name="text_item_main_valor_prazo">Prazo......:  %1$s</string>
-    <string name="text_item_main_valor_prazo_cliente">u0020,Cliente.....:  %1$s</string>
+    <string name="text_item_main_valor_prazo_cliente">Cliente.....:  %1$s</string>
 
 
     <!-- ************************    Fechamento - Activity Fechamento ************************** -->
@@ -215,6 +215,8 @@
     <string name="error_valor_inteiro">O valor deve ser inteiro</string>
     <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
     <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 caracteres</string>
+    <string name="error_campo_lenght_5">Esse campo deve ter pelo menos 5 caracteres</string>
+    <string name="error_campo_lenght_fone">O telefone deve ter pelo manos 8 dígitos</string>
 
 
     <!-- *******************************************************************************************

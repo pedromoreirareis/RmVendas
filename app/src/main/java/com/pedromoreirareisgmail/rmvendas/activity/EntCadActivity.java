@@ -30,7 +30,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
 
@@ -203,7 +203,7 @@ public class EntCadActivity extends AppCompatActivity implements
         }
 
         // Descrição deve ter pelo menos 10 caracteres
-        if (descricaoEditText.length() < MIN_QUANT_CARACT) {
+        if (descricaoEditText.length() < MIN_QUANT_CARACT_10) {
 
             mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
             mEtDescricao.requestFocus();

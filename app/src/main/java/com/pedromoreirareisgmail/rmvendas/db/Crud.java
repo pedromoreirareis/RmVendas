@@ -4,11 +4,14 @@ package com.pedromoreirareisgmail.rmvendas.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 
 public class Crud {
+
+    private static final String TAG = Crud.class.getSimpleName();
 
     /**
      * Insere um registro no Banco de Dados
@@ -18,6 +21,8 @@ public class Crud {
      * @param values  Dados a ser inserido
      */
     public static void inserir(Context context, Uri uri, ContentValues values) {
+
+        Log.v(TAG, "Crud - inserir");
 
         Uri newUri = context.getContentResolver().insert(uri, values);
 
@@ -38,6 +43,8 @@ public class Crud {
      * @param values  dados a serem editados(Atualizados)
      */
     public static void editar(Context context, Uri uri, ContentValues values) {
+
+        Log.v(TAG, "Crud - editar");
 
         int editadas = context.getContentResolver().update(uri, values, null, null);
 
