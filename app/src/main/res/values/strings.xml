@@ -31,15 +31,18 @@
     <string name="title_clientes_edit">Editar Cliente</string>
     <string name="title_venda_clientes_list">Clientes Cadastrados</string>
 
+
     <!-- ****************************   Menus - Title *******************************************-->
     <string name="menu_salvar_title">Salvar</string>
     <string name="menu_data_title">Data</string>
     <string name="menu_pesquisar_title">Pesquisar</string>
     <string name="menu_telefone_cliente_title">Ligar</string>
 
+
     <!-- ***************************   Drawer - Toggle ******************************************-->
     <string name="navigation_drawer_open">Abrir</string>
     <string name="navigation_drawer_close">Fechar</string>
+
 
     <!-- **********************    Menus Navigation Drawer - Title ***************************** -->
     <string name="menu_entrada_title_drawer">Entrada</string>
@@ -53,6 +56,7 @@
     <string name="menu_receber_title_drawer">A Receber</string>
     <string name="menu_caixa_title_drawer">Caixa</string>
 
+
     <!-- ************************    Image Description ***************************************** -->
     <string name="image_desc_main_empty">Imagem de um bolo</string>
     <string name="image_desc_produto_list_empty">Imagem de uma lista vazia</string>
@@ -62,6 +66,7 @@
     <string name="image_desc_saldo_inicial_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
+
 
     <!-- ************************    Textos **************************************************** -->
     <string name="text_main_empty">Nenhum bolo vendido no dia !!!</string>
@@ -82,14 +87,18 @@
     <string name="text_registro_a_receber_venda">Venda</string>
     <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente">Saldo: %1$s</string>
     <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente_sem_registro">Não há registros!!!</string>
+    <string name="text_venda_a_prazo_venda">Venda a prazo - %1$s %2$s</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
-    <string name="text_item_main_total_venda_vista">Total..:</string>
-    <string name="text_item_main_prazo">Prazo.:</string>
-    <string name="text_item_main_adicional">Cobert:</string>
-    <string name="text_item_main_desconto">Desc..:</string>
-    <string name="text_item_main_quantidade">Quant.:</string>
+    <string name="text_item_main_valor_venda">Venda.....:  %1$s</string>
+    <string name="text_item_main_valor_adicional">Adicional.:  %1$s</string>
+    <string name="text_item_main_valor_desconto">Desconto.:  %1$s</string>
+    <string name="text_item_main_valor_total">Total.......:  %1$s</string>
+    <string name="text_item_main_valor_a_vista">A Vista....:  %1$s</string>
+    <string name="text_item_main_valor_prazo">Prazo......:  %1$s</string>
+    <string name="text_item_main_valor_prazo_cliente">u0020,Cliente.....:  %1$s</string>
+
 
     <!-- ************************    Fechamento - Activity Fechamento ************************** -->
     <string name="text_fechamento_saldo_inicial">Saldo inicial</string>
@@ -120,9 +129,11 @@
     <string name="hint_numero_fone">Nº Telefone</string>
     <string name="hint_nome_cliente">Nome do Cliente</string>
 
+
     <!-- ************************    Mensagens Edição ****************************************** -->
     <string name="msg_editado_sucesso">Editado com sucesso</string>
     <string name="msg_editado_erro">Erro ao editar</string>
+
 
     <!-- ************************    Mensagens dialog alterações ******************************* -->
     <string name="dialog_alteracao_titulo">Descartar as alterações?</string>
@@ -197,6 +208,11 @@
     <!-- *****************************    setError ********************************************* -->
     <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
     <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
+    <string name="error_valor_maior_zero_adicional">O valor adicional deve ser maior que zero</string>
+    <string name="error_valor_maior_zero_desconto">O valor do desconto deve ser maior que zero</string>
+    <string name="error_valor_maior_zero_prazo">O valor a prazo deve ser maior que zero</string>
+    <string name="error_nome_cliente">Para vender a prazo deve ser feita a pesquisa de um cliente</string>
+    <string name="error_valor_inteiro">O valor deve ser inteiro</string>
     <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
     <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 caracteres</string>
 

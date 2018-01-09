@@ -74,8 +74,8 @@ public class EntCadActivity extends AppCompatActivity implements
         }
 
         // Referencia itens do layout
-        mEtValor = (EditText) findViewById(R.id.et_valor);
-        mEtDescricao = (EditText) findViewById(R.id.et_descricao);
+        mEtValor = findViewById(R.id.et_valor);
+        mEtDescricao = findViewById(R.id.et_descricao);
 
         // Faz controle de entrada de dados no edit
         controleTextWatcher();
@@ -218,13 +218,13 @@ public class EntCadActivity extends AppCompatActivity implements
 
         if (mUriAtual == null) {
 
-            values.put(AcessoEntRet.DATA, obterDataHoraSistema());
+            values.put(AcessoEntRet.DATA_HORA, obterDataHoraSistema());
 
             Crud.inserir(EntCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
         } else {
 
-            values.put(AcessoEntRet.DATA, mDataHoraBD);
+            values.put(AcessoEntRet.DATA_HORA, mDataHoraBD);
 
             Crud.editar(EntCadActivity.this, mUriAtual, values);
         }
@@ -248,7 +248,7 @@ public class EntCadActivity extends AppCompatActivity implements
         // Retorna todos os dados do registro identificado pelo mUriAtual
         String[] projection = {
                 AcessoEntRet._ID,
-                AcessoEntRet.DATA,
+                AcessoEntRet.DATA_HORA,
                 AcessoEntRet.DESCRICAO,
                 AcessoEntRet.TIPO,
                 AcessoEntRet.VALOR
@@ -282,7 +282,7 @@ public class EntCadActivity extends AppCompatActivity implements
                     cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
 
             mDataHoraBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.DATA));
+                    cursor.getColumnIndex(AcessoEntRet.DATA_HORA));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
             mEtDescricao.setText(descricaoBD);

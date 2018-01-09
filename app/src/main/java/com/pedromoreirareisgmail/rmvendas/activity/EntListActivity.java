@@ -46,7 +46,7 @@ public class EntListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_ent_list);
 
         // Trata o botão Flutuante - Abre activity EntCadActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        FloatingActionButton fab = findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,9 +59,9 @@ public class EntListActivity extends AppCompatActivity implements
         });
 
         // Referencia itens do layout
-        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
-        ListView listView = (ListView) findViewById(R.id.lv_list);
+        TextView tvEmpty = findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
+        ListView listView = findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
@@ -136,16 +136,16 @@ public class EntListActivity extends AppCompatActivity implements
 
         String[] projection = {
                 AcessoEntRet._ID,
-                AcessoEntRet.DATA,
+                AcessoEntRet.DATA_HORA,
                 AcessoEntRet.VALOR,
                 AcessoEntRet.DESCRICAO,
                 AcessoEntRet.TIPO
         };
 
         /* Retorna dados cadastrados em uma data especificada e se for do tipo entrada */
-        String selection = AcessoEntRet.TIPO + " =? AND " + AcessoEntRet.DATA + " LIKE ?";
+        String selection = AcessoEntRet.TIPO + " =? AND " + AcessoEntRet.DATA_HORA + " LIKE ?";
         String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA_CAIXA), mDataPesquisarBD + "%"};
-        String sortOrder = AcessoEntRet.DATA;
+        String sortOrder = AcessoEntRet.DATA_HORA;
 
         return new CursorLoader(
                 this,
@@ -205,7 +205,7 @@ public class EntListActivity extends AppCompatActivity implements
                 getResources().getString(R.string.dialog_informacao_entrada_retirada_list),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
                 cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA))));
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA_HORA))));
 
         Dialogos.dialogoExibirDados(EntListActivity.this, tituloDialog, mensagemDialog);
     }
@@ -231,7 +231,7 @@ public class EntListActivity extends AppCompatActivity implements
                 getResources().getString(R.string.dialog_exc_edit_texto_excluir_valor),
                 cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA))));
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA_HORA))));
 
         Dialogos.dialogoEditarExcluir(
                 EntListActivity.this,

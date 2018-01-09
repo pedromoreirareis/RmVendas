@@ -52,7 +52,7 @@ public class EntAdapter extends CursorAdapter {
 
         /* Valor, hora e descrição de uma entrada */
         double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
-        String hora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA));
+        String hora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA_HORA));
         String descricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
 
         holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));

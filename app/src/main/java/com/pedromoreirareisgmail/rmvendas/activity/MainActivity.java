@@ -54,11 +54,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Cria o ToolBar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Cria o fab - botão flutuante
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        FloatingActionButton fab = findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
          * Indica que o botão toggle sera adcionado ao menu Drawer e seu estado estara ssicronizado
          * ao menu drawer
          */
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -82,13 +82,13 @@ public class MainActivity extends AppCompatActivity
          * O Drawer é o ViewGroup e NavigationView é uma view do Drawer
          * Indica que Activity é que vai gerenciar a seleção dos itens de menu do Navigation
          */
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Referencia os itens do layout
-        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
-        ListView listView = (ListView) findViewById(R.id.lv_list);
+        TextView tvEmpty = findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
+        ListView listView = findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
 
         // EmptyView sera acionado se não houver nenhum registro no listview
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
 
         // Referencia o o Drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         // Se Drawer Estiver aberto então fecha
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Apos o click o Drawer é fechado
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -247,13 +247,12 @@ public class MainActivity extends AppCompatActivity
                 AcessoVenda._ID,
                 AcessoVenda.NOME_PRODUTO,
                 AcessoVenda.QUANTIDADE_VENDIDA,
-                AcessoVenda.DATA,
+                AcessoVenda.DATA_HORA,
                 AcessoVenda.VALOR_TOTAL_VENDA,
-                AcessoVenda.TEM_DESCONTO,
-                AcessoVenda.TEM_ADICIONAL,
                 AcessoVenda.VALOR_DESCONTO,
                 AcessoVenda.VALOR_ADICIONAL,
-                AcessoVenda.A_PRAZO,
+                AcessoVenda.VALOR_PRAZO,
+                AcessoVenda.ID_CLIENTE,
                 AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
         };
 
@@ -273,15 +272,15 @@ public class MainActivity extends AppCompatActivity
          */
         if (mPesquisarBD.length() > 0) {
 
-            selection = AcessoVenda.DATA + " LIKE ?  AND " + AcessoVenda.NOME_PRODUTO + " LIKE ?";
+            selection = AcessoVenda.DATA_HORA + " LIKE ?  AND " + AcessoVenda.NOME_PRODUTO + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%", "%" + mPesquisarBD + "%"};
-            sortOrder = AcessoVenda.DATA;
+            sortOrder = AcessoVenda.DATA_HORA;
 
         } else {
 
-            selection = AcessoVenda.DATA + " LIKE ?";
+            selection = AcessoVenda.DATA_HORA + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%"};
-            sortOrder = AcessoVenda.DATA;
+            sortOrder = AcessoVenda.DATA_HORA;
         }
 
         return new CursorLoader(

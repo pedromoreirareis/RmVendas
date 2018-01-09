@@ -13,42 +13,43 @@ public class Calculos {
      * para o usuário. O valor é calculado automaticamente, ao escolher quantidade, valor adicional,
      * e valor de desconto.
      *
-     * @param vlQ    Quantidade de bolos
-     * @param vlC    Valor adicional, se tiver
-     * @param vlD    Valor do desconto, se tiver
+     * @param vlQquantidade    Quantidade de bolos
+     * @param vlAdicional    Valor adicional, se tiver
+     * @param vlDesconto    Valor do desconto, se tiver
+     * @param vlPrazo    Valor fiado, se tiver
      * @param vlProd Valor de cada unidade do produto
      * @return uma string em formato currency do valor total
      */
-    public static String calcularValorVendaBolo(String vlQ, String vlC, String vlD, String vlP, double vlProd) {
+    public static String calcularValorVendaBolo(String vlQquantidade, String vlAdicional, String vlDesconto, String vlPrazo, double vlProduto) {
 
-        if (TextUtils.isEmpty(vlQ)) {
+        if (TextUtils.isEmpty(vlQquantidade)) {
 
-            vlQ = "0";
+            vlQquantidade = "0";
         }
 
-        if (TextUtils.isEmpty(vlC)) {
+        if (TextUtils.isEmpty(vlAdicional)) {
 
-            vlC = "0";
+            vlAdicional = "0";
         }
 
-        if (TextUtils.isEmpty(vlD)) {
+        if (TextUtils.isEmpty(vlDesconto)) {
 
-            vlD = "0";
+            vlDesconto = "0";
         }
 
-        if (TextUtils.isEmpty(vlP)) {
+        if (TextUtils.isEmpty(vlPrazo)) {
 
-            vlP = "0";
+            vlPrazo = "0";
         }
 
-        double valorQ = Double.parseDouble(vlQ);
-        double valorC = Double.parseDouble(vlC) / 100;
-        double valorD = Double.parseDouble(vlD) / 100;
-        double valorP = Double.parseDouble(vlP) / 100;
+        double valorQuantidade = Double.parseDouble(vlQquantidade);
+        double valorAdicional = Double.parseDouble(vlAdicional) / 100;
+        double valorDesconto = Double.parseDouble(vlDesconto) / 100;
+        double valorPrazo = Double.parseDouble(vlPrazo) / 100;
 
-        double quantValor = valorQ * vlProd;
+        double quantValor = valorQuantidade * vlProduto;
 
-        double total = quantValor + valorC - valorD - valorP;
+        double total = quantValor + valorAdicional - valorDesconto - valorPrazo;
 
         NumberFormat preco = NumberFormat.getCurrencyInstance();
 
@@ -60,18 +61,21 @@ public class Calculos {
      * Recebe o valor de cada unidade do produto, a quantidade do produto que sera vendida, o valor
      * adicional e o valor do desconto. Calcula o valor da venda, para ser salvo no banco de dados
      *
-     * @param vlProd valor de cada unidade do produto
-     * @param valorQ quantidade do produto a ser vendida
-     * @param valorC valor adicional, se tiver
-     * @param valorD valor do desconto, se tiver
+     * @param vlProduto valor de cada unidade do produto
+     * @param valorQuantidade quantidade do produto a ser vendida
+     * @param valorAdicional valor adicional, se tiver
+     * @param valorDesconto valor do desconto, se tiver
      * @return um double com o valor da venda para ser salvo no banco de dados
      */
-    public static double calcularValorVendaBoloDouble(double vlProd, double valorQ, double valorC, double valorD) {
+    public static double calcularValorVendaBoloDouble(double vlProduto,
+                                                      double valorQuantidade,
+                                                      double valorAdicional,
+                                                      double valorDesconto) {
 
 
-        double quantValor = valorQ * vlProd;
+        double quantValor = valorQuantidade * vlProduto;
 
-        return quantValor + valorC - valorD;
+        return quantValor + valorAdicional - valorDesconto;
 
     }
 

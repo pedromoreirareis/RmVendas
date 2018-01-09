@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tv_a_receber_total"
-        style="@style/TituloTextView"
+        style="@style/DestaqueNegrito"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_padrao_8"

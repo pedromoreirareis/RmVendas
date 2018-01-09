@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/tv_a_receber_list_data"
-        style="@style/TituloTextView"
+        style="@style/DescricaoNormal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_padrao_8"
@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/tv_a_receber_list_descricao"
-        style="@style/TituloTextView"
+        style="@style/DescricaoNormal"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/margin_padrao_4"
@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/tv_a_receber_list_valor"
-        style="@style/TituloTextView"
+        style="@style/DestaqueNegrito"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_padrao_4"

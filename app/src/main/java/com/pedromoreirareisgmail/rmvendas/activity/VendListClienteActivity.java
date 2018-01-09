@@ -30,21 +30,17 @@ public class VendListClienteActivity extends AppCompatActivity implements
     private static final String VALOR_UNIDADE = "valor_unidade";
     private static final String NOME_PRODUTO = "nome_produto";
     private static final String QUANTIDADE_PRODUTO = "quantidade";
-    private static final String TEM_ADICIONAL_AD = "adicional";
-    private static final String VALOR_ADICIONAL_AD = "valor_adicional";
-    private static final String TEM_DESCONTO_D = "desconto";
-    private static final String VALOR_DESCONTO_D = "valor_desconto";
-    private static final String TEM_A_PRAZO_P = "prazo";
+    private static final String VALOR_ADICIONAL = "valor_adicional";
+    private static final String VALOR_DESCONTO = "valor_desconto";
+    private static final String VALOR_PRAZO = "valor_prazo";
     private static final String ID_CLIENTE = "id_cliente";
     private String mUri;
     private String mValorUnidade;
     private String mNomeProduto;
     private String mQuantidadeProduto;
-    private boolean mTemAdicional;
     private String mValorAdicional;
-    private boolean mTemDesconto;
     private String mValorDesconto;
-    private boolean mTemPrazo;
+    private String mValorPrazo;
     private ClientesAdapter mAdapter;
 
     private String mPesquisar = "";
@@ -69,26 +65,22 @@ public class VendListClienteActivity extends AppCompatActivity implements
         if (intentDadosVenda.hasExtra(QUANTIDADE_PRODUTO)) {
             mQuantidadeProduto = intentDadosVenda.getStringExtra(QUANTIDADE_PRODUTO);
         }
-        if (intentDadosVenda.hasExtra(TEM_ADICIONAL_AD)) {
-            mTemAdicional = intentDadosVenda.getBooleanExtra(TEM_ADICIONAL_AD, false);
+
+        if (intentDadosVenda.hasExtra(VALOR_ADICIONAL)) {
+            mValorAdicional = intentDadosVenda.getStringExtra(VALOR_ADICIONAL);
         }
-        if (intentDadosVenda.hasExtra(VALOR_ADICIONAL_AD)) {
-            mValorAdicional = intentDadosVenda.getStringExtra(VALOR_ADICIONAL_AD);
+
+        if (intentDadosVenda.hasExtra(VALOR_DESCONTO)) {
+            mValorDesconto = intentDadosVenda.getStringExtra(VALOR_DESCONTO);
         }
-        if (intentDadosVenda.hasExtra(TEM_DESCONTO_D)) {
-            mTemDesconto = intentDadosVenda.getBooleanExtra(TEM_DESCONTO_D, false);
-        }
-        if (intentDadosVenda.hasExtra(VALOR_DESCONTO_D)) {
-            mValorDesconto = intentDadosVenda.getStringExtra(VALOR_DESCONTO_D);
-        }
-        if (intentDadosVenda.hasExtra(TEM_A_PRAZO_P)) {
-            mTemPrazo = intentDadosVenda.getBooleanExtra(TEM_A_PRAZO_P, false);
+        if (intentDadosVenda.hasExtra(VALOR_PRAZO)) {
+            mValorPrazo = intentDadosVenda.getStringExtra(VALOR_PRAZO);
         }
 
         // Referencia itens do layout
-        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
-        ListView listView = (ListView) findViewById(R.id.lv_list);
+        TextView tvEmpty = findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
+        ListView listView = findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
 
         // Layout vazio - Cadastro sem registros
@@ -190,11 +182,9 @@ public class VendListClienteActivity extends AppCompatActivity implements
         bundle.putString(NOME_PRODUTO, mNomeProduto);
         bundle.putString(VALOR_UNIDADE, mValorUnidade);
         bundle.putString(QUANTIDADE_PRODUTO, mQuantidadeProduto);
-        bundle.putBoolean(TEM_ADICIONAL_AD, mTemAdicional);
-        bundle.putString(VALOR_ADICIONAL_AD, mValorAdicional);
-        bundle.putBoolean(TEM_DESCONTO_D, mTemDesconto);
-        bundle.putString(VALOR_DESCONTO_D, mValorDesconto);
-        bundle.putBoolean(TEM_A_PRAZO_P, mTemPrazo);
+        bundle.putString(VALOR_ADICIONAL, mValorAdicional);
+        bundle.putString(VALOR_DESCONTO, mValorDesconto);
+        bundle.putString(VALOR_PRAZO, mValorDesconto);
 
         intent.putExtras(bundle);
 

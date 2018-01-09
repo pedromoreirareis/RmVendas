@@ -46,7 +46,7 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_saldo_list);
 
         // Trata o botão Flutuante - Abre activity SaldoInicialCadActivity
-        fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        fab = findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,9 +58,9 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         });
 
         //  Faz referencia aos itens do layout
-        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
-        ListView listView = (ListView) findViewById(R.id.lv_list);
+        TextView tvEmpty = findViewById(R.id.tv_empty_view);
+        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
+        ListView listView = findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
 
         //  layout vazio - cadastro sem registros
@@ -135,12 +135,12 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         String[] projection = {
                 AcessoSaldo._ID,
-                AcessoSaldo.DATA,
+                AcessoSaldo.DATA_HORA,
                 AcessoSaldo.VALOR
         };
 
         // Procura por todos os dados salvos na tabela com parte da data do tipo "yyyy-MM-dd"
-        String selection = AcessoSaldo.DATA + " LIKE ?";
+        String selection = AcessoSaldo.DATA_HORA + " LIKE ?";
         String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
         return new CursorLoader(
@@ -206,8 +206,8 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA))));
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))));
 
         Dialogos.dialogoExibirDados(SaldoInicialListActivity.this, tituloDialog, mensagemDialog);
     }
@@ -237,7 +237,7 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA))));
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))));
 
         Dialogos.dialogoEditarExcluir(
                 SaldoInicialListActivity.this,

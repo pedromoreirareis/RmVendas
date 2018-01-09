@@ -13,15 +13,11 @@ public class Constantes {
     /*RECEBIMENTO - usado no BD para registrar que o cliente efetuou um pagamento*/
     public static final int TIPO_A_RECEBER_RECEBIMENTO = 1;
 
-    public static final int ADICIONAL_SIM = 1;
-    public static final int ADICIONAL_NAO = 0;
-    public static final int DESCONTO_SIM = 1;
-    public static final int DESCONTO_NAO = 0;
-    public static final int PRAZO_SIM = 1;
-    public static final int PRAZO_NAO = 0;
-
-
+    /* Parametros de comparação */
     public static final int NUMERO_ZERO = 0;
+    public static final int NUMERO_UM = 1;
+    public static final String NUMERO_ZERO_STRING = "0";
+    public static final String NUMERO_UM_STRING = "1";
     public static final int MIN_QUANT_CARACT = 10;
 
 

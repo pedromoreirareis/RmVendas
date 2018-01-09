@@ -92,7 +92,7 @@ public class Contrato {
         public static final String TABELA_ENT_RET = "Entradas_Retiradas";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA = "data_hora";
+        public static final String DATA_HORA = "data_hora";
         public static final String TIPO = "tipo";
         public static final String VALOR = "valor";
         public static final String DESCRICAO = "descricao";
@@ -100,7 +100,7 @@ public class Contrato {
         public static final String CRIAR_TABELA_ENT_RET =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_ENT_RET + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + DATA + " TEXT NOT NULL, "
+                        + DATA_HORA + " TEXT NOT NULL, "
                         + TIPO + " INTEGER NOT NULL, "
                         + VALOR + " REAL NOT NULL DEFAULT 0, "
                         + DESCRICAO + " TEXT NOT NULL );";
@@ -124,14 +124,14 @@ public class Contrato {
         public static final String TABELA_SALDO_INICIAL = "Saldo_Inicial";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA = "data_hora";
+        public static final String DATA_HORA = "data_hora";
         public static final String VALOR = "valor";
 
 
         public static final String CRIAR_TABELA_SALDO_INICIAL =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_SALDO_INICIAL + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + DATA + " TEXT NOT NULL, "
+                        + DATA_HORA + " TEXT NOT NULL, "
                         + VALOR + " REAL NOT NULL DEFAULT 0 );";
 
         public static final String CONTENT_ITEM_TYPE_SALDO_INICIAL =
@@ -154,29 +154,27 @@ public class Contrato {
         public static final String TABELA_VENDAS = "Vendas";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA = "data_hora";
+        public static final String DATA_HORA = "data_hora";
         public static final String NOME_PRODUTO = "nome_produto";
         public static final String VALOR_UMA_UNIDADE_PRODUTO = "valor_unidade_produto";
         public static final String QUANTIDADE_VENDIDA = "quantidade";
-        public static final String TEM_ADICIONAL = "tem_adicional";
         public static final String VALOR_ADICIONAL = "valor_adicional";
-        public static final String TEM_DESCONTO = "tem_desconto";
         public static final String VALOR_DESCONTO = "valor_desconto";
-        public static final String A_PRAZO = "tem_a_prazo";
+        public static final String VALOR_PRAZO = "valor_prazo";
+        public static final String ID_CLIENTE = "id_cliente";
         public static final String VALOR_TOTAL_VENDA = "valor_total_venda";
 
         public static final String CRIAR_TABELA_VENDA =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_VENDAS + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + DATA + " TEXT NOT NULL, "
+                        + DATA_HORA + " TEXT NOT NULL, "
                         + NOME_PRODUTO + " TEXT NOT NULL, "
                         + VALOR_UMA_UNIDADE_PRODUTO + " REAL NOT NULL DEFAULT 0, "
                         + QUANTIDADE_VENDIDA + " INTEGER NOT NULL, "
-                        + TEM_ADICIONAL + " INTEGER NOT NULL, "
                         + VALOR_ADICIONAL + " REAL, "
-                        + TEM_DESCONTO + " INTEGER NOT NULL, "
                         + VALOR_DESCONTO + " REAL, "
-                        + A_PRAZO + " INTEGER NOT NULL, "
+                        + VALOR_PRAZO + " REAL, "
+                        + ID_CLIENTE + " INTEGER, "
                         + VALOR_TOTAL_VENDA + " REAL NOT NULL DEFAULT 0 );";
 
         public static final String CONTENT_ITEM_TYPE_VENDA =

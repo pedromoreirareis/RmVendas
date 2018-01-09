@@ -7,14 +7,14 @@
 
     <TextView
         android:id="@+id/tv_saldo_inicial_valor_list"
-        style="@style/TituloTextView"
+        style="@style/DestaqueNegrito"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
         android:id="@+id/tv_saldo_inicial_hora_list"
-        style="@style/DataHoraTextView"
+        style="@style/DireitaNormal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

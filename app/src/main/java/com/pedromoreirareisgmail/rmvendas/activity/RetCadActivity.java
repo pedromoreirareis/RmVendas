@@ -71,8 +71,8 @@ public class RetCadActivity extends AppCompatActivity implements
         }
 
         // Referencia itens do layout
-        mEtValor = (EditText) findViewById(R.id.et_valor);
-        mEtDescricao = (EditText) findViewById(R.id.et_descricao);
+        mEtValor = findViewById(R.id.et_valor);
+        mEtDescricao = findViewById(R.id.et_descricao);
 
         // Monitora caracteres digitas no edit
         controleTextWatcher();
@@ -215,13 +215,13 @@ public class RetCadActivity extends AppCompatActivity implements
          */
         if (mUriAtual == null) {
 
-            values.put(AcessoEntRet.DATA, obterDataHoraSistema());
+            values.put(AcessoEntRet.DATA_HORA, obterDataHoraSistema());
 
             Crud.inserir(RetCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
         } else {
 
-            values.put(AcessoEntRet.DATA, mDataHoraBD);
+            values.put(AcessoEntRet.DATA_HORA, mDataHoraBD);
 
             Crud.editar(RetCadActivity.this, mUriAtual, values);
         }
@@ -241,7 +241,7 @@ public class RetCadActivity extends AppCompatActivity implements
 
         String[] projection = {
                 AcessoEntRet._ID,
-                AcessoEntRet.DATA,
+                AcessoEntRet.DATA_HORA,
                 AcessoEntRet.DESCRICAO,
                 AcessoEntRet.TIPO,
                 AcessoEntRet.VALOR
@@ -275,7 +275,7 @@ public class RetCadActivity extends AppCompatActivity implements
                     cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
 
             mDataHoraBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.DATA));
+                    cursor.getColumnIndex(AcessoEntRet.DATA_HORA));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
             mEtDescricao.setText(descricaoBD);

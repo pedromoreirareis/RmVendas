@@ -53,7 +53,7 @@ public class SaldoInicialAdapter extends CursorAdapter {
 
         /* valor e hora que foi adicionado o saldo inicial */
         double valor = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR));
-        String hora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA));
+        String hora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA));
 
         holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
         holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(hora));

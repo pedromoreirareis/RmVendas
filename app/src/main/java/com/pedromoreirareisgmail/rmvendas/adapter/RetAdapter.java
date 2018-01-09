@@ -52,7 +52,7 @@ public class RetAdapter extends CursorAdapter {
 
         /* valor, hora e descrição de uma retirada */
         double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
-        String hora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA));
+        String hora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA_HORA));
         String desccricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
 
         holder.valor.setText(Formatar.formatarDoubleParaCurrency(valor));

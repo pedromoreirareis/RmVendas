@@ -65,7 +65,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         }
 
         // Referencia intens do layout
-        mEtValor = (EditText) findViewById(R.id.et_valor);
+        mEtValor = findViewById(R.id.et_valor);
 
         /* Define o EditorAction do teclado, refrente a view mEtValor
          * Quando o teclado estiver aberto referente ao edit mEtValor, o EditorAction sera DONE
@@ -185,13 +185,13 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         // Salva dados no BD
         if (mUriAtual == null) {
 
-            values.put(AcessoSaldo.DATA, obterDataHoraSistema());
+            values.put(AcessoSaldo.DATA_HORA, obterDataHoraSistema());
 
             Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO_INICIAL, values);
 
         } else {
 
-            values.put(AcessoSaldo.DATA, mDataHoraBD);
+            values.put(AcessoSaldo.DATA_HORA, mDataHoraBD);
 
             Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
         }
@@ -212,7 +212,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
         String[] projection = {
                 AcessoSaldo._ID,
-                AcessoSaldo.DATA,
+                AcessoSaldo.DATA_HORA,
                 AcessoSaldo.VALOR
         };
 
@@ -238,7 +238,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         if (cursor.moveToFirst()) {
 
             double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA));
+            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
         }

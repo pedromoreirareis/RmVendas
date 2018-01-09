@@ -19,142 +19,154 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/margin_padrao_8">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padrao_1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_main_nome"
-                    style="@style/TituloTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/tv_main_data"
-                    style="@style/DataHoraTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/margin_padrao_4"
-                android:background="@color/colorAccent" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:layout_marginLeft="@dimen/margin_padrao_8"
+                android:layout_marginRight="@dimen/margin_padrao_8"
+                android:layout_marginTop="@dimen/margin_padrao_8"
+                app:cardBackgroundColor="@color/colorRed"
+                app:cardCornerRadius="8dp"
+                app:elevation="16dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_margin="@dimen/margin_padrao_8"
                     android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/DetalhesItemLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_shopping_cart_black_48px"
-                        android:text="@string/text_item_main_quantidade" />
 
                     <TextView
                         android:id="@+id/tv_main_valor_quantidade"
-                        style="@style/DetalhesItemValor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_main_valor_label_venda"
-                        style="@style/DetalhesItemLabel"
+                        style="@style/DestaqueNegrito"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_attach_money_black_48px"
-                        android:text="@string/text_item_main_total_venda_vista" />
+                        android:layout_marginEnd="@dimen/margin_padrao_8"
+                        android:layout_marginStart="@dimen/margin_padrao_8"
+                        android:textColor="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/tv_main_nome_produto"
+                        style="@style/DestaqueNegrito"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/tv_main_data_hora"
+                        style="@style/DireitaNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_padrao_8"
+                        android:layout_marginStart="@dimen/margin_padrao_8"
+                        android:textColor="@color/colorWhite" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_padrao_8"
+                android:paddingEnd="@dimen/margin_padrao_8"
+                android:paddingStart="@dimen/margin_padrao_8">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/margin_padrao_4"
+                    android:background="@color/colorAccent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_main_valor_venda"
                         style="@style/DetalhesItemValor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px" />
 
                     <TextView
-                        style="@style/DetalhesItemLabel"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_main_valor_total"
+                        style="@style/DetalhesItemValor"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_attach_money_black_48px"
-                        android:text="@string/text_item_main_adicional" />
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_main_valor_adicional"
                         style="@style/DetalhesItemValor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px" />
 
                     <TextView
-                        style="@style/DetalhesItemLabel"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_main_valor_a_vista"
+                        style="@style/DetalhesItemValor"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_attach_money_black_48px"
-                        android:text="@string/text_item_main_desconto" />
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_main_valor_desconto"
                         style="@style/DetalhesItemValor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px" />
 
+                    <TextView
+                        android:id="@+id/tv_main_valor_a_prazo"
+                        style="@style/DetalhesItemValor"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_attach_money_black_48px"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
-            </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/margin_padrao_4"
+                    android:background="@color/colorAccent" />
 
+                <TextView
+                    android:id="@+id/tv_main_valor_a_prazo_nome_cliente"
+                    style="@style/DetalhesItemValor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_people_black_48px"
+                    android:visibility="gone" />
+
+            </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
-
 </FrameLayout>
