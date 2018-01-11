@@ -64,21 +64,16 @@ public class ClientesAdapter extends CursorAdapter {
         holder.tvNome.setText(nomeBD);
         holder.tvFone.setText(foneBD);
 
-        /*  Cliente em debito - fonte do registro fica vermelha
-         *  Cliente sem debito e sem credito - fonte do registro fica preta
-         *  Cliente com credito - fonte do regitro fica azul
+        /*  Cliente em debito - fonte do registro do valor fica vermelha
+         *  Cliente com credito ou zerados - fonte do regitro do valor fica azul
          */
         if (valorAReceber < 0) {
 
-            holder.tvNome.setTextColor(context.getResources().getColor(R.color.colorRed));
-            holder.tvFone.setTextColor(context.getResources().getColor(R.color.colorRed));
             holder.tvValorReceber.setTextColor(context.getResources().getColor(R.color.colorRed));
             holder.tvValorReceber.setText(Formatar.formatarDoubleParaCurrency(valorAReceber));
 
         } else {
 
-            holder.tvNome.setTextColor(context.getResources().getColor(R.color.colorBlue));
-            holder.tvFone.setTextColor(context.getResources().getColor(R.color.colorBlue));
             holder.tvValorReceber.setTextColor(context.getResources().getColor(R.color.colorBlue));
             holder.tvValorReceber.setText(Formatar.formatarDoubleParaCurrency(valorAReceber));
         }

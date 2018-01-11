@@ -34,8 +34,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
-    public static final String TAG = ClientesCadActivity.class.getSimpleName();
-    public static final int LOADER_CLIENTES_CAD = 0;
+    private static final String TAG = ClientesCadActivity.class.getSimpleName();
+    private static final int LOADER_CLIENTES_CAD = 0;
 
     private EditText mEtNome;
     private EditText mEtFone;

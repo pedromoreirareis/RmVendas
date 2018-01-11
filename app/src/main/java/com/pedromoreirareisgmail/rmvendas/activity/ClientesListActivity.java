@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +32,14 @@ public class ClientesListActivity extends AppCompatActivity implements
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener {
 
-    public static final int LOADER_CLIENTES_LIST = 0;
+    private static final String TAG = ClientesListActivity.class.getSimpleName();
+    private static final int LOADER_CLIENTES_LIST = 0;
+
+    private TextView mTvEmpty;
+    private ImageView mIvEmpty;
+    private ListView mListView;
+    private View mEmptyView;
+    private FloatingActionButton mFab;
 
     private ClientesAdapter mAdapter;
 
@@ -42,50 +50,65 @@ public class ClientesListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clientes_list);
 
+        Log.v(TAG, "onCreate");
+
+        initViews();
+        emptyLayout();
+
         // Trata o botão Flutuante - Abre activity EntCadActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intentCadastroClientes = new Intent(
-                        ClientesListActivity.this, ClientesCadActivity.class);
+                Log.v(TAG, "FloatingActionButton");
+
+                Intent intentCadastroClientes =
+                        new Intent(ClientesListActivity.this, ClientesCadActivity.class);
+
                 startActivity(intentCadastroClientes);
             }
         });
 
-        // Referencia itens do layout
-        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
-        ListView listView = (ListView) findViewById(R.id.lv_list);
-        View emptyView = findViewById(R.id.empty_view);
-
-        // Layout vazio - Cadastro sem registros
-        tvEmpty.setText(R.string.text_clientes_list_empty);
-        ivEmpty.setImageResource(R.drawable.ic_money_up);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_clientes_list_empty));
-        listView.setEmptyView(emptyView);
-
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new ClientesAdapter(this);
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Clique simples e Longo no ListView
-        listView.setOnItemLongClickListener(this);
-        listView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
+        mListView.setOnItemClickListener(this);
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(LOADER_CLIENTES_LIST, null, this);
     }
 
-    /**
-     * Cria o menu e o SearchView para pesquisa no banco de dados
-     *
-     * @param menu Interface de criação do menu
-     * @return Menu inflado
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia itens do layout
+        mFab = findViewById(R.id.fab_add);
+        mTvEmpty = findViewById(R.id.tv_empty_view);
+        mIvEmpty = findViewById(R.id.iv_empty_view);
+        mListView = findViewById(R.id.lv_list);
+        mEmptyView = findViewById(R.id.empty_view);
+
+    }
+
+    private void emptyLayout() {
+
+        Log.v(TAG, "emptyLayout");
+
+        // Layout vazio - Cadastro sem registros
+        mTvEmpty.setText(R.string.text_clientes_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_money_up);
+        mIvEmpty.setContentDescription(getString(R.string.image_desc_clientes_list_empty));
+        mListView.setEmptyView(mEmptyView);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
@@ -98,15 +121,10 @@ public class ClientesListActivity extends AppCompatActivity implements
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * Define os parametros de pesquisa no BD
-     *
-     * @param id   Loader responsavel pela pesquisa
-     * @param args Conjunto de dados em um bundle
-     * @return Um Loader com um Cursor com resultado da pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 AcessoClientes._ID,
@@ -115,7 +133,8 @@ public class ClientesListActivity extends AppCompatActivity implements
         };
 
         /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
-         * utilizar o menu search, sera pesquisado pelo nome do produto */
+         * utilizar o menu search, sera pesquisado pelo nome do produto
+         */
         String selection = AcessoClientes.NOME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
         String sortOrder = AcessoClientes.NOME;
@@ -130,25 +149,18 @@ public class ClientesListActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Define o que fazer com os dados retornados do BD
-     *
-     * @param loader Define o loader pesquisado
-     * @param data   Cursor com dados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        Log.v(TAG, "onLoadFinished");
 
         mAdapter.swapCursor(data);
     }
 
-    /**
-     * Ao reiniciar a pesquisa o que fazer com os dados velhos
-     *
-     * @param loader Loader com dados antigos
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+        Log.v(TAG, "onLoaderReset");
 
         mAdapter.swapCursor(null);
     }
@@ -166,11 +178,13 @@ public class ClientesListActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        Log.v(TAG, "onItemClick");
+
         // No cursor pode-se obter os dados de cada cliente
         Cursor cursor = mAdapter.getCursor();
 
         String nomeCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
-        int foneCliente = cursor.getInt(cursor.getColumnIndex(AcessoClientes.TELEFONE));
+        String foneCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes.TELEFONE));
 
         Intent intentRegistroAReceber = new Intent(
                 ClientesListActivity.this, RegistroReceberActivity.class);
@@ -178,11 +192,10 @@ public class ClientesListActivity extends AppCompatActivity implements
         Bundle bundle = new Bundle();
         bundle.putString("clienteId", String.valueOf(id));
         bundle.putString("clienteNome", nomeCliente);
-        bundle.putString("clienteFone", String.valueOf(foneCliente));
+        bundle.putString("clienteFone", foneCliente);
 
         intentRegistroAReceber.putExtras(bundle);
         startActivity(intentRegistroAReceber);
-
     }
 
     /**
@@ -197,6 +210,8 @@ public class ClientesListActivity extends AppCompatActivity implements
      */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.v(TAG, "onItemLongClick");
 
         // Caminho especifico de um cliente no BD
         Uri uri = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, id);
@@ -217,12 +232,6 @@ public class ClientesListActivity extends AppCompatActivity implements
 
     }
 
-    /**
-     * Pesquisa apos digitação do texto e click no icone de pesquisa
-     *
-     * @param query Texto no campo Edit do SearcView
-     * @return verdadeiro se pesquisa for completada com sucesso
-     */
     @Override
     public boolean onQueryTextSubmit(String query) {
 
@@ -230,15 +239,10 @@ public class ClientesListActivity extends AppCompatActivity implements
         return false;
     }
 
-    /**
-     * Pesquisa no banco de dado de acordo com a alteração no texto digitado no edit do searchView
-     * Apenas pela alteração do texto, faz uma nova pesquisa
-     *
-     * @param newText Texto no campo Edit do searchView
-     * @return verdadeiro se pesquisa doi efetuada com sucesso
-     */
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        Log.v(TAG, "onQueryTextChange");
 
         mPesquisar = newText;
 

@@ -7,46 +7,60 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.PesquisasBD;
+
+import java.text.NumberFormat;
 
 public class FechamentoActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String TAG = FechamentoActivity.class.getSimpleName();
     private static final int LOADER_ENTRADAS_RETIRADAS = 0;
     private static final int LOADER_SALDO_INICIAL = 1;
     private static final int LOADER_VENDAS = 2;
 
-    private TextView tvValorSaldoInicial;
-    private TextView tvValorEntradas;
-    private TextView tvValorRetiradas;
-    private TextView tvValorDescontos;
-    private TextView tvValorTotalVendasPrazo;
-    private TextView tvValorTotalVendasVista;
-    private TextView tvValorSaldoFinalFechamento;
-    private TextView tvQuantidadeBolosVendidos;
-    private TextView tvQuantidadeBolosVendidosVista;
-    private TextView tvQuantidadeBolosVendidosPrazo;
+    private TextView mTvValorSaldoInicial;
+    private TextView mTvValorEntradas;
+    private TextView mTvValorRetiradas;
+    private TextView mTvValorDescontos;
+    private TextView mTvValorAdicional;
+    private TextView mTvValorVendasPrazo;
+    private TextView mTvValorVendasVista;
+    private TextView mTvValorSaldoFinal;
+    private TextView mTvQuantVendas;
+    private TextView mTvQuantVendidos;
+    private TextView mTvQuantVendidosVista;
+    private TextView mTvClientesPrazo;
+    private CardView mCvClientesPrazo;
 
+    private double mValorSaldoFinal = 0;
+    private double mValorVendasVista = 0;
     private double mValorSaldoInicial = 0;
-    private double mValorTotalEntradas = 0;
-    private double mValorTotalRetiradas = 0;
-    private double mValorTotalDescontos = 0;
-    private double mValorTotalVendasPrazo = 0;
-    private double mValorTotalVendasVista = 0;
-    private double mValorSaldoFinalFechamento = 0;
-    private int mQuantidadeBolosVendidos = 0;
-    private int mQuantidadeBolosVendidosVista = 0;
-    private int mQuantidadeBolosVendidosPrazo = 0;
+    private double mValorEntradas = 0;
+    private double mValorRetiradas = 0;
+    private double mValorDescontos = 0;
+    private double mValorAdicional = 0;
+    private double mValorVendasPrazo = 0;
+    private int mQuantVendas = 0;
+    private int mQuantVendidos = 0;
+    private int mQuantVendidosVista = 0;
+
+    private String mNomeClientesPrazo = "";
 
     private String mDataPesquisarBD = null;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -56,24 +70,15 @@ public class FechamentoActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fechamento);
 
-        // Referencia os itens do layout
-        tvValorSaldoInicial = findViewById(R.id.tv_fechamento_saldo_inicial);
-        tvValorEntradas = findViewById(R.id.tv_fechamento_entrada);
-        tvValorTotalVendasVista = findViewById(R.id.tv_fechamento_vendas);
-        tvValorRetiradas = findViewById(R.id.tv_fechamento_retirada);
-        tvValorDescontos = findViewById(R.id.tv_fechamento_descontos);
-        tvValorTotalVendasPrazo = findViewById(R.id.tv_fechamento_prazo);
-        tvValorSaldoFinalFechamento = findViewById(R.id.tv_fechamento_saldo_final);
-        tvQuantidadeBolosVendidos = findViewById(R.id.tv_fechamento_bolos_vendidos);
-        tvQuantidadeBolosVendidosVista = findViewById(R.id.tv_fechamento_bolos_vendidos_vista);
-        tvQuantidadeBolosVendidosPrazo = findViewById(R.id.tv_fechamento_bolos_vendidos_prazo);
+        Log.v(TAG, "onCreate");
+
+        initViews();
 
         // pega data do calendario para uma nova pesquisa
-        getDataCalendario();
+        pegarDataDialogCalendario();
 
         // coloca titulo na Activity  juntamente com a data da pesquisa
-        setTitle(String.format(getResources().getString(R.string.title_fechamento),
-                DataHora.obterFormatarDataBrTitulo()));
+        setTitle(String.format(getResources().getString(R.string.title_fechamento), DataHora.obterFormatarDataBrTitulo()));
 
         // Data do dia para pesquisa no BD
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
@@ -84,28 +89,41 @@ public class FechamentoActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(LOADER_VENDAS, null, this);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu Objeto do menu
-     * @return infla o menu
-     */
+
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia os itens do layout
+        mTvValorSaldoInicial = findViewById(R.id.tv_fechamento_saldo_inicial);
+        mTvValorEntradas = findViewById(R.id.tv_fechamento_entrada);
+        mTvValorVendasVista = findViewById(R.id.tv_fechamento_valor_vendas);
+        mTvValorRetiradas = findViewById(R.id.tv_fechamento_retirada);
+        mTvValorDescontos = findViewById(R.id.tv_fechamento_descontos);
+        mTvValorAdicional = findViewById(R.id.tv_fechamento_adicional);
+        mTvValorVendasPrazo = findViewById(R.id.tv_fechamento_prazo);
+        mTvValorSaldoFinal = findViewById(R.id.tv_fechamento_saldo_final);
+        mTvQuantVendas = findViewById(R.id.tv_fechamento_vendas);
+        mTvQuantVendidos = findViewById(R.id.tv_fechamento_vendidos);
+        mTvQuantVendidosVista = findViewById(R.id.tv_fechamento_vendidos_vista);
+        mTvClientesPrazo = findViewById(R.id.tv_fechamento_clientes_a_prazo);
+        mCvClientesPrazo = findViewById(R.id.cv_fechamento_clientes_prazo);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_data, menu);
 
         return true;
     }
 
-    /**
-     * Define o que fazer com o item selecionado no menu
-     *
-     * @param item Item selecionado do menu
-     * @return
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.v(TAG, "onOptionsItemSelected");
 
         int id = item.getItemId();
 
@@ -118,13 +136,6 @@ public class FechamentoActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Define os parametros de pesquisa
-     *
-     * @param loader Define os Loaders responsaveis pela pesquisa
-     * @param bundle Argumento dentro do Loaders para pesquisa
-     * @return cursor com dados da pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int loader, Bundle bundle) {
 
@@ -133,6 +144,8 @@ public class FechamentoActivity extends AppCompatActivity implements
          * pesquisada
          */
         if (loader == LOADER_ENTRADAS_RETIRADAS) {
+
+            Log.v(TAG, "onCreateLoader - LOADER_ENTRADAS_RETIRADAS");
 
             String[] projection = new String[]{
                     AcessoEntRet._ID,
@@ -161,6 +174,8 @@ public class FechamentoActivity extends AppCompatActivity implements
          */
         if (loader == LOADER_SALDO_INICIAL) {
 
+            Log.v(TAG, "onCreateLoader - LOADER_SALDO_INICIAL");
+
             String[] projection = {
                     AcessoSaldo._ID,
                     AcessoSaldo.VALOR,
@@ -186,17 +201,19 @@ public class FechamentoActivity extends AppCompatActivity implements
          */
         if (loader == LOADER_VENDAS) {
 
+            Log.v(TAG, "onCreateLoader - LOADER_VENDAS");
+
             String[] projection = {
                     AcessoVenda._ID,
                     AcessoVenda.ID_CLIENTE,
                     AcessoVenda.NOME_PRODUTO,
-                    AcessoVenda.QUANTIDADE_VENDIDA,
+                    AcessoVenda.QUANTIDADE,
                     AcessoVenda.DATA_HORA,
-                    AcessoVenda.VALOR_TOTAL_VENDA,
+                    AcessoVenda.VALOR_VENDA,
                     AcessoVenda.VALOR_DESCONTO,
                     AcessoVenda.VALOR_ADICIONAL,
                     AcessoVenda.VALOR_PRAZO,
-                    AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
+                    AcessoVenda.VALOR_UNIDADE
             };
 
             // Pesquisa por data
@@ -215,49 +232,45 @@ public class FechamentoActivity extends AppCompatActivity implements
         return null;
     }
 
-    /**
-     * Define o que fazer com os dados retornados da pesquisa
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor Dados retornados pela pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        NumberFormat preco = NumberFormat.getCurrencyInstance();
 
         /* Entradas e Retiradas -  Todas entradas e retiradas da data pesquisada
          * Soma todas as entradas e coloca valor em uma varivel
          * Soma todas as retiradas e coloca valor em uma variavel
          */
-
-      /*
-
         if (loader.getId() == LOADER_ENTRADAS_RETIRADAS && cursor.moveToFirst()) {
+
+            Log.v(TAG, "onLoadFinished - LOADER_ENTRADAS_RETIRADAS");
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                if (Constantes.TIPO_ENTRADA_CAIXA == cursor.getInt(
-                        cursor.getColumnIndex(AcessoEntRet.TIPO))) {
+                if (Constantes.TIPO_ENTRADA_CAIXA ==
+                        cursor.getInt(cursor.getColumnIndex(AcessoEntRet.TIPO))) {
 
-                    mValorTotalEntradas = mValorTotalEntradas + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoEntRet.VALOR));
+                    mValorEntradas = mValorEntradas +
+                            cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
 
-                } else if (Constantes.TIPO_RETIRADA_CAIXA == cursor.getInt(
-                        cursor.getColumnIndex(AcessoEntRet.TIPO))) {
+                } else if (Constantes.TIPO_RETIRADA_CAIXA ==
+                        cursor.getInt(cursor.getColumnIndex(AcessoEntRet.TIPO))) {
 
-                    mValorTotalRetiradas = mValorTotalRetiradas + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoEntRet.VALOR));
+                    mValorRetiradas = mValorRetiradas +
+                            cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
                 }
 
                 cursor.moveToNext();
             }
+
         }
 
         /* Saldo Inicial - O valor do saldo inicial da data pesquisada
          *
          */
-
-     /*
         if (loader.getId() == LOADER_SALDO_INICIAL && cursor.moveToFirst()) {
+
+            Log.v(TAG, "onLoadFinished - LOADER_SALDO_INICIAL");
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
@@ -266,6 +279,7 @@ public class FechamentoActivity extends AppCompatActivity implements
 
                 cursor.moveToNext();
             }
+
         }
 
         /* Vendas - Todas as vendas da data pesquisada
@@ -281,81 +295,91 @@ public class FechamentoActivity extends AppCompatActivity implements
          * Com os dados obtidos e feito o calculo do valor obtido em todas a vendas
          */
 
-     /*
 
         if (loader.getId() == LOADER_VENDAS && cursor.moveToFirst()) {
 
-          /*  for (int i = 0; i < cursor.getCount(); i++) {
+            Log.v(TAG, "onLoadFinished - LOADER_VENDAS");
 
-                mQuantidadeBolosVendidos = mQuantidadeBolosVendidos + cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
+            mQuantVendas = cursor.getCount();
 
-                if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) == Constantes.NUMERO_ZERO) {
 
-                    mQuantidadeBolosVendidosPrazo = mQuantidadeBolosVendidosPrazo + cursor.getInt(
-                            cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
+            for (int i = 0; i < cursor.getCount(); i++) {
 
-                } else {
+                mQuantVendidos = mQuantVendidos +
+                        cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
 
-                    mQuantidadeBolosVendidosVista = mQuantidadeBolosVendidosVista + cursor.getInt(
-                            cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
+                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)) !=
+                        Constantes.NUMERO_ZERO) {
+                    mValorAdicional = mValorAdicional +
+                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
                 }
 
-                if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)) == Constantes.NUMERO_ZERO) {
-
-                    mValorTotalDescontos = mValorTotalDescontos + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
+                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)) !=
+                        Constantes.NUMERO_ZERO) {
+                    mValorDescontos = mValorDescontos +
+                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
                 }
 
-                if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.A_PRAZO)) == Constantes.PRAZO_NAO) {
-
-                    mValorTotalVendasVista = mValorTotalVendasVista + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoVenda.VALOR_TOTAL_VENDA));
+                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) ==
+                        Constantes.NUMERO_ZERO) {
+                    mValorVendasVista = mValorVendasVista +
+                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_VENDA));
+                    mQuantVendidosVista = mQuantVendidosVista + cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
 
                 }
 
-                if (cursor.getInt(
-                        cursor.getColumnIndex(AcessoVenda.A_PRAZO)) == Constantes.PRAZO_SIM) {
+                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) !=
+                        Constantes.NUMERO_ZERO) {
+                    mValorVendasPrazo = mValorVendasPrazo +
+                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
 
-                    mValorTotalVendasPrazo = mValorTotalVendasPrazo + cursor.getDouble(
-                            cursor.getColumnIndex(AcessoVenda.VALOR_TOTAL_VENDA));
+
+                    mNomeClientesPrazo = mNomeClientesPrazo + (PesquisasBD.Pesuisarcliente(FechamentoActivity.this,
+                            cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE)))) + "\n                               ";
                 }
 
                 cursor.moveToNext();
 
 
             }
+
+
+            if (!mNomeClientesPrazo.isEmpty()) {
+
+                String n = mNomeClientesPrazo;
+
+                mCvClientesPrazo.setVisibility(View.VISIBLE);
+                mTvClientesPrazo.append(String.format(getResources().getString(R.string.text_fechamento_clientes_nome), mNomeClientesPrazo));
+            } else {
+
+                mCvClientesPrazo.setVisibility(View.GONE);
+            }
         }
 
-        NumberFormat preco = NumberFormat.getCurrencyInstance();
 
-        // Calculo do valor final do caixa
-        mValorSaldoFinalFechamento = mValorTotalEntradas + mValorSaldoInicial + mValorTotalVendasVista - mValorTotalRetiradas;
+        mTvValorEntradas.setText(String.format(getResources().getString(R.string.text_fechamento_entradas), preco.format(mValorEntradas)));
+        mTvValorRetiradas.setText(String.format(getResources().getString(R.string.text_fechamento_retiradas), preco.format(mValorRetiradas)));
+
+        mTvValorSaldoInicial.setText(String.format(getResources().getString(R.string.text_fechamento_saldo_inicial), preco.format(mValorSaldoInicial)));
+
+        mTvQuantVendas.setText(String.format(getResources().getString(R.string.text_fechamento_vendas), String.valueOf(mQuantVendas)));
+        mTvValorVendasVista.setText(String.format(getResources().getString(R.string.text_fechamento_vendas_a_vista), preco.format(mValorVendasVista)));
+        mTvQuantVendidos.setText(String.format(getResources().getString(R.string.text_fechamento_produtos_vendidos), String.valueOf(mQuantVendidos)));
+        mTvQuantVendidosVista.setText(String.format(getResources().getString(R.string.text_fechamento_produtos_vendidos_avista), String.valueOf(mQuantVendidosVista)));
+        mTvValorAdicional.setText(String.format(getResources().getString(R.string.text_fechamento_adicional), preco.format(mValorAdicional)));
+        mTvValorDescontos.setText(String.format(getResources().getString(R.string.text_fechamento_descontos), preco.format(mValorDescontos)));
+        mTvValorVendasPrazo.setText(String.format(getResources().getString(R.string.text_fechamento_a_prazo), preco.format(mValorVendasPrazo)));
+
+        // Calculo Saldo Final - Valor que usuario deve ter no caixa
+        mValorSaldoFinal = mValorEntradas + mValorSaldoInicial + mValorVendasVista - mValorRetiradas;
 
         // Coloca nas TextView resultados dos dados obtidos
-        tvQuantidadeBolosVendidos.setText(String.valueOf(mQuantidadeBolosVendidos));
-        tvQuantidadeBolosVendidosVista.setText(String.valueOf(mQuantidadeBolosVendidosVista));
-        tvQuantidadeBolosVendidosPrazo.setText(String.valueOf(mQuantidadeBolosVendidosPrazo));
 
-        tvValorSaldoInicial.setText(preco.format(mValorSaldoInicial));
-        tvValorEntradas.setText(preco.format(mValorTotalEntradas));
-        tvValorTotalVendasVista.setText(preco.format(mValorTotalVendasVista));
-        tvValorRetiradas.setText(preco.format(mValorTotalRetiradas));
-        tvValorDescontos.setText(preco.format(mValorTotalDescontos));
-        tvValorTotalVendasPrazo.setText(preco.format(mValorTotalVendasPrazo));
-        tvValorSaldoFinalFechamento.setText(preco.format(mValorSaldoFinalFechamento));
+        mTvValorSaldoFinal.setText(String.format(getResources().getString(R.string.text_fechamento_saldo_final), preco.format(mValorSaldoFinal)));
 
-   */
+
     }
 
-    /**
-     * Define o que fazer com resultados antigos da pesquisa ao fazer uma nova pesquisa
-     *
-     * @param loader Loader da pesquisa
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
@@ -370,7 +394,9 @@ public class FechamentoActivity extends AppCompatActivity implements
      * Ao escolher uma nova data para pesquisa, os valores de variaveis são zerados e e reiniciada a
      * pesquisa de todos os Loaders
      */
-    private void getDataCalendario() {
+    private void pegarDataDialogCalendario() {
+
+        Log.v(TAG, "pegarDataDialogCalendario");
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -394,16 +420,21 @@ public class FechamentoActivity extends AppCompatActivity implements
      */
     private void zeraVariaveisValores() {
 
+        Log.v(TAG, "pegarDataDialogCalendario");
+
+
+        mValorSaldoFinal = 0;
+        mValorVendasVista = 0;
         mValorSaldoInicial = 0;
-        mValorTotalEntradas = 0;
-        mValorTotalVendasVista = 0;
-        mValorTotalRetiradas = 0;
-        mValorTotalDescontos = 0;
-        mValorTotalVendasPrazo = 0;
-        mValorSaldoFinalFechamento = 0;
-        mQuantidadeBolosVendidos = 0;
-        mQuantidadeBolosVendidosVista = 0;
-        mQuantidadeBolosVendidosPrazo = 0;
+        mValorEntradas = 0;
+        mValorRetiradas = 0;
+        mValorDescontos = 0;
+        mValorAdicional = 0;
+        mValorVendasPrazo = 0;
+        mQuantVendas = 0;
+        mQuantVendidos = 0;
+        mQuantVendidosVista = 0;
+        mNomeClientesPrazo = "";
     }
 
     /* Faz a pesquisa novamente com todos os Loaders

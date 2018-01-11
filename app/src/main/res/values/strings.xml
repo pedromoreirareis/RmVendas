@@ -76,7 +76,7 @@
     <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
     <string name="text_saldo_inicial_list_empty">Saldo inicial não foi cadastrado !!!</string>
     <string name="text_retirada_list_empty">Nenhuma retirada cadastrada !!!</string>
-    <string name="text_adicional">Cobertura</string>
+    <string name="text_adicional">Adicional</string>
     <string name="text_desconto">Desconto</string>
     <string name="text_a_prazo">A prazo</string>
     <string name="text_venda">Venda</string>
@@ -101,17 +101,25 @@
 
 
     <!-- ************************    Fechamento - Activity Fechamento ************************** -->
-    <string name="text_fechamento_saldo_inicial">Saldo inicial</string>
-    <string name="text_fechamento_entradas">Entradas</string>
-    <string name="text_fechamento_vendas_total">Total vendas</string>
-    <string name="text_fechamento_retiradas">Retiradas</string>
-    <string name="text_fechamento_descontos">Descontos</string>
-    <string name="text_fechamento_a_prazo">A prazo</string>
-    <string name="text_fechamento_saldo_final">Saldo Final</string>
+    <string name="text_fechamento_saldo_final">Saldo final..........:    %1$s</string>
+    <string name="text_fechamento_vendas_a_vista">Vendas a vista.....:    %1$s</string>
+    <string name="text_fechamento_saldo_inicial">Saldo inicial........:    %1$s</string>
+    <string name="text_fechamento_entradas">Entradas.............:    %1$s</string>
+    <string name="text_fechamento_retiradas">Retiradas............:    %1$s</string>
+    <string name="text_fechamento_vendas">Vendas...............:    %1$s</string>
+    <string name="text_fechamento_produtos_vendidos">Vendidos............:    %1$s</string>
+    <string name="text_fechamento_produtos_vendidos_avista">Vendidos a vista..:    %1$s</string>
+    <string name="text_fechamento_adicional">Adicional............:    %1$s</string>
+    <string name="text_fechamento_descontos">Descontos...........:    %1$s</string>
+    <string name="text_fechamento_a_prazo">A prazo...............:    %1$s</string>
+    <string name="text_fechamento_clientes_nome">Clientes.............:    %1$s</string>
 
-    <string name="text_fechamento_produtos_vendidos_fechamento">Bolos vendidos</string>
-    <string name="text_fechamento_produtos_vendidos_avista_fechamento">Bolos vendidos a vista</string>
-    <string name="text_fechamento_produtos_vendidos_aprazo_fechamento">Bolos vendidos a prazo</string>
+
+    <string name="text_fechamento_titulo_quantidades">Quantidades vendidas </string>
+    <string name="text_fechamento_titulo_movimento">Movimento de caixa </string>
+    <string name="text_fechamento_titulo_informacoes">Informações Adicionais </string>
+    <string name="text_fechamento_titulo_caixa">Saldo</string>
+    <string name="text_fechamento_titulo_clientes">Clientes - Venda a prazo </string>
 
 
     <!-- *******************************************************************************************

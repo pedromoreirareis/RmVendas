@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +34,14 @@ public class EntListActivity extends AppCompatActivity implements
         ListView.OnItemClickListener,
         ListView.OnItemLongClickListener {
 
+    private static final String TAG = EntListActivity.class.getSimpleName();
     private static final int LOADER_ENTRADA_LIST = 0;
+
+    private TextView mTvEmpty;
+    private ImageView mIvEmpty;
+    private ListView mListView;
+    private View mEmptyView;
+    private FloatingActionButton mFab;
 
     private EntAdapter mAdapter;
 
@@ -45,11 +53,17 @@ public class EntListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ent_list);
 
+        Log.v(TAG, "onCreate");
+
+        initViews();
+        emptyLayout();
+
         // Trata o botão Flutuante - Abre activity EntCadActivity
-        FloatingActionButton fab = findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.v(TAG, "FloatingActionButton");
 
                 Intent intentEntrada = new Intent(
                         EntListActivity.this, EntCadActivity.class);
@@ -58,60 +72,64 @@ public class EntListActivity extends AppCompatActivity implements
             }
         });
 
-        // Referencia itens do layout
-        TextView tvEmpty = findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
-        ListView listView = findViewById(R.id.lv_list);
-        View emptyView = findViewById(R.id.empty_view);
-
-        // Layout vazio - Cadastro sem registros
-        tvEmpty.setText(R.string.text_entrada_list_empty);
-        ivEmpty.setImageResource(R.drawable.ic_money_up);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_entrada_list_empty));
-        listView.setEmptyView(emptyView);
-
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new EntAdapter(this);
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Clique simples e Longo no ListView
-        listView.setOnItemClickListener(this);
-        listView.setOnItemLongClickListener(this);
+        mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
 
         //  Pega data calendário do Dialog
-        getDataCalendario();
+        pegarDataDialogCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
         setTitle(String.format(getResources().getString(R.string.title_entrada_list),
                 DataHora.obterFormatarDataBrTitulo()));
+
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(LOADER_ENTRADA_LIST, null, this);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu Interface de criação do menu
-     * @return Menu inflado
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia itens do layout
+        mFab = findViewById(R.id.fab_add);
+        mTvEmpty = findViewById(R.id.tv_empty_view);
+        mIvEmpty = findViewById(R.id.iv_empty_view);
+        mListView = findViewById(R.id.lv_list);
+        mEmptyView = findViewById(R.id.empty_view);
+    }
+
+    private void emptyLayout() {
+
+        Log.v(TAG, "emptyLayout");
+
+        // Layout vazio - Cadastro sem registros
+        mTvEmpty.setText(R.string.text_entrada_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_money_up);
+        mIvEmpty.setContentDescription(getString(R.string.image_desc_entrada_list_empty));
+        mListView.setEmptyView(mEmptyView);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_data, menu);
 
         return true;
     }
 
-    /**
-     * Define o que fazer ao selecionar um item do menu
-     *
-     * @param item Item que foi selecionado
-     * @return verdadeiro se item foi selecionado
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.v(TAG, "onOptionsItemSelected");
 
         int id = item.getItemId();
 
@@ -123,16 +141,10 @@ public class EntListActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-
-    /**
-     * Define os parametros de pesquisa no BD
-     *
-     * @param i      Loader responsavel pela pesquisa
-     * @param bundle Conjunto de dados em um bundle
-     * @return Um Loader com um Cursor com resultado da pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 AcessoEntRet._ID,
@@ -157,26 +169,20 @@ public class EntListActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Define o que fazer com os dados retornados do BD
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor Cursor com dados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
 
         // Envia dados retornados do BD para o adapter e ListView
         mAdapter.swapCursor(cursor);
     }
 
-    /**
-     * Ao reiniciar a pesquisa o que fazer com os dados velhos
-     *
-     * @param loader Loader com dados antigos
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+        Log.v(TAG, "onLoaderReset");
+
         mAdapter.swapCursor(null);
     }
 
@@ -194,14 +200,11 @@ public class EntListActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog;
-        String mensagemDialog;
-
-        tituloDialog = getString(R.string.dialog_informacao_entrada_title);
+        String tituloDialog = getString(R.string.dialog_informacao_entrada_title);
 
         //  Mensagem do Dialog - Descrição
 
-        mensagemDialog = String.format(
+        String mensagemDialog = String.format(
                 getResources().getString(R.string.dialog_informacao_entrada_retirada_list),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
                 cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
@@ -248,7 +251,7 @@ public class EntListActivity extends AppCompatActivity implements
      * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
      * pesquisa para verificar se há dados para esta data
      */
-    private void getDataCalendario() {
+    private void pegarDataDialogCalendario() {
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override

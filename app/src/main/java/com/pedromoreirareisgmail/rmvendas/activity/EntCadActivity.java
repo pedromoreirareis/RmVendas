@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class EntCadActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
+    private static final String TAG = EntCadActivity.class.getSimpleName();
     private static final int LOADER_ENT_CAD = 0;
 
     private EditText mEtValor;
@@ -55,14 +57,13 @@ public class EntCadActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ent_cad);
 
-        /* Recebe dados de EntListActivity para mUriAtual
-         * Tem dados - Editar
-         * Não tem dados - Adicionar
-         */
-        Intent intentUri = getIntent();
-        mUriAtual = intentUri.getData();
+        Log.v(TAG, "onCreate");
 
-        // Se tiver uma Uri então deve pesquisar essa uri para editar registro
+        initViews();
+
+        initIntents();
+
+        // Se tiver Uri então deve pesquisar essa uri para editar registro
         if (mUriAtual == null) {
 
             setTitle(R.string.title_entrada_cad_add);
@@ -72,10 +73,6 @@ public class EntCadActivity extends AppCompatActivity implements
             setTitle(R.string.title_entrada_cad_edit);
             getLoaderManager().initLoader(LOADER_ENT_CAD, null, this);
         }
-
-        // Referencia itens do layout
-        mEtValor = findViewById(R.id.et_valor);
-        mEtDescricao = findViewById(R.id.et_descricao);
 
         // Faz controle de entrada de dados no edit
         controleTextWatcher();
@@ -96,28 +93,40 @@ public class EntCadActivity extends AppCompatActivity implements
         Utilidades.semFocoZerado(mEtValor);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu O bejto de menu
-     * @return verdadeiro se menu foi inflado corretamente
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia itens do layout
+        mEtValor = findViewById(R.id.et_valor);
+        mEtDescricao = findViewById(R.id.et_descricao);
+    }
+
+    private void initIntents() {
+
+        Log.v(TAG, "initIntents");
+
+        /* Recebe dados de EntListActivity para mUriAtual
+         * Tem dados - Editar / Não tem dados - Adicionar
+         */
+        Intent intentUri = getIntent();
+        mUriAtual = intentUri.getData();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
 
         return true;
     }
 
-    /**
-     * Define qual item do menu foi selecionado, e o que fazer
-     *
-     * @param item Item do menu que foi selecionado
-     * @return verdadeiro se procedimento com item selecionado foi realizado com sucesso
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.v(TAG, "onOptionsItemSelected");
 
         int id = item.getItemId();
 
@@ -147,7 +156,6 @@ public class EntCadActivity extends AppCompatActivity implements
 
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -156,6 +164,8 @@ public class EntCadActivity extends AppCompatActivity implements
      */
     @Override
     public void onBackPressed() {
+
+        Log.v(TAG, "onBackPressed");
 
         if (!isDadosAlterado) {
 
@@ -172,21 +182,15 @@ public class EntCadActivity extends AppCompatActivity implements
      */
     private void salvarDadosBD() {
 
+        Log.v(TAG, "Iniciando salvar BD");
+
         String valorEditText = mEtValor.getText().toString().trim();
         String descricaoEditText = mEtDescricao.getText().toString().trim();
 
         // Converte String Currency para double
         double valorDouble = Formatar.formatarParaDouble(valorEditText);
 
-        // Campo não pode ficar vazio
-        if (TextUtils.isEmpty(valorEditText)) {
-
-            mEtValor.setError(getString(R.string.error_campo_vazio));
-            mEtValor.requestFocus();
-            return;
-        }
-
-        // Campo não pode ficar vazio
+        // O campo descrição não pode ficar vazio
         if (TextUtils.isEmpty(descricaoEditText)) {
 
             mEtDescricao.setError(getString(R.string.error_campo_vazio));
@@ -194,19 +198,19 @@ public class EntCadActivity extends AppCompatActivity implements
             return;
         }
 
-        // Valor não pode ser negativo
-        if (valorDouble <= NUMERO_ZERO) {
-
-            mEtValor.setError(getString(R.string.error_valor_maior_zero));
-            mEtValor.requestFocus();
-            return;
-        }
-
-        // Descrição deve ter pelo menos 10 caracteres
+        // A descrição deve ter pelo menos 10 caracteres
         if (descricaoEditText.length() < MIN_QUANT_CARACT_10) {
 
             mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
             mEtDescricao.requestFocus();
+            return;
+        }
+
+        // Valor não pode ser negativo
+        if (valorDouble == NUMERO_ZERO) {
+
+            mEtValor.setError(getString(R.string.error_valor_maior_zero));
+            mEtValor.requestFocus();
             return;
         }
 
@@ -222,28 +226,26 @@ public class EntCadActivity extends AppCompatActivity implements
 
             Crud.inserir(EntCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
+            Log.v(TAG, "Adicionar - adicionou cliente");
+
         } else {
 
             values.put(AcessoEntRet.DATA_HORA, mDataHoraBD);
 
             Crud.editar(EntCadActivity.this, mUriAtual, values);
+
+            Log.v(TAG, "Editando - editou cliente");
         }
+
+        Log.v(TAG, "Finalizando salvar BD");
 
         finish();
     }
 
-
-    /**
-     * Define paramentros da pesquisa no BD
-     * Indica quais colunas deve retornar dados, quais os criterios de busca e qual é o dado
-     * a ser utilizado na pesquisa
-     *
-     * @param i      Loader que ira fazer a pesquisa
-     * @param bundle Dados como argumento de pesquisa
-     * @return Cursor com dados obtidos na pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         // Retorna todos os dados do registro identificado pelo mUriAtual
         String[] projection = {
@@ -264,14 +266,10 @@ public class EntCadActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Resultado obtido na pesquisa ao BD
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor Cursor com dados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
 
         if (cursor.moveToFirst()) {
 
@@ -298,15 +296,10 @@ public class EntCadActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    /**
-     * Observa e monitora toque em uma view especifica
-     *
-     * @param view  View que vai ser monitorada
-     * @param event Que tipo de evento vai ser realizado a partir da view
-     * @return verdadeiro se houve toque na view monitorada
-     */
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+
+        Log.v(TAG, "onTouch");
 
         int id = view.getId();
 
@@ -342,6 +335,8 @@ public class EntCadActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                Log.v(TAG, "controleTextWatcher - mEtValor");
+
                 if (!isDadosAlterado) {
 
                     isDadosAlterado = true;
@@ -365,16 +360,10 @@ public class EntCadActivity extends AppCompatActivity implements
         });
     }
 
-    /**
-     * Controla a ação a ser tomada ao clicar no EditorAction do teclado
-     *
-     * @param v        view que esta ativado o teclado
-     * @param actionId id do EditorAction que esta no teclado chamado por uma determinada view
-     * @param event    evento a ser utilizado
-     * @return verdadeiro de ação foi realizada
-     */
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        Log.v(TAG, "onEditorAction");
 
         // Salvar dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {

@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity
         ListView listView = findViewById(R.id.lv_list);
         View emptyView = findViewById(R.id.empty_view);
 
+        listView.setDivider(null);
         // EmptyView sera acionado se não houver nenhum registro no listview
         tvEmpty.setText(R.string.text_main_empty);
         ivEmpty.setImageResource(R.drawable.ic_bolo_fuba);
@@ -246,14 +247,14 @@ public class MainActivity extends AppCompatActivity
         String[] projection = new String[]{
                 AcessoVenda._ID,
                 AcessoVenda.NOME_PRODUTO,
-                AcessoVenda.QUANTIDADE_VENDIDA,
+                AcessoVenda.QUANTIDADE,
                 AcessoVenda.DATA_HORA,
-                AcessoVenda.VALOR_TOTAL_VENDA,
+                AcessoVenda.VALOR_VENDA,
                 AcessoVenda.VALOR_DESCONTO,
                 AcessoVenda.VALOR_ADICIONAL,
                 AcessoVenda.VALOR_PRAZO,
                 AcessoVenda.ID_CLIENTE,
-                AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
+                AcessoVenda.VALOR_UNIDADE
         };
 
         String selection;
@@ -330,7 +331,7 @@ public class MainActivity extends AppCompatActivity
         Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
 
         Cursor cursor = mAdapter.getCursor();
-        String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA)) + "  "
+        String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)) + "  "
                 + cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
 
         Dialogos.dialogoEditarExcluir(

@@ -156,26 +156,26 @@ public class Contrato {
         public static final String _ID = BaseColumns._ID;
         public static final String DATA_HORA = "data_hora";
         public static final String NOME_PRODUTO = "nome_produto";
-        public static final String VALOR_UMA_UNIDADE_PRODUTO = "valor_unidade_produto";
-        public static final String QUANTIDADE_VENDIDA = "quantidade";
+        public static final String VALOR_UNIDADE = "valor_unidade_produto";
+        public static final String QUANTIDADE = "quantidade";
         public static final String VALOR_ADICIONAL = "valor_adicional";
         public static final String VALOR_DESCONTO = "valor_desconto";
         public static final String VALOR_PRAZO = "valor_prazo";
         public static final String ID_CLIENTE = "id_cliente";
-        public static final String VALOR_TOTAL_VENDA = "valor_total_venda";
+        public static final String VALOR_VENDA = "valor_total_venda";
 
         public static final String CRIAR_TABELA_VENDA =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_VENDAS + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + DATA_HORA + " TEXT NOT NULL, "
                         + NOME_PRODUTO + " TEXT NOT NULL, "
-                        + VALOR_UMA_UNIDADE_PRODUTO + " REAL NOT NULL DEFAULT 0, "
-                        + QUANTIDADE_VENDIDA + " INTEGER NOT NULL, "
+                        + VALOR_UNIDADE + " REAL NOT NULL DEFAULT 0, "
+                        + QUANTIDADE + " INTEGER NOT NULL, "
                         + VALOR_ADICIONAL + " REAL, "
                         + VALOR_DESCONTO + " REAL, "
                         + VALOR_PRAZO + " REAL, "
                         + ID_CLIENTE + " INTEGER, "
-                        + VALOR_TOTAL_VENDA + " REAL NOT NULL DEFAULT 0 );";
+                        + VALOR_VENDA + " REAL NOT NULL DEFAULT 0 );";
 
         public static final String CONTENT_ITEM_TYPE_VENDA =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +

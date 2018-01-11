@@ -53,7 +53,7 @@ public class MainAdapter extends CursorAdapter {
         MainViewHolder holder = new MainViewHolder(view);
 
         /* Quantidade de produtos vendidos, sem tem adicional, se tem desconto e sem tem prazo */
-        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
+        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
 
         int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
 
@@ -72,11 +72,11 @@ public class MainAdapter extends CursorAdapter {
         String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
         String horaMinuto = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA_HORA));
 
-        double valorVenda = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO)) * quantidadeProduto;
+        double valorVenda = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)) * quantidadeProduto;
         double valorAdicional = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
         double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
 
-        double valorTotal = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_TOTAL_VENDA));
+        double valorTotal = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_VENDA));
         double valorAPrazo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
         double valorAVista = valorTotal - valorAPrazo;
 

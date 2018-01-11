@@ -447,9 +447,9 @@ public class VendQuantActivity extends AppCompatActivity implements
         // Coloca dados em um objeto values para ser salvo no BD
         ContentValues values = new ContentValues();
         values.put(AcessoVenda.NOME_PRODUTO, nomeProdutoTextView);
-        values.put(AcessoVenda.QUANTIDADE_VENDIDA, quantidadeInt);
-        values.put(AcessoVenda.VALOR_TOTAL_VENDA, valorTotalDoouble);
-        values.put(AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO, mValorUnidadeProduto);
+        values.put(AcessoVenda.QUANTIDADE, quantidadeInt);
+        values.put(AcessoVenda.VALOR_VENDA, valorTotalDoouble);
+        values.put(AcessoVenda.VALOR_UNIDADE, mValorUnidadeProduto);
         values.put(AcessoVenda.VALOR_ADICIONAL, valorAdicionalDouble);
         values.put(AcessoVenda.VALOR_DESCONTO, valorDescontoDouble);
         values.put(AcessoVenda.VALOR_PRAZO, valorPrazoDouble);
@@ -527,14 +527,14 @@ public class VendQuantActivity extends AppCompatActivity implements
             String[] projection = {
                     AcessoVenda._ID,
                     AcessoVenda.NOME_PRODUTO,
-                    AcessoVenda.QUANTIDADE_VENDIDA,
+                    AcessoVenda.QUANTIDADE,
                     AcessoVenda.DATA_HORA,
-                    AcessoVenda.VALOR_TOTAL_VENDA,
+                    AcessoVenda.VALOR_VENDA,
                     AcessoVenda.VALOR_ADICIONAL,
                     AcessoVenda.VALOR_DESCONTO,
                     AcessoVenda.VALOR_PRAZO,
                     AcessoVenda.ID_CLIENTE,
-                    AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO
+                    AcessoVenda.VALOR_UNIDADE
             };
 
             return new CursorLoader(
@@ -587,14 +587,14 @@ public class VendQuantActivity extends AppCompatActivity implements
             String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
             mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA_HORA));
 
-            int quantidadeBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE_VENDIDA));
+            int quantidadeBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
 
             double valorAdicionalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
             double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
             double valorPrazoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
-            double valorTotalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_TOTAL_VENDA));
+            double valorTotalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_VENDA));
             int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
-            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UMA_UNIDADE_PRODUTO));
+            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE));
 
             mIdCliente = idCliente;
             String nomeClienteBD = PesquisasBD.Pesuisarcliente(VendQuantActivity.this, idCliente);
