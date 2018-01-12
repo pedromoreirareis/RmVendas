@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +31,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT_10;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
 
@@ -39,6 +40,7 @@ public class RetCadActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
+    private static final String TAG = RetCadActivity.class.getSimpleName();
     private static final int LOADER_RET_CAD = 0;
 
     private EditText mEtValor;
@@ -55,9 +57,10 @@ public class RetCadActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ret_cad);
 
-        // Recebe dados da activity RetListActivity
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        Log.v(TAG, "");
+
+        initViews();
+        initIntents();
 
         // Se mUriAtual tiver vazio, então vai adicionar
         if (mUriAtual == null) {
@@ -69,10 +72,6 @@ public class RetCadActivity extends AppCompatActivity implements
             setTitle(R.string.title_retirada_cad_edit);
             getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
         }
-
-        // Referencia itens do layout
-        mEtValor = findViewById(R.id.et_valor);
-        mEtDescricao = findViewById(R.id.et_descricao);
 
         // Monitora caracteres digitas no edit
         controleTextWatcher();
@@ -93,31 +92,39 @@ public class RetCadActivity extends AppCompatActivity implements
         Utilidades.semFocoZerado(mEtValor);
     }
 
-    /**
-     * Cria o item de menu
-     *
-     * @param menu Objeto de menu
-     * @return infla o layout de menu
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia itens do layout
+        mEtValor = findViewById(R.id.et_valor);
+        mEtDescricao = findViewById(R.id.et_descricao);
+    }
+
+    private void initIntents() {
+
+        Log.v(TAG, "initIntents");
+
+        // Recebe dados da activity RetListActivity
+        Intent intent = getIntent();
+        mUriAtual = intent.getData();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
 
-    /**
-     * Define o que fazer quando um item de menu foi selecionado
-     *
-     * @param item item do menu selecionado
-     * @return verdadeiro se item de menu foi selecionado e acao foi efetuada com sucesso
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+        Log.v(TAG, "onOptionsItemSelected");
 
-        switch (id) {
+        switch (item.getItemId()) {
 
             // Salva dados no BD
             case R.id.action_salvar:
@@ -152,6 +159,8 @@ public class RetCadActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        Log.v(TAG, "onBackPressed");
+
         if (!isDadosAlterado) {
 
             super.onBackPressed();
@@ -167,39 +176,33 @@ public class RetCadActivity extends AppCompatActivity implements
      */
     private void salvarDadosBD() {
 
+        Log.v(TAG, "salvarDadosBD - Inicio");
+
         String valorEditText = mEtValor.getText().toString().trim();
         String descricaoEditText = mEtDescricao.getText().toString().trim();
 
         double valorDouble = Formatar.formatarParaDouble(valorEditText);
 
-        // campo nao pode ficar vazio
-        if (TextUtils.isEmpty(valorEditText)) {
-
-            mEtValor.setError(getString(R.string.error_campo_vazio));
-            mEtValor.requestFocus();
-            return;
-        }
-
         // Campo nao pode ficar vazio
         if (TextUtils.isEmpty(descricaoEditText)) {
 
-            mEtDescricao.setError(getString(R.string.error_campo_vazio));
+            mEtDescricao.setError(getString(R.string.error_campo_vazio_descricao));
             mEtDescricao.requestFocus();
-            return;
-        }
-
-        if (valorDouble <= NUMERO_ZERO) {
-
-            mEtValor.setError(getString(R.string.error_valor_maior_zero));
-            mEtValor.requestFocus();
             return;
         }
 
         // Quantidade minima de caracteres aceita nesse campo
-        if (descricaoEditText.length() < MIN_QUANT_CARACT_10) {
+        if (descricaoEditText.length() < MIN_CARACT_10) {
 
-            mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
+            mEtDescricao.setError(getString(R.string.error_campo_lenght_descricao_10));
             mEtDescricao.requestFocus();
+            return;
+        }
+
+        if (valorDouble == NUMERO_ZERO) {
+
+            mEtValor.setError(getString(R.string.error_valor_valido));
+            mEtValor.requestFocus();
             return;
         }
 
@@ -219,25 +222,26 @@ public class RetCadActivity extends AppCompatActivity implements
 
             Crud.inserir(RetCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
 
+            Log.v(TAG, "salvarDadosBD - inserir");
+
         } else {
 
             values.put(AcessoEntRet.DATA_HORA, mDataHoraBD);
 
             Crud.editar(RetCadActivity.this, mUriAtual, values);
+
+            Log.v(TAG, "salvarDadosBD - editar");
         }
+
+        Log.v(TAG, "salvarDadosBD - Fim");
 
         finish();
     }
 
-    /**
-     * Define paramentros da pesquisa
-     *
-     * @param i      Define Loader que vai ser utilizado na pesquisa
-     * @param bundle argumentos de pesquisa dentro do Loader
-     * @return cursor com dados retornados na pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 AcessoEntRet._ID,
@@ -257,14 +261,10 @@ public class RetCadActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Define o que vai ser feito com dados obtidos na pesquisa
-     *
-     * @param loader loader que foi utilizado na pesquisa
-     * @param cursor dados retornados na pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
 
         if (cursor.moveToFirst()) {
 
@@ -282,29 +282,19 @@ public class RetCadActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * O que sera feito com dados antigos da pesquisa ao iniciar nova pesquisa
-     *
-     * @param loader loader
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+        Log.v(TAG, "onLoaderReset");
+
     }
 
-    /**
-     * Monitora toques em uma view
-     *
-     * @param view  view que vai ser monitorada
-     * @param event evento
-     * @return verdadeiro se houve toque na view
-     */
     @Override
     public boolean onTouch(View view, MotionEvent event) {
 
-        int id = view.getId();
+        Log.v(TAG, "onTouch");
 
-        switch (id) {
+        switch (view.getId()) {
 
             case R.id.et_valor:
                 mEtValor.requestFocus();
@@ -317,16 +307,10 @@ public class RetCadActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Verifica se houve toque em um EditorAction no teclado
-     *
-     * @param view     view que abriu o teclado
-     * @param actionId id de um ActionId
-     * @param event    evento
-     * @return verdadeiro se EditorAction foi clicado
-     */
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+
+        Log.v(TAG, "onEditorAction");
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
@@ -340,6 +324,8 @@ public class RetCadActivity extends AppCompatActivity implements
     /* Verifica a entrada de caracteres em um edit
      */
     private void controleTextWatcher() {
+
+        Log.v(TAG, "controleTextWatcher");
 
         /* Edit abre teclado numerico, entao ao entrar um caractere de numero ele é formatado
          *  no estilo de moeda para ser apresentado ao usuario
@@ -357,7 +343,6 @@ public class RetCadActivity extends AppCompatActivity implements
 
                     isDadosAlterado = true;
                 }
-
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;

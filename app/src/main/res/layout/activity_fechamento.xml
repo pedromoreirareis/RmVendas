@@ -59,6 +59,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:textColor="@color/colorBlack" />
 
 
@@ -233,7 +234,7 @@
             android:id="@+id/cv_fechamento_clientes_prazo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padrao_16"
+            android:layout_marginBottom="@dimen/margin_padrao_8"
             android:elevation="@dimen/margin_padrao_16"
             android:visibility="gone"
             app:cardCornerRadius="8dp">
@@ -271,7 +272,13 @@
                     android:id="@+id/tv_fechamento_clientes_a_prazo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack" />
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingEnd="@dimen/margin_padrao_4"
+                    android:paddingStart="@dimen/margin_padrao_4"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

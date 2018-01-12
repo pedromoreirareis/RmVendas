@@ -30,7 +30,7 @@ public class ClientesListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemLongClickListener,
         ListView.OnItemClickListener,
-        SearchView.OnQueryTextListener {
+        SearchView.OnQueryTextListener, FloatingActionButton.OnClickListener {
 
     private static final String TAG = ClientesListActivity.class.getSimpleName();
     private static final int LOADER_CLIENTES_LIST = 0;
@@ -56,18 +56,7 @@ public class ClientesListActivity extends AppCompatActivity implements
         emptyLayout();
 
         // Trata o botão Flutuante - Abre activity EntCadActivity
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Log.v(TAG, "FloatingActionButton");
-
-                Intent intentCadastroClientes =
-                        new Intent(ClientesListActivity.this, ClientesCadActivity.class);
-
-                startActivity(intentCadastroClientes);
-            }
-        });
+        mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new ClientesAdapter(this);
@@ -235,7 +224,8 @@ public class ClientesListActivity extends AppCompatActivity implements
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-        // Não implementado
+        Log.v(TAG, "onQueryTextSubmit");
+
         return false;
     }
 
@@ -249,5 +239,19 @@ public class ClientesListActivity extends AppCompatActivity implements
         getLoaderManager().restartLoader(LOADER_CLIENTES_LIST, null, ClientesListActivity.this);
 
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if (view.getId() == R.id.fab_add) {
+
+            Log.v(TAG, "FloatingActionButton");
+
+            Intent intentCadastroClientes =
+                    new Intent(ClientesListActivity.this, ClientesCadActivity.class);
+
+            startActivity(intentCadastroClientes);
+        }
     }
 }

@@ -12,6 +12,7 @@
         style="@style/DestaqueNegrito"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginBottom="@dimen/margin_padrao_8"
         android:layout_marginEnd="@dimen/margin_padrao_16"
         android:layout_marginStart="@dimen/margin_padrao_16"
@@ -19,7 +20,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/colorBlue"
-        android:textSize="32sp" />
+        android:textSize="@dimen/sizeTextSaldo_32" />
 
 
     <LinearLayout

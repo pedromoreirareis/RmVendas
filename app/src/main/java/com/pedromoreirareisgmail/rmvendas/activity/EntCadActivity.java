@@ -31,7 +31,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT_10;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
 
@@ -128,9 +128,7 @@ public class EntCadActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onOptionsItemSelected");
 
-        int id = item.getItemId();
-
-        switch (id) {
+        switch (item.getItemId()) {
 
             // Botao salvar
             case R.id.action_salvar:
@@ -193,15 +191,15 @@ public class EntCadActivity extends AppCompatActivity implements
         // O campo descrição não pode ficar vazio
         if (TextUtils.isEmpty(descricaoEditText)) {
 
-            mEtDescricao.setError(getString(R.string.error_campo_vazio));
+            mEtDescricao.setError(getString(R.string.error_campo_vazio_descricao));
             mEtDescricao.requestFocus();
             return;
         }
 
         // A descrição deve ter pelo menos 10 caracteres
-        if (descricaoEditText.length() < MIN_QUANT_CARACT_10) {
+        if (descricaoEditText.length() < MIN_CARACT_10) {
 
-            mEtDescricao.setError(getString(R.string.error_campo_lenght_10));
+            mEtDescricao.setError(getString(R.string.error_campo_lenght_descricao_10));
             mEtDescricao.requestFocus();
             return;
         }
@@ -209,7 +207,7 @@ public class EntCadActivity extends AppCompatActivity implements
         // Valor não pode ser negativo
         if (valorDouble == NUMERO_ZERO) {
 
-            mEtValor.setError(getString(R.string.error_valor_maior_zero));
+            mEtValor.setError(getString(R.string.error_valor_valido));
             mEtValor.requestFocus();
             return;
         }

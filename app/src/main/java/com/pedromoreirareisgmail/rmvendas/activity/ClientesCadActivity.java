@@ -15,8 +15,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,7 +29,6 @@ import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 public class ClientesCadActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
-        EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
     private static final String TAG = ClientesCadActivity.class.getSimpleName();
@@ -72,7 +69,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
         }
 
         mEtFone.setOnEditorActionListener(this);
-        mEtFone.setOnTouchListener(this);
     }
 
     private void initViews() {
@@ -107,9 +103,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onOptionsItemSelected");
 
-        int id = item.getItemId();
-
-        switch (id) {
+        switch (item.getItemId()) {
 
             // Menu salvar
             case R.id.action_salvar:
@@ -173,15 +167,15 @@ public class ClientesCadActivity extends AppCompatActivity implements
         // O campo nome não pode ficar vazio
         if (TextUtils.isEmpty(nomeEditText)) {
 
-            mEtNome.setError(getString(R.string.error_campo_vazio));
+            mEtNome.setError(getString(R.string.error_campo_vazio_nome));
             mEtNome.requestFocus();
             return;
         }
 
         // O campo nome deve ter pelo menos 5 caracteres
-        if (nomeEditText.length() < Constantes.MIN_QUANT_CARACT_5) {
+        if (nomeEditText.length() < Constantes.MIN_CARACT_3) {
 
-            mEtNome.setError(getString(R.string.error_campo_lenght_5));
+            mEtNome.setError(getString(R.string.error_campo_lenght_nome_3));
             mEtNome.requestFocus();
             return;
         }
@@ -189,13 +183,13 @@ public class ClientesCadActivity extends AppCompatActivity implements
         // Campo não pode ficar vazio
         if (TextUtils.isEmpty(foneEditText)) {
 
-            mEtFone.setError(getString(R.string.error_campo_vazio));
+            mEtFone.setError(getString(R.string.error_campo_vazio_nome));
             mEtFone.requestFocus();
             return;
         }
 
         // Campo não pode ficar vazio
-        if (foneEditText.length() < Constantes.MIN_DIGITOS_NUM_FONE) {
+        if (foneEditText.length() < Constantes.MIN_NUM_FONE) {
 
             mEtFone.setError(getString(R.string.error_campo_lenght_fone));
             mEtFone.requestFocus();
@@ -274,7 +268,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
             String nomeBD = cursor.getString(
                     cursor.getColumnIndex(AcessoClientes.NOME));
 
-            int foneBD = cursor.getInt(
+            String foneBD = cursor.getString(
                     cursor.getColumnIndex(AcessoClientes.TELEFONE));
 
             mEtNome.setText(nomeBD);
@@ -292,37 +286,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
     }
 
-    /**
-     * Monitora o toque em Views especifica
-     *
-     * @param view  Identifica pelo getId a view que deve ser monitorada
-     * @param event Evento
-     * @return Verdadeiro se a view monitorada foi tocada
-     */
-    @Override
-    public boolean onTouch(View view, MotionEvent event) {
-
-        Log.v(TAG, "onTouch");
-
-        int id = view.getId();
-
-        switch (id) {
-
-            // Recebe foco, mostra o teclado
-            case R.id.et_clientes_nome:
-                mEtNome.requestFocus();
-                Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtNome);
-                return true;
-
-            case R.id.et_clientes_numero_fone:
-                mEtFone.requestFocus();
-                Utilidades.mostrarTeclado(ClientesCadActivity.this, mEtFone);
-                return true;
-
-            default:
-                return false;
-        }
-    }
 
 
     @Override

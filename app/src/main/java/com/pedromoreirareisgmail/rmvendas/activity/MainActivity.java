@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,9 +38,20 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemLongClickListener,
-        SearchView.OnQueryTextListener {
+        SearchView.OnQueryTextListener,
+        FloatingActionButton.OnClickListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int LOADER_MAIN = 0;
+
+    private Toolbar mToolbar;
+    private FloatingActionButton mFab;
+    private DrawerLayout mDrawer;
+    private NavigationView mNavigationview;
+    private TextView mTvEmpty;
+    private ImageView mIvEmpty;
+    private View mEmptyView;
+    private ListView mListview;
 
     private MainAdapter mAdapter;
 
@@ -53,60 +65,42 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.v(TAG, "onCreate");
+
+        initViews();
+        emptyLayout();
+
         // Cria o ToolBar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
 
         // Cria o fab - botão flutuante
-        FloatingActionButton fab = findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intentListaProdutos = new Intent(MainActivity.this, VendListActivity.class);
-                startActivity(intentListaProdutos);
-            }
-        });
+        mFab.setOnClickListener(this);
 
         /* Cria o menu de gaveta - Menu lateral
          * Indica que o botão toggle sera adcionado ao menu Drawer e seu estado estara ssicronizado
          * ao menu drawer
          */
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        ActionBarDrawerToggle toggle =
+                new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
         /* Parte fisica do Drawer, onde realemente fica o itens do menu
          * O Drawer é o ViewGroup e NavigationView é uma view do Drawer
          * Indica que Activity é que vai gerenciar a seleção dos itens de menu do Navigation
          */
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // Referencia os itens do layout
-        TextView tvEmpty = findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
-        ListView listView = findViewById(R.id.lv_list);
-        View emptyView = findViewById(R.id.empty_view);
-
-        listView.setDivider(null);
-        // EmptyView sera acionado se não houver nenhum registro no listview
-        tvEmpty.setText(R.string.text_main_empty);
-        ivEmpty.setImageResource(R.drawable.ic_bolo_fuba);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_main_empty));
-        listView.setEmptyView(emptyView);
+        mNavigationview.setNavigationItemSelectedListener(this);
 
         // Cria o adapter e o ListView
         mAdapter = new MainAdapter(this);
-        listView.setAdapter(mAdapter);
+        mListview.setAdapter(mAdapter);
+        mListview.setDivider(null);
 
         // Click longo no Listview
-        listView.setOnItemLongClickListener(this);
+        mListview.setOnItemLongClickListener(this);
 
         // Selecionada data no Dialog de calendario
-        getDataCalendario();
+        pegarDataDialogCalendario();
 
         // Adiciona data como Titulo da Activity
         setTitle(DataHora.obterFormatarDataBrTitulo());
@@ -118,11 +112,38 @@ public class MainActivity extends AppCompatActivity
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }
 
-    /* Se o Drawer estiver aberto (Menu lateral estiver aberto), então fecha ele
-     * Se ele estiver fechado, o fucionamento do BackPressed é normal, ele fecha o App
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia os itens Navegação Menu lateral
+        mToolbar = findViewById(R.id.toolbar);
+        mFab = findViewById(R.id.fab_add);
+        mDrawer = findViewById(R.id.drawer_layout);
+        mNavigationview = findViewById(R.id.nav_view);
+
+        // Referencia os itens do layout
+        mTvEmpty = findViewById(R.id.tv_empty_view);
+        mIvEmpty = findViewById(R.id.iv_empty_view);
+        mListview = findViewById(R.id.lv_list);
+        mEmptyView = findViewById(R.id.empty_view);
+    }
+
+    private void emptyLayout() {
+
+        Log.v(TAG, "emptyLayout");
+
+        // EmptyView sera acionado se não houver nenhum registro no listview
+        mTvEmpty.setText(R.string.text_main_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_bolo_fuba);
+        mIvEmpty.setContentDescription(getString(R.string.image_desc_main_empty));
+        mListview.setEmptyView(mEmptyView);
+    }
+
     @Override
     public void onBackPressed() {
+
+        Log.v(TAG, "onBackPressed");
 
         // Referencia o o Drawer
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -138,14 +159,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Cria o menu e o SearchView para pesquisas
-     *
-     * @param menu objeto de menu
-     * @return
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.main_search_data, menu);
 
@@ -158,18 +175,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Identifica item selecionado no menu
-     *
-     * @param item item que foi selecionado no menu
-     * @return verdadeiro se item foi selecionado e a ação teve sucesso
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+        Log.v(TAG, "onOptionsItemSelected");
 
-        switch (id) {
+        switch (item.getItemId()) {
 
             // Item Calendario - Abre para fazer uma pesquisa por data no BD vendas
             case R.id.action_data_main:
@@ -180,16 +191,11 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Monitora a seleção de itens de menu do Drawer Navigation
-     * A selecionar um item, captura essa selação e lança um ação definida
-     *
-     * @param item item selecionado no Navigation do Drawer
-     * @return verdadeiro se item foi selecionado e ação foi bem sucedida
-     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        Log.v(TAG, "onNavigationItemSelected");
 
         int id = item.getItemId();
 
@@ -224,7 +230,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_action_list_clientes:
                 startActivity(new Intent(MainActivity.this, ClientesListActivity.class));
                 break;
-
         }
 
         // Apos o click o Drawer é fechado
@@ -243,13 +248,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
+
         // Define quais colunas retornaram dados
         String[] projection = new String[]{
                 AcessoVenda._ID,
                 AcessoVenda.NOME_PRODUTO,
                 AcessoVenda.QUANTIDADE,
                 AcessoVenda.DATA_HORA,
-                AcessoVenda.VALOR_VENDA,
                 AcessoVenda.VALOR_DESCONTO,
                 AcessoVenda.VALOR_ADICIONAL,
                 AcessoVenda.VALOR_PRAZO,
@@ -273,11 +278,15 @@ public class MainActivity extends AppCompatActivity
          */
         if (mPesquisarBD.length() > 0) {
 
+            Log.v(TAG, "onCreateLoader - Data + Nome");
+
             selection = AcessoVenda.DATA_HORA + " LIKE ?  AND " + AcessoVenda.NOME_PRODUTO + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%", "%" + mPesquisarBD + "%"};
             sortOrder = AcessoVenda.DATA_HORA;
 
         } else {
+
+            Log.v(TAG, "onCreateLoader - Nome (Data ja capturada e em memoria)");
 
             selection = AcessoVenda.DATA_HORA + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%"};
@@ -294,24 +303,19 @@ public class MainActivity extends AppCompatActivity
         );
     }
 
-    /**
-     * Define o que fazer com os dados retornados da pesquisa
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor Cursor com dados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
+
         mAdapter.swapCursor(cursor);
     }
 
-    /**
-     * Define o que sera feito com dados antigos ao iniciar uma nova pesquisa
-     *
-     * @param loader
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+        Log.v(TAG, "onLoaderReset");
+
         mAdapter.swapCursor(null);
     }
 
@@ -327,6 +331,8 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
 
@@ -349,7 +355,9 @@ public class MainActivity extends AppCompatActivity
      * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
      * pesquisa para verificar se há dados para esta data
      */
-    private void getDataCalendario() {
+    private void pegarDataDialogCalendario() {
+
+        Log.v(TAG, "pegarDataDialogCalendario");
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -364,25 +372,18 @@ public class MainActivity extends AppCompatActivity
         };
     }
 
-    /**
-     * Pesquisar pelo SearchView apos digitar e clicar no menu de pesquisa
-     *
-     * @param query Texto digitado no editdo SearchView
-     * @return verdadeiro se foi clicado no menu de pesquisa
-     */
     @Override
     public boolean onQueryTextSubmit(String query) {
+
+        Log.v(TAG, "onQueryTextSubmit");
+
         return false;
     }
 
-    /**
-     * Pesquisa ao alterar texto digitado no menu SearchView
-     *
-     * @param newText Texto digitado no edit do menu SearchView
-     * @return verdadeiro se pesquisa foi realizado com sucesso
-     */
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        Log.v(TAG, "onQueryTextChange");
 
         mPesquisarBD = newText;
 
@@ -391,4 +392,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onClick(View view) {
+
+        if (view.getId() == R.id.fab_add) {
+
+            Intent intentListaProdutosVenda =
+                    new Intent(MainActivity.this, VendListActivity.class);
+            startActivity(intentListaProdutosVenda);
+        }
+    }
 }

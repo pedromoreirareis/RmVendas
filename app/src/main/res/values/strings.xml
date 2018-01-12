@@ -69,7 +69,7 @@
 
 
     <!-- ************************    Textos **************************************************** -->
-    <string name="text_main_empty">Nenhum bolo vendido no dia !!!</string>
+    <string name="text_main_empty">Nenhuma venda realizada !!!</string>
     <string name="text_produto_list_empty">Nenhum produto cadastrado !!!</string>
     <string name="text_venda_list_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_entrada_list_empty">Nenhuma entrada cadastrada !!!</string>
@@ -91,12 +91,12 @@
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
-    <string name="text_item_main_valor_venda">Venda.....:  %1$s</string>
+    <string name="text_item_main_valor_preco">Preço.......:  %1$s</string>
     <string name="text_item_main_valor_adicional">Adicional.:  %1$s</string>
     <string name="text_item_main_valor_desconto">Desconto.:  %1$s</string>
     <string name="text_item_main_valor_total">Total.......:  %1$s</string>
-    <string name="text_item_main_valor_a_vista">A Vista....:  %1$s</string>
-    <string name="text_item_main_valor_prazo">Prazo......:  %1$s</string>
+    <string name="text_item_main_valor_a_vista">A vista....:  %1$s</string>
+    <string name="text_item_main_valor_prazo">A prazo...:  %1$s</string>
     <string name="text_item_main_valor_prazo_cliente">Cliente.....:  %1$s</string>
 
 
@@ -112,7 +112,7 @@
     <string name="text_fechamento_adicional">Adicional............:    %1$s</string>
     <string name="text_fechamento_descontos">Descontos...........:    %1$s</string>
     <string name="text_fechamento_a_prazo">A prazo...............:    %1$s</string>
-    <string name="text_fechamento_clientes_nome">Clientes.............:    %1$s</string>
+    <string name="text_fechamento_clientes_nome">%1$s</string>
 
 
     <string name="text_fechamento_titulo_quantidades">Quantidades vendidas </string>
@@ -214,17 +214,21 @@
 
 
     <!-- *****************************    setError ********************************************* -->
-    <string name="error_campo_vazio">Esse campo não pode ficar vazio</string>
-    <string name="error_valor_maior_zero">O valor deve ser maior que zero</string>
-    <string name="error_valor_maior_zero_adicional">O valor adicional deve ser maior que zero</string>
-    <string name="error_valor_maior_zero_desconto">O valor do desconto deve ser maior que zero</string>
-    <string name="error_valor_maior_zero_prazo">O valor a prazo deve ser maior que zero</string>
-    <string name="error_nome_cliente">Para vender a prazo deve ser feita a pesquisa de um cliente</string>
-    <string name="error_valor_inteiro">O valor deve ser inteiro</string>
-    <string name="error_valor_menor_um">O valor não pode ser menor que 1</string>
-    <string name="error_campo_lenght_10">Esse campo deve ter pelo menos 10 caracteres</string>
-    <string name="error_campo_lenght_5">Esse campo deve ter pelo menos 5 caracteres</string>
-    <string name="error_campo_lenght_fone">O telefone deve ter pelo manos 8 dígitos</string>
+
+    <string name="error_campo_vazio_fone">Digite o telefone</string>
+    <string name="error_campo_vazio_nome">Digite o nome</string>
+    <string name="error_campo_vazio_descricao">Digite a descrição</string>
+    <string name="error_campo_vazio_valor">Digite o valor</string>
+    <string name="error_campo_vazio_quantidade">Digite a quantidade</string>
+    <string name="error_valor_valido">Digite um valor válido</string>
+    <string name="error_valor_valido_adicional">Digite um valor adicional válido</string>
+    <string name="error_valor_valido_desconto">Digite um valor de desconto válido</string>
+    <string name="error_valor_valido_prazo">Digite um valor a prazo válido</string>
+    <string name="error_nome_cliente">Pesquise um cliente</string>
+    <string name="error_campo_lenght_descricao_10">A descrição deve ter no mínimo 10 caracteres</string>
+    <string name="error_campo_lenght_nome_3">O nome deve ter no mínimo 3 caracteres</string>
+    <string name="error_campo_lenght_nome_5">O nome deve ter no mínio 5 caracteres</string>
+    <string name="error_campo_lenght_fone">O telefone deve ter no mínimo 8 dígitos</string>
 
 
     <!-- *******************************************************************************************

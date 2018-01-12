@@ -13,14 +13,14 @@ public class Calculos {
      * para o usuário. O valor é calculado automaticamente, ao escolher quantidade, valor adicional,
      * e valor de desconto.
      *
-     * @param vlQquantidade    Quantidade de bolos
-     * @param vlAdicional    Valor adicional, se tiver
+     * @param vlQquantidade Quantidade de bolos
+     * @param vlAdicional   Valor adicional, se tiver
      * @param vlDesconto    Valor do desconto, se tiver
-     * @param vlPrazo    Valor fiado, se tiver
-     * @param vlProd Valor de cada unidade do produto
+     * @param vlPrazo       Valor fiado, se tiver
+     * @param vlProd        Valor de cada unidade do produto
      * @return uma string em formato currency do valor total
      */
-    public static String calcularValorVendaBolo(String vlQquantidade, String vlAdicional, String vlDesconto, String vlPrazo, double vlProduto) {
+    public static String calcularValorVendaString(String vlQquantidade, double vlProduto, String vlAdicional, String vlDesconto, String vlPrazo) {
 
         if (TextUtils.isEmpty(vlQquantidade)) {
 
@@ -61,22 +61,36 @@ public class Calculos {
      * Recebe o valor de cada unidade do produto, a quantidade do produto que sera vendida, o valor
      * adicional e o valor do desconto. Calcula o valor da venda, para ser salvo no banco de dados
      *
-     * @param vlProduto valor de cada unidade do produto
+     * @param vlProduto       valor de cada unidade do produto
      * @param valorQuantidade quantidade do produto a ser vendida
-     * @param valorAdicional valor adicional, se tiver
-     * @param valorDesconto valor do desconto, se tiver
+     * @param valorAdicional  valor adicional, se tiver
+     * @param valorDesconto   valor do desconto, se tiver
      * @return um double com o valor da venda para ser salvo no banco de dados
      */
-    public static double calcularValorVendaBoloDouble(double vlProduto,
-                                                      double valorQuantidade,
-                                                      double valorAdicional,
-                                                      double valorDesconto) {
+    public static double calcularValorTotalVendaDouble(
+            double valorQuantidade,
+            double vlProduto,
+            double valorAdicional,
+            double valorDesconto) {
+
+        double valorPrecoVenda = valorQuantidade * vlProduto;
+
+        return valorPrecoVenda + valorAdicional - valorDesconto;
+
+    }
 
 
-        double quantValor = valorQuantidade * vlProduto;
+    public static double CalcularValorAVista(
+            int valorQuantidade,
+            double valorProduto,
+            double valorAdicional,
+            double valorDesconto,
+            double valorPrazo
+    ) {
 
-        return quantValor + valorAdicional - valorDesconto;
+        double valorPrecoVenda = valorProduto * valorQuantidade;
 
+        return valorPrecoVenda + valorAdicional - valorDesconto - valorPrazo;
     }
 
 }

@@ -84,7 +84,6 @@
     <style name="CampoNunberText">
         <item name="android:focusable">true</item>
         <item name="android:maxLines">1</item>
-        <item name="android:selectAllOnFocus">true</item>
         <item name="android:selectable">true</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:ellipsize">end</item>
@@ -101,6 +100,8 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:paddingStart">@dimen/margin_padrao_4</item>
+        <item name="android:paddingEnd">@dimen/margin_padrao_4</item>
     </style>
 
     <style name="valoresFech">

@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +33,11 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
 
 public class SaldoInicialCadActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>, EditText.OnTouchListener, EditText.OnEditorActionListener {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        EditText.OnTouchListener,
+        EditText.OnEditorActionListener {
 
+    private static final String TAG = SaldoInicialCadActivity.class.getSimpleName();
     private static final int LOADER_RET_CAD = 0;
 
     private EditText mEtValor;
@@ -49,9 +52,10 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saldo_cad);
 
-        // Recebe dados de SaldoInicialListActivity
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        Log.v(TAG, "onCreate");
+
+        initViews();
+        initIntents();
 
         // Se mUriAtual tiver for nulo então vai adicionar, se tiver dados vai editar
         if (mUriAtual == null) {
@@ -63,9 +67,6 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
             setTitle(R.string.title_saldo_inicial_cad_edit);
             getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
         }
-
-        // Referencia intens do layout
-        mEtValor = findViewById(R.id.et_valor);
 
         /* Define o EditorAction do teclado, refrente a view mEtValor
          * Quando o teclado estiver aberto referente ao edit mEtValor, o EditorAction sera DONE
@@ -85,31 +86,38 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         Utilidades.semFocoZerado(mEtValor);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu objeto do menu
-     * @return infla o layout de menu
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia intens do layout
+        mEtValor = findViewById(R.id.et_valor);
+    }
+
+    private void initIntents() {
+
+        Log.v(TAG, "initIntents");
+
+        // Recebe dados de SaldoInicialListActivity
+        Intent intent = getIntent();
+        mUriAtual = intent.getData();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
 
-    /**
-     * Define o que fazer ao seleciona um item do menu
-     *
-     * @param item
-     * @return
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+        Log.v(TAG, "onOptionsItemSelected");
 
-        switch (id) {
+        switch (item.getItemId()) {
 
             // Salva dados no BD
             case R.id.action_salvar:
@@ -145,6 +153,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        Log.v(TAG, "onBackPressed");
+
         if (!isDadosAlterado) {
 
             super.onBackPressed();
@@ -160,20 +170,15 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
      */
     private void salvarDadosBD() {
 
+        Log.v(TAG, "salvarDadosBD - Inicio");
+
         String valorEditText = mEtValor.getText().toString().trim();
 
         double valorDouble = Formatar.formatarParaDouble(valorEditText);
 
-        // Campo não pode ficar vazio
-        if (TextUtils.isEmpty(valorEditText)) {
-            mEtValor.setError(getString(R.string.error_campo_vazio));
-            mEtValor.requestFocus();
-            return;
-        }
-
-        // Valor não pode ser negativo
-        if (valorDouble <= NUMERO_ZERO) {
-            mEtValor.setError(getString(R.string.error_valor_maior_zero));
+        // Valor não pode ser zero
+        if (valorDouble == NUMERO_ZERO) {
+            mEtValor.setError(getString(R.string.error_valor_valido));
             mEtValor.requestFocus();
             return;
         }
@@ -189,26 +194,26 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
             Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO_INICIAL, values);
 
+            Log.v(TAG, "salvarDadosBD - inserir");
+
         } else {
 
             values.put(AcessoSaldo.DATA_HORA, mDataHoraBD);
 
             Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
+
+            Log.v(TAG, "salvarDadosBD - editar");
         }
+
+        Log.v(TAG, "salvarDadosBD - Fim");
 
         finish();
     }
 
-
-    /**
-     * Define parametros de pesquisa no BD
-     *
-     * @param i      Loader resposanvel pela pesquisa
-     * @param bundle argumentos dentro do loader de pesquisa
-     * @return cursor com dados retornados da pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 AcessoSaldo._ID,
@@ -226,14 +231,10 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Define o que sera feito com os dados retornados da pesquisa
-     *
-     * @param loader Loader que foi resposanvel pela pesquisa
-     * @param cursor dados retornados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
 
         if (cursor.moveToFirst()) {
 
@@ -244,29 +245,17 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Define o que sera feito com dados antigos da pesquisa quando foi iniciado nova pesquisa
-     *
-     * @param loader
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // Nao implementado
     }
 
-    /**
-     * Monitora toque em uma view especifica
-     *
-     * @param view  view que sera  monitorada
-     * @param event evento
-     * @return verdadeiro se houve toque na view monitorada
-     */
     @Override
     public boolean onTouch(View view, MotionEvent event) {
 
-        int id = view.getId();
+        Log.v(TAG, "onTouch");
 
-        switch (id) {
+        switch (view.getId()) {
 
             case R.id.et_valor:
                 mEtValor.requestFocus();
@@ -279,16 +268,10 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Verifica se EditorAction do teclado foi clicado
-     *
-     * @param view     viu que abriu o teclado
-     * @param actionId id do EditorAction
-     * @param event    evento
-     * @return verdadeiro se EditorAction foi clicado
-     */
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+
+        Log.v(TAG, "onEditorAction");
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
@@ -301,6 +284,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
     /* Verifica a entrada de caracteres nos edits*/
     private void controleTextWatcher() {
+
+        Log.v(TAG, "controleTextWatcher");
 
         /* O teclado por esse edit possui apenas numeros, faz a captura desses caracteres e formata
          * para o estilo moeda (currency) para ser apresentado ao usuario

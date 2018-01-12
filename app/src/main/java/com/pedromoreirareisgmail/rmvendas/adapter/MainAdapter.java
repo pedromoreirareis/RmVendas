@@ -9,6 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
@@ -54,6 +55,7 @@ public class MainAdapter extends CursorAdapter {
 
         /* Quantidade de produtos vendidos, sem tem adicional, se tem desconto e sem tem prazo */
         int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
+        double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE));
 
         int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
 
@@ -63,24 +65,28 @@ public class MainAdapter extends CursorAdapter {
             nomeCliente = PesquisasBD.Pesuisarcliente(context, idCliente);
         }
 
-
-        // String nomeCliente = PesquisasBD.Pesuisarcliente(context, idCliente);
-
-
-
         /* Nome do produto e hora de uma venda */
         String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
         String horaMinuto = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA_HORA));
 
-        double valorVenda = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)) * quantidadeProduto;
+        double valorPrecoVenda = valorUnidadeProduto * quantidadeProduto;
         double valorAdicional = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
         double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
-
-        double valorTotal = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_VENDA));
         double valorAPrazo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
-        double valorAVista = valorTotal - valorAPrazo;
+        double valorTotal = Calculos.calcularValorTotalVendaDouble(
+                quantidadeProduto,
+                valorUnidadeProduto,
+                valorAdicional,
+                valorDesconto
+        );
+        double valorAVista = Calculos.CalcularValorAVista(
+                quantidadeProduto,
+                valorUnidadeProduto,
+                valorAdicional,
+                valorDesconto,
+                valorAPrazo);
 
-        String valorVendaString = String.format(context.getResources().getString(R.string.text_item_main_valor_venda), Formatar.formatarDoubleParaCurrency(valorVenda));
+        String valorVendaString = String.format(context.getResources().getString(R.string.text_item_main_valor_preco), Formatar.formatarDoubleParaCurrency(valorPrecoVenda));
         String valorAdicionalString = String.format(context.getResources().getString(R.string.text_item_main_valor_adicional), Formatar.formatarDoubleParaCurrency(valorAdicional));
         String valorDescontoString = String.format(context.getResources().getString(R.string.text_item_main_valor_desconto), Formatar.formatarDoubleParaCurrency(valorDesconto));
 
@@ -111,7 +117,6 @@ public class MainAdapter extends CursorAdapter {
 
             holder.tvValorDesconto.setText(valorDescontoString);
         }
-
 
         holder.tvValorTotal.setText(valorTotalString);
         holder.tvValorAVIsta.setText(valorAVistaString);

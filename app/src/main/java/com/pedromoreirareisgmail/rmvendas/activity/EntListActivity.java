@@ -32,7 +32,8 @@ import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
 public class EntListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemClickListener,
-        ListView.OnItemLongClickListener {
+        ListView.OnItemLongClickListener,
+        FloatingActionButton.OnClickListener {
 
     private static final String TAG = EntListActivity.class.getSimpleName();
     private static final int LOADER_ENTRADA_LIST = 0;
@@ -59,18 +60,7 @@ public class EntListActivity extends AppCompatActivity implements
         emptyLayout();
 
         // Trata o botão Flutuante - Abre activity EntCadActivity
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Log.v(TAG, "FloatingActionButton");
-
-                Intent intentEntrada = new Intent(
-                        EntListActivity.this, EntCadActivity.class);
-
-                startActivity(intentEntrada);
-            }
-        });
+        mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new EntAdapter(this);
@@ -131,10 +121,8 @@ public class EntListActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onOptionsItemSelected");
 
-        int id = item.getItemId();
-
         // Menu Calendário
-        if (id == R.id.action_data) {
+        if (item.getItemId() == R.id.action_data) {
 
             Dialogos.dialogoDatas(EntListActivity.this, mDateSetListener);
         }
@@ -266,5 +254,19 @@ public class EntListActivity extends AppCompatActivity implements
                 getLoaderManager().restartLoader(LOADER_ENTRADA_LIST, null, EntListActivity.this);
             }
         };
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if (view.getId() == R.id.fab_add) {
+
+            Log.v(TAG, "FloatingActionButton");
+
+            Intent intentEntrada = new Intent(
+                    EntListActivity.this, EntCadActivity.class);
+
+            startActivity(intentEntrada);
+        }
     }
 }

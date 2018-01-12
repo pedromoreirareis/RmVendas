@@ -162,7 +162,6 @@ public class Contrato {
         public static final String VALOR_DESCONTO = "valor_desconto";
         public static final String VALOR_PRAZO = "valor_prazo";
         public static final String ID_CLIENTE = "id_cliente";
-        public static final String VALOR_VENDA = "valor_total_venda";
 
         public static final String CRIAR_TABELA_VENDA =
                 "CREATE TABLE IF NOT EXISTS " + TABELA_VENDAS + " ( "
@@ -174,8 +173,7 @@ public class Contrato {
                         + VALOR_ADICIONAL + " REAL, "
                         + VALOR_DESCONTO + " REAL, "
                         + VALOR_PRAZO + " REAL, "
-                        + ID_CLIENTE + " INTEGER, "
-                        + VALOR_VENDA + " REAL NOT NULL DEFAULT 0 );";
+                        + ID_CLIENTE + " INTEGER );";
 
         public static final String CONTENT_ITEM_TYPE_VENDA =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +

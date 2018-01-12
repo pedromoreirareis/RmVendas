@@ -35,7 +35,7 @@
             android:digits="0123456789"
             android:hint="@string/hint_numero_fone"
             android:imeOptions="actionDone"
-            android:inputType="number" />
+            android:inputType="phone" />
 
     </android.support.design.widget.TextInputLayout>
 

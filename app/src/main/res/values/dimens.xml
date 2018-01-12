@@ -14,6 +14,9 @@
     <dimen name="margin_padrao_16">16dp</dimen>
     <dimen name="margin_padrao_32">32dp</dimen>
 
+    <!-- Espaçamentos de margin e padding padrões -->
+    <dimen name="sizeTextSaldo_32">28dp</dimen>
+
     <!-- Dimensões de Alturas e Larguras de margin e padding -->
     <dimen name="image_empty_196">196dp</dimen>
 

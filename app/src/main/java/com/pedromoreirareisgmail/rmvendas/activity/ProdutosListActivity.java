@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,9 +30,17 @@ public class ProdutosListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemClickListener,
         ListView.OnItemLongClickListener,
-        SearchView.OnQueryTextListener {
+        SearchView.OnQueryTextListener,
+        FloatingActionButton.OnClickListener {
 
+    private static final String TAG = ProdutosListActivity.class.getSimpleName();
     private static final int LOADER_PRODUTOS_LIST = 0;
+
+    private FloatingActionButton mFab;
+    private TextView mTvEmpty;
+    private ImageView mIvEmpty;
+    private ListView mListView;
+    private View mEmptyView;
 
     private ProdAdapter mAdapter;
     private String mProdutoPesquisarBD = "";
@@ -41,49 +50,53 @@ public class ProdutosListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produtos_list);
 
+        Log.v(TAG, "onCreate");
+
+        initViews();
+        emptyLayout();
+
         // Trata o botão Flutuante - Abre activity ProdutosCadActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intentCadastroProdutos = new Intent(ProdutosListActivity.this, ProdutosCadActivity.class);
-                startActivity(intentCadastroProdutos);
-            }
-        });
-
-        //  Faz referencia aos itens do layout
-        TextView tvEmpty = (TextView) findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = (ImageView) findViewById(R.id.iv_empty_view);
-        ListView listView = (ListView) findViewById(R.id.lv_list);
-        View emptyView = findViewById(R.id.empty_view);
-
-        //  layout vazio - cadastro sem registros
-        tvEmpty.setText(R.string.text_produto_list_empty);
-        ivEmpty.setImageResource(R.drawable.ic_contract_list);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
-        listView.setEmptyView(emptyView);
+        mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new ProdAdapter(this);
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Clique simples e Longo no ListView
-        listView.setOnItemLongClickListener(this);
-        listView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
+        mListView.setOnItemClickListener(this);
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(LOADER_PRODUTOS_LIST, null, this);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu Interface de criação do menu
-     * @return Menu inflado
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        //  Faz referencia aos itens do layout
+        mFab = findViewById(R.id.fab_add);
+        mTvEmpty = findViewById(R.id.tv_empty_view);
+        mIvEmpty = findViewById(R.id.iv_empty_view);
+        mListView = findViewById(R.id.lv_list);
+        mEmptyView = findViewById(R.id.empty_view);
+    }
+
+    private void emptyLayout() {
+
+        Log.v(TAG, "emptyLayout");
+
+        //  layout vazio - cadastro sem registros
+        mTvEmpty.setText(R.string.text_produto_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_contract_list);
+        mIvEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
+        mListView.setEmptyView(mEmptyView);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
@@ -97,15 +110,10 @@ public class ProdutosListActivity extends AppCompatActivity implements
         return true;
     }
 
-    /**
-     * Define os parametros de pesquisa no BD
-     *
-     * @param i      Loader responsavel pela pesquisa
-     * @param bundle Conjunto de dados em um bundle
-     * @return Um Loader com um Cursor com resultado da pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 AcessoProdutos._ID,
@@ -129,24 +137,19 @@ public class ProdutosListActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Define o que fazer com os dados retornados do BD
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor Cursor com dados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
+
         mAdapter.swapCursor(cursor);
     }
 
-    /**
-     * Ao reiniciar a pesquisa o que fazer com os dados velhos
-     *
-     * @param loader Loader com dados antigos
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+        Log.v(TAG, "onLoaderReset");
+
         mAdapter.swapCursor(null);
     }
 
@@ -162,16 +165,14 @@ public class ProdutosListActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        Log.v(TAG, "onItemClick");
+
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog;
-        String mensagemDialog;
-
-        tituloDialog = getString(R.string.dialog_informacao_produto_title);
-
+        String tituloDialog = getString(R.string.dialog_informacao_produto_title);
 
         //  Mensagem do Dialog - Descrição
-        mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_produtos_list),
+        String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_produtos_list),
                 cursor.getString(cursor.getColumnIndex(AcessoProdutos.NOME)),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.VALOR))));
 
@@ -191,6 +192,8 @@ public class ProdutosListActivity extends AppCompatActivity implements
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+        Log.v(TAG, "onItemLongClick");
+
         Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTOS, id);
 
         Cursor cursor = mAdapter.getCursor();
@@ -209,26 +212,18 @@ public class ProdutosListActivity extends AppCompatActivity implements
         return true;
     }
 
-    /**
-     * Não implementado
-     * Faz pesquisa ao digitar texto e clicar no icone de pesquisa
-     *
-     * @param query Texto digitado para pesquisa
-     * @return verdadeiro se pesquisa deu certo
-     */
     @Override
     public boolean onQueryTextSubmit(String query) {
+
+        Log.v(TAG, "onQueryTextSubmit");
+
         return false;
     }
 
-    /**
-     * Ao alterar o texto no campo Edit do SearchView sera feita nova pesquisa
-     *
-     * @param newText Texto no campo Edit do SearchView
-     * @return verdadeiro se pesquisa for completada com sucesso
-     */
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        Log.v(TAG, "onQueryTextChange");
 
         // Ao digitar, automaticamente iniciar a pesquisa no BD
         mProdutoPesquisarBD = newText;
@@ -237,5 +232,16 @@ public class ProdutosListActivity extends AppCompatActivity implements
         getLoaderManager().restartLoader(LOADER_PRODUTOS_LIST, null, ProdutosListActivity.this);
 
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if (view.getId() == R.id.fab_add) {
+
+            Intent intentCadastroProdutos =
+                    new Intent(ProdutosListActivity.this, ProdutosCadActivity.class);
+            startActivity(intentCadastroProdutos);
+        }
     }
 }

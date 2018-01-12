@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,13 @@ public class VendListActivity extends AppCompatActivity implements
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener {
 
+    private static final String TAG = VendListActivity.class.getSimpleName();
     private static final int LOADER_VEND_LIST = 0;
+
+    private TextView mTvEmpty;
+    private ImageView mIvEmpty;
+    private ListView mListView;
+    private View mEmptyView;
 
     private ProdAdapter mAdapter;
 
@@ -39,38 +46,48 @@ public class VendListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vend_list);
 
-        // Referencia itens do layout
-        TextView tvEmpty = findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
-        ListView listView = findViewById(R.id.lv_list);
-        View emptyView = findViewById(R.id.empty_view);
+        Log.v(TAG, "");
 
-        // Layout vazio - Cadastro sem registros
-        tvEmpty.setText(R.string.text_venda_list_empty);
-        ivEmpty.setImageResource(R.drawable.ic_coracao_partido);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
-        listView.setEmptyView(emptyView);
+        initViews();
+        emptyLayout();
 
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new ProdAdapter(this);
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Clique simples e Longo no ListView
-        listView.setOnItemClickListener(this);
+        mListView.setOnItemClickListener(this);
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(LOADER_VEND_LIST, null, this);
     }
 
+    private void initViews() {
 
-    /**
-     * Cria o menu - Cria o searchView para pesquisas
-     *
-     * @param menu Interface de criação do menu
-     * @return Menu inflado
-     */
+        Log.v(TAG, "initViews");
+
+        // Referencia itens do layout
+        mTvEmpty = findViewById(R.id.tv_empty_view);
+        mIvEmpty = findViewById(R.id.iv_empty_view);
+        mListView = findViewById(R.id.lv_list);
+        mEmptyView = findViewById(R.id.empty_view);
+    }
+
+    private void emptyLayout() {
+
+        Log.v(TAG, "emptyLayout");
+
+        // Layout vazio - Cadastro sem registros
+        mTvEmpty.setText(R.string.text_venda_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_coracao_partido);
+        mIvEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
+        mListView.setEmptyView(mEmptyView);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
@@ -83,15 +100,10 @@ public class VendListActivity extends AppCompatActivity implements
         return true;
     }
 
-    /**
-     * Define os parametros de pesquisa no BD
-     *
-     * @param i      Loader responsavel pela pesquisa
-     * @param bundle Conjunto de dados em um bundle
-     * @return Um Loader com um Cursor com resultado da pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 AcessoProdutos._ID,
@@ -116,29 +128,21 @@ public class VendListActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Define o que fazer com os dados retornados do BD
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor Cursor com dados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
 
         mAdapter.swapCursor(cursor);
     }
 
-    /**
-     * Ao reiniciar a pesquisa o que fazer com os dados velhos
-     *
-     * @param loader Loader com dados antigos
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+        Log.v(TAG, "onLoaderReset");
+
         mAdapter.swapCursor(null);
     }
-
-    /* */
 
     /**
      * Click simples no ListView
@@ -153,6 +157,9 @@ public class VendListActivity extends AppCompatActivity implements
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.v(TAG, "onItemClick");
+
         Uri uri = ContentUris.withAppendedId(AcessoProdutos.CONTENT_URI_PRODUTOS, id);
 
         Intent intentRegistrarVenda = new Intent(
@@ -163,26 +170,18 @@ public class VendListActivity extends AppCompatActivity implements
         finish();
     }
 
-    /**
-     * Pesquisa apos digitação do texto e click no icone de pesquisa
-     *
-     * @param query Texto no campo Edit do SearcView
-     * @return verdadeiro se pesquisa for completada com sucesso
-     */
+
     @Override
     public boolean onQueryTextSubmit(String query) {
+
         return false;
     }
 
-    /**
-     * Pesquisa no banco de dado de acordo com a alteração no texto digitado no edit do searchView
-     * Apenas pela alteração do texto, faz uma nova pesquisa
-     *
-     * @param newText Texto no campo Edit do searchView
-     * @return verdadeiro se pesquisa doi efetuada com sucesso
-     */
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        Log.v(TAG, "onQueryTextChange");
+
         mProdutoPesquisarBD = newText;
 
         getLoaderManager().restartLoader(LOADER_VEND_LIST, null, VendListActivity.this);

@@ -26,13 +26,9 @@ public class VendListClienteActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener {
 
     public static final int LOADER_VEND_CLIENTES_LIST = 0;
-    private static final String URI_VALOR = "uri_valor";
+
+    private static final String URI_ATUAL = "uri_atual";
     private static final String VALOR_UNIDADE = "valor_unidade";
-    private static final String NOME_PRODUTO = "nome_produto";
-    private static final String QUANTIDADE_PRODUTO = "quantidade";
-    private static final String VALOR_ADICIONAL = "valor_adicional";
-    private static final String VALOR_DESCONTO = "valor_desconto";
-    private static final String VALOR_PRAZO = "valor_prazo";
     private static final String ID_CLIENTE = "id_cliente";
     private String mUri;
     private String mValorUnidade;
@@ -53,28 +49,14 @@ public class VendListClienteActivity extends AppCompatActivity implements
 
         Intent intentDadosVenda = getIntent();
 
-        if (intentDadosVenda.hasExtra(URI_VALOR)) {
-            mUri = intentDadosVenda.getStringExtra(URI_VALOR);
+        if (intentDadosVenda.hasExtra(URI_ATUAL)) {
+
+            mUri = intentDadosVenda.getStringExtra(URI_ATUAL);
         }
+
         if (intentDadosVenda.hasExtra(VALOR_UNIDADE)) {
+
             mValorUnidade = intentDadosVenda.getStringExtra(VALOR_UNIDADE);
-        }
-        if (intentDadosVenda.hasExtra(NOME_PRODUTO)) {
-            mNomeProduto = intentDadosVenda.getStringExtra(NOME_PRODUTO);
-        }
-        if (intentDadosVenda.hasExtra(QUANTIDADE_PRODUTO)) {
-            mQuantidadeProduto = intentDadosVenda.getStringExtra(QUANTIDADE_PRODUTO);
-        }
-
-        if (intentDadosVenda.hasExtra(VALOR_ADICIONAL)) {
-            mValorAdicional = intentDadosVenda.getStringExtra(VALOR_ADICIONAL);
-        }
-
-        if (intentDadosVenda.hasExtra(VALOR_DESCONTO)) {
-            mValorDesconto = intentDadosVenda.getStringExtra(VALOR_DESCONTO);
-        }
-        if (intentDadosVenda.hasExtra(VALOR_PRAZO)) {
-            mValorPrazo = intentDadosVenda.getStringExtra(VALOR_PRAZO);
         }
 
         // Referencia itens do layout
@@ -178,13 +160,8 @@ public class VendListClienteActivity extends AppCompatActivity implements
         Bundle bundle = new Bundle();
 
         bundle.putString(ID_CLIENTE, idCliente);
-        bundle.putString(URI_VALOR, mUri);
-        bundle.putString(NOME_PRODUTO, mNomeProduto);
+        bundle.putString(URI_ATUAL, mUri);
         bundle.putString(VALOR_UNIDADE, mValorUnidade);
-        bundle.putString(QUANTIDADE_PRODUTO, mQuantidadeProduto);
-        bundle.putString(VALOR_ADICIONAL, mValorAdicional);
-        bundle.putString(VALOR_DESCONTO, mValorDesconto);
-        bundle.putString(VALOR_PRAZO, mValorDesconto);
 
         intent.putExtras(bundle);
 

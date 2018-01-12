@@ -44,22 +44,20 @@ import com.pedromoreirareisgmail.rmvendas.db.PesquisasBD;
 
 import java.text.NumberFormat;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Calculos.calcularValorVendaBolo;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Calculos.calcularValorVendaString;
 
 public class VendQuantActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>, EditText.OnTouchListener {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        EditText.OnTouchListener,
+        Button.OnClickListener {
 
+    private static final String TAG = VendQuantActivity.class.getSimpleName();
     private static final int LOADER_VENDA_ADICIONAR = 0;
     private static final int LOADER_VENDA_EDITAR = 1;
     private static final int LOADER_CLIENTE = 2;
 
-    private static final String URI_VALOR = "uri_valor";
+    private static final String URI_ATUAL = "uri_atual";
     private static final String VALOR_UNIDADE = "valor_unidade";
-    private static final String NOME_PRODUTO = "nome_produto";
-    private static final String QUANTIDADE_PRODUTO = "quantidade";
-    private static final String VALOR_ADICIONAL = "valor_adicional";
-    private static final String VALOR_DESCONTO = "valor_desconto";
-    private static final String VALOR_PRAZO = "valor_prazo";
     private static final String ID_CLIENTE = "id_cliente";
 
     private final NumberFormat mValorFormatarCurrency = NumberFormat.getCurrencyInstance();
@@ -78,21 +76,27 @@ public class VendQuantActivity extends AppCompatActivity implements
     private TextInputLayout layoutAdicional;
     private TextInputLayout layoutDesconto;
     private LinearLayout layoutPrazo;
+
     private Uri mUriAtual = null;
     private Uri mUriCliente = null;
+
+    private long mIdCliente = -1;
     private double mValorUnidadeProduto = 0;
     private String mValorTotalBundle = "";
     private String mDataHoraBD = null;
+    private String mNomeCliente = "";
+
     private boolean mAdicionarProdutoBD = false;
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
-    private long mIdCliente = -1;
-    private String mNomeCliente = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vend_quant);
 
+        Log.v(TAG, "onCreate");
+
+        initViews();
 
         // Recebe dados de VendListActivity
         Intent intentDadosProduto = getIntent();
@@ -108,16 +112,72 @@ public class VendQuantActivity extends AppCompatActivity implements
         // Se for para adicionar coloca titulo na activity ADICIONAR
         if (mAdicionarProdutoBD) {
 
+            Log.v(TAG, "mAdicionarProdutoBD - Adicionar");
+
             setTitle(R.string.title_venda_add);
             getLoaderManager().initLoader(LOADER_VENDA_ADICIONAR, null, this);
+
+            mEtQuantidade.setText(Constantes.UMA_UNIDADE);
+            mEtQuantidade.setSelection(mEtQuantidade.getText().length());
         }
 
         // Se não for para adicionar coloca titulo na activity para EDITAR
         if (!mAdicionarProdutoBD) {
 
+            Log.v(TAG, "!mAdicionarProdutoBD - Editar");
+
             setTitle(R.string.title_venda_edit);
             getLoaderManager().initLoader(LOADER_VENDA_EDITAR, null, this);
         }
+
+        if (savedInstanceState != null) {
+
+            Log.v(TAG, "savedInstanceState != null");
+
+            if (savedInstanceState.containsKey("idCliente")) {
+
+                mIdCliente = savedInstanceState.getLong("idCliente");
+            }
+
+            if (savedInstanceState.containsKey("nomeCliente")) {
+
+                mNomeCliente = savedInstanceState.getString("nomeCliente");
+                mTvNomeCliente.setText(savedInstanceState.getString("nomeCliente"));
+            }
+        }
+
+        // Verifica a entrada de caracteres nos edits
+        controleTextWatcher();
+
+        // Verifica a maudança de estado do Switch
+        controleSwitchCheckedChange();
+
+        // Botão abre activity VendListClienteActivity, para selecionar cliente para venda a prazo
+        mButCliente.setOnClickListener(this);
+
+        // Monitora toques nos edits
+        mEtQuantidade.setOnTouchListener(this);
+        mEtAdicional.setOnTouchListener(this);
+        mEtDesconto.setOnTouchListener(this);
+        mEtPrazo.setOnTouchListener(this);
+
+        // Monitora toques nos Switchs
+        mSwitchAdicional.setOnTouchListener(this);
+        mSwitchDesconto.setOnTouchListener(this);
+        mSwitchPrazo.setOnTouchListener(this);
+
+        // Coloca foco e seleciona dados do edit quantidade
+        mEtQuantidade.setSelectAllOnFocus(true);
+
+        // Tira o foco e coloca valor zero nos edits
+        Utilidades.semFocoZerado(mEtAdicional);
+        Utilidades.semFocoZerado(mEtDesconto);
+        Utilidades.semFocoZerado(mEtPrazo);
+    }
+
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
 
         // Referencia itens do layout
         mTvNomeProduto = findViewById(R.id.tv_vend_quant_nome_produto);
@@ -134,154 +194,87 @@ public class VendQuantActivity extends AppCompatActivity implements
         layoutDesconto = findViewById(R.id.til_vend_quant_desconto);
         layoutAdicional = findViewById(R.id.til_vend_quant_adicional);
         layoutPrazo = findViewById(R.id.ll_vend_quant_prazo);
-
-        if (savedInstanceState != null) {
-
-            if (savedInstanceState.containsKey("idCliente")) {
-
-                mIdCliente = savedInstanceState.getLong("idCliente");
-            }
-
-            if (savedInstanceState.containsKey("nomeCliente")) {
-
-                mNomeCliente = savedInstanceState.getString("nomeCliente");
-                mTvNomeCliente.setText(savedInstanceState.getString("nomeCliente"));
-            }
-        }
-
-        // Se for para adicionar, colocar valor "1" no edit de quantidade
-        if (mAdicionarProdutoBD) {
-
-            mEtQuantidade.setText(Constantes.UMA_UNIDADE);
-            mEtQuantidade.setSelection(mEtQuantidade.getText().length());
-        }
-
-
-        // Verifica a entrada de caracteres nos edits
-        controleTextWatcher();
-
-        // Verifica a maudança de estado do Switch
-        controleSwitchCheckedChange();
-
-        // Botão abre activity VendListClienteActivity, para selecionar cliente para venda a prazo
-        mButCliente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mIdCliente = -1;
-                mNomeCliente = "";
-
-                Intent intentListaCliente =
-                        new Intent(VendQuantActivity.this, VendListClienteActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putString(URI_VALOR, mUriAtual.toString());
-                bundle.putString(NOME_PRODUTO, mTvNomeProduto.getText().toString());
-                bundle.putString(VALOR_UNIDADE, String.valueOf(mValorUnidadeProduto));
-                bundle.putString(QUANTIDADE_PRODUTO, mEtQuantidade.getText().toString());
-                bundle.putString(VALOR_ADICIONAL, mEtAdicional.getText().toString());
-                bundle.putString(VALOR_DESCONTO, mEtDesconto.getText().toString());
-                bundle.putString(VALOR_PRAZO, mEtPrazo.getText().toString());
-
-                intentListaCliente.putExtras(bundle);
-
-                startActivityForResult(intentListaCliente, 101);
-
-                Utilidades.fecharTecladoView(VendQuantActivity.this, mButCliente);
-            }
-        });
-
-
-        // Monitora toques nos edits
-        mEtQuantidade.setOnTouchListener(this);
-        mEtAdicional.setOnTouchListener(this);
-        mEtDesconto.setOnTouchListener(this);
-        mEtPrazo.setOnTouchListener(this);
-
-        // Monitora toques nos Switchs
-        mSwitchAdicional.setOnTouchListener(this);
-        mSwitchDesconto.setOnTouchListener(this);
-        mSwitchPrazo.setOnTouchListener(this);
-
-
-        // Coloca foco e seleciona dados do edit quantidade
-        mEtQuantidade.setSelectAllOnFocus(true);
-
-        // Tira o foco e coloca valor zero nos edits
-        Utilidades.semFocoZerado(mEtAdicional);
-        Utilidades.semFocoZerado(mEtDesconto);
-        Utilidades.semFocoZerado(mEtPrazo);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 101 && resultCode == RESULT_OK) {
+
+        Log.v(TAG, "onActivityResult");
+
+        if (requestCode == Constantes.COD_RESULT_VENDA_CLIENTES && resultCode == RESULT_OK) {
 
             if (data != null) {
 
+                Log.v(TAG, "onActivityResult -  data != null ");
 
                 mIdCliente = Long.parseLong(data.getStringExtra(ID_CLIENTE));
                 mUriCliente = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, mIdCliente);
                 getLoaderManager().initLoader(LOADER_CLIENTE, null, this);
 
-                Double valor = Double.parseDouble(data.getStringExtra(VALOR_UNIDADE));
-
-                Log.v("Pedro", "Result");
-
-                String valorTotal = calcularValorVendaBolo(
+                mValorTotalBundle = calcularValorVendaString(
                         mEtQuantidade.getText().toString().trim().replaceAll("[^\\d]", ""),
+                        Double.parseDouble(data.getStringExtra(VALOR_UNIDADE)),
                         mEtAdicional.getText().toString().trim().replaceAll("[^\\d]", ""),
                         mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", ""),
-                        mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", ""),
-                        valor);
-
-                mValorTotalBundle = valorTotal;
-
+                        mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", ""));
             }
         }
     }
 
 
     @Override
+    public void onClick(View view) {
+
+        if (view.getId() == R.id.but_vend_quant_cliente) {
+
+            mIdCliente = Constantes.MENOS_UM;
+            mNomeCliente = "";
+
+            Intent intentListaCliente =
+                    new Intent(VendQuantActivity.this, VendListClienteActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(URI_ATUAL, mUriAtual.toString());
+            bundle.putString(VALOR_UNIDADE, String.valueOf(mValorUnidadeProduto));
+
+            intentListaCliente.putExtras(bundle);
+
+            startActivityForResult(intentListaCliente, Constantes.COD_RESULT_VENDA_CLIENTES);
+
+            Utilidades.fecharTecladoView(VendQuantActivity.this, mButCliente);
+        }
+
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        Log.v(TAG, "onActivityResult");
 
         if (mIdCliente != -1 && !mNomeCliente.isEmpty()) {
 
             outState.putLong("idCliente", mIdCliente);
             outState.putString("nomeCliente", mNomeCliente);
         }
-
-
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu objeto do menu
-     * @return verdadeiro se menu foi inflado
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
 
-    /**
-     * Define o que fazer ao selecionar um item no menu
-     *
-     * @param item item selecionado
-     * @return verdadeiro se item foi selecionado no menu e a ação foi executada com sucesso
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+        Log.v(TAG, "onOptionsItemSelected");
 
-        switch (id) {
+        switch (item.getItemId()) {
 
             // Salva dados no BD
             case R.id.action_salvar:
@@ -316,6 +309,8 @@ public class VendQuantActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        Log.v(TAG, "onBackPressed");
+
         if (!isDadosAlterado) {
 
             super.onBackPressed();
@@ -331,6 +326,8 @@ public class VendQuantActivity extends AppCompatActivity implements
      * salva no banco de dados
      */
     private void salvarDadosBD() {
+
+        Log.v(TAG, "salvarDadosBD - Inicio");
 
         // Pega os valores nos edits
         String nomeProdutoTextView = mTvNomeProduto.getText().toString().trim();
@@ -348,7 +345,7 @@ public class VendQuantActivity extends AppCompatActivity implements
         // Campo não pode ser vazio
         if (TextUtils.isEmpty(quatidadeEditText)) {
 
-            mEtQuantidade.setError(getString(R.string.error_campo_vazio));
+            mEtQuantidade.setError(getString(R.string.error_campo_vazio_quantidade));
             mEtQuantidade.requestFocus();
             return;
         }
@@ -359,7 +356,7 @@ public class VendQuantActivity extends AppCompatActivity implements
         // Se campo tiver valor zero, apresenta mensagem erro
         if (quantidadeInt == Constantes.NUMERO_ZERO) {
 
-            mEtQuantidade.setError(getString(R.string.error_valor_maior_zero));
+            mEtQuantidade.setError(getString(R.string.error_valor_valido));
             mEtQuantidade.requestFocus();
             return;
         }
@@ -376,7 +373,7 @@ public class VendQuantActivity extends AppCompatActivity implements
             // O valor desse campo deve ser positivo
             if (valorAdicionalDouble == 0) {
 
-                mEtAdicional.setError(getString(R.string.error_valor_maior_zero_adicional));
+                mEtAdicional.setError(getString(R.string.error_valor_valido_adicional));
                 mEtAdicional.requestFocus();
                 return;
             }
@@ -388,7 +385,7 @@ public class VendQuantActivity extends AppCompatActivity implements
             // O valor desse campo deve ser positivo
             if (valorDescontoDouble == 0) {
 
-                mEtDesconto.setError(getString(R.string.error_valor_maior_zero_desconto));
+                mEtDesconto.setError(getString(R.string.error_valor_valido_desconto));
                 mEtDesconto.requestFocus();
                 return;
             }
@@ -399,7 +396,7 @@ public class VendQuantActivity extends AppCompatActivity implements
             // O valor desse campo deve ser positivo
             if (valorPrazoDouble == 0) {
 
-                mEtPrazo.setError(getString(R.string.error_valor_maior_zero_prazo));
+                mEtPrazo.setError(getString(R.string.error_valor_valido_prazo));
                 mEtPrazo.requestFocus();
                 return;
             }
@@ -422,7 +419,7 @@ public class VendQuantActivity extends AppCompatActivity implements
 
 
         // Faz o calculo de qual é o valor final da venda, esse valor sera salvo no BD
-        double valorTotalDoouble = Calculos.calcularValorVendaBoloDouble(
+        double valorTotalDoouble = Calculos.calcularValorTotalVendaDouble(
                 mValorUnidadeProduto,
                 quantidadeInt,
                 valorAdicionalDouble,
@@ -448,7 +445,6 @@ public class VendQuantActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
         values.put(AcessoVenda.NOME_PRODUTO, nomeProdutoTextView);
         values.put(AcessoVenda.QUANTIDADE, quantidadeInt);
-        values.put(AcessoVenda.VALOR_VENDA, valorTotalDoouble);
         values.put(AcessoVenda.VALOR_UNIDADE, mValorUnidadeProduto);
         values.put(AcessoVenda.VALOR_ADICIONAL, valorAdicionalDouble);
         values.put(AcessoVenda.VALOR_DESCONTO, valorDescontoDouble);
@@ -470,6 +466,8 @@ public class VendQuantActivity extends AppCompatActivity implements
                 Crud.inserir(VendQuantActivity.this, Contrato.AcessoAReceber.CONTENT_URI_ARECEBER, valuesVendaPrazo);
             }
 
+            Log.v(TAG, "salvarDadosBD - inserir");
+
         } else {
 
             values.put(AcessoVenda.DATA_HORA, mDataHoraBD);
@@ -480,7 +478,11 @@ public class VendQuantActivity extends AppCompatActivity implements
 
                 Crud.editar(VendQuantActivity.this, mUriCliente, values);
             }
+
+            Log.v(TAG, "salvarDadosBD - editar");
         }
+
+        Log.v(TAG, "salvarDadosBD - Fim");
 
         finish();
     }
@@ -496,11 +498,14 @@ public class VendQuantActivity extends AppCompatActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
+
         /* Se LOADER_VENDA_ADICIONAR
          * com Uri do produto a ser adicionado, faz a pesquisa por esse produto e retorna com o nome
          * do produto, valor e seu id
          */
         if (i == LOADER_VENDA_ADICIONAR) {
+
+            Log.v(TAG, "onCreateLoader - LOADER_VENDA_ADICIONAR");
 
             String[] projection = {
                     AcessoProdutos._ID,
@@ -524,12 +529,13 @@ public class VendQuantActivity extends AppCompatActivity implements
          */
         if (i == LOADER_VENDA_EDITAR) {
 
+            Log.v(TAG, "onCreateLoader - LOADER_VENDA_EDITAR");
+
             String[] projection = {
                     AcessoVenda._ID,
                     AcessoVenda.NOME_PRODUTO,
                     AcessoVenda.QUANTIDADE,
                     AcessoVenda.DATA_HORA,
-                    AcessoVenda.VALOR_VENDA,
                     AcessoVenda.VALOR_ADICIONAL,
                     AcessoVenda.VALOR_DESCONTO,
                     AcessoVenda.VALOR_PRAZO,
@@ -548,6 +554,8 @@ public class VendQuantActivity extends AppCompatActivity implements
         }
 
         if (i == LOADER_CLIENTE) {
+
+            Log.v(TAG, "onCreateLoader - LOADER_CLIENTE");
 
             // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
             String[] projection = {
@@ -579,22 +587,33 @@ public class VendQuantActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        Log.v(TAG, "onLoadFinished");
+
         /* Retorna todos os dados de uma vena especifica, e coloca resultados em seus respectivos
          * campos, de forma que possa ser feita a edicao
          */
         if (loader.getId() == LOADER_VENDA_EDITAR && cursor.moveToFirst()) {
 
+            Log.v(TAG, "");
+
             String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
             mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA_HORA));
 
             int quantidadeBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
-
+            double valorUnidadeBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE));
             double valorAdicionalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
             double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
             double valorPrazoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
-            double valorTotalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_VENDA));
+            double valorTotalBD = Calculos.calcularValorTotalVendaDouble(
+                    quantidadeBD,
+                    valorUnidadeBD,
+                    valorAdicionalBD,
+                    valorDescontoBD
+            );
+
             int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
             mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE));
+
 
             mIdCliente = idCliente;
             String nomeClienteBD = PesquisasBD.Pesuisarcliente(VendQuantActivity.this, idCliente);
@@ -649,6 +668,8 @@ public class VendQuantActivity extends AppCompatActivity implements
          */
         if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {
 
+            Log.v(TAG, "");
+
             String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoProdutos.NOME));
             mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoProdutos.VALOR));
 
@@ -657,6 +678,8 @@ public class VendQuantActivity extends AppCompatActivity implements
         }
 
         if (loader.getId() == LOADER_CLIENTE && cursor.moveToFirst()) {
+
+            Log.v(TAG, "");
 
             mNomeCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
             mTvNomeCliente.setText(mNomeCliente);
@@ -673,6 +696,7 @@ public class VendQuantActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+        Log.v(TAG, "onLoaderReset");
     }
 
     /**
@@ -688,6 +712,8 @@ public class VendQuantActivity extends AppCompatActivity implements
      */
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+
+        Log.v(TAG, "onTouch");
 
         int id = view.getId();
 
@@ -737,6 +763,8 @@ public class VendQuantActivity extends AppCompatActivity implements
     /* Verifica a entrada de caracteres nos edits*/
     private void controleTextWatcher() {
 
+        Log.v(TAG, "controleTextWatcher");
+
         /* Edits tem apenas caracteres numericos em seu teclado
          * Apos a entrada de caracteres, e feita a formatação para o estilo moeda para ser
          * apresentado ao usuario
@@ -761,7 +789,7 @@ public class VendQuantActivity extends AppCompatActivity implements
                 String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlPrazo = mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaString(vlQuantidade, mValorUnidadeProduto, vlAdicional, vlDesconto, vlPrazo));
 
                 mEtQuantidade.setSelection(mEtQuantidade.getText().length());
             }
@@ -789,7 +817,7 @@ public class VendQuantActivity extends AppCompatActivity implements
                 String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlPrazo = mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaString(vlQuantidade, mValorUnidadeProduto, vlAdicional, vlDesconto, vlPrazo));
 
                 if (isFormatarCurrencyAtualizado) {
                     isFormatarCurrencyAtualizado = false;
@@ -826,7 +854,7 @@ public class VendQuantActivity extends AppCompatActivity implements
                 String vlDesconto = charSequence.toString().trim().replaceAll("[^\\d]", "");
                 String vlPrazo = mEtPrazo.getText().toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaString(vlQuantidade, mValorUnidadeProduto, vlAdicional, vlDesconto, vlPrazo));
 
 
                 if (isFormatarCurrencyAtualizado) {
@@ -868,7 +896,7 @@ public class VendQuantActivity extends AppCompatActivity implements
                 String vlDesconto = mEtDesconto.getText().toString().trim().replaceAll("[^\\d]", "");
                 String vlPrazo = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
-                mTvValorTotal.setText(calcularValorVendaBolo(vlQuantidade, vlAdicional, vlDesconto, vlPrazo, mValorUnidadeProduto));
+                mTvValorTotal.setText(calcularValorVendaString(vlQuantidade, mValorUnidadeProduto, vlAdicional, vlDesconto, vlPrazo));
 
 
                 if (isFormatarCurrencyAtualizado) {
@@ -894,6 +922,8 @@ public class VendQuantActivity extends AppCompatActivity implements
 
     /* Veifica se houve alteração no estado do Switch*/
     private void controleSwitchCheckedChange() {
+
+        Log.v(TAG, "");
 
         /* Se Switch estiver Checked fica visivel edit para entrada de valores
          * Se Switch não estiver Checked o edit para entrada de dados fica invisivel
@@ -962,10 +992,13 @@ public class VendQuantActivity extends AppCompatActivity implements
 
                     layoutPrazo.setVisibility(View.GONE);
                     mEtPrazo.setText("0");
+                    mTvNomeCliente.setText("");
+                    mNomeCliente = "";
                 }
 
             }
         });
 
     }
+
 }

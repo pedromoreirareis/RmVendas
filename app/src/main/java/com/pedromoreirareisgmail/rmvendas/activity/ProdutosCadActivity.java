@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,13 +24,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_QUANT_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
 
 public class ProdutosCadActivity extends AppCompatActivity implements
@@ -37,10 +38,11 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         EditText.OnEditorActionListener,
         EditText.OnTouchListener {
 
+    private static final String TAG = ProdutosCadActivity.class.getSimpleName();
     private static final int LOADER_PROD_CAD = 0;
 
     private EditText mEtNome;
-    private EditText mEtValor;
+    private EditText mEtPreco;
 
     private Uri mUriAtual = null;
     private boolean isDadosAlterados = false;
@@ -50,9 +52,10 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produtos_cad);
 
-        // Recebe dados de Uri de ProdutosListActivity
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        Log.v(TAG, "onCreate");
+
+        initViews();
+        initIntents();
 
         // Se tiver dados em mUriAtual, então vai editar, senão vai adicionar
         if (mUriAtual == null) {
@@ -65,10 +68,6 @@ public class ProdutosCadActivity extends AppCompatActivity implements
             getLoaderManager().initLoader(LOADER_PROD_CAD, null, this);
         }
 
-        // Referencia itens do layout
-        mEtNome = findViewById(R.id.et_nome);
-        mEtValor = findViewById(R.id.et_preco);
-
         // Controle entrada de caracteres nos edits
         controleTextWatcher();
 
@@ -79,40 +78,48 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         }
 
         // Monitora o EditorAction do teclado
-        mEtValor.setOnEditorActionListener(this);
+        mEtPreco.setOnEditorActionListener(this);
 
         // Monitora toques em uma view especifica
-        mEtValor.setOnTouchListener(this);
+        mEtPreco.setOnTouchListener(this);
 
         // Retira o foco do edit e coloca o valor zero nele
-        Utilidades.semFocoZerado(mEtValor);
+        Utilidades.semFocoZerado(mEtPreco);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu objeto de criação do menu
-     * @return verdadeiro se menu foi criado corretamente
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia itens do layout
+        mEtNome = findViewById(R.id.et_nome);
+        mEtPreco = findViewById(R.id.et_preco);
+    }
+
+    private void initIntents() {
+
+        Log.v(TAG, "initIntents");
+
+        // Recebe dados de Uri de ProdutosListActivity
+        Intent intent = getIntent();
+        mUriAtual = intent.getData();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
         return true;
     }
 
-    /**
-     * Verifica item do menu que foi selecionado
-     *
-     * @param item item selecionado
-     * @return verdadeiro se ação no menu selecionado foi executada
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+        Log.v(TAG, "onOptionsItemSelected");
 
-        switch (id) {
+        switch (item.getItemId()) {
 
             // Menu Salvar
             case R.id.action_salvar:
@@ -147,6 +154,8 @@ public class ProdutosCadActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        Log.v(TAG, "onBackPressed");
+
         if (!isDadosAlterados) {
 
             super.onBackPressed();
@@ -160,72 +169,65 @@ public class ProdutosCadActivity extends AppCompatActivity implements
     /* Recebe dados dos edits, faz validações, coloca no obejtos values e salva os dados no BD */
     private void salvarDadosBD() {
 
-        String nomeEditText = mEtNome.getText().toString().trim();
-        String precoEditText = mEtValor.getText().toString().trim();
+        Log.v(TAG, "salvarDadosBD - Inicio");
 
-        double valorDouble = Formatar.formatarParaDouble(precoEditText);
+        String nomeEditText = mEtNome.getText().toString().trim();
+        String precoEditText = mEtPreco.getText().toString().trim();
+
+        double precoDouble = Formatar.formatarParaDouble(precoEditText);
 
         // Campo não pode ficar vazio
         if (TextUtils.isEmpty(nomeEditText)) {
 
-            mEtNome.setError(getString(R.string.error_campo_vazio));
+            mEtNome.setError(getString(R.string.error_campo_vazio_nome));
             mEtNome.requestFocus();
             return;
         }
 
-        // Campo não pode fica vazio
-        if (TextUtils.isEmpty(precoEditText)) {
+        // determina quantidade minima de caracteres no campo de nome
+        if (nomeEditText.length() < Constantes.MIN_CARACT_5) {
 
-            mEtValor.setError(getString(R.string.error_campo_vazio));
-            mEtValor.requestFocus();
+            mEtNome.setError(getString(R.string.error_campo_lenght_nome_5));
+            mEtNome.requestFocus();
             return;
         }
 
         // Valor não pode ser negativo
-        if (valorDouble <= NUMERO_ZERO) {
+        if (precoDouble == NUMERO_ZERO) {
 
-            mEtValor.setError(getString(R.string.error_valor_maior_zero));
-            mEtValor.requestFocus();
-            return;
-        }
-
-        // determina quantidade minima de caracteres no campo de descrição
-        if (nomeEditText.length() < MIN_QUANT_CARACT_10) {
-
-            mEtNome.setError(getString(R.string.error_campo_lenght_10));
-            mEtNome.requestFocus();
+            mEtPreco.setError(getString(R.string.error_valor_valido));
+            mEtPreco.requestFocus();
             return;
         }
 
         // Coloca dados no Objeto values para salvar no BD
         ContentValues values = new ContentValues();
         values.put(AcessoProdutos.NOME, nomeEditText);
-        values.put(AcessoProdutos.VALOR, valorDouble);
+        values.put(AcessoProdutos.VALOR, precoDouble);
 
         // Salva dados no BD
         if (mUriAtual == null) {
+
+            Log.v(TAG, "salvarDadosBD - inserir");
 
             Crud.inserir(ProdutosCadActivity.this, AcessoProdutos.CONTENT_URI_PRODUTOS, values);
 
         } else {
 
+            Log.v(TAG, "salvarDadosBD - editar");
+
             Crud.editar(ProdutosCadActivity.this, mUriAtual, values);
         }
+
+        Log.v(TAG, "salvarDadosBD - Fim");
 
         finish();
     }
 
-    /**
-     * Define criterios para pesquisa no BD
-     * Determina quais colunas retornaram dados, quais as regras a seguidas na pesquisa
-     * e o que devem ser pesquisado
-     *
-     * @param i      Loader que vai fazer a pesquisa
-     * @param bundle Argumentos de pesquisa dentro do loader
-     * @return resultado da pesquisa em um cursor
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         // Pesquisa especifica pelo mUriAtual por um unico produto cadastrado
         String[] projection = {
@@ -244,14 +246,10 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Resultado da pesquisa
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor cursor com resultado da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
 
         if (cursor.moveToFirst()) {
 
@@ -261,31 +259,20 @@ public class ProdutosCadActivity extends AppCompatActivity implements
             String nomeBD = cursor.getString(
                     cursor.getColumnIndex(AcessoProdutos.NOME));
 
-            mEtValor.setText(String.valueOf(valorBD * 100));
+            mEtPreco.setText(String.valueOf(valorBD * 100));
             mEtNome.setText(nomeBD);
         }
     }
 
-    /**
-     * Determina o que sera feito com os dados antigos apos iniciar uma nova pesquisa
-     *
-     * @param loader resultado antigo das pesquisas
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 
-    /**
-     * Executa uma ação se for clicado um EditorAction no teclado em uma determinada view
-     *
-     * @param view     view  que vai ser monitorada
-     * @param actionId id de uma acao a ser executada
-     * @param event    evento
-     * @return verdadeiro se ação for executada
-     */
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+
+        Log.v(TAG, "onEditorAction");
 
         // Salva dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -295,17 +282,18 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         }
 
         return false;
-
     }
 
     /* Verifica entrada de caracteres nos edits e formata os caracteres se necessario */
     private void controleTextWatcher() {
 
+        Log.v(TAG, "controleTextWatcher");
+
         /* No edit mEtValor e permitido a entrada apenas de numeros
          * Captura a entrada dos caracteres de numero no edit e faz a formatação para moeda
          * (currency) para ser apresentado para o usuario
          */
-        mEtValor.addTextChangedListener(new TextWatcher() {
+        mEtPreco.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -320,14 +308,15 @@ public class ProdutosCadActivity extends AppCompatActivity implements
                 }
 
                 if (isFormatarCurrencyAtualizado) {
+
                     isFormatarCurrencyAtualizado = false;
                     return;
                 }
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
-                mEtValor.setSelection(mEtValor.getText().length());
+                mEtPreco.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
+                mEtPreco.setSelection(mEtPreco.getText().length());
             }
 
             @Override
@@ -335,18 +324,12 @@ public class ProdutosCadActivity extends AppCompatActivity implements
 
             }
         });
-
     }
 
-    /**
-     * Monitora toque em uma determinada view
-     *
-     * @param view  view que sera verificada se houve toque
-     * @param event evento
-     * @return verdadeiro se houve toque
-     */
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+
+        Log.v(TAG, "onTouch");
 
         int id = view.getId();
 
@@ -354,9 +337,9 @@ public class ProdutosCadActivity extends AppCompatActivity implements
 
             // Recebe o foco, coloca cursor a direita dos caracteres e abre teclado se tiver fechado
             case R.id.et_preco:
-                mEtValor.requestFocus();
-                mEtValor.setSelection(mEtValor.getText().length());
-                Utilidades.mostrarTeclado(ProdutosCadActivity.this, mEtValor);
+                mEtPreco.requestFocus();
+                mEtPreco.setSelection(mEtPreco.getText().length());
+                Utilidades.mostrarTeclado(ProdutosCadActivity.this, mEtPreco);
                 return true;
 
             default:

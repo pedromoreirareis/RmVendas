@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +31,21 @@ import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 public class SaldoInicialListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemLongClickListener,
-        ListView.OnItemClickListener {
+        ListView.OnItemClickListener,
+        FloatingActionButton.OnClickListener {
 
+    private static final String TAG = SaldoInicialListActivity.class.getSimpleName();
     private static final int LOADER_SALDO_INICIAL_LIST = 0;
+
+    private FloatingActionButton mFab;
+    private TextView mTvEmpty;
+    private ImageView mIvEmpty;
+    private ListView mListView;
+    private View mEmptyView;
 
     private SaldoInicialAdapter mAdapter;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private FloatingActionButton fab;
+
 
     private String mDataPesquisarBD = null;
 
@@ -45,44 +54,27 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saldo_list);
 
+        Log.v(TAG, "onCreate");
+
+        initViews();
+        emptyLayout();
+
         // Trata o botão Flutuante - Abre activity SaldoInicialCadActivity
-        fab = findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intentSaldoInicial = new Intent(
-                        SaldoInicialListActivity.this, SaldoInicialCadActivity.class);
-                startActivity(intentSaldoInicial);
-            }
-        });
-
-        //  Faz referencia aos itens do layout
-        TextView tvEmpty = findViewById(R.id.tv_empty_view);
-        ImageView ivEmpty = findViewById(R.id.iv_empty_view);
-        ListView listView = findViewById(R.id.lv_list);
-        View emptyView = findViewById(R.id.empty_view);
-
-        //  layout vazio - cadastro sem registros
-        tvEmpty.setText(R.string.text_saldo_inicial_list_empty);
-        ivEmpty.setImageResource(R.drawable.ic_dinheiro_duas_maos);
-        ivEmpty.setContentDescription(getString(R.string.image_desc_saldo_inicial_list_empty));
-        listView.setEmptyView(emptyView);
+        mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new SaldoInicialAdapter(this);
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Clique simples e Longo no ListView
-        listView.setOnItemClickListener(this);
-        listView.setOnItemLongClickListener(this);
+        mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
 
         //  Pega data calendário do Dialog
-        getDataCalendario();
+        pegarDataDialogCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list),
-                DataHora.obterFormatarDataBrTitulo()));
+        setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list), DataHora.obterFormatarDataBrTitulo()));
 
         // O Loader utiliza mDataPesquisarBD para fazer a pesquisa no banco de dados - "yyyy-MM-dd"
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
@@ -90,32 +82,45 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(LOADER_SALDO_INICIAL_LIST, null, this);
     }
 
-    /**
-     * Cria o menu
-     *
-     * @param menu Interface de criação do menu
-     * @return Menu inflado
-     */
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        //  Faz referencia aos itens do layout
+        mFab = findViewById(R.id.fab_add);
+        mTvEmpty = findViewById(R.id.tv_empty_view);
+        mIvEmpty = findViewById(R.id.iv_empty_view);
+        mListView = findViewById(R.id.lv_list);
+        mEmptyView = findViewById(R.id.empty_view);
+    }
+
+    private void emptyLayout() {
+
+        Log.v(TAG, "emptyLayout");
+
+        //  layout vazio - cadastro sem registros
+        mTvEmpty.setText(R.string.text_saldo_inicial_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_dinheiro_duas_maos);
+        mIvEmpty.setContentDescription(getString(R.string.image_desc_saldo_inicial_list_empty));
+        mListView.setEmptyView(mEmptyView);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_data, menu);
 
         return true;
     }
 
-    /**
-     * Define o que fazer ao selecionar um item do menu
-     *
-     * @param item Item que foi selecionado
-     * @return verdadeiro se item foi selecionado
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
+        Log.v(TAG, "onOptionsItemSelected");
 
-        if (id == R.id.action_data) {
+        if (item.getItemId() == R.id.action_data) {
 
             Dialogos.dialogoDatas(SaldoInicialListActivity.this, mDateSetListener);
         }
@@ -123,15 +128,10 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Define os parametros de pesquisa no BD
-     *
-     * @param i      Loader responsavel pela pesquisa
-     * @param bundle Conjunto de dados em um bundle
-     * @return Um Loader com um Cursor com resultado da pesquisa
-     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 AcessoSaldo._ID,
@@ -153,33 +153,29 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         );
     }
 
-    /**
-     * Define o que fazer com os dados retornados do BD
-     *
-     * @param loader Define o loader pesquisado
-     * @param cursor Cursor com dados da pesquisa
-     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        Log.v(TAG, "onLoadFinished");
+
         mAdapter.swapCursor(cursor);
 
         /* Se encontrar pelo menos um dado salvo para a data o FloatingActionButton deve ficar
            invisivel, se não tiver nenhum dado deve ficar visivel */
         if (mAdapter.getCount() > 0) {
-            fab.setVisibility(View.GONE);
-        } else {
-            fab.setVisibility(View.VISIBLE);
-        }
 
+            mFab.setVisibility(View.GONE);
+        } else {
+
+            mFab.setVisibility(View.VISIBLE);
+        }
     }
 
-    /**
-     * Ao reiniciar a pesquisa o que fazer com os dados velhos
-     *
-     * @param loader Loader com dados antigos
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+        Log.v(TAG, "onLoaderReset");
+
         mAdapter.swapCursor(null);
     }
 
@@ -195,26 +191,20 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        Log.v(TAG, "onItemClick");
+
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog;
-        String mensagemDialog;
-
-        tituloDialog = getString(R.string.dialog_informacao_saldo_inicial_title);
+        String tituloDialog = getString(R.string.dialog_informacao_saldo_inicial_title);
 
         //  Mensagem do Dialog - Descrição
-
-        mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
+        String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR))),
                 DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))),
                 DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))));
 
         Dialogos.dialogoExibirDados(SaldoInicialListActivity.this, tituloDialog, mensagemDialog);
     }
-
-    /**
-
-     */
 
     /**
      * Click Longo no ListView
@@ -230,6 +220,8 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
      */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(AcessoSaldo.CONTENT_URI_SALDO_INICIAL, id);
 
@@ -247,7 +239,6 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         );
 
         return true;
-
     }
 
     /*
@@ -255,7 +246,9 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
      * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
      * pesquisa para verificar se há dados para esta data
      */
-    private void getDataCalendario() {
+    private void pegarDataDialogCalendario() {
+
+        Log.v(TAG, "pegarDataDialogCalendario");
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -269,6 +262,18 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
                 getLoaderManager().restartLoader(LOADER_SALDO_INICIAL_LIST, null, SaldoInicialListActivity.this);
             }
         };
+    }
 
+    @Override
+    public void onClick(View view) {
+
+        Log.v(TAG, "onClick - mFab");
+
+        if (view.getId() == R.id.fab_add) {
+
+            Intent intentSaldoInicial = new Intent(
+                    SaldoInicialListActivity.this, SaldoInicialCadActivity.class);
+            startActivity(intentSaldoInicial);
+        }
     }
 }
