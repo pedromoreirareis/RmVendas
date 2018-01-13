@@ -13,6 +13,7 @@
     <dimen name="margin_padrao_12">12dp</dimen>
     <dimen name="margin_padrao_16">16dp</dimen>
     <dimen name="margin_padrao_32">32dp</dimen>
+    <dimen name="margin_padrao_48">48dp</dimen>
 
     <!-- Espaçamentos de margin e padding padrões -->
     <dimen name="sizeTextSaldo_32">28dp</dimen>

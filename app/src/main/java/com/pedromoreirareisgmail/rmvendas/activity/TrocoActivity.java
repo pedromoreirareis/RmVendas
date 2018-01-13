@@ -52,10 +52,12 @@ public class TrocoActivity extends AppCompatActivity implements
         initViews();
         initItents();
 
-        mEtValorRecebido.setText(NUMERO_ZERO_STRING);
-
         // Faz controle de entrada de dados no edit
         controleTextWatcher();
+
+        mEtValorRecebido.setText(NUMERO_ZERO_STRING);
+
+        mEtValorRecebido.requestFocus();
 
         mTvValorVenda.setText(Formatar.formatarDoubleParaCurrency(mValorVenda));
         mEtValorRecebido.setOnTouchListener(this);
@@ -91,7 +93,7 @@ public class TrocoActivity extends AppCompatActivity implements
         Log.v(TAG, "calcularTroco");
 
         mValorRecebido = formatarParaDouble(mEtValorRecebido.getText().toString().trim());
-        mTextoErro = getString(R.string.valor_maior) + " " + formatarDoubleParaCurrency(mValorVenda);
+        mTextoErro = String.format(getResources().getString(R.string.valor_maior), formatarDoubleParaCurrency(mValorVenda));
 
         if (mValorVenda != 0 && mValorRecebido != 0) {
 

@@ -264,5 +264,5 @@
     <string name="valor_venda">Valor da Venda</string>
     <string name="valor_recebido">Valor Recebido</string>
     <string name="valor_troco">O valor do Troco é:</string>
-    <string name="valor_maior">Esse valor deve ser igual ou maior que </string>
+    <string name="valor_maior">Esse valor deve ser igual ou maior que %1$s </string>
 </resources>

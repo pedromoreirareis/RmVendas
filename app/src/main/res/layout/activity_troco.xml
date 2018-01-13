@@ -7,10 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/margin_padrao_16"
+        android:layout_marginLeft="@dimen/margin_padrao_16"
+        android:layout_marginRight="@dimen/margin_padrao_16"
+        android:layout_marginTop="@dimen/margin_padrao_16"
         android:orientation="vertical"
         tools:context="com.pedromoreirareisgmail.rmtroco.MainActivity">
 
@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/margin_padrao_8"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
@@ -26,7 +26,8 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/margin_padrao_16"
                 android:layout_weight="1">
 
                 <android.support.design.widget.TextInputEditText
@@ -36,6 +37,7 @@
                     android:layout_gravity="center_vertical"
                     android:digits="0123456789"
                     android:ellipsize="end"
+                    android:focusable="true"
                     android:hint="@string/valor_recebido"
                     android:imeOptions="actionDone"
                     android:inputType="number"
@@ -56,9 +58,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:gravity="top"
-                    android:text="Preço de venda"
+                    android:text="@string/valor_venda"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
 
 
                 <TextView
@@ -69,6 +72,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginTop="@dimen/margin_padrao_8"
                     android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="32sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -79,8 +83,8 @@
             android:id="@+id/but_troco_limpar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginBottom="@dimen/margin_padrao_16"
+            android:layout_marginTop="@dimen/margin_padrao_48"
             android:layout_weight="1"
             android:background="@color/colorRed"
             android:text="@string/limpar"
@@ -91,10 +95,10 @@
             android:id="@+id/tv_troco_valor_troco_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/margin_padrao_8"
             android:fontFamily="serif-monospace"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorBlack"
-            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
