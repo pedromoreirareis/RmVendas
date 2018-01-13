@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class PesquisasBD {
 
 
-    public static String Pesuisarcliente(Context context, int idCliente) {
+    public static String Pesquisarcliente(Context context, int idCliente) {
 
         DbHelper mDbHelper = new DbHelper(context);
 

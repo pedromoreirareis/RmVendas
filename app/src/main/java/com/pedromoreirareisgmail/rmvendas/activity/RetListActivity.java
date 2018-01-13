@@ -142,7 +142,7 @@ public class RetListActivity extends AppCompatActivity implements
 
          /* Retorna dados cadastrados em uma data especificada e se for do tipo retirada */
         String selection = AcessoEntRet.TIPO + " =? AND " + AcessoEntRet.DATA_HORA + " LIKE ?";
-        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_RETIRADA_CAIXA), mDataPesquisarBD + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_RETIRADA), mDataPesquisarBD + "%"};
         String sortOrder = AcessoEntRet.DATA_HORA;
 
         return new CursorLoader(

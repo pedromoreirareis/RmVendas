@@ -7,7 +7,8 @@ import android.provider.BaseColumns;
 public class Contrato {
 
 
-    /*********************************** TABELAS ***************************************************
+    /*
+     *********************************** TABELAS ***************************************************
      *
      * Produtos             - lista com os bolos e/ou outros produtos vendidos
      * Entradas_Retiradas   - entradas e retiradas de valores do caixa em um dia especifico
@@ -21,23 +22,23 @@ public class Contrato {
     /**
      * Autoridade para o vendas provider
      */
-    public static final String CONTENT_AUTORITY = "com.pedromoreirareisgmail.rmvendas";
+    protected static final String CONTENT_AUTORITY = "com.pedromoreirareisgmail.rmvendas";
 
 
     /**
      * Um content:// para o vendas provider
      */
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTORITY);
 
     /**
      * Identificador das tabelas
      */
-    public static final String PATH_PRODUTOS = AcessoProdutos.TABELA_PRODUTOS;
-    public static final String PATH_ENT_RET = AcessoEntRet.TABELA_ENT_RET;
-    public static final String PATH_SALDO_INICIAL = AcessoSaldo.TABELA_SALDO_INICIAL;
-    public static final String PATH_VENDA = AcessoVenda.TABELA_VENDAS;
-    public static final String PATH_CLIENTES = AcessoClientes.TABELA_CLIENTES;
-    public static final String PATH_A_RECEBER = AcessoAReceber.TABELA_A_RECEBER;
+    private static final String PATH_PRODUTOS = AcessoProdutos.TABELA_PRODUTOS;
+    private static final String PATH_ENT_RET = AcessoEntRet.TABELA_ENT_RET;
+    private static final String PATH_SALDO_INICIAL = AcessoSaldo.TABELA_SALDO_INICIAL;
+    private static final String PATH_VENDA = AcessoVenda.TABELA_VENDAS;
+    private static final String PATH_CLIENTES = AcessoClientes.TABELA_CLIENTES;
+    private static final String PATH_A_RECEBER = AcessoAReceber.TABELA_A_RECEBER;
 
 
     private Contrato() {

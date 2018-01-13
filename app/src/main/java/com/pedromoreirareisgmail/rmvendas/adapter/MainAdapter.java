@@ -62,7 +62,7 @@ public class MainAdapter extends CursorAdapter {
         String nomeCliente = "";
         if (idCliente > 0) {
 
-            nomeCliente = PesquisasBD.Pesuisarcliente(context, idCliente);
+            nomeCliente = PesquisasBD.Pesquisarcliente(context, idCliente);
         }
 
         /* Nome do produto e hora de uma venda */
@@ -79,7 +79,7 @@ public class MainAdapter extends CursorAdapter {
                 valorAdicional,
                 valorDesconto
         );
-        double valorAVista = Calculos.CalcularValorAVista(
+        double valorAVista = Calculos.CalcularValorAVistaDouble(
                 quantidadeProduto,
                 valorUnidadeProduto,
                 valorAdicional,

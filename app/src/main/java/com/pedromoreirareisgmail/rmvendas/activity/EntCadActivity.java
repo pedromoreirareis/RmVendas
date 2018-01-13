@@ -216,7 +216,7 @@ public class EntCadActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
         values.put(AcessoEntRet.VALOR, valorDouble);
         values.put(AcessoEntRet.DESCRICAO, descricaoEditText);
-        values.put(AcessoEntRet.TIPO, Constantes.TIPO_ENTRADA_CAIXA);
+        values.put(AcessoEntRet.TIPO, Constantes.TIPO_ENTRADA);
 
         if (mUriAtual == null) {
 
@@ -341,6 +341,7 @@ public class EntCadActivity extends AppCompatActivity implements
                 }
 
                 if (isFormatarCurrencyAtualizado) {
+
                     isFormatarCurrencyAtualizado = false;
                     return;
                 }

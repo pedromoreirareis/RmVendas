@@ -17,16 +17,13 @@
     <!-- Branco -->
     <color name="colorWhite">#FFFFFF</color>
 
-    <!--  -->
+    <!-- Data -->
     <color name="colorDataItemMain">#1C1C1C</color>
 
-    <!--  -->
-    <color name="colorDetalhesLabel">#4F4F4F</color>
+    <!-- Descrição e valor -->
+    <color name="colorDetalhes">#4F4F4F</color>
 
-    <!--  -->
-    <color name="colorDetalhesValor">#828282</color>
-
-    <!--  -->
-    <color name="colorTextEmpty">#B5B5B5</color>
+    <!-- Texto List vazio  -->
+    <color name="colorTextEmpty">#757575</color>
 
 </resources>

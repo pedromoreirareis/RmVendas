@@ -17,10 +17,9 @@ public class Calculos {
      * @param vlAdicional   Valor adicional, se tiver
      * @param vlDesconto    Valor do desconto, se tiver
      * @param vlPrazo       Valor fiado, se tiver
-     * @param vlProd        Valor de cada unidade do produto
      * @return uma string em formato currency do valor total
      */
-    public static String calcularValorVendaString(String vlQquantidade, double vlProduto, String vlAdicional, String vlDesconto, String vlPrazo) {
+    public static String calcularValorTotalVendaString(String vlQquantidade, double vlProduto, String vlAdicional, String vlDesconto, String vlPrazo) {
 
         if (TextUtils.isEmpty(vlQquantidade)) {
 
@@ -79,8 +78,7 @@ public class Calculos {
 
     }
 
-
-    public static double CalcularValorAVista(
+    public static double CalcularValorAVistaDouble(
             int valorQuantidade,
             double valorProduto,
             double valorAdicional,
@@ -92,5 +90,6 @@ public class Calculos {
 
         return valorPrecoVenda + valorAdicional - valorDesconto - valorPrazo;
     }
+
 
 }

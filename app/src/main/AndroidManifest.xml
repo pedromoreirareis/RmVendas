@@ -157,10 +157,21 @@
                 android:value=".activity.VendQuantActivity" />
         </activity>
 
+        <activity
+            android:name=".activity.TrocoActivity"
+            android:label="@string/title_troco"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+
         <provider
             android:name=".db.Provider"
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
+
 
     </application>
 

@@ -65,7 +65,7 @@ public class AReceberAdapter extends CursorAdapter {
         /*  Recebimento - fonte do registro fica Azul
          *   Venda - fonte do registro fica vermelha
          */
-        if (tipoEntradaBD == Constantes.TIPO_A_RECEBER_RECEBIMENTO) {
+        if (tipoEntradaBD == Constantes.TIPO_RECEBIMENTO) {
 
             holder.tvData.setTextColor(context.getResources().getColor(R.color.colorBlue));
             holder.tvDescricao.setTextColor(context.getResources().getColor(R.color.colorBlue));

@@ -19,6 +19,8 @@ import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
+import static com.pedromoreirareisgmail.rmvendas.db.Contrato.CONTENT_AUTORITY;
+
 
 public class Provider extends ContentProvider {
 
@@ -50,23 +52,23 @@ public class Provider extends ContentProvider {
         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/       - Uri geral toda a tabela */
         /*  com.pedromoreirareisgmail.minhasvendas/nomeDaTabela/1  _ID - Uri especifico uma unica linha */
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.TABELA_PRODUTOS, MATCH_PRODUTOS);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoProdutos.TABELA_PRODUTOS + "/#", MATCH_PRODUTOS_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoProdutos.TABELA_PRODUTOS, MATCH_PRODUTOS);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoProdutos.TABELA_PRODUTOS + "/#", MATCH_PRODUTOS_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET, MATCH_ENT_RET);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET + "/#", MATCH_ENT_RET_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET, MATCH_ENT_RET);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET + "/#", MATCH_ENT_RET_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL, MATCH_SALDO_INICIAL);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL + "/#", MATCH_SALDO_INICIAL_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL, MATCH_SALDO_INICIAL);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL + "/#", MATCH_SALDO_INICIAL_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS, MATCH_VENDAS);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS + "/#", MATCH_VENDASS_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS, MATCH_VENDAS);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS + "/#", MATCH_VENDASS_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoClientes.TABELA_CLIENTES, MATCH_CLIENTES);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoClientes.TABELA_CLIENTES + "/#", MATCH_CLIENTES_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoClientes.TABELA_CLIENTES, MATCH_CLIENTES);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoClientes.TABELA_CLIENTES + "/#", MATCH_CLIENTES_ID);
 
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoAReceber.TABELA_A_RECEBER, MATCH_A_RECEBER);
-        sUriMatcher.addURI(Contrato.CONTENT_AUTORITY, AcessoAReceber.TABELA_A_RECEBER + "/#", MATCH_A_RECEBER_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoAReceber.TABELA_A_RECEBER, MATCH_A_RECEBER);
+        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoAReceber.TABELA_A_RECEBER + "/#", MATCH_A_RECEBER_ID);
     }
 
 
@@ -98,7 +100,7 @@ public class Provider extends ContentProvider {
      * @param selection     Define os campo onde os dados devem ser encontrados
      * @param selectionArgs Define o que vai ser procurado
      * @param sortOrder     Define a ordem dos dados retornados
-     * @return
+     * @return cursor com resultado da pesquisa
      */
     @Nullable
     @Override
@@ -617,9 +619,11 @@ public class Provider extends ContentProvider {
     }
 
 
-    /*****************************     UTILS - CRUD   ********************************************/
+    /*
+     *****************************     UTILS - CRUD   ********************************************/
 
-    /********************************     INSERIR    **********************************************/
+    /*
+     ********************************     INSERIR    **********************************************/
 
     /**
      * Insere um novo registro
@@ -654,7 +658,8 @@ public class Provider extends ContentProvider {
     }
 
 
-    /********************************     EDITAR    ***********************************************/
+    /*
+     ********************************     EDITAR    ***********************************************/
 
     /**
      * Editado varios registros
@@ -719,7 +724,8 @@ public class Provider extends ContentProvider {
     }
 
 
-    /********************************     EXCLUIR   ***********************************************/
+    /*
+     ********************************     EXCLUIR   ***********************************************/
 
     /**
      * Exclui varios registros ou todos de uma tabela

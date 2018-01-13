@@ -144,7 +144,7 @@ public class EntListActivity extends AppCompatActivity implements
 
         /* Retorna dados cadastrados em uma data especificada e se for do tipo entrada */
         String selection = AcessoEntRet.TIPO + " =? AND " + AcessoEntRet.DATA_HORA + " LIKE ?";
-        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA_CAIXA), mDataPesquisarBD + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(Constantes.TIPO_ENTRADA), mDataPesquisarBD + "%"};
         String sortOrder = AcessoEntRet.DATA_HORA;
 
         return new CursorLoader(

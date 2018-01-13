@@ -23,11 +23,17 @@ public class Utilidades {
      */
     public static void fecharTecladoView(Context context, View view) {
 
-        InputMethodManager imm = (InputMethodManager) context.
-                getSystemService(INPUT_METHOD_SERVICE);
+        if (context != null && view != null) {
 
-        imm.hideSoftInputFromWindow(view.getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+            InputMethodManager imm = (InputMethodManager) context.
+                    getSystemService(INPUT_METHOD_SERVICE);
+
+            if (imm != null) {
+
+                imm.hideSoftInputFromWindow(view.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 
     /**
@@ -38,10 +44,16 @@ public class Utilidades {
      */
     public static void mostrarTeclado(Context context, EditText meuEdit) {
 
-        InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (context != null && meuEdit != null) {
 
-        imm.showSoftInput(meuEdit, InputMethodManager.SHOW_IMPLICIT);
+            InputMethodManager imm =
+                    (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (imm != null) {
+
+                imm.showSoftInput(meuEdit, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }
     }
 
     /**
@@ -80,7 +92,6 @@ public class Utilidades {
 
         return isDadosAlterado;
     }
-
 
 
 }

@@ -29,15 +29,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.VALOR_VENDA_TROCO;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemLongClickListener,
+        ListView.OnItemClickListener,
         SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener {
 
@@ -96,8 +100,9 @@ public class MainActivity extends AppCompatActivity
         mListview.setAdapter(mAdapter);
         mListview.setDivider(null);
 
-        // Click longo no Listview
+        // Click longo no Listview e click simples
         mListview.setOnItemLongClickListener(this);
+        mListview.setOnItemClickListener(this);
 
         // Selecionada data no Dialog de calendario
         pegarDataDialogCalendario();
@@ -282,7 +287,7 @@ public class MainActivity extends AppCompatActivity
 
             selection = AcessoVenda.DATA_HORA + " LIKE ?  AND " + AcessoVenda.NOME_PRODUTO + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%", "%" + mPesquisarBD + "%"};
-            sortOrder = AcessoVenda.DATA_HORA;
+            sortOrder = AcessoVenda.DATA_HORA + " DESC";
 
         } else {
 
@@ -290,7 +295,7 @@ public class MainActivity extends AppCompatActivity
 
             selection = AcessoVenda.DATA_HORA + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%"};
-            sortOrder = AcessoVenda.DATA_HORA;
+            sortOrder = AcessoVenda.DATA_HORA + " DESC";
         }
 
         return new CursorLoader(
@@ -317,37 +322,6 @@ public class MainActivity extends AppCompatActivity
         Log.v(TAG, "onLoaderReset");
 
         mAdapter.swapCursor(null);
-    }
-
-    /**
-     * Click longo no listview
-     * Abre Dialog para escolha se deseja editar o registro ou excluir
-     *
-     * @param parent   layout onde esta cada item do listview
-     * @param view     item do listview
-     * @param position posição de cada registro no listview
-     * @param id       id no BD de um item apresentado no listview
-     * @return
-     */
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemLongClick");
-
-        Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
-
-        Cursor cursor = mAdapter.getCursor();
-        String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)) + "  "
-                + cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
-
-        Dialogos.dialogoEditarExcluir(
-                MainActivity.this,
-                VendQuantActivity.class,
-                uri,
-                mensagemExcluir
-        );
-
-        return true;
     }
 
     /*
@@ -395,11 +369,73 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
 
+        Log.v(TAG, "onClick");
+
         if (view.getId() == R.id.fab_add) {
 
             Intent intentListaProdutosVenda =
                     new Intent(MainActivity.this, VendListActivity.class);
             startActivity(intentListaProdutosVenda);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.v(TAG, "ListView onItemClick");
+
+        Cursor cursor = mAdapter.getCursor();
+
+        double valorVendaVista = Calculos.CalcularValorAVistaDouble(
+                cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
+                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
+                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
+                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)),
+                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO))
+        );
+
+        if (valorVendaVista > 0) {
+
+            Intent intentTroco =
+                    new Intent(MainActivity.this, TrocoActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putDouble(VALOR_VENDA_TROCO, valorVendaVista);
+
+            intentTroco.putExtras(bundle);
+
+            startActivity(intentTroco);
+        }
+    }
+
+    /**
+     * Click longo no listview
+     * Abre Dialog para escolha se deseja editar o registro ou excluir
+     *
+     * @param parent   layout onde esta cada item do listview
+     * @param view     item do listview
+     * @param position posição de cada registro no listview
+     * @param id       id no BD de um item apresentado no listview
+     * @return verdadeiro se foi executado
+     */
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.v(TAG, "onItemLongClick");
+
+        Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
+
+        Cursor cursor = mAdapter.getCursor();
+        String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)) + "  "
+                + cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
+
+        Dialogos.dialogoEditarExcluir(
+                MainActivity.this,
+                VendQuantActivity.class,
+                uri,
+                mensagemExcluir
+        );
+
+        return true;
     }
 }

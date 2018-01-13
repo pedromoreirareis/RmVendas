@@ -24,6 +24,14 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_vend_quant_quantidade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:paddingEnd="@dimen/margin_padrao_8"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
                 android:id="@+id/tv_vend_quant_nome_produto"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -32,7 +40,7 @@
                 android:textColor="@color/colorWhite" />
 
             <TextView
-                android:id="@+id/tv_vend_quant_valor_total"
+                android:id="@+id/tv_vend_quant_valor_total_vista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -174,9 +182,10 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="3"
                         android:backgroundTint="@color/colorRed"
-                        android:drawableStart="@drawable/ic_people_black_48px"
-                        android:drawableTint="@color/colorWhite"
-                        android:text="Cliente"
+                        android:drawableStart="@drawable/ic_search_white_24px"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="@string/text_vend_quant_prazo_cliente"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorWhite"
                         android:textStyle="bold" />
 

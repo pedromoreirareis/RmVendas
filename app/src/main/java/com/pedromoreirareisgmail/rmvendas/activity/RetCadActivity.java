@@ -210,7 +210,7 @@ public class RetCadActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
         values.put(AcessoEntRet.VALOR, valorDouble);
         values.put(AcessoEntRet.DESCRICAO, descricaoEditText);
-        values.put(AcessoEntRet.TIPO, Constantes.TIPO_RETIRADA_CAIXA);
+        values.put(AcessoEntRet.TIPO, Constantes.TIPO_RETIRADA);
 
         /* Salva dados no banco de dados
          * Se mUriAtual tiver vazio (null) vai adicionar registro

@@ -1,5 +1,8 @@
 package com.pedromoreirareisgmail.rmvendas.Utils;
 
+import android.text.TextUtils;
+import android.widget.EditText;
+
 import java.text.NumberFormat;
 
 public class Formatar {
@@ -56,6 +59,7 @@ public class Formatar {
 
         //  Se tiver cifrão, ponto, ou virgula substitui esse caracteres por vazio
         if (hasMask) {
+
             str = str.replaceAll("[^\\d]", "");
         }
 
@@ -85,5 +89,53 @@ public class Formatar {
         return formatarCurrency.format(valorParaFormatar);
     }
 
+
+    public static Double formatarEditsDouble(EditText editText) {
+
+        String texto = editText.getText().toString().trim().replaceAll("[^\\d]", "");
+
+        if (TextUtils.isEmpty(texto)) {
+
+            texto = "0";
+        }
+
+        return Double.parseDouble(texto);
+    }
+
+    public static Double formatarCharSequenceDouble(CharSequence charSequence) {
+
+        String texto = charSequence.toString().trim().replaceAll("[^\\d]", "");
+
+        if (TextUtils.isEmpty(texto)) {
+
+            texto = "0";
+        }
+
+        return Double.parseDouble(texto);
+    }
+
+    public static String formatarEditsString(EditText editText) {
+
+        String texto = editText.getText().toString().trim().replaceAll("[^\\d]", "");
+
+        if (TextUtils.isEmpty(texto)) {
+
+            texto = "0";
+        }
+
+        return texto;
+    }
+
+    public static String formatarCharSequenceString(CharSequence charSequence) {
+
+        String texto = charSequence.toString().trim().replaceAll("[^\\d]", "");
+
+        if (TextUtils.isEmpty(texto)) {
+
+            texto = "0";
+        }
+
+        return texto;
+    }
 
 }

@@ -3,6 +3,7 @@ package com.pedromoreirareisgmail.rmvendas.activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -26,6 +27,9 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.CLIENTES_LIST_ACTIVITY;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.VEND_LIST_CLIENTES_ACTIVITY;
+
 
 public class ClientesCadActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -37,6 +41,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
     private EditText mEtNome;
     private EditText mEtFone;
 
+    private String mVemActivity = null;
     private Uri mUriAtual = null;
     private boolean isDadosAlterado = false;
 
@@ -73,20 +78,41 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
     private void initViews() {
 
+        Log.v(TAG, "initViews");
+
         // Referencia itens do layout
         mEtNome = findViewById(R.id.et_clientes_nome);
         mEtFone = findViewById(R.id.et_clientes_numero_fone);
-
-        Log.v(TAG, "initViews");
     }
 
     private void initIntents() {
 
-        /* Se Activity foi aberta para alteração, vair receber uma Uri*/
-        Intent intentUri = getIntent();
-        mUriAtual = intentUri.getData();
-
         Log.v(TAG, "initIntents");
+
+        /* Se Activity foi aberta para alteração, vair receber uma Uri*/
+        Intent intentInicial = getIntent();
+        mUriAtual = intentInicial.getData();
+
+        if (intentInicial.hasExtra(Constantes.ACTIVITY_CHAMOU)) {
+
+            Log.v(TAG, "initIntents - ACTIVITY_CHAMOU ");
+
+
+            switch (intentInicial.getStringExtra(Constantes.ACTIVITY_CHAMOU)) {
+
+                /* Vem da lista de clientes normal*/
+                case CLIENTES_LIST_ACTIVITY:
+                    mVemActivity = CLIENTES_LIST_ACTIVITY;
+                    Log.v(TAG, "initIntents - ACTIVITY_CHAMOU - CLIENTES_LIST_ACTIVITY ");
+                    break;
+
+                    /* Vem da lista de clientes de vendas*/
+                case VEND_LIST_CLIENTES_ACTIVITY:
+                    mVemActivity = VEND_LIST_CLIENTES_ACTIVITY;
+                    Log.v(TAG, "initIntents - ACTIVITY_CHAMOU - VEND_LIST_CLIENTES_ACTIVITY");
+                    break;
+            }
+        }
     }
 
     @Override
@@ -127,9 +153,33 @@ public class ClientesCadActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Dialogos.homeDescartarConfirmar(
+
+                DialogInterface.OnClickListener descartarButClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                if (mVemActivity.equals(Constantes.CLIENTES_LIST_ACTIVITY)) {
+
+                                    Log.v(TAG, "onOptionsItemSelected - descartarButClickListener - CLIENTES_LIST_ACTIVITY");
+                                    Intent intent = NavUtils.getParentActivityIntent(ClientesCadActivity.this);
+                                    NavUtils.navigateUpTo(ClientesCadActivity.this, intent);
+
+                                } else {
+                                    Log.v(TAG, "onOptionsItemSelected - descartarButClickListener - VEND_LIST_CLIENTES_ACTIVITY");
+                                    Intent intent = new Intent(ClientesCadActivity.this, VendListClienteActivity.class);
+                                    NavUtils.navigateUpTo(ClientesCadActivity.this, intent);
+                                }
+
+                            }
+                        };
+
+                // Chama o metodo para descartar alterações
+                Dialogos.dialogoConfirmarAlteracao(
                         ClientesCadActivity.this,
-                        ClientesCadActivity.this);
+                        descartarButClickListener
+                );
+
 
                 return true;
         }
@@ -148,6 +198,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
             super.onBackPressed();
         }
+
 
         Dialogos.onBackPressedDescartarConfirmar(
                 ClientesCadActivity.this,
@@ -172,7 +223,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
             return;
         }
 
-        // O campo nome deve ter pelo menos 5 caracteres
+        // O campo nome deve ter pelo menos 3 caracteres
         if (nomeEditText.length() < Constantes.MIN_CARACT_3) {
 
             mEtNome.setError(getString(R.string.error_campo_lenght_nome_3));
@@ -183,7 +234,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
         // Campo não pode ficar vazio
         if (TextUtils.isEmpty(foneEditText)) {
 
-            mEtFone.setError(getString(R.string.error_campo_vazio_nome));
+            mEtFone.setError(getString(R.string.error_campo_vazio_fone));
             mEtFone.requestFocus();
             return;
         }
@@ -285,7 +336,6 @@ public class ClientesCadActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
 
 
     @Override

@@ -21,9 +21,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Constantes;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapter.ClientesAdapter;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.ACTIVITY_CHAMOU;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.CLIENTE_FONE;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.CLIENTE_ID;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.CLIENTE_NOME;
 import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
 
 public class ClientesListActivity extends AppCompatActivity implements
@@ -179,9 +184,9 @@ public class ClientesListActivity extends AppCompatActivity implements
                 ClientesListActivity.this, RegistroReceberActivity.class);
 
         Bundle bundle = new Bundle();
-        bundle.putString("clienteId", String.valueOf(id));
-        bundle.putString("clienteNome", nomeCliente);
-        bundle.putString("clienteFone", foneCliente);
+        bundle.putString(CLIENTE_ID, String.valueOf(id));
+        bundle.putString(CLIENTE_NOME, nomeCliente);
+        bundle.putString(CLIENTE_FONE, foneCliente);
 
         intentRegistroAReceber.putExtras(bundle);
         startActivity(intentRegistroAReceber);
@@ -250,6 +255,11 @@ public class ClientesListActivity extends AppCompatActivity implements
 
             Intent intentCadastroClientes =
                     new Intent(ClientesListActivity.this, ClientesCadActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(ACTIVITY_CHAMOU, Constantes.CLIENTES_LIST_ACTIVITY);
+
+            intentCadastroClientes.putExtras(bundle);
 
             startActivity(intentCadastroClientes);
         }

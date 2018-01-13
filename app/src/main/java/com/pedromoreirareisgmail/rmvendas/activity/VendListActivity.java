@@ -164,7 +164,7 @@ public class VendListActivity extends AppCompatActivity implements
 
         Intent intentRegistrarVenda = new Intent(
                 VendListActivity.this, VendQuantActivity.class);
-        intentRegistrarVenda.putExtra(Constantes.VENDA_ADICIONAR, Constantes.VENDA_ADICIONAR);
+        intentRegistrarVenda.putExtra(Constantes.ADICIONAR_VENDA, Constantes.ADICIONAR_VENDA);
         intentRegistrarVenda.setData(uri);
         startActivity(intentRegistrarVenda);
         finish();

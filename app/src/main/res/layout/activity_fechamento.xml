@@ -106,7 +106,14 @@
                 </android.support.v7.widget.CardView>
 
                 <TextView
-                    android:id="@+id/tv_fechamento_valor_vendas"
+                    android:id="@+id/tv_fechamento_valor_total_vendas"
+                    style="@style/TituloFechamento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_padrao_8" />
+
+                <TextView
+                    android:id="@+id/tv_fechamento_valor_vendas_vista"
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

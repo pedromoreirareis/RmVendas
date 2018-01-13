@@ -34,10 +34,13 @@ import com.pedromoreirareisgmail.rmvendas.adapter.AReceberAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.db.PesquisasBD;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.CLIENTE_FONE;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.CLIENTE_ID;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.CLIENTE_NOME;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.TIPO_A_RECEBER_RECEBIMENTO;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.TIPO_A_RECEBER_VENDA;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.TIPO_RECEBIMENTO;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.TIPO_VENDA;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
 import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoAReceber;
 
@@ -127,19 +130,19 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         /* Coloca nas variaveis mIdCliente, mNomeCliente e mNumTelefone
          * os dados que vieram da ClientesListActivity
          */
-        if (intentDadosCliente.hasExtra("clienteId")) {
+        if (intentDadosCliente.hasExtra(CLIENTE_ID)) {
 
-            mIdCliente = intentDadosCliente.getStringExtra("clienteId");
+            mIdCliente = intentDadosCliente.getStringExtra(CLIENTE_ID);
         }
 
-        if (intentDadosCliente.hasExtra("clienteNome")) {
+        if (intentDadosCliente.hasExtra(CLIENTE_NOME)) {
 
-            mNomeCliente = intentDadosCliente.getStringExtra("clienteNome");
+            mNomeCliente = intentDadosCliente.getStringExtra(CLIENTE_NOME);
         }
 
-        if (intentDadosCliente.hasExtra("clienteFone")) {
+        if (intentDadosCliente.hasExtra(CLIENTE_FONE)) {
 
-            mNumTelefone = intentDadosCliente.getStringExtra("clienteFone");
+            mNumTelefone = intentDadosCliente.getStringExtra(CLIENTE_FONE);
         }
     }
 
@@ -299,7 +302,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
 
         values.put(AcessoAReceber.CLIENTE_ID, Integer.parseInt(mIdCliente));
-        values.put(AcessoAReceber.CLIENTE_NOME, PesquisasBD.Pesuisarcliente(RegistroReceberActivity.this, Integer.parseInt(mIdCliente)));
+        values.put(AcessoAReceber.CLIENTE_NOME, PesquisasBD.Pesquisarcliente(RegistroReceberActivity.this, Integer.parseInt(mIdCliente)));
         values.put(AcessoAReceber.DATA_HORA, obterDataHoraSistema());
         values.put(AcessoAReceber.DESCRICAO, descricaoEditText);
         values.put(AcessoAReceber.TIPO_ENTRADA, tipoEntrada);
@@ -364,7 +367,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA)) == Constantes.TIPO_A_RECEBER_VENDA) {
+                if (cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA)) == TIPO_VENDA) {
 
                     mVendas = mVendas + cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR));
 
@@ -491,7 +494,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
 
         tipoInt = cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA));
 
-        if (tipoInt == Constantes.TIPO_A_RECEBER_RECEBIMENTO) {
+        if (tipoInt == Constantes.TIPO_RECEBIMENTO) {
 
             tituloDialogTipo = getString(R.string.text_registro_a_receber_recebimento);
         } else {
@@ -517,12 +520,12 @@ public class RegistroReceberActivity extends AppCompatActivity implements
 
             case R.id.but_a_receber_venda:
                 zerarVariaveis();
-                salvarDadosBD(TIPO_A_RECEBER_VENDA);
+                salvarDadosBD(TIPO_VENDA);
                 break;
 
             case R.id.but_a_receber_recebimento:
                 zerarVariaveis();
-                salvarDadosBD(TIPO_A_RECEBER_RECEBIMENTO);
+                salvarDadosBD(TIPO_RECEBIMENTO);
                 break;
         }
     }

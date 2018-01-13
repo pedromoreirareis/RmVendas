@@ -45,7 +45,7 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">@color/colorDetalhesLabel</item>
+        <item name="android:textColor">@color/colorDetalhes</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
@@ -54,7 +54,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/colorDetalhesValor</item>
+        <item name="android:textColor">@color/colorDetalhes</item>
         <item name="android:fontFamily">ca</item>
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
     </style>
@@ -65,7 +65,7 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">@color/colorDetalhesLabel</item>
+        <item name="android:textColor">@color/colorDetalhes</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 

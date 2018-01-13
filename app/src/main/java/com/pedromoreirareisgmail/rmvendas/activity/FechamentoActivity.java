@@ -27,6 +27,8 @@ import com.pedromoreirareisgmail.rmvendas.db.PesquisasBD;
 
 import java.text.NumberFormat;
 
+import static com.pedromoreirareisgmail.rmvendas.Utils.Constantes.NUMERO_ZERO;
+
 public class FechamentoActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -41,6 +43,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     private TextView mTvValorDescontos;
     private TextView mTvValorAdicional;
     private TextView mTvValorVendasPrazo;
+    private TextView mTvValorTotalVendas;
     private TextView mTvValorVendasVista;
     private TextView mTvValorSaldoFinal;
     private TextView mTvQuantVendas;
@@ -50,6 +53,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     private CardView mCvClientesPrazo;
 
     private double mValorSaldoFinal = 0;
+    private double mValorVendasTotal = 0;
     private double mValorVendasVista = 0;
     private double mValorSaldoInicial = 0;
     private double mValorEntradas = 0;
@@ -97,7 +101,8 @@ public class FechamentoActivity extends AppCompatActivity implements
         // Referencia os itens do layout
         mTvValorSaldoInicial = findViewById(R.id.tv_fechamento_saldo_inicial);
         mTvValorEntradas = findViewById(R.id.tv_fechamento_entrada);
-        mTvValorVendasVista = findViewById(R.id.tv_fechamento_valor_vendas);
+        mTvValorTotalVendas = findViewById(R.id.tv_fechamento_valor_total_vendas);
+        mTvValorVendasVista = findViewById(R.id.tv_fechamento_valor_vendas_vista);
         mTvValorRetiradas = findViewById(R.id.tv_fechamento_retirada);
         mTvValorDescontos = findViewById(R.id.tv_fechamento_descontos);
         mTvValorAdicional = findViewById(R.id.tv_fechamento_adicional);
@@ -244,13 +249,13 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                if (Constantes.TIPO_ENTRADA_CAIXA ==
+                if (Constantes.TIPO_ENTRADA ==
                         cursor.getInt(cursor.getColumnIndex(AcessoEntRet.TIPO))) {
 
                     mValorEntradas = mValorEntradas +
                             cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
 
-                } else if (Constantes.TIPO_RETIRADA_CAIXA ==
+                } else if (Constantes.TIPO_RETIRADA ==
                         cursor.getInt(cursor.getColumnIndex(AcessoEntRet.TIPO))) {
 
                     mValorRetiradas = mValorRetiradas +
@@ -299,30 +304,28 @@ public class FechamentoActivity extends AppCompatActivity implements
 
             mQuantVendas = cursor.getCount();
 
-
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 mQuantVendidos = mQuantVendidos +
                         cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)) !=
-                        Constantes.NUMERO_ZERO) {
+
+                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)) != NUMERO_ZERO) {
 
                     mValorAdicional = mValorAdicional +
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
                 }
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)) !=
-                        Constantes.NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)) != NUMERO_ZERO) {
 
                     mValorDescontos = mValorDescontos +
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
                 }
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) ==
-                        Constantes.NUMERO_ZERO) {
 
-                    mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVista(
+                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) == NUMERO_ZERO) {
+
+                    mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVistaDouble(
                             cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
@@ -330,27 +333,36 @@ public class FechamentoActivity extends AppCompatActivity implements
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO))
                     );
 
+
                     mQuantVendidosVista = mQuantVendidosVista + cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
 
                 }
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) !=
-                        Constantes.NUMERO_ZERO) {
+
+                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) != NUMERO_ZERO) {
 
                     mValorVendasPrazo = mValorVendasPrazo +
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
 
-                    mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVista(
+                    mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVistaDouble(
                             cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)),
                             cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)));
 
-                    mNomeClientesPrazo = mNomeClientesPrazo +
-                            PesquisasBD.Pesuisarcliente(FechamentoActivity.this,
-                                    cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE))) + "\n";
+                    int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
+                    mNomeClientesPrazo = mNomeClientesPrazo + PesquisasBD.Pesquisarcliente(FechamentoActivity.this, idCliente) + "\n";
+
+
                 }
+
+                mValorVendasTotal = mValorVendasTotal + Calculos.calcularValorTotalVendaDouble(
+                        cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
+                        cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
+                        cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
+                        cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO))
+                );
 
                 cursor.moveToNext();
 
@@ -374,6 +386,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         mTvValorSaldoInicial.setText(String.format(getResources().getString(R.string.text_fechamento_saldo_inicial), preco.format(mValorSaldoInicial)));
         mTvQuantVendas.setText(String.format(getResources().getString(R.string.text_fechamento_vendas), String.valueOf(mQuantVendas)));
         mTvValorVendasVista.setText(String.format(getResources().getString(R.string.text_fechamento_vendas_a_vista), preco.format(mValorVendasVista)));
+        mTvValorTotalVendas.setText(String.format(getResources().getString(R.string.text_fechamento_vendas_total), preco.format(mValorVendasTotal)));
         mTvQuantVendidos.setText(String.format(getResources().getString(R.string.text_fechamento_produtos_vendidos), String.valueOf(mQuantVendidos)));
         mTvQuantVendidosVista.setText(String.format(getResources().getString(R.string.text_fechamento_produtos_vendidos_avista), String.valueOf(mQuantVendidosVista)));
         mTvValorAdicional.setText(String.format(getResources().getString(R.string.text_fechamento_adicional), preco.format(mValorAdicional)));
@@ -435,6 +448,7 @@ public class FechamentoActivity extends AppCompatActivity implements
 
         mValorSaldoFinal = 0;
         mValorVendasVista = 0;
+        mValorVendasTotal = 0;
         mValorSaldoInicial = 0;
         mValorEntradas = 0;
         mValorRetiradas = 0;

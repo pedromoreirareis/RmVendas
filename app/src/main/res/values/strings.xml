@@ -30,6 +30,7 @@
     <string name="title_clientes_add">Adicionar Cliente</string>
     <string name="title_clientes_edit">Editar Cliente</string>
     <string name="title_venda_clientes_list">Clientes Cadastrados</string>
+    <string name="title_troco">Troco</string>
 
 
     <!-- ****************************   Menus - Title *******************************************-->
@@ -88,6 +89,8 @@
     <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente">Saldo: %1$s</string>
     <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente_sem_registro">Não há registros!!!</string>
     <string name="text_venda_a_prazo_venda">Venda a prazo - %1$s %2$s</string>
+    <string name="text_vend_quant_prazo_cliente">Cliente</string>
+    <string name="text_vend_quant_nome_produto">%1$s  %2$s</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
@@ -103,6 +106,7 @@
     <!-- ************************    Fechamento - Activity Fechamento ************************** -->
     <string name="text_fechamento_saldo_final">Saldo final..........:    %1$s</string>
     <string name="text_fechamento_vendas_a_vista">Vendas a vista.....:    %1$s</string>
+    <string name="text_fechamento_vendas_total">Total vendas........:    %1$s</string>
     <string name="text_fechamento_saldo_inicial">Saldo inicial........:    %1$s</string>
     <string name="text_fechamento_entradas">Entradas.............:    %1$s</string>
     <string name="text_fechamento_retiradas">Retiradas............:    %1$s</string>
@@ -215,6 +219,8 @@
 
     <!-- *****************************    setError ********************************************* -->
 
+    <string name="error_campo_desconto_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
+    <string name="error_campo_prazo_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
     <string name="error_campo_vazio_fone">Digite o telefone</string>
     <string name="error_campo_vazio_nome">Digite o nome</string>
     <string name="error_campo_vazio_descricao">Digite a descrição</string>
@@ -225,6 +231,7 @@
     <string name="error_valor_valido_desconto">Digite um valor de desconto válido</string>
     <string name="error_valor_valido_prazo">Digite um valor a prazo válido</string>
     <string name="error_nome_cliente">Pesquise um cliente</string>
+    <string name="error_nome_edicao_nao_permitida">Edição de venda a prazo não permitida</string>
     <string name="error_campo_lenght_descricao_10">A descrição deve ter no mínimo 10 caracteres</string>
     <string name="error_campo_lenght_nome_3">O nome deve ter no mínimo 3 caracteres</string>
     <string name="error_campo_lenght_nome_5">O nome deve ter no mínio 5 caracteres</string>
@@ -246,4 +253,16 @@
     <string name="provider_exception_insert">Erro ao incluir no banco de dados com Uri: </string>
     <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
     <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
+
+    <!-- *******************************************************************************************
+
+                               ACTIVITY TROCO
+
+         ********************************************************************************************-->
+
+    <string name="limpar">Limpar</string>
+    <string name="valor_venda">Valor da Venda</string>
+    <string name="valor_recebido">Valor Recebido</string>
+    <string name="valor_troco">O valor do Troco é:</string>
+    <string name="valor_maior">Esse valor deve ser igual ou maior que </string>
 </resources>

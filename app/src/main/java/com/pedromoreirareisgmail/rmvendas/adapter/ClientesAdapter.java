@@ -119,7 +119,7 @@ public class ClientesAdapter extends CursorAdapter {
 
         for (int i = 0; i < cursor.getCount(); i++) {
 
-            if (cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA)) == Constantes.TIPO_A_RECEBER_VENDA) {
+            if (cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA)) == Constantes.TIPO_VENDA) {
 
                 valorVendas = valorVendas + cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR));
 
