@@ -28,7 +28,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
@@ -214,23 +214,23 @@ public class EntCadActivity extends AppCompatActivity implements
 
         // coloca dados no Objeto values para salvar no BD
         ContentValues values = new ContentValues();
-        values.put(AcessoEntRet.VALOR, valorDouble);
-        values.put(AcessoEntRet.DESCRICAO, descricaoEditText);
-        values.put(AcessoEntRet.TIPO, ConstDB.TIPO_ENTRADA);
+        values.put(EntryCashMove.COLUMN_VALUE, valorDouble);
+        values.put(EntryCashMove.COLUMN_DESCRIPTION, descricaoEditText);
+        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TIPO_ENTRADA);
 
         if (mUriAtual == null) {
 
-            values.put(AcessoEntRet.DATA_HORA, obterDataHoraSistema());
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, obterDataHoraSistema());
 
-            Crud.inserir(EntCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
+            Crud.insert(EntCadActivity.this, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
             Log.v(TAG, "Adicionar - adicionou cliente");
 
         } else {
 
-            values.put(AcessoEntRet.DATA_HORA, mDataHoraBD);
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, mDataHoraBD);
 
-            Crud.editar(EntCadActivity.this, mUriAtual, values);
+            Crud.update(EntCadActivity.this, mUriAtual, values);
 
             Log.v(TAG, "Editando - editou cliente");
         }
@@ -247,11 +247,11 @@ public class EntCadActivity extends AppCompatActivity implements
 
         // Retorna todos os dados do registro identificado pelo mUriAtual
         String[] projection = {
-                AcessoEntRet._ID,
-                AcessoEntRet.DATA_HORA,
-                AcessoEntRet.DESCRICAO,
-                AcessoEntRet.TIPO,
-                AcessoEntRet.VALOR
+                EntryCashMove._ID,
+                EntryCashMove.COLUMN_TIMESTAMP,
+                EntryCashMove.COLUMN_DESCRIPTION,
+                EntryCashMove.COLUMN_TYPE,
+                EntryCashMove.COLUMN_VALUE
         };
 
         return new CursorLoader(
@@ -272,13 +272,13 @@ public class EntCadActivity extends AppCompatActivity implements
         if (cursor.moveToFirst()) {
 
             double valorBD = cursor.getDouble(
-                    cursor.getColumnIndex(AcessoEntRet.VALOR));
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
 
             String descricaoBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
 
             mDataHoraBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.DATA_HORA));
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
             mEtDescricao.setText(descricaoBD);

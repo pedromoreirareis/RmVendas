@@ -13,7 +13,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.constantes.Const;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 
@@ -54,10 +54,10 @@ public class MainAdapter extends CursorAdapter {
         MainViewHolder holder = new MainViewHolder(view);
 
         /* Quantidade de produtos vendidos, sem tem adicional, se tem desconto e sem tem prazo */
-        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
-        double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE));
+        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
+        double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
 
-        int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
+        int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
 
         String nomeCliente = "";
         if (idCliente > 0) {
@@ -66,13 +66,13 @@ public class MainAdapter extends CursorAdapter {
         }
 
         /* Nome do produto e hora de uma venda */
-        String nomeProduto = cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
-        String horaMinuto = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA_HORA));
+        String nomeProduto = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
+        String horaMinuto = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP));
 
         double valorPrecoVenda = valorUnidadeProduto * quantidadeProduto;
-        double valorAdicional = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
-        double valorDesconto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
-        double valorAPrazo = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
+        double valorAdicional = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
+        double valorDesconto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
+        double valorAPrazo = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
         double valorTotal = Calculos.calcularValorTotalVendaDouble(
                 quantidadeProduto,
                 valorUnidadeProduto,

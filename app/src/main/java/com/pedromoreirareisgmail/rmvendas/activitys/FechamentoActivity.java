@@ -20,9 +20,9 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 import java.text.NumberFormat;
@@ -151,20 +151,20 @@ public class FechamentoActivity extends AppCompatActivity implements
             Log.v(TAG, "onCreateLoader - LOADER_ENTRADAS_RETIRADAS");
 
             String[] projection = new String[]{
-                    AcessoEntRet._ID,
-                    AcessoEntRet.DATA_HORA,
-                    AcessoEntRet.VALOR,
-                    AcessoEntRet.DESCRICAO,
-                    AcessoEntRet.TIPO
+                    EntryCashMove._ID,
+                    EntryCashMove.COLUMN_TIMESTAMP,
+                    EntryCashMove.COLUMN_VALUE,
+                    EntryCashMove.COLUMN_DESCRIPTION,
+                    EntryCashMove.COLUMN_TYPE
             };
 
             // Pesquisa por data
-            String selection = AcessoEntRet.DATA_HORA + " LIKE ?";
+            String selection = EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
             return new CursorLoader(
                     this,
-                    AcessoEntRet.CONTENT_URI_ENT_RET,
+                    EntryCashMove.CONTENT_URI_CASHMOVE,
                     projection,
                     selection,
                     selectionArgs,
@@ -180,18 +180,18 @@ public class FechamentoActivity extends AppCompatActivity implements
             Log.v(TAG, "onCreateLoader - LOADER_SALDO_INICIAL");
 
             String[] projection = {
-                    AcessoSaldo._ID,
-                    AcessoSaldo.VALOR,
-                    AcessoSaldo.DATA_HORA
+                    EntryOpening._ID,
+                    EntryOpening.COLUMN_VALUE,
+                    EntryOpening.COLUMN_TIMESTAMP
             };
 
             // Pesquisa por data
-            String selection = AcessoSaldo.DATA_HORA + " LIKE ?";
+            String selection = EntryOpening.COLUMN_TIMESTAMP + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
             return new CursorLoader(
                     this,
-                    AcessoSaldo.CONTENT_URI_SALDO_INICIAL,
+                    EntryOpening.CONTENT_URI_OPENING,
                     projection,
                     selection,
                     selectionArgs,
@@ -207,24 +207,24 @@ public class FechamentoActivity extends AppCompatActivity implements
             Log.v(TAG, "onCreateLoader - LOADER_VENDAS");
 
             String[] projection = {
-                    AcessoVenda._ID,
-                    AcessoVenda.ID_CLIENTE,
-                    AcessoVenda.NOME_PRODUTO,
-                    AcessoVenda.QUANTIDADE,
-                    AcessoVenda.DATA_HORA,
-                    AcessoVenda.VALOR_DESCONTO,
-                    AcessoVenda.VALOR_ADICIONAL,
-                    AcessoVenda.VALOR_PRAZO,
-                    AcessoVenda.VALOR_UNIDADE
+                    EntrySeel._ID,
+                    EntrySeel.COLUMN_CLIENT_ID,
+                    EntrySeel.COLUMN_NAME,
+                    EntrySeel.COLUMN_QUANTITY,
+                    EntrySeel.COLUMN_TIMESTAMP,
+                    EntrySeel.COLUMN_DISCOUNT_VALUE,
+                    EntrySeel.COLUMN_ADD_VALUE,
+                    EntrySeel.COLUMN_FORWARD_VALUE,
+                    EntrySeel.COLUMN_PRICE
             };
 
             // Pesquisa por data
-            String selection = AcessoVenda.DATA_HORA + " LIKE ?";
+            String selection = EntrySeel.COLUMN_TIMESTAMP + " LIKE ?";
             String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
             return new CursorLoader(
                     this,
-                    AcessoVenda.CONTENT_URI_VENDA,
+                    EntrySeel.CONTENT_URI_SELL,
                     projection,
                     selection,
                     selectionArgs,
@@ -250,16 +250,16 @@ public class FechamentoActivity extends AppCompatActivity implements
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 if (ConstDB.TIPO_ENTRADA ==
-                        cursor.getInt(cursor.getColumnIndex(AcessoEntRet.TIPO))) {
+                        cursor.getInt(cursor.getColumnIndex(EntryCashMove.COLUMN_TYPE))) {
 
                     mValorEntradas = mValorEntradas +
-                            cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
+                            cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
 
                 } else if (ConstDB.TIPO_RETIRADA ==
-                        cursor.getInt(cursor.getColumnIndex(AcessoEntRet.TIPO))) {
+                        cursor.getInt(cursor.getColumnIndex(EntryCashMove.COLUMN_TYPE))) {
 
                     mValorRetiradas = mValorRetiradas +
-                            cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
+                            cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
                 }
 
                 cursor.moveToNext();
@@ -277,7 +277,7 @@ public class FechamentoActivity extends AppCompatActivity implements
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 mValorSaldoInicial = mValorSaldoInicial + cursor.getDouble(
-                        cursor.getColumnIndex(AcessoSaldo.VALOR));
+                        cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
 
                 cursor.moveToNext();
             }
@@ -307,61 +307,61 @@ public class FechamentoActivity extends AppCompatActivity implements
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 mQuantVendidos = mQuantVendidos +
-                        cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
+                        cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
 
 
-                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)) != NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)) != NUMERO_ZERO) {
 
                     mValorAdicional = mValorAdicional +
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
                 }
 
-                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)) != NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)) != NUMERO_ZERO) {
 
                     mValorDescontos = mValorDescontos +
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
                 }
 
 
-                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) == NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) == NUMERO_ZERO) {
 
                     mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVistaDouble(
-                            cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO))
+                            cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE))
                     );
 
 
-                    mQuantVendidosVista = mQuantVendidosVista + cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
+                    mQuantVendidosVista = mQuantVendidosVista + cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
 
                 }
 
 
-                if (cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)) != NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) != NUMERO_ZERO) {
 
                     mValorVendasPrazo = mValorVendasPrazo +
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
 
                     mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVistaDouble(
-                            cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)),
-                            cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO)));
+                            cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
 
-                    int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
+                    int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
                     mNomeClientesPrazo = mNomeClientesPrazo + SearchDB.Pesquisarcliente(FechamentoActivity.this, idCliente) + "\n";
 
 
                 }
 
                 mValorVendasTotal = mValorVendasTotal + Calculos.calcularValorTotalVendaDouble(
-                        cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
-                        cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
-                        cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
-                        cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO))
+                        cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
+                        cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
+                        cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
+                        cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE))
                 );
 
                 cursor.moveToNext();

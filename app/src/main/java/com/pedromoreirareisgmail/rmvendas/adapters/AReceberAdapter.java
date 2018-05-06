@@ -13,7 +13,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoAReceber;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class AReceberAdapter extends CursorAdapter {
 
@@ -55,12 +55,12 @@ public class AReceberAdapter extends CursorAdapter {
         AReceberViewHolder holder = new AReceberViewHolder(view);
 
         // Venda ou Recebimento
-        int tipoEntradaBD = cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA));
+        int tipoEntradaBD = cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE));
 
         /* Data, Descrição e Valor do Registro*/
-        String dataBD = DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA)));
-        String descricaoBD = cursor.getString(cursor.getColumnIndex(AcessoAReceber.DESCRICAO));
-        String valorBD = Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR)));
+        String dataBD = DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP)));
+        String descricaoBD = cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION));
+        String valorBD = Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE)));
 
         /*  Recebimento - fonte do registro fica Azul
          *   Venda - fonte do registro fica vermelha

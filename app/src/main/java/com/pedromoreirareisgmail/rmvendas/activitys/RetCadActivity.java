@@ -28,7 +28,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
@@ -208,9 +208,9 @@ public class RetCadActivity extends AppCompatActivity implements
 
         // Coloca dados no objeto values
         ContentValues values = new ContentValues();
-        values.put(AcessoEntRet.VALOR, valorDouble);
-        values.put(AcessoEntRet.DESCRICAO, descricaoEditText);
-        values.put(AcessoEntRet.TIPO, ConstDB.TIPO_RETIRADA);
+        values.put(EntryCashMove.COLUMN_VALUE, valorDouble);
+        values.put(EntryCashMove.COLUMN_DESCRIPTION, descricaoEditText);
+        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TIPO_RETIRADA);
 
         /* Salva dados no banco de dados
          * Se mUriAtual tiver vazio (null) vai adicionar registro
@@ -218,17 +218,17 @@ public class RetCadActivity extends AppCompatActivity implements
          */
         if (mUriAtual == null) {
 
-            values.put(AcessoEntRet.DATA_HORA, obterDataHoraSistema());
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, obterDataHoraSistema());
 
-            Crud.inserir(RetCadActivity.this, AcessoEntRet.CONTENT_URI_ENT_RET, values);
+            Crud.insert(RetCadActivity.this, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
             Log.v(TAG, "salvarDadosBD - inserir");
 
         } else {
 
-            values.put(AcessoEntRet.DATA_HORA, mDataHoraBD);
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, mDataHoraBD);
 
-            Crud.editar(RetCadActivity.this, mUriAtual, values);
+            Crud.update(RetCadActivity.this, mUriAtual, values);
 
             Log.v(TAG, "salvarDadosBD - editar");
         }
@@ -244,11 +244,11 @@ public class RetCadActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
-                AcessoEntRet._ID,
-                AcessoEntRet.DATA_HORA,
-                AcessoEntRet.DESCRICAO,
-                AcessoEntRet.TIPO,
-                AcessoEntRet.VALOR
+                EntryCashMove._ID,
+                EntryCashMove.COLUMN_TIMESTAMP,
+                EntryCashMove.COLUMN_DESCRIPTION,
+                EntryCashMove.COLUMN_TYPE,
+                EntryCashMove.COLUMN_VALUE
         };
 
         return new CursorLoader(
@@ -269,13 +269,13 @@ public class RetCadActivity extends AppCompatActivity implements
         if (cursor.moveToFirst()) {
 
             double valorBD = cursor.getDouble(
-                    cursor.getColumnIndex(AcessoEntRet.VALOR));
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
 
             String descricaoBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
 
             mDataHoraBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoEntRet.DATA_HORA));
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
             mEtDescricao.setText(descricaoBD);

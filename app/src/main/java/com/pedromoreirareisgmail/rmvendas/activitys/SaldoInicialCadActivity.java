@@ -26,7 +26,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
@@ -185,22 +185,22 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
         // Coloca dados no objeto values
         ContentValues values = new ContentValues();
-        values.put(AcessoSaldo.VALOR, valorDouble);
+        values.put(EntryOpening.COLUMN_VALUE, valorDouble);
 
         // Salva dados no BD
         if (mUriAtual == null) {
 
-            values.put(AcessoSaldo.DATA_HORA, obterDataHoraSistema());
+            values.put(EntryOpening.COLUMN_TIMESTAMP, obterDataHoraSistema());
 
-            Crud.inserir(SaldoInicialCadActivity.this, AcessoSaldo.CONTENT_URI_SALDO_INICIAL, values);
+            Crud.insert(SaldoInicialCadActivity.this, EntryOpening.CONTENT_URI_OPENING, values);
 
             Log.v(TAG, "salvarDadosBD - inserir");
 
         } else {
 
-            values.put(AcessoSaldo.DATA_HORA, mDataHoraBD);
+            values.put(EntryOpening.COLUMN_TIMESTAMP, mDataHoraBD);
 
-            Crud.editar(SaldoInicialCadActivity.this, mUriAtual, values);
+            Crud.update(SaldoInicialCadActivity.this, mUriAtual, values);
 
             Log.v(TAG, "salvarDadosBD - editar");
         }
@@ -216,9 +216,9 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
-                AcessoSaldo._ID,
-                AcessoSaldo.DATA_HORA,
-                AcessoSaldo.VALOR
+                EntryOpening._ID,
+                EntryOpening.COLUMN_TIMESTAMP,
+                EntryOpening.COLUMN_VALUE
         };
 
         return new CursorLoader(
@@ -238,8 +238,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
         if (cursor.moveToFirst()) {
 
-            double valorBD = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA));
+            double valorBD = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
+            mDataHoraBD = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
         }

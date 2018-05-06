@@ -25,7 +25,7 @@ import com.pedromoreirareisgmail.rmvendas.constantes.Const;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
@@ -228,17 +228,17 @@ public class ClientesCadActivity extends AppCompatActivity implements
         }
 
         ContentValues values = new ContentValues();
-        values.put(AcessoClientes.NOME, nomeEditText);
-        values.put(AcessoClientes.TELEFONE, foneEditText);
+        values.put(EntryClient.COLUMN_NAME, nomeEditText);
+        values.put(EntryClient.COLUMN_FONE, foneEditText);
 
         if (mUriAtual == null) {
 
-            Crud.inserir(ClientesCadActivity.this, AcessoClientes.CONTENT_URI_CLIENTES, values);
+            Crud.insert(ClientesCadActivity.this, EntryClient.CONTENT_URI_CLIENT, values);
 
         } else {
 
 
-            Crud.editar(ClientesCadActivity.this, mUriAtual, values);
+            Crud.update(ClientesCadActivity.this, mUriAtual, values);
         }
 
         finish();
@@ -249,9 +249,9 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
         // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
         String[] projection = {
-                AcessoClientes._ID,
-                AcessoClientes.NOME,
-                AcessoClientes.TELEFONE
+                EntryClient._ID,
+                EntryClient.COLUMN_NAME,
+                EntryClient.COLUMN_FONE
         };
 
         return new CursorLoader(
@@ -271,10 +271,10 @@ public class ClientesCadActivity extends AppCompatActivity implements
         if (cursor.moveToFirst()) {
 
             String nomeBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoClientes.NOME));
+                    cursor.getColumnIndex(EntryClient.COLUMN_NAME));
 
             String foneBD = cursor.getString(
-                    cursor.getColumnIndex(AcessoClientes.TELEFONE));
+                    cursor.getColumnIndex(EntryClient.COLUMN_FONE));
 
             mEtNome.setText(nomeBD);
             mEtFone.setText(foneBD);

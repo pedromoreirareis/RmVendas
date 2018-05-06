@@ -14,8 +14,8 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.DbHelper;
 
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoAReceber;
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 
 public class ClientesAdapter extends CursorAdapter {
 
@@ -55,11 +55,11 @@ public class ClientesAdapter extends CursorAdapter {
         ClientesViewHolder holder = new ClientesViewHolder(view);
 
         // Valor do registro
-        double valorAReceber = calcularAReceber(context, cursor.getInt(cursor.getColumnIndex(AcessoClientes._ID)));
+        double valorAReceber = calcularAReceber(context, cursor.getInt(cursor.getColumnIndex(EntryClient._ID)));
 
         // Nome do cliente e Telefone
-        String nomeBD = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
-        String foneBD = cursor.getString(cursor.getColumnIndex(AcessoClientes.TELEFONE));
+        String nomeBD = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME));
+        String foneBD = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_FONE));
 
         holder.tvNome.setText(nomeBD);
         holder.tvFone.setText(foneBD);
@@ -99,33 +99,33 @@ public class ClientesAdapter extends CursorAdapter {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
-                AcessoAReceber._ID,
-                AcessoAReceber.CLIENTE_ID,
-                AcessoAReceber.CLIENTE_NOME,
-                AcessoAReceber.TIPO_ENTRADA,
-                AcessoAReceber.DATA_HORA,
-                AcessoAReceber.VALOR,
-                AcessoAReceber.DESCRICAO,
-                AcessoAReceber.VALOR
+                EntryReceive._ID,
+                EntryReceive._ID,
+                EntryReceive.COLUMN_CLIENT_NAME,
+                EntryReceive.COLUMN_TYPE,
+                EntryReceive.COLUMN_TIMESTAMP,
+                EntryReceive.COLUMN_VALUE,
+                EntryReceive.COLUMN_DESCRIPTION,
+                EntryReceive.COLUMN_VALUE
         };
 
-        String selection = AcessoAReceber.CLIENTE_ID + " = ? ";
+        String selection = EntryReceive._ID + " = ? ";
         String[] selectionArgs = new String[]{String.valueOf(idCliente)};
-        String sortOrder = AcessoAReceber.DATA_HORA;
+        String sortOrder = EntryReceive.COLUMN_TIMESTAMP;
 
-        Cursor cursor = db.query(AcessoAReceber.TABELA_A_RECEBER, projection, selection, selectionArgs, null, null, sortOrder);
+        Cursor cursor = db.query(EntryReceive.TABLE_RECEIVE, projection, selection, selectionArgs, null, null, sortOrder);
 
         cursor.moveToFirst();
 
         for (int i = 0; i < cursor.getCount(); i++) {
 
-            if (cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA)) == ConstDB.TIPO_VENDA) {
+            if (cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE)) == ConstDB.TIPO_VENDA) {
 
-                valorVendas = valorVendas + cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR));
+                valorVendas = valorVendas + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
 
             } else {
 
-                valorRecebimentos = valorRecebimentos + cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR));
+                valorRecebimentos = valorRecebimentos + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
             }
 
             valorTotal = valorRecebimentos - valorVendas;

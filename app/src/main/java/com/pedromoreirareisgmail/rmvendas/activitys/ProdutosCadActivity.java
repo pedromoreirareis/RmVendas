@@ -210,13 +210,13 @@ public class ProdutosCadActivity extends AppCompatActivity implements
 
             Log.v(TAG, "salvarDadosBD - inserir");
 
-            Crud.inserir(ProdutosCadActivity.this, EntryProduct.CONTENT_URI_PRODUCT, values);
+            Crud.insert(ProdutosCadActivity.this, EntryProduct.CONTENT_URI_PRODUCT, values);
 
         } else {
 
             Log.v(TAG, "salvarDadosBD - editar");
 
-            Crud.editar(ProdutosCadActivity.this, mUriAtual, values);
+            Crud.update(ProdutosCadActivity.this, mUriAtual, values);
         }
 
         Log.v(TAG, "salvarDadosBD - Fim");

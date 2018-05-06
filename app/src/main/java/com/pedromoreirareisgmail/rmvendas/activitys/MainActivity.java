@@ -33,7 +33,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.adapters.MainAdapter;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
 
@@ -256,15 +256,15 @@ public class MainActivity extends AppCompatActivity
 
         // Define quais colunas retornaram dados
         String[] projection = new String[]{
-                AcessoVenda._ID,
-                AcessoVenda.NOME_PRODUTO,
-                AcessoVenda.QUANTIDADE,
-                AcessoVenda.DATA_HORA,
-                AcessoVenda.VALOR_DESCONTO,
-                AcessoVenda.VALOR_ADICIONAL,
-                AcessoVenda.VALOR_PRAZO,
-                AcessoVenda.ID_CLIENTE,
-                AcessoVenda.VALOR_UNIDADE
+                EntrySeel._ID,
+                EntrySeel.COLUMN_NAME,
+                EntrySeel.COLUMN_QUANTITY,
+                EntrySeel.COLUMN_TIMESTAMP,
+                EntrySeel.COLUMN_DISCOUNT_VALUE,
+                EntrySeel.COLUMN_ADD_VALUE,
+                EntrySeel.COLUMN_FORWARD_VALUE,
+                EntrySeel.COLUMN_CLIENT_ID,
+                EntrySeel.COLUMN_PRICE
         };
 
         String selection;
@@ -285,22 +285,22 @@ public class MainActivity extends AppCompatActivity
 
             Log.v(TAG, "onCreateLoader - Data + Nome");
 
-            selection = AcessoVenda.DATA_HORA + " LIKE ?  AND " + AcessoVenda.NOME_PRODUTO + " LIKE ?";
+            selection = EntrySeel.COLUMN_TIMESTAMP + " LIKE ?  AND " + EntrySeel.COLUMN_NAME + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%", "%" + mPesquisarBD + "%"};
-            sortOrder = AcessoVenda.DATA_HORA + " DESC";
+            sortOrder = EntrySeel.COLUMN_TIMESTAMP + " DESC";
 
         } else {
 
             Log.v(TAG, "onCreateLoader - Nome (Data ja capturada e em memoria)");
 
-            selection = AcessoVenda.DATA_HORA + " LIKE ?";
+            selection = EntrySeel.COLUMN_TIMESTAMP + " LIKE ?";
             selectionArgs = new String[]{mDataPesquisarBD + "%"};
-            sortOrder = AcessoVenda.DATA_HORA + " DESC";
+            sortOrder = EntrySeel.COLUMN_TIMESTAMP + " DESC";
         }
 
         return new CursorLoader(
                 this,
-                AcessoVenda.CONTENT_URI_VENDA,
+                EntrySeel.CONTENT_URI_SELL,
                 projection,
                 selection,
                 selectionArgs,
@@ -387,11 +387,11 @@ public class MainActivity extends AppCompatActivity
         Cursor cursor = mAdapter.getCursor();
 
         double valorVendaVista = Calculos.CalcularValorAVistaDouble(
-                cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)),
-                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE)),
-                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL)),
-                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO)),
-                cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO))
+                cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
+                cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
+                cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
+                cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)),
+                cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE))
         );
 
         if (valorVendaVista > 0) {
@@ -423,11 +423,11 @@ public class MainActivity extends AppCompatActivity
 
         Log.v(TAG, "onItemLongClick");
 
-        Uri uri = ContentUris.withAppendedId(AcessoVenda.CONTENT_URI_VENDA, id);
+        Uri uri = ContentUris.withAppendedId(EntrySeel.CONTENT_URI_SELL, id);
 
         Cursor cursor = mAdapter.getCursor();
-        String mensagemExcluir = cursor.getString(cursor.getColumnIndex(AcessoVenda.QUANTIDADE)) + "  "
-                + cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
+        String mensagemExcluir = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)) + "  "
+                + cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
 
         Dialogos.dialogoEditarExcluir(
                 MainActivity.this,

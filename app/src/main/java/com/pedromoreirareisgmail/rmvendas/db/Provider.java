@@ -13,11 +13,11 @@ import android.util.Log;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoAReceber;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.CONTENT_AUTORITY;
@@ -58,20 +58,20 @@ public class Provider extends ContentProvider {
         sUriMatcher.addURI(CONTENT_AUTORITY, EntryProduct.TABLE_PRODUCT, MATCH_PRODUCTS);
         sUriMatcher.addURI(CONTENT_AUTORITY, EntryProduct.TABLE_PRODUCT + "/#", MATCH_PRODUCT_ID);
 
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET, MATCH_CASHMOVE);
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoEntRet.TABELA_ENT_RET + "/#", MATCH_CASHMOVE_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryCashMove.TABLE_CASHMOVE, MATCH_CASHMOVE);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryCashMove.TABLE_CASHMOVE + "/#", MATCH_CASHMOVE_ID);
 
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL, MATCH_OPENING);
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoSaldo.TABELA_SALDO_INICIAL + "/#", MATCH_OPENING_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryOpening.TABLE_OPENING, MATCH_OPENING);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryOpening.TABLE_OPENING + "/#", MATCH_OPENING_ID);
 
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS, MATCH_SELL);
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoVenda.TABELA_VENDAS + "/#", MATCH_SELL_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntrySeel.TABLE_SELL, MATCH_SELL);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntrySeel.TABLE_SELL + "/#", MATCH_SELL_ID);
 
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoClientes.TABELA_CLIENTES, MATCH_CLIENT);
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoClientes.TABELA_CLIENTES + "/#", MATCH_CLIENT_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryClient.TABLE_CLIENT, MATCH_CLIENT);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryClient.TABLE_CLIENT + "/#", MATCH_CLIENT_ID);
 
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoAReceber.TABELA_A_RECEBER, MATCH_RECEIVE);
-        sUriMatcher.addURI(CONTENT_AUTORITY, AcessoAReceber.TABELA_A_RECEBER + "/#", MATCH_RECEIVE_ID);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryReceive.TABLE_RECEIVE, MATCH_RECEIVE);
+        sUriMatcher.addURI(CONTENT_AUTORITY, EntryReceive.TABLE_RECEIVE + "/#", MATCH_RECEIVE_ID);
     }
 
 
@@ -158,7 +158,7 @@ public class Provider extends ContentProvider {
             case MATCH_CASHMOVE:
 
                 cursor = database.query(
-                        AcessoEntRet.TABELA_ENT_RET,
+                        EntryCashMove.TABLE_CASHMOVE,
                         projection,
                         selection,
                         selectionArgs,
@@ -173,12 +173,12 @@ public class Provider extends ContentProvider {
 
             case MATCH_CASHMOVE_ID:
 
-                selection = AcessoEntRet._ID + " = ? ";
+                selection = EntryCashMove._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoEntRet.TABELA_ENT_RET,
+                        EntryCashMove.TABLE_CASHMOVE,
                         projection,
                         selection,
                         selectionArgs,
@@ -196,7 +196,7 @@ public class Provider extends ContentProvider {
             case MATCH_OPENING:
 
                 cursor = database.query(
-                        AcessoSaldo.TABELA_SALDO_INICIAL,
+                        EntryOpening.TABLE_OPENING,
                         projection,
                         selection,
                         selectionArgs,
@@ -211,12 +211,12 @@ public class Provider extends ContentProvider {
 
             case MATCH_OPENING_ID:
 
-                selection = AcessoSaldo._ID + " = ? ";
+                selection = EntryOpening._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoSaldo.TABELA_SALDO_INICIAL,
+                        EntryOpening.TABLE_OPENING,
                         projection,
                         selection,
                         selectionArgs,
@@ -234,7 +234,7 @@ public class Provider extends ContentProvider {
             case MATCH_SELL:
 
                 cursor = database.query(
-                        AcessoVenda.TABELA_VENDAS,
+                        EntrySeel.TABLE_SELL,
                         projection,
                         selection,
                         selectionArgs,
@@ -249,12 +249,12 @@ public class Provider extends ContentProvider {
 
             case MATCH_SELL_ID:
 
-                selection = AcessoVenda._ID + " = ? ";
+                selection = EntrySeel._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoVenda.TABELA_VENDAS,
+                        EntrySeel.TABLE_SELL,
                         projection,
                         selection,
                         selectionArgs,
@@ -272,7 +272,7 @@ public class Provider extends ContentProvider {
             case MATCH_CLIENT:
 
                 cursor = database.query(
-                        AcessoClientes.TABELA_CLIENTES,
+                        EntryClient.TABLE_CLIENT,
                         projection,
                         selection,
                         selectionArgs,
@@ -287,12 +287,12 @@ public class Provider extends ContentProvider {
 
             case MATCH_CLIENT_ID:
 
-                selection = AcessoClientes._ID + " = ? ";
+                selection = EntryClient._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoClientes.TABELA_CLIENTES,
+                        EntryClient.TABLE_CLIENT,
                         projection,
                         selection,
                         selectionArgs,
@@ -309,7 +309,7 @@ public class Provider extends ContentProvider {
             case MATCH_RECEIVE:
 
                 cursor = database.query(
-                        AcessoAReceber.TABELA_A_RECEBER,
+                        EntryReceive.TABLE_RECEIVE,
                         projection,
                         selection,
                         selectionArgs,
@@ -324,12 +324,12 @@ public class Provider extends ContentProvider {
 
             case MATCH_RECEIVE_ID:
 
-                selection = AcessoAReceber._ID + " = ? ";
+                selection = EntryReceive._ID + " = ? ";
 
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(
-                        AcessoAReceber.TABELA_A_RECEBER,
+                        EntryReceive.TABLE_RECEIVE,
                         projection,
                         selection,
                         selectionArgs,
@@ -384,38 +384,38 @@ public class Provider extends ContentProvider {
 
             /* CASHMOVE */
             case MATCH_CASHMOVE:
-                return AcessoEntRet.CONTENT_TYPE_ENT_RET;
+                return EntryCashMove.CONTENT_TYPE_CASHMOVE;
 
             case MATCH_CASHMOVE_ID:
-                return AcessoEntRet.CONTENT_ITEM_TYPE_ENT_RET;
+                return EntryCashMove.CONTENT_ITEM_TYPE_CASHMOVE;
 
             /* OPENING */
             case MATCH_OPENING:
-                return AcessoSaldo.CONTENT_TYPE_SALDO_INICIAL;
+                return EntryOpening.CONTENT_TYPE_OPENING;
 
             case MATCH_OPENING_ID:
-                return AcessoSaldo.CONTENT_ITEM_TYPE_SALDO_INICIAL;
+                return EntryOpening.CONTENT_ITEM_TYPE_OPENING;
 
             /* SELL */
             case MATCH_SELL:
-                return AcessoVenda.CONTENT_TYPE_VENDA;
+                return EntrySeel.CONTENT_ITEM_TYPE_SELL;
 
             case MATCH_SELL_ID:
-                return AcessoVenda.CONTENT_ITEM_TYPE_VENDA;
+                return EntrySeel.CONTENT_ITEM_TYPE_SELL;
 
             /* CLIENT */
             case MATCH_CLIENT:
-                return AcessoClientes.CONTENT_TYPE_CLIENTES;
+                return EntryClient.CONTENT_TYPE_CLIENT;
 
             case MATCH_CLIENT_ID:
-                return AcessoClientes.CONTENT_ITEM_TYPE_CLIENTES;
+                return EntryClient.CONTENT_ITEM_TYPE_CLIENT;
 
             /* RECEIVE */
             case MATCH_RECEIVE:
-                return AcessoAReceber.CONTENT_TYPE_A_RECEBER;
+                return EntryReceive.CONTENT_TYPE_RECEIVE;
 
             case MATCH_RECEIVE_ID:
-                return AcessoAReceber.CONTENT_ITEM_TYPE_A_RECEBER;
+                return EntryReceive.CONTENT_ITEM_TYPE_RECEIVE;
 
             /* DEFAULT */
             default:
@@ -450,23 +450,23 @@ public class Provider extends ContentProvider {
 
             /*  CASHMOVE */
             case MATCH_CASHMOVE:
-                return insertRegister(AcessoEntRet.TABELA_ENT_RET, uri, values);
+                return insertRegister(EntryCashMove.TABLE_CASHMOVE, uri, values);
 
             /* OPENING */
             case MATCH_OPENING:
-                return insertRegister(AcessoSaldo.TABELA_SALDO_INICIAL, uri, values);
+                return insertRegister(EntryOpening.TABLE_OPENING, uri, values);
 
             /* SELL */
             case MATCH_SELL:
-                return insertRegister(AcessoVenda.TABELA_VENDAS, uri, values);
+                return insertRegister(EntrySeel.TABLE_SELL, uri, values);
 
             /* CLIENT */
             case MATCH_CLIENT:
-                return insertRegister(AcessoClientes.TABELA_CLIENTES, uri, values);
+                return insertRegister(EntryClient.TABLE_CLIENT, uri, values);
 
             /* RECEIVE */
             case MATCH_RECEIVE:
-                return insertRegister(AcessoAReceber.TABELA_A_RECEBER, uri, values);
+                return insertRegister(EntryReceive.TABLE_RECEIVE, uri, values);
 
             /* DEFAULT */
             default:
@@ -507,47 +507,47 @@ public class Provider extends ContentProvider {
             /* CASHMOVE */
             case MATCH_CASHMOVE:
 
-                return deleteRegisterAll(uri, AcessoEntRet.TABELA_ENT_RET, selection, selectionArgs);
+                return deleteRegisterAll(uri, EntryCashMove.TABLE_CASHMOVE, selection, selectionArgs);
 
             case MATCH_CASHMOVE_ID:
 
-                return deleteRegisterId(uri, AcessoEntRet.TABELA_ENT_RET, AcessoEntRet._ID);
+                return deleteRegisterId(uri, EntryCashMove.TABLE_CASHMOVE, EntryCashMove._ID);
 
             /* OPENING */
             case MATCH_OPENING:
 
-                return deleteRegisterAll(uri, AcessoSaldo.TABELA_SALDO_INICIAL, selection, selectionArgs);
+                return deleteRegisterAll(uri, EntryOpening.TABLE_OPENING, selection, selectionArgs);
 
             case MATCH_OPENING_ID:
 
-                return deleteRegisterId(uri, AcessoSaldo.TABELA_SALDO_INICIAL, AcessoSaldo._ID);
+                return deleteRegisterId(uri, EntryOpening.TABLE_OPENING, EntryOpening._ID);
 
             /* SELL */
             case MATCH_SELL:
 
-                return deleteRegisterAll(uri, AcessoVenda.TABELA_VENDAS, selection, selectionArgs);
+                return deleteRegisterAll(uri, EntrySeel.TABLE_SELL, selection, selectionArgs);
 
             case MATCH_SELL_ID:
 
-                return deleteRegisterId(uri, AcessoVenda.TABELA_VENDAS, AcessoVenda._ID);
+                return deleteRegisterId(uri, EntrySeel.TABLE_SELL, EntrySeel._ID);
 
             /* CLIENT */
             case MATCH_CLIENT:
 
-                return deleteRegisterAll(uri, AcessoClientes.TABELA_CLIENTES, selection, selectionArgs);
+                return deleteRegisterAll(uri, EntryClient.TABLE_CLIENT, selection, selectionArgs);
 
             case MATCH_CLIENT_ID:
 
-                return deleteRegisterId(uri, AcessoClientes.TABELA_CLIENTES, AcessoClientes._ID);
+                return deleteRegisterId(uri, EntryClient.TABLE_CLIENT, EntryClient._ID);
 
             /* RECEIVE */
             case MATCH_RECEIVE:
 
-                return deleteRegisterAll(uri, AcessoAReceber.TABELA_A_RECEBER, selection, selectionArgs);
+                return deleteRegisterAll(uri, EntryReceive.TABLE_RECEIVE, selection, selectionArgs);
 
             case MATCH_RECEIVE_ID:
 
-                return deleteRegisterId(uri, AcessoAReceber.TABELA_A_RECEBER, AcessoAReceber._ID);
+                return deleteRegisterId(uri, EntryReceive.TABLE_RECEIVE, EntryReceive._ID);
 
             /* DEFAULT */
             default:
@@ -589,47 +589,47 @@ public class Provider extends ContentProvider {
             /* CASHMOVE */
             case MATCH_CASHMOVE:
 
-                return updateRegisterAll(uri, values, AcessoEntRet.TABELA_ENT_RET, selection, selectionArgs);
+                return updateRegisterAll(uri, values, EntryCashMove.TABLE_CASHMOVE, selection, selectionArgs);
 
             case MATCH_CASHMOVE_ID:
 
-                return updateRegisterId(uri, values, AcessoEntRet.TABELA_ENT_RET, AcessoEntRet._ID);
+                return updateRegisterId(uri, values, EntryCashMove.TABLE_CASHMOVE, EntryCashMove._ID);
 
             /* OPENING */
             case MATCH_OPENING:
 
-                return updateRegisterAll(uri, values, AcessoSaldo.TABELA_SALDO_INICIAL, selection, selectionArgs);
+                return updateRegisterAll(uri, values, EntryOpening.TABLE_OPENING, selection, selectionArgs);
 
             case MATCH_OPENING_ID:
 
-                return updateRegisterId(uri, values, AcessoSaldo.TABELA_SALDO_INICIAL, AcessoSaldo._ID);
+                return updateRegisterId(uri, values, EntryOpening.TABLE_OPENING, EntryOpening._ID);
 
             /* SELL */
             case MATCH_SELL:
 
-                return updateRegisterAll(uri, values, AcessoVenda.TABELA_VENDAS, selection, selectionArgs);
+                return updateRegisterAll(uri, values, EntrySeel.TABLE_SELL, selection, selectionArgs);
 
             case MATCH_SELL_ID:
 
-                return updateRegisterId(uri, values, AcessoVenda.TABELA_VENDAS, AcessoVenda._ID);
+                return updateRegisterId(uri, values, EntrySeel.TABLE_SELL, EntrySeel._ID);
 
             /* CLIENT */
             case MATCH_CLIENT:
 
-                return updateRegisterAll(uri, values, AcessoClientes.TABELA_CLIENTES, selection, selectionArgs);
+                return updateRegisterAll(uri, values, EntryClient.TABLE_CLIENT, selection, selectionArgs);
 
             case MATCH_CLIENT_ID:
 
-                return updateRegisterId(uri, values, AcessoClientes.TABELA_CLIENTES, AcessoClientes._ID);
+                return updateRegisterId(uri, values, EntryClient.TABLE_CLIENT, EntryClient._ID);
 
             /* RECEIVE */
             case MATCH_RECEIVE:
 
-                return updateRegisterAll(uri, values, AcessoAReceber.TABELA_A_RECEBER, selection, selectionArgs);
+                return updateRegisterAll(uri, values, EntryReceive.TABLE_RECEIVE, selection, selectionArgs);
 
             case MATCH_RECEIVE_ID:
 
-                return updateRegisterId(uri, values, AcessoAReceber.TABELA_A_RECEBER, AcessoAReceber._ID);
+                return updateRegisterId(uri, values, EntryReceive.TABLE_RECEIVE, EntryReceive._ID);
 
             /* DEFAULT */
             default:

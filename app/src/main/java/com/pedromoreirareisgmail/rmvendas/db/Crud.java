@@ -8,47 +8,49 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
 
 public class Crud {
 
-    private static final String TAG = Crud.class.getSimpleName();
+    private static final String TAG = ConstTag.TAG_MAIN + Crud.class.getSimpleName();
 
     /**
-     * Insere um registro no Banco de Dados
+     * Enviar dados ao Provider para inserção de um registro
      *
      * @param context Contexto da Activity
      * @param uri     Uri do registro a ser inserido - parte do Uri
      * @param values  Dados a ser inserido
      */
-    public static void inserir(Context context, Uri uri, ContentValues values) {
+    public static void insert(Context context, Uri uri, ContentValues values) {
 
-        Log.v(TAG, "Crud - inserir");
+        Log.v(TAG, "CRUD INSERT - inserir registro");
 
         Uri newUri = context.getContentResolver().insert(uri, values);
 
         if (newUri != null) {
-            Toast.makeText(context, "Inserido com sucesso", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(context, R.string.msg_inserido_sucesso, Toast.LENGTH_SHORT).show();
 
 
         } else {
-            Toast.makeText(context, "Erro ao inserir", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.msg_inserido_erro, Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
-     * Edita um registro no BD
+     * Enviar dados ao Provider para atualização de um registro
      *
      * @param context Contexto da Activity
      * @param uri     Uri do registro a ser Editado
      * @param values  dados a serem editados(Atualizados)
      */
-    public static void editar(Context context, Uri uri, ContentValues values) {
+    public static void update(Context context, Uri uri, ContentValues values) {
 
-        Log.v(TAG, "Crud - editar");
+        Log.v(TAG, "CRUD UPDATE - atualizar registro");
 
-        int editadas = context.getContentResolver().update(uri, values, null, null);
+        int updates = context.getContentResolver().update(uri, values, null, null);
 
-        if (editadas > 0) {
+        if (updates > 0) {
 
             Toast.makeText(context, R.string.msg_editado_sucesso, Toast.LENGTH_SHORT).show();
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
 public class RetAdapter extends CursorAdapter {
 
@@ -51,9 +51,9 @@ public class RetAdapter extends CursorAdapter {
         RetViewHolder holder = new RetViewHolder(view);
 
         /* valor, hora e descrição de uma retirada */
-        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR));
-        String hora = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA_HORA));
-        String desccricao = cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO));
+        double valor = cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
+        String hora = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
+        String desccricao = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
 
         holder.valor.setText(Formatar.formatarDoubleParaCurrency(valor));
         holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(hora));

@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.adapters.ClientesAdapter;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ACTIVITY_CHAMOU;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.VEND_LIST_CLIENTES_ACTIVITY;
@@ -165,20 +165,20 @@ public class VendListClienteActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
-                AcessoClientes._ID,
-                AcessoClientes.NOME,
-                AcessoClientes.TELEFONE
+                EntryClient._ID,
+                EntryClient.COLUMN_NAME,
+                EntryClient.COLUMN_FONE
         };
 
         /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
          * utilizar o menu search, sera pesquisado pelo nome do produto */
-        String selection = AcessoClientes.NOME + " LIKE ?";
+        String selection = EntryClient.COLUMN_NAME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
-        String sortOrder = AcessoClientes.NOME;
+        String sortOrder = EntryClient.COLUMN_NAME;
 
         return new CursorLoader(
                 this,
-                AcessoClientes.CONTENT_URI_CLIENTES,
+                EntryClient.CONTENT_URI_CLIENT,
                 projection,
                 selection,
                 selectionArgs,
@@ -228,7 +228,7 @@ public class VendListClienteActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String idCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes._ID));
+        String idCliente = cursor.getString(cursor.getColumnIndex(EntryClient._ID));
 
         Intent intent = new Intent();
         Bundle bundle = new Bundle();

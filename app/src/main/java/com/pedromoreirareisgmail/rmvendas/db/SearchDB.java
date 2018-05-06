@@ -16,15 +16,15 @@ public class SearchDB {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
-                Contract.AcessoClientes._ID,
-                Contract.AcessoClientes.NOME
+                Contract.EntryClient._ID,
+                Contract.EntryClient.COLUMN_NAME
         };
 
-        String selection = Contract.AcessoClientes._ID + " = ? ";
+        String selection = Contract.EntryClient._ID + " = ? ";
         String[] selectionArgs = new String[]{String.valueOf(idCliente)};
 
         Cursor cursor = db.query(
-                Contract.AcessoClientes.TABELA_CLIENTES,
+                Contract.EntryClient.TABLE_CLIENT,
                 projection,
                 selection,
                 selectionArgs,
@@ -34,7 +34,7 @@ public class SearchDB {
 
         cursor.moveToFirst();
 
-        String nomeCliente = cursor.getString(cursor.getColumnIndex(Contract.AcessoClientes.NOME));
+        String nomeCliente = cursor.getString(cursor.getColumnIndex(Contract.EntryClient.COLUMN_NAME));
 
         db.close();
 

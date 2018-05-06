@@ -6,13 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoAReceber;
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -48,11 +47,11 @@ public class DbHelper extends SQLiteOpenHelper {
         Log.v(TAG, "CRIANDO TABELAS: Inicio");
 
         db.execSQL(EntryProduct.CREATE_TABLE_PRODUCT);
-        db.execSQL(AcessoEntRet.CRIAR_TABELA_ENT_RET);
-        db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO_INICIAL);
-        db.execSQL(AcessoVenda.CRIAR_TABELA_VENDA);
-        db.execSQL(AcessoClientes.CRIAR_TABELA_CLIENTES);
-        db.execSQL(AcessoAReceber.CRIAR_TABELA_A_RECEBER);
+        db.execSQL(EntryCashMove.CREATE_TABLE_CASHMOVE);
+        db.execSQL(EntryOpening.CREATE_TABLE_OPENING);
+        db.execSQL(EntrySeel.CREATE_TABLE_SELL);
+        db.execSQL(Contract.EntryClient.CREATE_TABLE_CLIENT);
+        db.execSQL(EntryReceive.CREATE_TABLE_RECEIVE);
 
         Log.v(TAG, "CRIANDO TABELAS: Fim");
     }

@@ -28,7 +28,7 @@ import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ACTIVIT
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.CLIENTE_FONE;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.CLIENTE_ID;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.CLIENTE_NOME;
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 
 public class ClientesListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -110,21 +110,21 @@ public class ClientesListActivity extends AppCompatActivity implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] projection = {
-                AcessoClientes._ID,
-                AcessoClientes.NOME,
-                AcessoClientes.TELEFONE
+                EntryClient._ID,
+                EntryClient.COLUMN_NAME,
+                EntryClient.COLUMN_FONE
         };
 
         /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
          * utilizar o menu search, sera pesquisado pelo nome do produto
          */
-        String selection = AcessoClientes.NOME + " LIKE ?";
+        String selection = EntryClient.COLUMN_NAME + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
-        String sortOrder = AcessoClientes.NOME;
+        String sortOrder = EntryClient.COLUMN_NAME;
 
         return new CursorLoader(
                 this,
-                AcessoClientes.CONTENT_URI_CLIENTES,
+                EntryClient.CONTENT_URI_CLIENT,
                 projection,
                 selection,
                 selectionArgs,
@@ -155,8 +155,8 @@ public class ClientesListActivity extends AppCompatActivity implements
         // No cursor pode-se obter os dados de cada cliente
         Cursor cursor = mAdapter.getCursor();
                 
-        String nomeCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
-        String foneCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes.TELEFONE));
+        String nomeCliente = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME));
+        String foneCliente = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_FONE));
 
         Intent intentRegistroAReceber = new Intent(
                 ClientesListActivity.this, RegistroReceberActivity.class);
@@ -180,12 +180,12 @@ public class ClientesListActivity extends AppCompatActivity implements
         //TODO: Ao excluir tem de fazer verificação se o cliente tem vendas associadas ou registro a prazo - se tiver não pode excluir
 
         // Caminho especifico de um cliente no BD
-        Uri uri = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, id);
+        Uri uri = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, id);
 
         Cursor cursor = mAdapter.getCursor();
 
         String mensagemExcluir = mAdapter.getCursor().getString(
-                cursor.getColumnIndex(AcessoClientes.NOME));
+                cursor.getColumnIndex(EntryClient.COLUMN_NAME));
 
         Dialogos.dialogoEditarExcluir(
                 ClientesListActivity.this,

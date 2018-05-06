@@ -26,7 +26,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapters.SaldoInicialAdapter;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 
 public class SaldoInicialListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -134,18 +134,18 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
-                AcessoSaldo._ID,
-                AcessoSaldo.DATA_HORA,
-                AcessoSaldo.VALOR
+                EntryOpening._ID,
+                EntryOpening.COLUMN_TIMESTAMP,
+                EntryOpening.COLUMN_VALUE
         };
 
         // Procura por todos os dados salvos na tabela com parte da data do tipo "yyyy-MM-dd"
-        String selection = AcessoSaldo.DATA_HORA + " LIKE ?";
+        String selection = EntryOpening.COLUMN_TIMESTAMP + " LIKE ?";
         String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
 
         return new CursorLoader(
                 this,
-                AcessoSaldo.CONTENT_URI_SALDO_INICIAL,
+                EntryOpening.CONTENT_URI_OPENING,
                 projection,
                 selection,
                 selectionArgs,
@@ -199,9 +199,9 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         //  Mensagem do Dialog - Descrição
         String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))));
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
 
         Dialogos.dialogoExibirDados(SaldoInicialListActivity.this, tituloDialog, mensagemDialog);
     }
@@ -223,13 +223,13 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onItemLongClick");
 
-        Uri uri = ContentUris.withAppendedId(AcessoSaldo.CONTENT_URI_SALDO_INICIAL, id);
+        Uri uri = ContentUris.withAppendedId(EntryOpening.CONTENT_URI_OPENING, id);
 
         Cursor cursor = mAdapter.getCursor();
 
         String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA))));
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
 
         Dialogos.dialogoEditarExcluir(
                 SaldoInicialListActivity.this,

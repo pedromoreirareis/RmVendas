@@ -36,10 +36,9 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.constantes.Const;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.db.Contract;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
@@ -51,7 +50,9 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarCharSequ
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarEditsDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarEditsInt;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarEditsString;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ADICIONAR;
+import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ADICIONAR_VENDA;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 
 public class VendQuantActivity extends AppCompatActivity implements
@@ -231,7 +232,7 @@ public class VendQuantActivity extends AppCompatActivity implements
                 if (data.hasExtra(ID_CLIENTE)) {
 
                     mIdCliente = Long.parseLong(data.getStringExtra(ID_CLIENTE));
-                    mUriCliente = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, mIdCliente);
+                    mUriCliente = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, mIdCliente);
                     getLoaderManager().initLoader(LOADER_CLIENTE, null, this);
                 }
 
@@ -447,11 +448,11 @@ public class VendQuantActivity extends AppCompatActivity implements
         ContentValues valuesVendaPrazo = new ContentValues();
         if (temPrazoSwitch) {
 
-            valuesVendaPrazo.put(Contract.AcessoAReceber.CLIENTE_ID, mIdCliente);
-            valuesVendaPrazo.put(Contract.AcessoAReceber.CLIENTE_NOME, nomeClienteTextView);
-            valuesVendaPrazo.put(Contract.AcessoAReceber.TIPO_ENTRADA, ConstDB.TIPO_VENDA);
-            valuesVendaPrazo.put(Contract.AcessoAReceber.VALOR, valorPrazoDouble);
-            valuesVendaPrazo.put(Contract.AcessoAReceber.DESCRICAO, String.format(
+            valuesVendaPrazo.put(EntryReceive._ID, mIdCliente);
+            valuesVendaPrazo.put(EntryReceive.COLUMN_CLIENT_NAME, nomeClienteTextView);
+            valuesVendaPrazo.put(EntryReceive.COLUMN_TYPE, ConstDB.TIPO_VENDA);
+            valuesVendaPrazo.put(EntryReceive.COLUMN_VALUE, valorPrazoDouble);
+            valuesVendaPrazo.put(EntryReceive.COLUMN_DESCRIPTION, String.format(
                     getResources().getString(R.string.text_venda_a_prazo_venda),
                     quatidadeEditText,
                     nomeProdutoTextView));
@@ -459,27 +460,27 @@ public class VendQuantActivity extends AppCompatActivity implements
 
         // Coloca dados em um objeto values para ser salvo no BD
         ContentValues values = new ContentValues();
-        values.put(AcessoVenda.NOME_PRODUTO, nomeProdutoTextView);
-        values.put(AcessoVenda.QUANTIDADE, quantidadeInt);
-        values.put(AcessoVenda.VALOR_UNIDADE, mValorUnidadeProduto);
-        values.put(AcessoVenda.VALOR_ADICIONAL, valorAdicionalDouble);
-        values.put(AcessoVenda.VALOR_DESCONTO, valorDescontoDouble);
-        values.put(AcessoVenda.VALOR_PRAZO, valorPrazoDouble);
-        valuesVendaPrazo.put(Contract.AcessoAReceber.DATA_HORA, DataHora.obterDataHoraSistema());
+        values.put(EntrySeel.COLUMN_NAME, nomeProdutoTextView);
+        values.put(EntrySeel.COLUMN_QUANTITY, quantidadeInt);
+        values.put(EntrySeel.COLUMN_PRICE, mValorUnidadeProduto);
+        values.put(EntrySeel.COLUMN_ADD_VALUE, valorAdicionalDouble);
+        values.put(EntrySeel.COLUMN_DISCOUNT_VALUE, valorDescontoDouble);
+        values.put(EntrySeel.COLUMN_FORWARD_VALUE, valorPrazoDouble);
+        valuesVendaPrazo.put(EntryReceive.COLUMN_TIMESTAMP, DataHora.obterDataHoraSistema());
         if (temPrazoSwitch) {
-            values.put(AcessoVenda.ID_CLIENTE, mIdCliente);
+            values.put(EntrySeel.COLUMN_CLIENT_ID, mIdCliente);
         }
 
         // Salva dados no BD
         if (mAdicionarProdutoBD) {
 
-            values.put(AcessoVenda.DATA_HORA, DataHora.obterDataHoraSistema());
+            values.put(EntrySeel.COLUMN_TIMESTAMP, DataHora.obterDataHoraSistema());
 
-            Crud.inserir(VendQuantActivity.this, AcessoVenda.CONTENT_URI_VENDA, values);
+            Crud.insert(VendQuantActivity.this, EntrySeel.CONTENT_URI_SELL, values);
 
             if (temPrazoSwitch) {
 
-                Crud.inserir(VendQuantActivity.this, Contract.AcessoAReceber.CONTENT_URI_ARECEBER, valuesVendaPrazo);
+                Crud.insert(VendQuantActivity.this, EntryReceive.CONTENT_URI_RECEIVE, valuesVendaPrazo);
             }
 
             Log.v(TAG, "salvarDadosBD - inserir");
@@ -493,9 +494,9 @@ public class VendQuantActivity extends AppCompatActivity implements
 
             } else {
 
-                values.put(AcessoVenda.DATA_HORA, mDataHoraBD);
+                values.put(EntrySeel.COLUMN_TIMESTAMP, mDataHoraBD);
 
-                Crud.editar(VendQuantActivity.this, mUriAtual, values);
+                Crud.update(VendQuantActivity.this, mUriAtual, values);
 
                 Log.v(TAG, "salvarDadosBD - editar");
             }
@@ -542,15 +543,15 @@ public class VendQuantActivity extends AppCompatActivity implements
             Log.v(TAG, "onCreateLoader - LOADER_VENDA_EDITAR");
 
             String[] projection = {
-                    AcessoVenda._ID,
-                    AcessoVenda.NOME_PRODUTO,
-                    AcessoVenda.QUANTIDADE,
-                    AcessoVenda.DATA_HORA,
-                    AcessoVenda.VALOR_ADICIONAL,
-                    AcessoVenda.VALOR_DESCONTO,
-                    AcessoVenda.VALOR_PRAZO,
-                    AcessoVenda.ID_CLIENTE,
-                    AcessoVenda.VALOR_UNIDADE
+                    EntrySeel._ID,
+                    EntrySeel.COLUMN_NAME,
+                    EntrySeel.COLUMN_QUANTITY,
+                    EntrySeel.COLUMN_TIMESTAMP,
+                    EntrySeel.COLUMN_ADD_VALUE,
+                    EntrySeel.COLUMN_DISCOUNT_VALUE,
+                    EntrySeel.COLUMN_FORWARD_VALUE,
+                    EntrySeel.COLUMN_CLIENT_ID,
+                    EntrySeel.COLUMN_PRICE
             };
 
             return new CursorLoader(
@@ -569,9 +570,9 @@ public class VendQuantActivity extends AppCompatActivity implements
 
             // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
             String[] projection = {
-                    AcessoClientes._ID,
-                    AcessoClientes.NOME,
-                    AcessoClientes.TELEFONE
+                    EntryClient._ID,
+                    EntryClient.COLUMN_NAME,
+                    EntryClient.COLUMN_FONE
             };
 
             return new CursorLoader(
@@ -597,14 +598,14 @@ public class VendQuantActivity extends AppCompatActivity implements
 
             Log.v(TAG, "onLoadFinished - LOADER_VENDA_EDITAR");
 
-            String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.NOME_PRODUTO));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(AcessoVenda.DATA_HORA));
+            String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
+            mDataHoraBD = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP));
 
-            int quantidadeBD = cursor.getInt(cursor.getColumnIndex(AcessoVenda.QUANTIDADE));
-            double valorUnidadeBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE));
-            double valorAdicionalBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_ADICIONAL));
-            double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_DESCONTO));
-            double valorPrazoBD = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_PRAZO));
+            int quantidadeBD = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
+            double valorUnidadeBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
+            double valorAdicionalBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
+            double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
+            double valorPrazoBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
             double valorTotalBD = Calculos.calcularValorTotalVendaDouble(
                     quantidadeBD,
                     valorUnidadeBD,
@@ -612,11 +613,11 @@ public class VendQuantActivity extends AppCompatActivity implements
                     valorDescontoBD
             );
 
-            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(AcessoVenda.VALOR_UNIDADE));
+            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
 
-            int idCliente = cursor.getInt(cursor.getColumnIndex(AcessoVenda.ID_CLIENTE));
+            int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
             mIdCliente = idCliente;
-            mUriCliente = ContentUris.withAppendedId(AcessoClientes.CONTENT_URI_CLIENTES, mIdCliente);
+            mUriCliente = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, mIdCliente);
 
             String nomeClienteBD = "";
             if (mIdCliente > 0) {
@@ -695,7 +696,7 @@ public class VendQuantActivity extends AppCompatActivity implements
 
             Log.v(TAG, "onLoadFinished - LOADER_CLIENTE");
 
-            mNomeCliente = cursor.getString(cursor.getColumnIndex(AcessoClientes.NOME));
+            mNomeCliente = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME));
             mTvNomeCliente.setText(mNomeCliente);
 
             mTvValorTotalVista.setText(mValorTotalBundle);

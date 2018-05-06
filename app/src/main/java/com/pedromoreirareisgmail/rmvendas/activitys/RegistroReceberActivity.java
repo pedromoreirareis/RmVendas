@@ -40,7 +40,7 @@ import static com.pedromoreirareisgmail.rmvendas.constantes.Const.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstDB.TIPO_RECEBIMENTO;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstDB.TIPO_VENDA;
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoAReceber;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class RegistroReceberActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -299,15 +299,15 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         // Cria objeto values a recebe dados em campos tipo chave valor para salvar no BD
         ContentValues values = new ContentValues();
 
-        values.put(AcessoAReceber.CLIENTE_ID, Integer.parseInt(mIdCliente));
-        values.put(AcessoAReceber.CLIENTE_NOME, SearchDB.Pesquisarcliente(RegistroReceberActivity.this, Integer.parseInt(mIdCliente)));
-        values.put(AcessoAReceber.DATA_HORA, obterDataHoraSistema());
-        values.put(AcessoAReceber.DESCRICAO, descricaoEditText);
-        values.put(AcessoAReceber.TIPO_ENTRADA, tipoEntrada);
-        values.put(AcessoAReceber.VALOR, valorDouble);
+        values.put(EntryReceive._ID, Integer.parseInt(mIdCliente));
+        values.put(EntryReceive.COLUMN_CLIENT_NAME, SearchDB.Pesquisarcliente(RegistroReceberActivity.this, Integer.parseInt(mIdCliente)));
+        values.put(EntryReceive.COLUMN_TIMESTAMP, obterDataHoraSistema());
+        values.put(EntryReceive.COLUMN_DESCRIPTION, descricaoEditText);
+        values.put(EntryReceive.COLUMN_TYPE, tipoEntrada);
+        values.put(EntryReceive.COLUMN_VALUE, valorDouble);
 
         // Salva dados no BD
-        Crud.inserir(RegistroReceberActivity.this, AcessoAReceber.CONTENT_URI_ARECEBER, values);
+        Crud.insert(RegistroReceberActivity.this, EntryReceive.CONTENT_URI_RECEIVE, values);
 
         // Limpa edits e coloca foco no mEtValor
         limparEdits();
@@ -325,22 +325,22 @@ public class RegistroReceberActivity extends AppCompatActivity implements
 
         /* Retorna todas as colunas e registro a receber de um unico cliente*/
         String[] projection = {
-                AcessoAReceber._ID,
-                AcessoAReceber.CLIENTE_ID,
-                AcessoAReceber.CLIENTE_NOME,
-                AcessoAReceber.DATA_HORA,
-                AcessoAReceber.DESCRICAO,
-                AcessoAReceber.TIPO_ENTRADA,
-                AcessoAReceber.VALOR
+                EntryReceive._ID,
+                EntryReceive._ID,
+                EntryReceive.COLUMN_CLIENT_NAME,
+                EntryReceive.COLUMN_TIMESTAMP,
+                EntryReceive.COLUMN_DESCRIPTION,
+                EntryReceive.COLUMN_TYPE,
+                EntryReceive.COLUMN_VALUE
         };
 
-        String selection = AcessoAReceber.CLIENTE_ID + " LIKE ? ";
+        String selection = EntryReceive._ID + " LIKE ? ";
         String[] selectionArgs = new String[]{mIdCliente};
-        String sortOrder = AcessoAReceber.DATA_HORA + " DESC ";
+        String sortOrder = EntryReceive.COLUMN_TIMESTAMP + " DESC ";
 
         return new CursorLoader(
                 this,
-                AcessoAReceber.CONTENT_URI_ARECEBER,
+                EntryReceive.CONTENT_URI_RECEIVE,
                 projection,
                 selection,
                 selectionArgs,
@@ -365,13 +365,13 @@ public class RegistroReceberActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                if (cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA)) == TIPO_VENDA) {
+                if (cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE)) == TIPO_VENDA) {
 
-                    mVendas = mVendas + cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR));
+                    mVendas = mVendas + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
 
                 } else {
 
-                    mRecebimentos = mRecebimentos + cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR));
+                    mRecebimentos = mRecebimentos + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
                 }
 
                 mValorTotal = mRecebimentos - mVendas;
@@ -490,7 +490,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         String tituloDialogTipo;
         int tipoInt;
 
-        tipoInt = cursor.getInt(cursor.getColumnIndex(AcessoAReceber.TIPO_ENTRADA));
+        tipoInt = cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE));
 
         if (tipoInt == ConstDB.TIPO_RECEBIMENTO) {
 
@@ -501,10 +501,10 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         }
 
         String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_registro_a_receber),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoAReceber.DATA_HORA))),
-                cursor.getString(cursor.getColumnIndex(AcessoAReceber.DESCRICAO)),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoAReceber.VALOR))));
+                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
+                cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE))));
 
         Dialogos.dialogoExibirDados(RegistroReceberActivity.this, tituloDialogTipo, mensagemDialog);
     }

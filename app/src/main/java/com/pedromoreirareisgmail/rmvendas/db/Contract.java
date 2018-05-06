@@ -10,13 +10,12 @@ public class Contract {
     /*
      *********************************** TABELAS ***************************************************
      *
-     * Product              - Tabela com os dados dos produtos
-     *
-     * Entradas_Retiradas   - entradas e retiradas de valores do caixa em um dia especifico
-     * Saldo_Inicial        - saldo inicial em um dia especifico
-     * Vendas               - resumo das vendas em um dia especifico
-     * Clientes             - cadastro de clientes
-     * A_Receber            - registro de vendas a prazo - fiado
+     * PRODUCT              - Produtos
+     * CASHMOVE             - Movimento do caixa - entradas e retiradas no dia
+     * OPENING              - saldo inicial do dia
+     * SELL                 - Vendas do dia
+     * CLIENT               - cadastro de clientes
+     * RECEIVE              - Registro das vendas a prazo
      *
      **********************************************************************************************/
 
@@ -29,11 +28,11 @@ public class Contract {
 
     // Identificador das tabelas
     private static final String PATH_PRODUCT = EntryProduct.TABLE_PRODUCT;
-    private static final String PATH_ENT_RET = AcessoEntRet.TABELA_ENT_RET;
-    private static final String PATH_SALDO_INICIAL = AcessoSaldo.TABELA_SALDO_INICIAL;
-    private static final String PATH_VENDA = AcessoVenda.TABELA_VENDAS;
-    private static final String PATH_CLIENTES = AcessoClientes.TABELA_CLIENTES;
-    private static final String PATH_A_RECEBER = AcessoAReceber.TABELA_A_RECEBER;
+    private static final String PATH_CASHMOVE = EntryCashMove.TABLE_CASHMOVE;
+    private static final String PATH_OPENING = EntryOpening.TABLE_OPENING;
+    private static final String PATH_SELL = EntrySeel.TABLE_SELL;
+    private static final String PATH_CLIENT = EntryClient.TABLE_CLIENT;
+    private static final String PATH_RECEIVE = EntryReceive.TABLE_RECEIVE;
 
     // Construtor do contrato
     public Contract() {
@@ -84,139 +83,142 @@ public class Contract {
     }
 
 
-    /********************************** ENT_RET ***************************************************/
-    public static final class AcessoEntRet implements BaseColumns {
+    /************************************ CASHMOVE ************************************************/
+    public static final class EntryCashMove implements BaseColumns {
 
-        public static final Uri CONTENT_URI_ENT_RET = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ENT_RET);
+        public static final Uri CONTENT_URI_CASHMOVE = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_CASHMOVE);
 
-        public static final String TABELA_ENT_RET = "Entradas_Retiradas";
+        public static final String TABLE_CASHMOVE = "cashmove";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA_HORA = "data_hora";
-        public static final String TIPO = "tipo";
-        public static final String VALOR = "valor";
-        public static final String DESCRICAO = "descricao";
+        public static final String COLUMN_TIMESTAMP = "timestamp";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_VALUE = "value";
+        public static final String COLUMN_DESCRIPTION = "description";
 
-        public static final String CRIAR_TABELA_ENT_RET =
-                "CREATE TABLE IF NOT EXISTS " + TABELA_ENT_RET + " ( "
+        public static final String CREATE_TABLE_CASHMOVE =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_CASHMOVE + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + DATA_HORA + " TEXT NOT NULL, "
-                        + TIPO + " INTEGER NOT NULL, "
-                        + VALOR + " REAL NOT NULL DEFAULT 0, "
-                        + DESCRICAO + " TEXT NOT NULL );";
+                        + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
+                        + COLUMN_TYPE + " INTEGER NOT NULL, "
+                        + COLUMN_VALUE + " REAL NOT NULL DEFAULT 0, "
+                        + COLUMN_DESCRIPTION + " TEXT NOT NULL );";
 
-        public static final String CONTENT_ITEM_TYPE_ENT_RET =
+        public static final String CONTENT_ITEM_TYPE_CASHMOVE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_ENT_RET;
+                        "/" + PATH_CASHMOVE;
 
-        public static final String CONTENT_TYPE_ENT_RET =
+        public static final String CONTENT_TYPE_CASHMOVE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_ENT_RET;
+                        "/" + PATH_CASHMOVE;
     }
 
 
-    /******************************** SALDO_INICIAL ***********************************************/
-    public static final class AcessoSaldo implements BaseColumns {
+    /************************************** OPENING ***********************************************/
+    public static final class EntryOpening implements BaseColumns {
 
-        public static final Uri CONTENT_URI_SALDO_INICIAL = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SALDO_INICIAL);
+        public static final Uri CONTENT_URI_OPENING = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_OPENING);
 
-        public static final String TABELA_SALDO_INICIAL = "Saldo_Inicial";
+        public static final String TABLE_OPENING = "opening";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA_HORA = "data_hora";
-        public static final String VALOR = "valor";
+        public static final String COLUMN_TIMESTAMP = "timestamp";
+        public static final String COLUMN_VALUE = "value";
 
 
-        public static final String CRIAR_TABELA_SALDO_INICIAL =
-                "CREATE TABLE IF NOT EXISTS " + TABELA_SALDO_INICIAL + " ( "
+        public static final String CREATE_TABLE_OPENING =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_OPENING + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + DATA_HORA + " TEXT NOT NULL, "
-                        + VALOR + " REAL NOT NULL DEFAULT 0 );";
+                        + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
+                        + COLUMN_VALUE + " REAL NOT NULL DEFAULT 0 );";
 
-        public static final String CONTENT_ITEM_TYPE_SALDO_INICIAL =
+        public static final String CONTENT_ITEM_TYPE_OPENING =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_SALDO_INICIAL;
+                        "/" + PATH_OPENING;
 
-        public static final String CONTENT_TYPE_SALDO_INICIAL =
+        public static final String CONTENT_TYPE_OPENING =
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_SALDO_INICIAL;
+                        "/" + PATH_OPENING;
 
     }
 
 
-    /*********************************** VENDAS ***************************************************/
-    public static final class AcessoVenda implements BaseColumns {
+    /************************************** SELL **************************************************/
+    public static final class EntrySeel implements BaseColumns {
 
-        public static final Uri CONTENT_URI_VENDA = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_VENDA);
+        public static final Uri CONTENT_URI_SELL = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SELL);
 
-        public static final String TABELA_VENDAS = "Vendas";
+        public static final String TABLE_SELL = "sell";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String DATA_HORA = "data_hora";
-        public static final String NOME_PRODUTO = "nome_produto";
-        public static final String VALOR_UNIDADE = "valor_unidade_produto";
-        public static final String QUANTIDADE = "quantidade";
-        public static final String VALOR_ADICIONAL = "valor_adicional";
-        public static final String VALOR_DESCONTO = "valor_desconto";
-        public static final String VALOR_PRAZO = "valor_prazo";
-        public static final String ID_CLIENTE = "id_cliente";
+        public static final String COLUMN_TIMESTAMP = "timestamp";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_PRICE = "price";
+        public static final String COLUMN_QUANTITY = "quantity";
+        public static final String COLUMN_ADD_VALUE = "additional";
+        public static final String COLUMN_DISCOUNT_VALUE = "discount";
+        public static final String COLUMN_FORWARD_VALUE = "forward";
+        public static final String COLUMN_CLIENT_ID = "client_id"; // TODO: Trocar CLIENTE_ID pelo nome do cliente na venda
+        public static final String COLUMN_CLIENT_NAME = "client_name";
 
-        public static final String CRIAR_TABELA_VENDA =
-                "CREATE TABLE IF NOT EXISTS " + TABELA_VENDAS + " ( "
+
+        public static final String CREATE_TABLE_SELL =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_SELL + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + DATA_HORA + " TEXT NOT NULL, "
-                        + NOME_PRODUTO + " TEXT NOT NULL, "
-                        + VALOR_UNIDADE + " REAL NOT NULL DEFAULT 0, "
-                        + QUANTIDADE + " INTEGER NOT NULL, "
-                        + VALOR_ADICIONAL + " REAL, "
-                        + VALOR_DESCONTO + " REAL, "
-                        + VALOR_PRAZO + " REAL, "
-                        + ID_CLIENTE + " INTEGER );";
+                        + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
+                        + COLUMN_NAME + " TEXT NOT NULL, "
+                        + COLUMN_PRICE + " REAL NOT NULL DEFAULT 0, "
+                        + COLUMN_QUANTITY + " INTEGER NOT NULL, "
+                        + COLUMN_ADD_VALUE + " REAL, "
+                        + COLUMN_DISCOUNT_VALUE + " REAL, "
+                        + COLUMN_FORWARD_VALUE + " REAL, "
+                        + COLUMN_CLIENT_ID + " INTEGER, "
+                        + COLUMN_CLIENT_NAME + " TEXT );";
 
-        public static final String CONTENT_ITEM_TYPE_VENDA =
+        public static final String CONTENT_ITEM_TYPE_SELL =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_VENDA;
+                        "/" + PATH_SELL;
 
-        public static final String CONTENT_TYPE_VENDA =
+        public static final String CONTENT_TYPE_SELL =
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_VENDA;
+                        "/" + PATH_SELL;
     }
 
 
-    /*********************************** CLIENTES *************************************************/
+    /************************************** CLIENT ************************************************/
 
-    public static final class AcessoClientes implements BaseColumns {
+    public static final class EntryClient implements BaseColumns {
 
 
-        public static final Uri CONTENT_URI_CLIENTES = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_CLIENTES);
+        public static final Uri CONTENT_URI_CLIENT = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_CLIENT);
 
-        public static final String TABELA_CLIENTES = "Clientes";
+        public static final String TABLE_CLIENT = "client";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String NOME = "nome";
-        public static final String TELEFONE = "telefone";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_FONE = "fone";
 
-        public static final String CRIAR_TABELA_CLIENTES =
-                " CREATE TABLE IF NOT EXISTS " + TABELA_CLIENTES + " ( "
+        public static final String CREATE_TABLE_CLIENT =
+                " CREATE TABLE IF NOT EXISTS " + TABLE_CLIENT + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + NOME + " TEXT NOT NULL, "
-                        + TELEFONE + " TEXT );";
+                        + COLUMN_NAME + " TEXT NOT NULL, "
+                        + COLUMN_FONE + " TEXT );";
 
-        public static final String CONTENT_ITEM_TYPE_CLIENTES =
+        public static final String CONTENT_ITEM_TYPE_CLIENT =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_CLIENTES;
+                        "/" + PATH_CLIENT;
 
-        public static final String CONTENT_TYPE_CLIENTES =
+        public static final String CONTENT_TYPE_CLIENT =
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_CLIENTES;
+                        "/" + PATH_CLIENT;
 
 
     }
@@ -224,42 +226,42 @@ public class Contract {
 
     /*********************************** A RECEBER ************************************************/
 
-    public static final class AcessoAReceber implements BaseColumns {
+    public static final class EntryReceive implements BaseColumns {
 
-        public static final Uri CONTENT_URI_ARECEBER = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_A_RECEBER);
+        public static final Uri CONTENT_URI_RECEIVE = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_RECEIVE);
 
-        public static final String TABELA_A_RECEBER = "A_Receber";
+        public static final String TABLE_RECEIVE = "receive";
 
 
         public static final String _ID = BaseColumns._ID;
-        public static final String CLIENTE_ID = "id_cliente";
-        public static final String CLIENTE_NOME = "nome_cliente";
-        public static final String DATA_HORA = "data_hora";
-        public static final String TIPO_ENTRADA = "tipo_entrada";
-        public static final String DESCRICAO = "descricao";
-        public static final String VALOR = "valor";
+        public static final String COLUMN_CLIENT_ID = "client_id";
+        public static final String COLUMN_CLIENT_NAME = "client_name";
+        public static final String COLUMN_TIMESTAMP = "timestamp";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_VALUE = "value";
 
 
-        public static final String CRIAR_TABELA_A_RECEBER =
-                " CREATE TABLE IF NOT EXISTS " + TABELA_A_RECEBER + " ( "
+        public static final String CREATE_TABLE_RECEIVE =
+                " CREATE TABLE IF NOT EXISTS " + TABLE_RECEIVE + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + CLIENTE_ID + " INTEGER NOT NULL, "
-                        + CLIENTE_NOME + " TEXT NOT NULL, "
-                        + DATA_HORA + " TEXT NOT NULL, "
-                        + TIPO_ENTRADA + " INTEGER NOT NULL, "
-                        + DESCRICAO + " TEXT NOT NULL, "
-                        + VALOR + " REAL NOT NULL DEFAULT 0 ); ";
+                        + COLUMN_CLIENT_ID + " INTEGER NOT NULL, "
+                        + COLUMN_CLIENT_NAME + " TEXT NOT NULL, "
+                        + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
+                        + COLUMN_TYPE + " INTEGER NOT NULL, "
+                        + COLUMN_DESCRIPTION + " TEXT NOT NULL, "
+                        + COLUMN_VALUE + " REAL NOT NULL DEFAULT 0 ); ";
 
 
-        public static final String CONTENT_ITEM_TYPE_A_RECEBER =
+        public static final String CONTENT_ITEM_TYPE_RECEIVE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_A_RECEBER;
+                        "/" + PATH_RECEIVE;
 
-        public static final String CONTENT_TYPE_A_RECEBER =
+        public static final String CONTENT_TYPE_RECEIVE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
-                        "/" + PATH_A_RECEBER;
+                        "/" + PATH_RECEIVE;
 
     }
 }

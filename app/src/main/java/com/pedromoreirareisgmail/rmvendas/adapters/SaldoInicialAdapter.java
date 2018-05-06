@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 
 public class SaldoInicialAdapter extends CursorAdapter {
 
@@ -52,8 +52,8 @@ public class SaldoInicialAdapter extends CursorAdapter {
         SaldoViewHolder holder = new SaldoViewHolder(view);
 
         /* valor e hora que foi adicionado o saldo inicial */
-        double valor = cursor.getDouble(cursor.getColumnIndex(AcessoSaldo.VALOR));
-        String hora = cursor.getString(cursor.getColumnIndex(AcessoSaldo.DATA_HORA));
+        double valor = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
+        String hora = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
 
         holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
         holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(hora));

@@ -27,7 +27,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.adapters.RetAdapter;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
 public class RetListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -133,21 +133,21 @@ public class RetListActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
-                AcessoEntRet._ID,
-                AcessoEntRet.DATA_HORA,
-                AcessoEntRet.VALOR,
-                AcessoEntRet.DESCRICAO,
-                AcessoEntRet.TIPO
+                EntryCashMove._ID,
+                EntryCashMove.COLUMN_TIMESTAMP,
+                EntryCashMove.COLUMN_VALUE,
+                EntryCashMove.COLUMN_DESCRIPTION,
+                EntryCashMove.COLUMN_TYPE
         };
 
          /* Retorna dados cadastrados em uma data especificada e se for do tipo retirada */
-        String selection = AcessoEntRet.TIPO + " =? AND " + AcessoEntRet.DATA_HORA + " LIKE ?";
+        String selection = EntryCashMove.COLUMN_TYPE + " =? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
         String[] selectionArgs = new String[]{String.valueOf(ConstDB.TIPO_RETIRADA), mDataPesquisarBD + "%"};
-        String sortOrder = AcessoEntRet.DATA_HORA;
+        String sortOrder = EntryCashMove.COLUMN_TIMESTAMP;
 
         return new CursorLoader(
                 this,
-                AcessoEntRet.CONTENT_URI_ENT_RET,
+                EntryCashMove.CONTENT_URI_CASHMOVE,
                 projection,
                 selection,
                 selectionArgs,
@@ -191,9 +191,9 @@ public class RetListActivity extends AppCompatActivity implements
 
         //  Mensagem do Dialog - Descrição
         String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_entrada_retirada_list),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
-                cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA_HORA))));
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE))),
+                cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
 
         Dialogos.dialogoExibirDados(RetListActivity.this, tituloDialog, mensagemDialog);
     }
@@ -213,14 +213,14 @@ public class RetListActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onItemLongClick");
 
-        Uri uri = ContentUris.withAppendedId(AcessoEntRet.CONTENT_URI_ENT_RET, id);
+        Uri uri = ContentUris.withAppendedId(EntryCashMove.CONTENT_URI_CASHMOVE, id);
 
         Cursor cursor = mAdapter.getCursor();
 
         String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_valor),
-                cursor.getString(cursor.getColumnIndex(AcessoEntRet.DESCRICAO)),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(AcessoEntRet.VALOR))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(AcessoEntRet.DATA_HORA))));
+                cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
 
         Dialogos.dialogoEditarExcluir(
                 RetListActivity.this,
