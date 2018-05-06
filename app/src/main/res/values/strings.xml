@@ -75,6 +75,7 @@
     <string name="text_venda_list_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_entrada_list_empty">Nenhuma entrada cadastrada !!!</string>
     <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
+    <string name="text_clientes_list_empty_pesquisa">Nenhum cliente para essa pesquisa !!!</string>
     <string name="text_saldo_inicial_list_empty">Saldo inicial não foi cadastrado !!!</string>
     <string name="text_retirada_list_empty">Nenhuma retirada cadastrada !!!</string>
     <string name="text_adicional">Adicional</string>
@@ -245,14 +246,18 @@
      ********************************************************************************************-->
 
     <!-- *****************************    Providers  ******************************************* -->
-    <string name="provider_log_query">getContext() nulo  ou cursor nulo no VendasProvider no método query. </string>
-    <string name="provider_log_inserir_prod">Erro ao inserir no banco de dados. Com Uri: </string>
-    <string name="provider_exception_query">Erro na pesquisa - Pesquisa invalida para o Uri: </string>
-    <string name="provider_exception_getType_uri">Erro: Uri desconhecido. Provider getType inválido - Uri: </string>
-    <string name="provider_exception_getType_match"> match: </string>
-    <string name="provider_exception_insert">Erro ao incluir no banco de dados com Uri: </string>
-    <string name="provider_exception_delete">Erro ao excluir no banco de dados com Uri: </string>
-    <string name="provider_exception_update">Erro ao atualizar o banco de dados, com Uri: </string>
+    <string name="exception_query">Pesquisa inválida. Uri: %1$s </string>
+    <string name="exception_gettype">Uri desconhecido. Uri: %1$s  Match:  %2$d</string>
+    <string name="exception_insert">Erro ao inserir registro. Uri: %1$s </string>
+    <string name="exception_delete">Erro ao excluir registro(s). Uri: %1$s </string>
+    <string name="exception_update">Erro ao atualizar registro(s). Uri: %1$s</string>
+
+    <!-- ********************************    Log  ********************************************** -->
+    <string name="log_e_query">Context ou Cursor nulo. Método query. </string>
+    <string name="log_e_insert">Erro ao inserir registro. Uri: %1$s </string>
+    <string name="log_e_update">Erro ao atualizar registro. Uri: %1$s </string>
+    <string name="log_e_delete">Erro ao excluir registro. Uri: %1$s </string>
+
 
     <!-- *******************************************************************************************
 

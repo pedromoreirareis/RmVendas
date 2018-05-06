@@ -5,27 +5,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoEntRet;
-import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoProdutos;
-import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoSaldo;
-import com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoEntRet;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoSaldo;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoVenda;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
-import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoAReceber;
-import static com.pedromoreirareisgmail.rmvendas.db.Contrato.AcessoClientes;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoAReceber;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.AcessoClientes;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = DbHelper.class.getSimpleName();
+    /* Tag para verificações no LogCat */
+    private static final String TAG = ConstTag.TAG_MAIN + DbHelper.class.getSimpleName();
 
-    /*
-     * Nome do banco de dados
-     */
-    private static final String NOME_BANCO_DADOS = "vendas.db";
 
-    /*
-     * Versão do banco de dados
-     */
-    private static final int VERSAO_DB = 1;
+    /* Nome do banco de dados */
+    private static final String DB_NAME = "vendas.db";
+
+
+    /* Versão do banco de dados*/
+    private static final int DB_VERSION = 1;
 
     /**
      * Construtor do Banco de dados
@@ -33,11 +33,12 @@ public class DbHelper extends SQLiteOpenHelper {
      * @param context contexto
      */
     public DbHelper(Context context) {
-        super(context, NOME_BANCO_DADOS, null, VERSAO_DB);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
+
     /**
-     * Cria o banco de dados - Cria as tabelas do banco de dados
+     * Cria o banco de dados - Cria as tabelas do banco de dados se elas não existem
      *
      * @param db banco de dados a ser criado
      */
@@ -46,7 +47,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         Log.v(TAG, "CRIANDO TABELAS: Inicio");
 
-        db.execSQL(AcessoProdutos.CRIAR_TABELA_PRODUTOS);
+        db.execSQL(EntryProduct.CREATE_TABLE_PRODUCT);
         db.execSQL(AcessoEntRet.CRIAR_TABELA_ENT_RET);
         db.execSQL(AcessoSaldo.CRIAR_TABELA_SALDO_INICIAL);
         db.execSQL(AcessoVenda.CRIAR_TABELA_VENDA);
@@ -54,7 +55,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(AcessoAReceber.CRIAR_TABELA_A_RECEBER);
 
         Log.v(TAG, "CRIANDO TABELAS: Fim");
-
     }
 
     /**

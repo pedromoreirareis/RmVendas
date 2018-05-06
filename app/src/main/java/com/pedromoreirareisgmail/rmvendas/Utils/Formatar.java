@@ -90,52 +90,92 @@ public class Formatar {
     }
 
 
-    public static Double formatarEditsDouble(EditText editText) {
+    public static double formatarEditsDouble(EditText editText) {
 
-        String texto = editText.getText().toString().trim().replaceAll("[^\\d]", "");
+        String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
 
-        if (TextUtils.isEmpty(texto)) {
 
-            texto = "0";
+        if (TextUtils.isEmpty(str)) {
+
+            str = "0";
         }
 
-        return Double.parseDouble(texto);
+        try {
+
+            // Retorna um Double
+            return (Double.parseDouble(str) / 100);
+
+        } catch (NumberFormatException e) {
+
+            return 0;
+        }
+
     }
 
-    public static Double formatarCharSequenceDouble(CharSequence charSequence) {
+    public static int formatarEditsInt(EditText editText) {
 
-        String texto = charSequence.toString().trim().replaceAll("[^\\d]", "");
+        String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
 
-        if (TextUtils.isEmpty(texto)) {
 
-            texto = "0";
+        if (TextUtils.isEmpty(str)) {
+
+            str = "0";
         }
 
-        return Double.parseDouble(texto);
+        try {
+
+            // Retorna um Double
+            return (Integer.parseInt(str));
+
+        } catch (NumberFormatException e) {
+
+            return 0;
+        }
+
+    }
+
+    public static double formatarCharSequenceDouble(CharSequence charSequence) {
+
+        String str = charSequence.toString().trim().replaceAll("[^\\d]", "");
+
+        if (TextUtils.isEmpty(str)) {
+
+            str = "0";
+        }
+
+        try {
+
+            // Retorna um Double
+            return (Double.parseDouble(str) / 100);
+
+        } catch (NumberFormatException e) {
+
+            return 0;
+        }
     }
 
     public static String formatarEditsString(EditText editText) {
 
-        String texto = editText.getText().toString().trim().replaceAll("[^\\d]", "");
+        String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
 
-        if (TextUtils.isEmpty(texto)) {
+        if (TextUtils.isEmpty(str)) {
 
-            texto = "0";
+            str = "0";
         }
 
-        return texto;
+        return str;
     }
 
     public static String formatarCharSequenceString(CharSequence charSequence) {
 
-        String texto = charSequence.toString().trim().replaceAll("[^\\d]", "");
+        String str = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
-        if (TextUtils.isEmpty(texto)) {
+        if (TextUtils.isEmpty(str)) {
 
-            texto = "0";
+            str = "0";
         }
 
-        return texto;
+        return str;
     }
 
 }

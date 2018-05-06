@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activitys.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -24,155 +24,153 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ProdutosCadActivity"
-            android:parentActivityName=".activity.ProdutosListActivity"
+            android:name=".activitys.ProdutosCadActivity"
+            android:parentActivityName=".activitys.ListProductActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ProdutosListActivity" />
+                android:value=".activitys.ListProductActivity" />
         </activity>
         <activity
-            android:name=".activity.ProdutosListActivity"
+            android:name=".activitys.ListProductActivity"
             android:label="@string/title_produto_list"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.VendQuantActivity"
-            android:parentActivityName=".activity.VendListActivity"
+            android:name=".activitys.VendQuantActivity"
+            android:parentActivityName=".activitys.VendListActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.VendListActivity" />
+                android:value=".activitys.VendListActivity" />
         </activity>
         <activity
-            android:name=".activity.RetListActivity"
+            android:name=".activitys.RetListActivity"
             android:label="@string/title_retirada_list"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.EntListActivity"
+            android:name=".activitys.EntListActivity"
             android:label="@string/title_entrada_list"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.SaldoInicialListActivity"
+            android:name=".activitys.SaldoInicialListActivity"
             android:label="@string/title_saldo_inicial_list"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.EntCadActivity"
-            android:parentActivityName=".activity.EntListActivity"
+            android:name=".activitys.EntCadActivity"
+            android:parentActivityName=".activitys.EntListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.EntListActivity" />
+                android:value=".activitys.EntListActivity" />
         </activity>
         <activity
-            android:name=".activity.RetCadActivity"
-            android:parentActivityName=".activity.RetListActivity"
+            android:name=".activitys.RetCadActivity"
+            android:parentActivityName=".activitys.RetListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.SaldoInicialCadActivity"
-            android:parentActivityName=".activity.SaldoInicialListActivity"
+            android:name=".activitys.SaldoInicialCadActivity"
+            android:parentActivityName=".activitys.SaldoInicialListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.VendListActivity"
+            android:name=".activitys.VendListActivity"
             android:label="@string/title_venda_list"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.FechamentoActivity"
-            android:parentActivityName=".activity.MainActivity"
+            android:name=".activitys.FechamentoActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.ClientesCadActivity"
-            android:parentActivityName=".activity.ClientesListActivity"
+            android:name=".activitys.ClientesCadActivity"
+            android:parentActivityName=".activitys.ClientesListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ClientesListActivity" />
+                android:value=".activitys.ClientesListActivity" />
         </activity>
         <activity
-            android:name=".activity.ClientesListActivity"
+            android:name=".activitys.ClientesListActivity"
             android:label="@string/title_clientes_list"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.RegistroReceberActivity"
-            android:parentActivityName=".activity.ClientesListActivity"
+            android:name=".activitys.RegistroReceberActivity"
+            android:parentActivityName=".activitys.ClientesListActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ClientesListActivity" />
+                android:value=".activitys.ClientesListActivity" />
         </activity>
         <activity
-            android:name=".activity.VendListClienteActivity"
+            android:name=".activitys.VendListClienteActivity"
             android:label="@string/title_venda_clientes_list"
-            android:parentActivityName=".activity.VendQuantActivity"
+            android:parentActivityName=".activitys.VendQuantActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.VendQuantActivity" />
+                android:value=".activitys.VendQuantActivity" />
         </activity>
-
         <activity
-            android:name=".activity.TrocoActivity"
+            android:name=".activitys.TrocoActivity"
             android:label="@string/title_troco"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activitys.MainActivity" />
         </activity>
 
         <provider
             android:name=".db.Provider"
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
-
 
     </application>
 

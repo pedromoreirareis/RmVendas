@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pedromoreirareisgmail.rmvendas.activity.FechamentoActivity">
+    tools:context="com.pedromoreirareisgmail.rmvendas.activitys.FechamentoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
