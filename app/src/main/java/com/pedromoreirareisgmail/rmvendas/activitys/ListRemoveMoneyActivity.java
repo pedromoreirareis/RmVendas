@@ -29,13 +29,13 @@ import com.pedromoreirareisgmail.rmvendas.adapters.RetAdapter;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
-public class RetListActivity extends AppCompatActivity implements
+public class ListRemoveMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemLongClickListener,
         ListView.OnItemClickListener,
         FloatingActionButton.OnClickListener {
 
-    private static final String TAG = RetListActivity.class.getSimpleName();
+    private static final String TAG = ListRemoveMoneyActivity.class.getSimpleName();
     private static final int LOADER_RETIRADA_LIST = 0;
 
     private TextView mTvEmpty;
@@ -52,14 +52,14 @@ public class RetListActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ret_list);
+        setContentView(R.layout.activity_list_remove_money);
 
         Log.v(TAG, "onCreate");
 
         initViews();
         emptyLayout();
 
-        // Trata o botão Flutuante - Abre activity RetCadActivity
+        // Trata o botão Flutuante - Abre activity RegisterRemoveMoneyActivity
         mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
@@ -121,7 +121,7 @@ public class RetListActivity extends AppCompatActivity implements
 
         if (item.getItemId() == R.id.action_data) {
 
-            Dialogos.dialogoDatas(RetListActivity.this, mDateSetListener);
+            Dialogos.dialogoDatas(ListRemoveMoneyActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);
@@ -195,7 +195,7 @@ public class RetListActivity extends AppCompatActivity implements
                 cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)),
                 DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
 
-        Dialogos.dialogoExibirDados(RetListActivity.this, tituloDialog, mensagemDialog);
+        Dialogos.dialogoExibirDados(ListRemoveMoneyActivity.this, tituloDialog, mensagemDialog);
     }
 
     /**
@@ -223,8 +223,8 @@ public class RetListActivity extends AppCompatActivity implements
                 DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
 
         Dialogos.dialogoEditarExcluir(
-                RetListActivity.this,
-                EntCadActivity.class,
+                ListRemoveMoneyActivity.this,
+                RegisterAddMoneyActivity.class,
                 uri,
                 mensagemExcluir
         );
@@ -250,7 +250,7 @@ public class RetListActivity extends AppCompatActivity implements
                 setTitle(String.format(getResources().getString(R.string.title_retirada_list),
                         DataHora.dateSetListenerDataBrTitulo(year, month, day)));
 
-                getLoaderManager().restartLoader(LOADER_RETIRADA_LIST, null, RetListActivity.this);
+                getLoaderManager().restartLoader(LOADER_RETIRADA_LIST, null, ListRemoveMoneyActivity.this);
             }
         };
     }
@@ -262,7 +262,7 @@ public class RetListActivity extends AppCompatActivity implements
 
         if (view.getId() == R.id.fab_add) {
 
-            Intent intentRetirada = new Intent(RetListActivity.this, RetCadActivity.class);
+            Intent intentRetirada = new Intent(ListRemoveMoneyActivity.this, RegisterRemoveMoneyActivity.class);
             startActivity(intentRetirada);
         }
     }

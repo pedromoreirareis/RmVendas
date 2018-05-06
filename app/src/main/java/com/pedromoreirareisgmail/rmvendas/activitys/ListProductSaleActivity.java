@@ -25,12 +25,12 @@ import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
 
-public class VendListActivity extends AppCompatActivity implements
+public class ListProductSaleActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener {
 
-    private static final String TAG = VendListActivity.class.getSimpleName();
+    private static final String TAG = ListProductSaleActivity.class.getSimpleName();
     private static final int LOADER_VEND_LIST = 0;
 
     private TextView mTvEmpty;
@@ -45,7 +45,7 @@ public class VendListActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vend_list);
+        setContentView(R.layout.activity_list_product_sale);
 
         Log.v(TAG, "");
 
@@ -147,7 +147,7 @@ public class VendListActivity extends AppCompatActivity implements
 
     /**
      * Click simples no ListView
-     * Ao clicar, vai ser aberto a Activity {@link VendListActivity} , onde podera ser escolhido
+     * Ao clicar, vai ser aberto a Activity {@link ListProductSaleActivity} , onde podera ser escolhido
      * a quantidade do produto, se a venda sera a prazo ou a vista, se tem adicional ou não e
      * se tem desconto ou não
      *
@@ -164,7 +164,7 @@ public class VendListActivity extends AppCompatActivity implements
         Uri uri = ContentUris.withAppendedId(EntryProduct.CONTENT_URI_PRODUCT, id);
 
         Intent intentRegistrarVenda = new Intent(
-                VendListActivity.this, VendQuantActivity.class);
+                ListProductSaleActivity.this, SellActivity.class);
         intentRegistrarVenda.putExtra(ADICIONAR_VENDA, ADICIONAR_VENDA);
         intentRegistrarVenda.setData(uri);
         startActivity(intentRegistrarVenda);
@@ -185,7 +185,7 @@ public class VendListActivity extends AppCompatActivity implements
 
         mProdutoPesquisarBD = newText;
 
-        getLoaderManager().restartLoader(LOADER_VEND_LIST, null, VendListActivity.this);
+        getLoaderManager().restartLoader(LOADER_VEND_LIST, null, ListProductSaleActivity.this);
 
         return true;
     }

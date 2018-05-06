@@ -38,7 +38,7 @@ public class MainAdapter extends CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return LayoutInflater.from(context).inflate(R.layout.item_main_list, viewGroup, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_list_maint, viewGroup, false);
     }
 
     /**

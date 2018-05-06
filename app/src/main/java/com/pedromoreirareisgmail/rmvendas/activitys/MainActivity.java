@@ -208,22 +208,22 @@ public class MainActivity extends AppCompatActivity
 
             // Click no menu Entrada
             case R.id.nav_action_entrada:
-                startActivity(new Intent(MainActivity.this, EntListActivity.class));
+                startActivity(new Intent(MainActivity.this, ListAddMoneytActivity.class));
                 break;
 
             // Click no menu Retirada
             case R.id.nav_Action_retirada:
-                startActivity(new Intent(MainActivity.this, RetListActivity.class));
+                startActivity(new Intent(MainActivity.this, ListRemoveMoneyActivity.class));
                 break;
 
             // Click no menu Saldo Inicial
             case R.id.nav_action_saldo_inicial:
-                startActivity(new Intent(MainActivity.this, SaldoInicialListActivity.class));
+                startActivity(new Intent(MainActivity.this, ListOpeningActivity.class));
                 break;
 
             // Click no menu Fechamento
             case R.id.nav_action_fechamento:
-                startActivity(new Intent(MainActivity.this, FechamentoActivity.class));
+                startActivity(new Intent(MainActivity.this, ClosedActivity.class));
                 break;
 
             // Click no menu Produtos
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity
 
             // Click no menu Clientes
             case R.id.nav_action_list_clientes:
-                startActivity(new Intent(MainActivity.this, ClientesListActivity.class));
+                startActivity(new Intent(MainActivity.this, ListClientActivity.class));
                 break;
         }
 
@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity
         if (view.getId() == R.id.fab_add) {
 
             Intent intentListaProdutosVenda =
-                    new Intent(MainActivity.this, VendListActivity.class);
+                    new Intent(MainActivity.this, ListProductSaleActivity.class);
             startActivity(intentListaProdutosVenda);
         }
     }
@@ -397,7 +397,7 @@ public class MainActivity extends AppCompatActivity
         if (valorVendaVista > 0) {
 
             Intent intentTroco =
-                    new Intent(MainActivity.this, TrocoActivity.class);
+                    new Intent(MainActivity.this, MoneyBackActivity.class);
 
             Bundle bundle = new Bundle();
             bundle.putDouble(VALOR_VENDA_TROCO, valorVendaVista);
@@ -431,7 +431,7 @@ public class MainActivity extends AppCompatActivity
 
         Dialogos.dialogoEditarExcluir(
                 MainActivity.this,
-                VendQuantActivity.class,
+                SellActivity.class,
                 uri,
                 mensagemExcluir
         );

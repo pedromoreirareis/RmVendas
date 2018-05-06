@@ -42,12 +42,12 @@ import static com.pedromoreirareisgmail.rmvendas.constantes.ConstDB.TIPO_RECEBIM
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstDB.TIPO_VENDA;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
-public class RegistroReceberActivity extends AppCompatActivity implements
+public class RegisterReceiveActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
         ListView.OnItemClickListener, Button.OnClickListener {
 
-    private static final String TAG = RegistroReceberActivity.class.getSimpleName();
+    private static final String TAG = RegisterReceiveActivity.class.getSimpleName();
     private static final int LOADER_BUSCAR_CLIENTE_REGISTRO = 0;
 
     private AReceberAdapter mAdapter;
@@ -71,7 +71,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registro_receber);
+        setContentView(R.layout.activity_register_receive);
 
         Log.v(TAG, "onCreate");
 
@@ -164,7 +164,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
             /* Menu Up
              * Verifica se dados foram alterados, se foi alterado abre Dialog para decidir se vai
              * descartar dados alterados ou se vai continuar alterando, se nada foi alterado volta
-             * a activity que chamou RegistroReceberActivity
+             * a activity que chamou RegisterReceiveActivity
              */
             case android.R.id.home:
 
@@ -177,8 +177,8 @@ public class RegistroReceberActivity extends AppCompatActivity implements
                 }
 
                 Dialogos.homeDescartarConfirmar(
-                        RegistroReceberActivity.this,
-                        RegistroReceberActivity.this);
+                        RegisterReceiveActivity.this,
+                        RegisterReceiveActivity.this);
 
                 return true;
 
@@ -218,8 +218,8 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         }
 
         Dialogos.onBackPressedDescartarConfirmar(
-                RegistroReceberActivity.this,
-                RegistroReceberActivity.this);
+                RegisterReceiveActivity.this,
+                RegisterReceiveActivity.this);
     }
 
     /* Zera as variaveis antes de iniciar salvamento, dessa forma o novo saldo do cliente sera
@@ -300,20 +300,20 @@ public class RegistroReceberActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
 
         values.put(EntryReceive._ID, Integer.parseInt(mIdCliente));
-        values.put(EntryReceive.COLUMN_CLIENT_NAME, SearchDB.Pesquisarcliente(RegistroReceberActivity.this, Integer.parseInt(mIdCliente)));
+        values.put(EntryReceive.COLUMN_CLIENT_NAME, SearchDB.Pesquisarcliente(RegisterReceiveActivity.this, Integer.parseInt(mIdCliente)));
         values.put(EntryReceive.COLUMN_TIMESTAMP, obterDataHoraSistema());
         values.put(EntryReceive.COLUMN_DESCRIPTION, descricaoEditText);
         values.put(EntryReceive.COLUMN_TYPE, tipoEntrada);
         values.put(EntryReceive.COLUMN_VALUE, valorDouble);
 
         // Salva dados no BD
-        Crud.insert(RegistroReceberActivity.this, EntryReceive.CONTENT_URI_RECEIVE, values);
+        Crud.insert(RegisterReceiveActivity.this, EntryReceive.CONTENT_URI_RECEIVE, values);
 
         // Limpa edits e coloca foco no mEtValor
         limparEdits();
 
         // Fecha teclado para visualizar o ListView com registro do cliente
-        Utilidades.fecharTecladoView(RegistroReceberActivity.this, mButRecebimento);
+        Utilidades.fecharTecladoView(RegisterReceiveActivity.this, mButRecebimento);
 
         Log.v(TAG, "salvarDadosBD - Fim");
     }
@@ -426,7 +426,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
             case R.id.et_a_receber_valor:
                 mEtValor.requestFocus();
                 mEtValor.setSelection(mEtValor.getText().length());
-                Utilidades.mostrarTeclado(RegistroReceberActivity.this, mEtValor);
+                Utilidades.mostrarTeclado(RegisterReceiveActivity.this, mEtValor);
                 return true;
 
             default:
@@ -506,7 +506,7 @@ public class RegistroReceberActivity extends AppCompatActivity implements
                 cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION)),
                 Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE))));
 
-        Dialogos.dialogoExibirDados(RegistroReceberActivity.this, tituloDialogTipo, mensagemDialog);
+        Dialogos.dialogoExibirDados(RegisterReceiveActivity.this, tituloDialogTipo, mensagemDialog);
     }
 
     @Override

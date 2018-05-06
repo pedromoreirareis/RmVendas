@@ -31,7 +31,7 @@ import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
 
 
-public class ClientesCadActivity extends AppCompatActivity implements
+public class RegisterClientActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnEditorActionListener {
 
@@ -48,7 +48,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clientes_cad);
+        setContentView(R.layout.activity_register_client);
 
         initViews();
         initIntents();
@@ -123,15 +123,15 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
             /* Botão Up - Verifica alteração de dados antes de voltar a Activity que chamou
              *
-             * Não Alterados - volta para activity que chamou a ClientesCadActivity
+             * Não Alterados - volta para activity que chamou a RegisterClientActivity
              *
              * Alterados - Abre um Dialog para confirmar se os dados alterados serão descartados e
-             * devem voltar a Activity que chamou a activity ClientesCadActivity ou se deve
+             * devem voltar a Activity que chamou a activity RegisterClientActivity ou se deve
              * permanecer na Activity atual e manter os dados que estão sendo alterados
              */
             case android.R.id.home:
 
-                // Não foi alterado - Volta a Activity que chamou a activity ClientesCadActivity
+                // Não foi alterado - Volta a Activity que chamou a activity RegisterClientActivity
                 if (!isDadosAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
@@ -146,13 +146,13 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
                                 if (mVemActivity.equals(ConstIntents.CLIENTES_LIST_ACTIVITY)) {
 
-                                    Intent intent = NavUtils.getParentActivityIntent(ClientesCadActivity.this);
-                                    NavUtils.navigateUpTo(ClientesCadActivity.this, intent);
+                                    Intent intent = NavUtils.getParentActivityIntent(RegisterClientActivity.this);
+                                    NavUtils.navigateUpTo(RegisterClientActivity.this, intent);
 
                                 } else {
 
-                                    Intent intent = new Intent(ClientesCadActivity.this, VendListClienteActivity.class);
-                                    NavUtils.navigateUpTo(ClientesCadActivity.this, intent);
+                                    Intent intent = new Intent(RegisterClientActivity.this, ListClientSaleActivity.class);
+                                    NavUtils.navigateUpTo(RegisterClientActivity.this, intent);
                                 }
 
                             }
@@ -160,7 +160,7 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
                 // Chama o metodo para descartar alterações
                 Dialogos.dialogoConfirmarAlteracao(
-                        ClientesCadActivity.this,
+                        RegisterClientActivity.this,
                         descartarButClickListener
                 );
 
@@ -183,8 +183,8 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
 
         Dialogos.onBackPressedDescartarConfirmar(
-                ClientesCadActivity.this,
-                ClientesCadActivity.this);
+                RegisterClientActivity.this,
+                RegisterClientActivity.this);
     }
 
     /* Recebe os dados que foram digitados nos Edits, faz validações, coloca em um ContentValues,
@@ -233,12 +233,12 @@ public class ClientesCadActivity extends AppCompatActivity implements
 
         if (mUriAtual == null) {
 
-            Crud.insert(ClientesCadActivity.this, EntryClient.CONTENT_URI_CLIENT, values);
+            Crud.insert(RegisterClientActivity.this, EntryClient.CONTENT_URI_CLIENT, values);
 
         } else {
 
 
-            Crud.update(ClientesCadActivity.this, mUriAtual, values);
+            Crud.update(RegisterClientActivity.this, mUriAtual, values);
         }
 
         finish();

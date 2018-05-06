@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,63 +27,68 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
+import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
+import static com.pedromoreirareisgmail.rmvendas.constantes.Const.MIN_CARACT_10;
+import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
 
-public class SaldoInicialCadActivity extends AppCompatActivity implements
+public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
-    private static final String TAG = SaldoInicialCadActivity.class.getSimpleName();
+    private static final String TAG = RegisterRemoveMoneyActivity.class.getSimpleName();
     private static final int LOADER_RET_CAD = 0;
 
     private EditText mEtValor;
+    private EditText mEtDescricao;
 
     private String mDataHoraBD = null;
     private Uri mUriAtual = null;
+
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saldo_cad);
+        setContentView(R.layout.activity_register_remove_money);
 
-        Log.v(TAG, "onCreate");
+        Log.v(TAG, "");
 
         initViews();
         initIntents();
 
-        // Se mUriAtual tiver for nulo então vai adicionar, se tiver dados vai editar
+        // Se mUriAtual tiver vazio, então vai adicionar
         if (mUriAtual == null) {
 
-            setTitle(R.string.title_saldo_inicial_cad_add);
+            setTitle(R.string.title_retirada_cad_add);
 
         } else {
 
-            setTitle(R.string.title_saldo_inicial_cad_edit);
+            setTitle(R.string.title_retirada_cad_edit);
             getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
         }
 
-        /* Define o EditorAction do teclado, refrente a view mEtValor
-         * Quando o teclado estiver aberto referente ao edit mEtValor, o EditorAction sera DONE
-         */
-        mEtValor.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-        // Verifica a entrada de caractres em um edit especifico
+        // Monitora caracteres digitas no edit
         controleTextWatcher();
 
-        // define qual ação sera tomada ao clicar no EditorAction
-        mEtValor.setOnEditorActionListener(this);
+        // Verifica se houve alteração do texto em mEtDescricao
+        if (!isDadosAlterado) {
 
-        // Monitora se há toques em uma view especifica
+            isDadosAlterado = Utilidades.verificarAlteracaoDados(mEtDescricao);
+        }
+
+        // Verifica se foi clicado um EditorAction
+        mEtDescricao.setOnEditorActionListener(this);
+
+        // Monitora toques em uma view especifica
         mEtValor.setOnTouchListener(this);
 
-        // Retira o foco e coloca o valor zero no edit
+        // Retira foco e coloca o valor zero no mEtValor
         Utilidades.semFocoZerado(mEtValor);
     }
 
@@ -90,15 +96,16 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
         Log.v(TAG, "initViews");
 
-        // Referencia intens do layout
+        // Referencia itens do layout
         mEtValor = findViewById(R.id.et_valor);
+        mEtDescricao = findViewById(R.id.et_descricao);
     }
 
     private void initIntents() {
 
         Log.v(TAG, "initIntents");
 
-        // Recebe dados de SaldoInicialListActivity
+        // Recebe dados da activity ListRemoveMoneyActivity
         Intent intent = getIntent();
         mUriAtual = intent.getData();
     }
@@ -124,12 +131,11 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
                 salvarDadosBD();
                 return true;
 
-            /* Menu Up
-             * Se dados foram alterados abre Dialog para decidir se os dados alterados vao ser
-              * descartados ou se vão ser mantidos e a alteração continuara
+            /* Menu Up -
+             * Verifica se algum dado foi alterado, caso tenha sido alterado abre Dialog para decidir
+             * se deseja descartar alterações ou se deseja continuar alterando
              */
             case android.R.id.home:
-
                 if (!isDadosAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
@@ -137,8 +143,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
                 }
 
                 Dialogos.homeDescartarConfirmar(
-                        SaldoInicialCadActivity.this,
-                        SaldoInicialCadActivity.this);
+                        RegisterRemoveMoneyActivity.this,
+                        RegisterRemoveMoneyActivity.this);
 
                 return true;
         }
@@ -147,8 +153,8 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
     }
 
     /* Botão voltar (embaixo)
-     * Verifica se houve alterações, se houve abre Dialog para decidir se as alterações vao ser
-     * descartadas ou se continuara a fazendo alterações
+     * Se tiver ocorrido alteração abre Dialog para decidir se vai descartar a alteração ou se
+     * vai continuar alterando dados
      */
     @Override
     public void onBackPressed() {
@@ -161,23 +167,40 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         }
 
         Dialogos.onBackPressedDescartarConfirmar(
-                SaldoInicialCadActivity.this,
-                SaldoInicialCadActivity.this);
+                RegisterRemoveMoneyActivity.this,
+                RegisterRemoveMoneyActivity.this);
     }
 
     /* Salva dados no BD
-     * Recebe dados dos edits, faz validações, coloca dados no objeto values e salva no BD
+     * Recebe dados do edits, faz validações, coloca dados no objeto values e salva no BD
      */
     private void salvarDadosBD() {
 
         Log.v(TAG, "salvarDadosBD - Inicio");
 
         String valorEditText = mEtValor.getText().toString().trim();
+        String descricaoEditText = mEtDescricao.getText().toString().trim();
 
         double valorDouble = Formatar.formatarParaDouble(valorEditText);
 
-        // Valor não pode ser zero
+        // Campo nao pode ficar vazio
+        if (TextUtils.isEmpty(descricaoEditText)) {
+
+            mEtDescricao.setError(getString(R.string.error_campo_vazio_descricao));
+            mEtDescricao.requestFocus();
+            return;
+        }
+
+        // Quantidade minima de caracteres aceita nesse campo
+        if (descricaoEditText.length() < MIN_CARACT_10) {
+
+            mEtDescricao.setError(getString(R.string.error_campo_lenght_descricao_10));
+            mEtDescricao.requestFocus();
+            return;
+        }
+
         if (valorDouble == NUMERO_ZERO) {
+
             mEtValor.setError(getString(R.string.error_valor_valido));
             mEtValor.requestFocus();
             return;
@@ -185,22 +208,27 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
         // Coloca dados no objeto values
         ContentValues values = new ContentValues();
-        values.put(EntryOpening.COLUMN_VALUE, valorDouble);
+        values.put(EntryCashMove.COLUMN_VALUE, valorDouble);
+        values.put(EntryCashMove.COLUMN_DESCRIPTION, descricaoEditText);
+        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TIPO_RETIRADA);
 
-        // Salva dados no BD
+        /* Salva dados no banco de dados
+         * Se mUriAtual tiver vazio (null) vai adicionar registro
+         * Se mUriAtual contiver o Uri de um registro, vai editar um registro
+         */
         if (mUriAtual == null) {
 
-            values.put(EntryOpening.COLUMN_TIMESTAMP, obterDataHoraSistema());
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, obterDataHoraSistema());
 
-            Crud.insert(SaldoInicialCadActivity.this, EntryOpening.CONTENT_URI_OPENING, values);
+            Crud.insert(RegisterRemoveMoneyActivity.this, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
             Log.v(TAG, "salvarDadosBD - inserir");
 
         } else {
 
-            values.put(EntryOpening.COLUMN_TIMESTAMP, mDataHoraBD);
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, mDataHoraBD);
 
-            Crud.update(SaldoInicialCadActivity.this, mUriAtual, values);
+            Crud.update(RegisterRemoveMoneyActivity.this, mUriAtual, values);
 
             Log.v(TAG, "salvarDadosBD - editar");
         }
@@ -216,9 +244,11 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
-                EntryOpening._ID,
-                EntryOpening.COLUMN_TIMESTAMP,
-                EntryOpening.COLUMN_VALUE
+                EntryCashMove._ID,
+                EntryCashMove.COLUMN_TIMESTAMP,
+                EntryCashMove.COLUMN_DESCRIPTION,
+                EntryCashMove.COLUMN_TYPE,
+                EntryCashMove.COLUMN_VALUE
         };
 
         return new CursorLoader(
@@ -238,16 +268,25 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
 
         if (cursor.moveToFirst()) {
 
-            double valorBD = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
+            double valorBD = cursor.getDouble(
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
+
+            String descricaoBD = cursor.getString(
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
+
+            mDataHoraBD = cursor.getString(
+                    cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
             mEtValor.setText(String.valueOf(valorBD * 100));
+            mEtDescricao.setText(descricaoBD);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Nao implementado
+
+        Log.v(TAG, "onLoaderReset");
+
     }
 
     @Override
@@ -260,7 +299,7 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
             case R.id.et_valor:
                 mEtValor.requestFocus();
                 mEtValor.setSelection(mEtValor.getText().length());
-                Utilidades.mostrarTeclado(SaldoInicialCadActivity.this, mEtValor);
+                Utilidades.mostrarTeclado(RegisterRemoveMoneyActivity.this, mEtValor);
                 return true;
 
             default:
@@ -282,13 +321,14 @@ public class SaldoInicialCadActivity extends AppCompatActivity implements
         return false;
     }
 
-    /* Verifica a entrada de caracteres nos edits*/
+    /* Verifica a entrada de caracteres em um edit
+     */
     private void controleTextWatcher() {
 
         Log.v(TAG, "controleTextWatcher");
 
-        /* O teclado por esse edit possui apenas numeros, faz a captura desses caracteres e formata
-         * para o estilo moeda (currency) para ser apresentado ao usuario
+        /* Edit abre teclado numerico, entao ao entrar um caractere de numero ele é formatado
+         *  no estilo de moeda para ser apresentado ao usuario
          */
         mEtValor.addTextChangedListener(new TextWatcher() {
             @Override

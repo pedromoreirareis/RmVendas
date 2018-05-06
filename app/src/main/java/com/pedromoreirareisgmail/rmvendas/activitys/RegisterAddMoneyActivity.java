@@ -35,19 +35,19 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSis
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
 
-public class RetCadActivity extends AppCompatActivity implements
+public class RegisterAddMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
-    private static final String TAG = RetCadActivity.class.getSimpleName();
-    private static final int LOADER_RET_CAD = 0;
+    private static final String TAG = RegisterAddMoneyActivity.class.getSimpleName();
+    private static final int LOADER_ENT_CAD = 0;
 
     private EditText mEtValor;
     private EditText mEtDescricao;
 
-    private String mDataHoraBD = null;
     private Uri mUriAtual = null;
+    private String mDataHoraBD = null;
 
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
@@ -55,40 +55,41 @@ public class RetCadActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ret_cad);
+        setContentView(R.layout.activity_register_add_money);
 
-        Log.v(TAG, "");
+        Log.v(TAG, "onCreate");
 
         initViews();
+
         initIntents();
 
-        // Se mUriAtual tiver vazio, então vai adicionar
+        // Se tiver Uri então deve pesquisar essa uri para editar registro
         if (mUriAtual == null) {
 
-            setTitle(R.string.title_retirada_cad_add);
+            setTitle(R.string.title_entrada_cad_add);
 
         } else {
 
-            setTitle(R.string.title_retirada_cad_edit);
-            getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
+            setTitle(R.string.title_entrada_cad_edit);
+            getLoaderManager().initLoader(LOADER_ENT_CAD, null, this);
         }
 
-        // Monitora caracteres digitas no edit
+        // Faz controle de entrada de dados no edit
         controleTextWatcher();
 
-        // Verifica se houve alteração do texto em mEtDescricao
+        // Verifica se houve alteração no edit descrição
         if (!isDadosAlterado) {
 
             isDadosAlterado = Utilidades.verificarAlteracaoDados(mEtDescricao);
         }
 
-        // Verifica se foi clicado um EditorAction
+        // Define o que ação tomar a clicar no botão EditorAction do teclado
         mEtDescricao.setOnEditorActionListener(this);
 
-        // Monitora toques em uma view especifica
+        // Monitora toques no edit de valor
         mEtValor.setOnTouchListener(this);
 
-        // Retira foco e coloca o valor zero no mEtValor
+        // Retira o foco e coloca o valor zero
         Utilidades.semFocoZerado(mEtValor);
     }
 
@@ -105,9 +106,11 @@ public class RetCadActivity extends AppCompatActivity implements
 
         Log.v(TAG, "initIntents");
 
-        // Recebe dados da activity RetListActivity
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        /* Recebe dados de ListAddMoneytActivity para mUriAtual
+         * Tem dados - Editar / Não tem dados - Adicionar
+         */
+        Intent intentUri = getIntent();
+        mUriAtual = intentUri.getData();
     }
 
     @Override
@@ -116,6 +119,7 @@ public class RetCadActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
+
         return true;
     }
 
@@ -126,16 +130,18 @@ public class RetCadActivity extends AppCompatActivity implements
 
         switch (item.getItemId()) {
 
-            // Salva dados no BD
+            // Botao salvar
             case R.id.action_salvar:
                 salvarDadosBD();
                 return true;
 
-            /* Menu Up -
-             * Verifica se algum dado foi alterado, caso tenha sido alterado abre Dialog para decidir
-             * se deseja descartar alterações ou se deseja continuar alterando
+            /* Botão Up - Verifica se algum dado foi alterado, ou houve tentativa de alteração
+             * Em caso afirmativo abre Dialog para escolha se deseja deacatar alteração ou se deseja
+             * continuar alterado
              */
             case android.R.id.home:
+
+                // Não foi alterado - Volta a Activity que chamou RegisterAddMoneyActivity
                 if (!isDadosAlterado) {
 
                     NavUtils.navigateUpFromSameTask(this);
@@ -143,18 +149,16 @@ public class RetCadActivity extends AppCompatActivity implements
                 }
 
                 Dialogos.homeDescartarConfirmar(
-                        RetCadActivity.this,
-                        RetCadActivity.this);
+                        RegisterAddMoneyActivity.this,
+                        RegisterAddMoneyActivity.this);
 
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    /* Botão voltar (embaixo)
-     * Se tiver ocorrido alteração abre Dialog para decidir se vai descartar a alteração ou se
-     * vai continuar alterando dados
+    /* Botao voltar (embaixo) - Verifica se houve alteração
+     * Se houve - Abre dialog para confirmar se deseja descartar alterações ou não
      */
     @Override
     public void onBackPressed() {
@@ -167,23 +171,24 @@ public class RetCadActivity extends AppCompatActivity implements
         }
 
         Dialogos.onBackPressedDescartarConfirmar(
-                RetCadActivity.this,
-                RetCadActivity.this);
+                RegisterAddMoneyActivity.this,
+                RegisterAddMoneyActivity.this);
     }
 
-    /* Salva dados no BD
-     * Recebe dados do edits, faz validações, coloca dados no objeto values e salva no BD
+    /* Recebe dados do Edits, faz validações, verifica se e um novo registro ou se é uma alteração
+     * e salva os dados no BD
      */
     private void salvarDadosBD() {
 
-        Log.v(TAG, "salvarDadosBD - Inicio");
+        Log.v(TAG, "Iniciando salvar BD");
 
         String valorEditText = mEtValor.getText().toString().trim();
         String descricaoEditText = mEtDescricao.getText().toString().trim();
 
+        // Converte String Currency para double
         double valorDouble = Formatar.formatarParaDouble(valorEditText);
 
-        // Campo nao pode ficar vazio
+        // O campo descrição não pode ficar vazio
         if (TextUtils.isEmpty(descricaoEditText)) {
 
             mEtDescricao.setError(getString(R.string.error_campo_vazio_descricao));
@@ -191,7 +196,7 @@ public class RetCadActivity extends AppCompatActivity implements
             return;
         }
 
-        // Quantidade minima de caracteres aceita nesse campo
+        // A descrição deve ter pelo menos 10 caracteres
         if (descricaoEditText.length() < MIN_CARACT_10) {
 
             mEtDescricao.setError(getString(R.string.error_campo_lenght_descricao_10));
@@ -199,6 +204,7 @@ public class RetCadActivity extends AppCompatActivity implements
             return;
         }
 
+        // Valor não pode ser negativo
         if (valorDouble == NUMERO_ZERO) {
 
             mEtValor.setError(getString(R.string.error_valor_valido));
@@ -206,34 +212,30 @@ public class RetCadActivity extends AppCompatActivity implements
             return;
         }
 
-        // Coloca dados no objeto values
+        // coloca dados no Objeto values para salvar no BD
         ContentValues values = new ContentValues();
         values.put(EntryCashMove.COLUMN_VALUE, valorDouble);
         values.put(EntryCashMove.COLUMN_DESCRIPTION, descricaoEditText);
-        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TIPO_RETIRADA);
+        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TIPO_ENTRADA);
 
-        /* Salva dados no banco de dados
-         * Se mUriAtual tiver vazio (null) vai adicionar registro
-         * Se mUriAtual contiver o Uri de um registro, vai editar um registro
-         */
         if (mUriAtual == null) {
 
             values.put(EntryCashMove.COLUMN_TIMESTAMP, obterDataHoraSistema());
 
-            Crud.insert(RetCadActivity.this, EntryCashMove.CONTENT_URI_CASHMOVE, values);
+            Crud.insert(RegisterAddMoneyActivity.this, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
-            Log.v(TAG, "salvarDadosBD - inserir");
+            Log.v(TAG, "Adicionar - adicionou cliente");
 
         } else {
 
             values.put(EntryCashMove.COLUMN_TIMESTAMP, mDataHoraBD);
 
-            Crud.update(RetCadActivity.this, mUriAtual, values);
+            Crud.update(RegisterAddMoneyActivity.this, mUriAtual, values);
 
-            Log.v(TAG, "salvarDadosBD - editar");
+            Log.v(TAG, "Editando - editou cliente");
         }
 
-        Log.v(TAG, "salvarDadosBD - Fim");
+        Log.v(TAG, "Finalizando salvar BD");
 
         finish();
     }
@@ -243,6 +245,7 @@ public class RetCadActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateLoader");
 
+        // Retorna todos os dados do registro identificado pelo mUriAtual
         String[] projection = {
                 EntryCashMove._ID,
                 EntryCashMove.COLUMN_TIMESTAMP,
@@ -282,11 +285,13 @@ public class RetCadActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * O que fazer com os dados no caso de reiniciar pesquisa
+     *
+     * @param loader Cursor com dados antigos
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
-        Log.v(TAG, "onLoaderReset");
-
     }
 
     @Override
@@ -294,12 +299,15 @@ public class RetCadActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onTouch");
 
-        switch (view.getId()) {
+        int id = view.getId();
 
+        switch (id) {
+
+            // Recebe o foco e coloca o cursor no fim, se teclado tiver fechado abre ele
             case R.id.et_valor:
                 mEtValor.requestFocus();
                 mEtValor.setSelection(mEtValor.getText().length());
-                Utilidades.mostrarTeclado(RetCadActivity.this, mEtValor);
+                Utilidades.mostrarTeclado(RegisterAddMoneyActivity.this, mEtValor);
                 return true;
 
             default:
@@ -307,28 +315,14 @@ public class RetCadActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-
-        Log.v(TAG, "onEditorAction");
-
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-            salvarDadosBD();
-            return true;
-        }
-
-        return false;
-    }
-
-    /* Verifica a entrada de caracteres em um edit
-     */
+    /* Faz o controle da entrada de dados (caracteres) nos edits*/
     private void controleTextWatcher() {
 
-        Log.v(TAG, "controleTextWatcher");
-
-        /* Edit abre teclado numerico, entao ao entrar um caractere de numero ele é formatado
-         *  no estilo de moeda para ser apresentado ao usuario
+        /* Os caracteres que entram no mEtValor são apenas numeros
+         * Na entrada de caracteres envia para fazer uma formatação, para que os caracteres seja
+         * apresentado ao usuario em forma de moeda(currency). tambem controla o cursor para que ele
+         * sempre esteja no fim e não seja possivel apagar um caracetres do centro de um conjunto de
+         * caracteres sem antes apagar todos a sua direita
          */
         mEtValor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -339,12 +333,15 @@ public class RetCadActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                Log.v(TAG, "controleTextWatcher - mEtValor");
+
                 if (!isDadosAlterado) {
 
                     isDadosAlterado = true;
                 }
 
                 if (isFormatarCurrencyAtualizado) {
+
                     isFormatarCurrencyAtualizado = false;
                     return;
                 }
@@ -361,4 +358,20 @@ public class RetCadActivity extends AppCompatActivity implements
             }
         });
     }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        Log.v(TAG, "onEditorAction");
+
+        // Salvar dados no banco de dados
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+            salvarDadosBD();
+            return true;
+        }
+
+        return false;
+    }
+
 }

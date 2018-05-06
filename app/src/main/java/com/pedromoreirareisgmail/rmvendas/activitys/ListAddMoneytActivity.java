@@ -25,45 +25,45 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
 import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.adapters.SaldoInicialAdapter;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
+import com.pedromoreirareisgmail.rmvendas.adapters.EntAdapter;
+import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
-public class SaldoInicialListActivity extends AppCompatActivity implements
+public class ListAddMoneytActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
-        ListView.OnItemLongClickListener,
         ListView.OnItemClickListener,
+        ListView.OnItemLongClickListener,
         FloatingActionButton.OnClickListener {
 
-    private static final String TAG = SaldoInicialListActivity.class.getSimpleName();
-    private static final int LOADER_SALDO_INICIAL_LIST = 0;
+    private static final String TAG = ListAddMoneytActivity.class.getSimpleName();
+    private static final int LOADER_ENTRADA_LIST = 0;
 
-    private FloatingActionButton mFab;
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
     private ListView mListView;
     private View mEmptyView;
+    private FloatingActionButton mFab;
 
-    private SaldoInicialAdapter mAdapter;
-    private DatePickerDialog.OnDateSetListener mDateSetListener;
-
+    private EntAdapter mAdapter;
 
     private String mDataPesquisarBD = null;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saldo_list);
+        setContentView(R.layout.activity_list_add_money);
 
         Log.v(TAG, "onCreate");
 
         initViews();
         emptyLayout();
 
-        // Trata o botão Flutuante - Abre activity SaldoInicialCadActivity
+        // Trata o botão Flutuante - Abre activity RegisterAddMoneyActivity
         mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new SaldoInicialAdapter(this);
+        mAdapter = new EntAdapter(this);
         mListView.setAdapter(mAdapter);
 
         // Clique simples e Longo no ListView
@@ -74,19 +74,20 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         pegarDataDialogCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list), DataHora.obterFormatarDataBrTitulo()));
+        setTitle(String.format(getResources().getString(R.string.title_entrada_list),
+                DataHora.obterFormatarDataBrTitulo()));
 
-        // O Loader utiliza mDataPesquisarBD para fazer a pesquisa no banco de dados - "yyyy-MM-dd"
         mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
 
-        getLoaderManager().initLoader(LOADER_SALDO_INICIAL_LIST, null, this);
+        // Inicia o gerenciamento de dados no BD - Busca de dados
+        getLoaderManager().initLoader(LOADER_ENTRADA_LIST, null, this);
     }
 
     private void initViews() {
 
         Log.v(TAG, "initViews");
 
-        //  Faz referencia aos itens do layout
+        // Referencia itens do layout
         mFab = findViewById(R.id.fab_add);
         mTvEmpty = findViewById(R.id.tv_empty_view);
         mIvEmpty = findViewById(R.id.iv_empty_view);
@@ -98,10 +99,10 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         Log.v(TAG, "emptyLayout");
 
-        //  layout vazio - cadastro sem registros
-        mTvEmpty.setText(R.string.text_saldo_inicial_list_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_dinheiro_duas_maos);
-        mIvEmpty.setContentDescription(getString(R.string.image_desc_saldo_inicial_list_empty));
+        // Layout vazio - Cadastro sem registros
+        mTvEmpty.setText(R.string.text_entrada_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_money_up);
+        mIvEmpty.setContentDescription(getString(R.string.image_desc_entrada_list_empty));
         mListView.setEmptyView(mEmptyView);
     }
 
@@ -120,11 +121,11 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onOptionsItemSelected");
 
+        // Menu Calendário
         if (item.getItemId() == R.id.action_data) {
 
-            Dialogos.dialogoDatas(SaldoInicialListActivity.this, mDateSetListener);
+            Dialogos.dialogoDatas(ListAddMoneytActivity.this, mDateSetListener);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -134,22 +135,25 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
-                EntryOpening._ID,
-                EntryOpening.COLUMN_TIMESTAMP,
-                EntryOpening.COLUMN_VALUE
+                EntryCashMove._ID,
+                EntryCashMove.COLUMN_TIMESTAMP,
+                EntryCashMove.COLUMN_VALUE,
+                EntryCashMove.COLUMN_DESCRIPTION,
+                EntryCashMove.COLUMN_TYPE
         };
 
-        // Procura por todos os dados salvos na tabela com parte da data do tipo "yyyy-MM-dd"
-        String selection = EntryOpening.COLUMN_TIMESTAMP + " LIKE ?";
-        String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
+        /* Retorna dados cadastrados em uma data especificada e se for do tipo entrada */
+        String selection = EntryCashMove.COLUMN_TYPE + " =? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
+        String[] selectionArgs = new String[]{String.valueOf(ConstDB.TIPO_ENTRADA), mDataPesquisarBD + "%"};
+        String sortOrder = EntryCashMove.COLUMN_TIMESTAMP;
 
         return new CursorLoader(
                 this,
-                EntryOpening.CONTENT_URI_OPENING,
+                EntryCashMove.CONTENT_URI_CASHMOVE,
                 projection,
                 selection,
                 selectionArgs,
-                null
+                sortOrder
         );
     }
 
@@ -158,17 +162,8 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoadFinished");
 
+        // Envia dados retornados do BD para o adapter e ListView
         mAdapter.swapCursor(cursor);
-
-        /* Se encontrar pelo menos um dado salvo para a data o FloatingActionButton deve ficar
-           invisivel, se não tiver nenhum dado deve ficar visivel */
-        if (mAdapter.getCount() > 0) {
-
-            mFab.setVisibility(View.GONE);
-        } else {
-
-            mFab.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -181,7 +176,7 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
 
     /**
      * Click simples no ListView
-     * Ao clicar vair abir um Dialog com o valor, saldo inicial e hora do registro
+     * Ao clicar vair abir um Dialog com o valor e descrição da Entrada
      *
      * @param parent   adaptador
      * @param view     item do listview
@@ -191,26 +186,24 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Log.v(TAG, "onItemClick");
-
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog = getString(R.string.dialog_informacao_saldo_inicial_title);
+        String tituloDialog = getString(R.string.dialog_informacao_entrada_title);
 
         //  Mensagem do Dialog - Descrição
-        String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
 
-        Dialogos.dialogoExibirDados(SaldoInicialListActivity.this, tituloDialog, mensagemDialog);
+        String mensagemDialog = String.format(
+                getResources().getString(R.string.dialog_informacao_entrada_retirada_list),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE))),
+                cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
+
+        Dialogos.dialogoExibirDados(ListAddMoneytActivity.this, tituloDialog, mensagemDialog);
     }
 
     /**
-     * Click Longo no ListView
-     * Ao ter um click longo em um item do listview, será indentificado o id, deste item na
-     * tabela do banco de dados, e abrirá um dialogo para escolher se será editado ou excluido
-     * se for editar será aberta a activity de cadastro para fazer a edição
+     * Click longo no ListView ()
+     * Ao clicar e ficar apertado vair abir um Dialog com opção Editar ou Excluir a Entrada
      *
      * @param parent   adaptador
      * @param view     item do listview
@@ -221,19 +214,19 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Log.v(TAG, "onItemLongClick");
-
-        Uri uri = ContentUris.withAppendedId(EntryOpening.CONTENT_URI_OPENING, id);
+        Uri uri = ContentUris.withAppendedId(EntryCashMove.CONTENT_URI_CASHMOVE, id);
 
         Cursor cursor = mAdapter.getCursor();
 
-        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
+        String mensagemExcluir = String.format(
+                getResources().getString(R.string.dialog_exc_edit_texto_excluir_valor),
+                cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)),
+                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE))),
+                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
 
         Dialogos.dialogoEditarExcluir(
-                SaldoInicialListActivity.this,
-                SaldoInicialCadActivity.class,
+                ListAddMoneytActivity.this,
+                RegisterAddMoneyActivity.class,
                 uri,
                 mensagemExcluir
         );
@@ -248,18 +241,17 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
      */
     private void pegarDataDialogCalendario() {
 
-        Log.v(TAG, "pegarDataDialogCalendario");
-
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
                 mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
 
-                setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list),
+                setTitle(String.format(
+                        getResources().getString(R.string.title_entrada_list),
                         DataHora.dateSetListenerDataBrTitulo(year, month, day)));
 
-                getLoaderManager().restartLoader(LOADER_SALDO_INICIAL_LIST, null, SaldoInicialListActivity.this);
+                getLoaderManager().restartLoader(LOADER_ENTRADA_LIST, null, ListAddMoneytActivity.this);
             }
         };
     }
@@ -267,13 +259,14 @@ public class SaldoInicialListActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        Log.v(TAG, "onClick - mFab");
-
         if (view.getId() == R.id.fab_add) {
 
-            Intent intentSaldoInicial = new Intent(
-                    SaldoInicialListActivity.this, SaldoInicialCadActivity.class);
-            startActivity(intentSaldoInicial);
+            Log.v(TAG, "FloatingActionButton");
+
+            Intent intentEntrada = new Intent(
+                    ListAddMoneytActivity.this, RegisterAddMoneyActivity.class);
+
+            startActivity(intentEntrada);
         }
     }
 }

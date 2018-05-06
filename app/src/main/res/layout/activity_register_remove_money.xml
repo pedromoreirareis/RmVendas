@@ -5,6 +5,8 @@
     android:orientation="vertical"
     android:padding="@dimen/margin_padrao_16">
 
-    <include layout="@layout/edit_valor" />
+    <include layout="@layout/edit_value" />
+
+    <include layout="@layout/edit_description" />
 
 </LinearLayout>

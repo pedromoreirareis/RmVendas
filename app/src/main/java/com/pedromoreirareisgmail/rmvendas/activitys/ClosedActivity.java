@@ -29,10 +29,10 @@ import java.text.NumberFormat;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
 
-public class FechamentoActivity extends AppCompatActivity implements
+public class ClosedActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = FechamentoActivity.class.getSimpleName();
+    private static final String TAG = ClosedActivity.class.getSimpleName();
     private static final int LOADER_ENTRADAS_RETIRADAS = 0;
     private static final int LOADER_SALDO_INICIAL = 1;
     private static final int LOADER_VENDAS = 2;
@@ -72,7 +72,7 @@ public class FechamentoActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fechamento);
+        setContentView(R.layout.activity_closed);
 
         Log.v(TAG, "onCreate");
 
@@ -133,7 +133,7 @@ public class FechamentoActivity extends AppCompatActivity implements
         // Abre o Dialog de data para fazer pesquisa por data
         if (item.getItemId() == R.id.action_data) {
 
-            Dialogos.dialogoDatas(FechamentoActivity.this, mDateSetListener);
+            Dialogos.dialogoDatas(ClosedActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);
@@ -352,7 +352,7 @@ public class FechamentoActivity extends AppCompatActivity implements
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
 
                     int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
-                    mNomeClientesPrazo = mNomeClientesPrazo + SearchDB.Pesquisarcliente(FechamentoActivity.this, idCliente) + "\n";
+                    mNomeClientesPrazo = mNomeClientesPrazo + SearchDB.Pesquisarcliente(ClosedActivity.this, idCliente) + "\n";
 
 
                 }
@@ -466,8 +466,8 @@ public class FechamentoActivity extends AppCompatActivity implements
      */
     private void reiniciarPesquisas() {
 
-        getLoaderManager().restartLoader(LOADER_ENTRADAS_RETIRADAS, null, FechamentoActivity.this);
-        getLoaderManager().restartLoader(LOADER_SALDO_INICIAL, null, FechamentoActivity.this);
-        getLoaderManager().restartLoader(LOADER_VENDAS, null, FechamentoActivity.this);
+        getLoaderManager().restartLoader(LOADER_ENTRADAS_RETIRADAS, null, ClosedActivity.this);
+        getLoaderManager().restartLoader(LOADER_SALDO_INICIAL, null, ClosedActivity.this);
+        getLoaderManager().restartLoader(LOADER_VENDAS, null, ClosedActivity.this);
     }
 }

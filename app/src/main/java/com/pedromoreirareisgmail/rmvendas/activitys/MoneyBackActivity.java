@@ -24,11 +24,11 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarParaDoub
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.*;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
 
-public class TrocoActivity extends AppCompatActivity implements
+public class MoneyBackActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         Button.OnClickListener {
 
-    private static final String TAG = TrocoActivity.class.getSimpleName();
+    private static final String TAG = MoneyBackActivity.class.getSimpleName();
 
     private EditText mEtValorRecebido;
     private TextView mTvValorVenda;
@@ -45,7 +45,7 @@ public class TrocoActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_troco);
+        setContentView(R.layout.activity_money_back);
 
         Log.v(TAG, "onCreate");
 

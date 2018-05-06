@@ -5,6 +5,6 @@
 
     <include layout="@layout/listview_list" />
 
-    <include layout="@layout/empty_view_list" />
+    <include layout="@layout/empty_view" />
 
 </RelativeLayout>

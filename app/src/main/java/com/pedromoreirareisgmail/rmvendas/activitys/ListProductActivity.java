@@ -95,7 +95,7 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "initListenersAndObjects");
 
-        // Trata o botão Flutuante - Abre activity ProdutosCadActivity
+        // Trata o botão Flutuante - Abre activity RegisterProductActivity
         mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
@@ -218,7 +218,7 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Dialogos.dialogoEditarExcluir(
                 ListProductActivity.this,
-                ProdutosCadActivity.class,
+                RegisterProductActivity.class,
                 uri,
                 mensagemExcluir
         );
@@ -254,7 +254,7 @@ public class ListProductActivity extends AppCompatActivity implements
         if (view.getId() == R.id.fab_add) {
 
             Intent intentCadastroProdutos =
-                    new Intent(ListProductActivity.this, ProdutosCadActivity.class);
+                    new Intent(ListProductActivity.this, RegisterProductActivity.class);
             startActivity(intentCadastroProdutos);
         }
     }

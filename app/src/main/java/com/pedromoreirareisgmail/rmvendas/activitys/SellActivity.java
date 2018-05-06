@@ -55,12 +55,12 @@ import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ADICION
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 
-public class VendQuantActivity extends AppCompatActivity implements
+public class SellActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
         Button.OnClickListener {
 
-    private static final String TAG = VendQuantActivity.class.getSimpleName();
+    private static final String TAG = SellActivity.class.getSimpleName();
     private static final int LOADER_VENDA_ADICIONAR = 0;
     private static final int LOADER_VENDA_EDITAR = 1;
     private static final int LOADER_CLIENTE = 2;
@@ -103,13 +103,13 @@ public class VendQuantActivity extends AppCompatActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vend_quant);
+        setContentView(R.layout.activity_sell);
 
         Log.v(TAG, "onCreate");
 
         initViews();
 
-        // Recebe dados de VendListActivity
+        // Recebe dados de ListProductSaleActivity
         Intent intentDadosProduto = getIntent();
         mUriAtual = intentDadosProduto.getData();
 
@@ -152,7 +152,7 @@ public class VendQuantActivity extends AppCompatActivity implements
         // Verifica a maudança de estado do Switch
         controleSwitchCheckedChange();
 
-        // Botão abre activity VendListClienteActivity, para selecionar cliente para venda a prazo
+        // Botão abre activity ListClientSaleActivity, para selecionar cliente para venda a prazo
         mButCliente.setOnClickListener(this);
 
         // Monitora toques nos edits
@@ -258,7 +258,7 @@ public class VendQuantActivity extends AppCompatActivity implements
             mNomeCliente = "";
 
             Intent intentListaCliente =
-                    new Intent(VendQuantActivity.this, VendListClienteActivity.class);
+                    new Intent(SellActivity.this, ListClientSaleActivity.class);
 
             Bundle bundle = new Bundle();
             bundle.putString(URI_ATUAL, mUriAtual.toString());
@@ -268,7 +268,7 @@ public class VendQuantActivity extends AppCompatActivity implements
 
             startActivityForResult(intentListaCliente, Const.COD_RESULT_VENDA_CLIENTES);
 
-            Utilidades.fecharTecladoView(VendQuantActivity.this, mButCliente);
+            Utilidades.fecharTecladoView(SellActivity.this, mButCliente);
         }
 
     }
@@ -320,8 +320,8 @@ public class VendQuantActivity extends AppCompatActivity implements
                 }
 
                 Dialogos.homeDescartarConfirmar(
-                        VendQuantActivity.this,
-                        VendQuantActivity.this);
+                        SellActivity.this,
+                        SellActivity.this);
 
                 return true;
         }
@@ -344,8 +344,8 @@ public class VendQuantActivity extends AppCompatActivity implements
         }
 
         Dialogos.onBackPressedDescartarConfirmar(
-                VendQuantActivity.this,
-                VendQuantActivity.this);
+                SellActivity.this,
+                SellActivity.this);
     }
 
     /* Salva dados no BD
@@ -476,11 +476,11 @@ public class VendQuantActivity extends AppCompatActivity implements
 
             values.put(EntrySeel.COLUMN_TIMESTAMP, DataHora.obterDataHoraSistema());
 
-            Crud.insert(VendQuantActivity.this, EntrySeel.CONTENT_URI_SELL, values);
+            Crud.insert(SellActivity.this, EntrySeel.CONTENT_URI_SELL, values);
 
             if (temPrazoSwitch) {
 
-                Crud.insert(VendQuantActivity.this, EntryReceive.CONTENT_URI_RECEIVE, valuesVendaPrazo);
+                Crud.insert(SellActivity.this, EntryReceive.CONTENT_URI_RECEIVE, valuesVendaPrazo);
             }
 
             Log.v(TAG, "salvarDadosBD - inserir");
@@ -496,7 +496,7 @@ public class VendQuantActivity extends AppCompatActivity implements
 
                 values.put(EntrySeel.COLUMN_TIMESTAMP, mDataHoraBD);
 
-                Crud.update(VendQuantActivity.this, mUriAtual, values);
+                Crud.update(SellActivity.this, mUriAtual, values);
 
                 Log.v(TAG, "salvarDadosBD - editar");
             }
@@ -621,7 +621,7 @@ public class VendQuantActivity extends AppCompatActivity implements
 
             String nomeClienteBD = "";
             if (mIdCliente > 0) {
-                nomeClienteBD = SearchDB.Pesquisarcliente(VendQuantActivity.this, idCliente);
+                nomeClienteBD = SearchDB.Pesquisarcliente(SellActivity.this, idCliente);
                 mNomeCliente = nomeClienteBD;
                 mTvNomeCliente.setText(mNomeCliente);
             }
@@ -719,25 +719,25 @@ public class VendQuantActivity extends AppCompatActivity implements
             case R.id.et_vend_quant_quantidade:
                 mEtQuantidade.requestFocus();
                 mEtQuantidade.setSelection(mEtQuantidade.getText().length());
-                Utilidades.mostrarTeclado(VendQuantActivity.this, mEtQuantidade);
+                Utilidades.mostrarTeclado(SellActivity.this, mEtQuantidade);
                 return true;
 
             case R.id.et_vend_quant_valor_desconto:
                 mEtDesconto.requestFocus();
                 mEtDesconto.setSelection(mEtDesconto.getText().length());
-                Utilidades.mostrarTeclado(VendQuantActivity.this, mEtDesconto);
+                Utilidades.mostrarTeclado(SellActivity.this, mEtDesconto);
                 return true;
 
             case R.id.et_vend_quant_valor_adicional:
                 mEtAdicional.requestFocus();
                 mEtAdicional.setSelection(mEtAdicional.getText().length());
-                Utilidades.mostrarTeclado(VendQuantActivity.this, mEtAdicional);
+                Utilidades.mostrarTeclado(SellActivity.this, mEtAdicional);
                 return true;
 
             case R.id.et_vend_quant_valor_prazo:
                 mEtPrazo.requestFocus();
                 mEtPrazo.setSelection(mEtPrazo.getText().length());
-                Utilidades.mostrarTeclado(VendQuantActivity.this, mEtPrazo);
+                Utilidades.mostrarTeclado(SellActivity.this, mEtPrazo);
                 return true;
 
             case R.id.switch_vend_quant_adicional:

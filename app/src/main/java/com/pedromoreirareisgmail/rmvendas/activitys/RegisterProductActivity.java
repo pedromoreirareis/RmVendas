@@ -33,12 +33,12 @@ import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
 
-public class ProdutosCadActivity extends AppCompatActivity implements
+public class RegisterProductActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnEditorActionListener,
         EditText.OnTouchListener {
 
-    private static final String TAG = ProdutosCadActivity.class.getSimpleName();
+    private static final String TAG = RegisterProductActivity.class.getSimpleName();
     private static final int LOADER_PROD_CAD = 0;
 
     private EditText mEtNome;
@@ -50,7 +50,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_produtos_cad);
+        setContentView(R.layout.activity_register_product);
 
         Log.v(TAG, "onCreate");
 
@@ -139,8 +139,8 @@ public class ProdutosCadActivity extends AppCompatActivity implements
                 }
 
                 Dialogos.homeDescartarConfirmar(
-                        ProdutosCadActivity.this,
-                        ProdutosCadActivity.this);
+                        RegisterProductActivity.this,
+                        RegisterProductActivity.this);
 
                 return true;
         }
@@ -162,8 +162,8 @@ public class ProdutosCadActivity extends AppCompatActivity implements
         }
 
         Dialogos.onBackPressedDescartarConfirmar(
-                ProdutosCadActivity.this,
-                ProdutosCadActivity.this);
+                RegisterProductActivity.this,
+                RegisterProductActivity.this);
     }
 
     /* Recebe dados dos edits, faz validações, coloca no obejtos values e salva os dados no BD */
@@ -210,13 +210,13 @@ public class ProdutosCadActivity extends AppCompatActivity implements
 
             Log.v(TAG, "salvarDadosBD - inserir");
 
-            Crud.insert(ProdutosCadActivity.this, EntryProduct.CONTENT_URI_PRODUCT, values);
+            Crud.insert(RegisterProductActivity.this, EntryProduct.CONTENT_URI_PRODUCT, values);
 
         } else {
 
             Log.v(TAG, "salvarDadosBD - editar");
 
-            Crud.update(ProdutosCadActivity.this, mUriAtual, values);
+            Crud.update(RegisterProductActivity.this, mUriAtual, values);
         }
 
         Log.v(TAG, "salvarDadosBD - Fim");
@@ -339,7 +339,7 @@ public class ProdutosCadActivity extends AppCompatActivity implements
             case R.id.et_preco:
                 mEtPreco.requestFocus();
                 mEtPreco.setSelection(mEtPreco.getText().length());
-                Utilidades.mostrarTeclado(ProdutosCadActivity.this, mEtPreco);
+                Utilidades.mostrarTeclado(RegisterProductActivity.this, mEtPreco);
                 return true;
 
             default:
