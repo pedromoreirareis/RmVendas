@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/margin_padrao_8"
-    android:paddingEnd="@dimen/margin_padrao_16"
-    android:paddingStart="@dimen/margin_padrao_16"
-    android:paddingTop="@dimen/margin_padrao_8">
+    android:paddingBottom="@dimen/margin_default_8"
+    android:paddingEnd="@dimen/margin_default_16"
+    android:paddingStart="@dimen/margin_default_16"
+    android:paddingTop="@dimen/margin_default_8">
 
 
     <TextView
@@ -14,7 +14,7 @@
         style="@style/DescricaoNormal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_padrao_8"
+        android:layout_marginEnd="@dimen/margin_default_8"
         android:layout_weight="1"
         android:ellipsize="end"
         android:gravity="center"
@@ -26,8 +26,8 @@
         style="@style/DescricaoNormal"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/margin_padrao_4"
-        android:layout_marginStart="@dimen/margin_padrao_4"
+        android:layout_marginEnd="@dimen/margin_default_4"
+        android:layout_marginStart="@dimen/margin_default_4"
         android:layout_weight="2"
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -35,10 +35,10 @@
 
     <TextView
         android:id="@+id/tv_a_receber_list_valor"
-        style="@style/DestaqueNegrito"
+        style="@style/textViewBold"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_padrao_4"
+        android:layout_marginStart="@dimen/margin_default_4"
         android:layout_weight="1"
         android:ellipsize="end"
         android:gravity="center_vertical|end"

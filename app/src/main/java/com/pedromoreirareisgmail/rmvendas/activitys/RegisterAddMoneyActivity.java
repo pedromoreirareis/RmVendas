@@ -24,14 +24,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
+import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
 
@@ -148,7 +148,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Dialogos.homeDescartarConfirmar(
+                Messages.homeDescartarConfirmar(
                         RegisterAddMoneyActivity.this,
                         RegisterAddMoneyActivity.this);
 
@@ -170,7 +170,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Dialogos.onBackPressedDescartarConfirmar(
+        Messages.onBackPressedDescartarConfirmar(
                 RegisterAddMoneyActivity.this,
                 RegisterAddMoneyActivity.this);
     }
@@ -186,7 +186,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         String descricaoEditText = mEtDescricao.getText().toString().trim();
 
         // Converte String Currency para double
-        double valorDouble = Formatar.formatarParaDouble(valorEditText);
+        double valorDouble = Formatting.formatarParaDouble(valorEditText);
 
         // O campo descrição não pode ficar vazio
         if (TextUtils.isEmpty(descricaoEditText)) {
@@ -220,7 +220,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
         if (mUriAtual == null) {
 
-            values.put(EntryCashMove.COLUMN_TIMESTAMP, obterDataHoraSistema());
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, getDateTime());
 
             Crud.insert(RegisterAddMoneyActivity.this, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
@@ -348,7 +348,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
+                mEtValor.setText(Formatting.formatarParaCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
             }
 

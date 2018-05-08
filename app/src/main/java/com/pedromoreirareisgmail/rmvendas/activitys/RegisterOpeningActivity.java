@@ -23,14 +23,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
-import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
+import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
 
 public class RegisterOpeningActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -136,7 +136,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Dialogos.homeDescartarConfirmar(
+                Messages.homeDescartarConfirmar(
                         RegisterOpeningActivity.this,
                         RegisterOpeningActivity.this);
 
@@ -160,7 +160,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Dialogos.onBackPressedDescartarConfirmar(
+        Messages.onBackPressedDescartarConfirmar(
                 RegisterOpeningActivity.this,
                 RegisterOpeningActivity.this);
     }
@@ -174,7 +174,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         String valorEditText = mEtValor.getText().toString().trim();
 
-        double valorDouble = Formatar.formatarParaDouble(valorEditText);
+        double valorDouble = Formatting.formatarParaDouble(valorEditText);
 
         // Valor não pode ser zero
         if (valorDouble == NUMERO_ZERO) {
@@ -190,7 +190,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         // Salva dados no BD
         if (mUriAtual == null) {
 
-            values.put(EntryOpening.COLUMN_TIMESTAMP, obterDataHoraSistema());
+            values.put(EntryOpening.COLUMN_TIMESTAMP, getDateTime());
 
             Crud.insert(RegisterOpeningActivity.this, EntryOpening.CONTENT_URI_OPENING, values);
 
@@ -311,7 +311,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
+                mEtValor.setText(Formatting.formatarParaCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
             }
 

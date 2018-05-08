@@ -3,6 +3,7 @@ package com.pedromoreirareisgmail.rmvendas.activitys;
 import android.app.DatePickerDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -22,11 +23,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
-import com.pedromoreirareisgmail.rmvendas.adapters.RetAdapter;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.adapters.RemoveMoneyAdapter;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constantes.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
 public class ListRemoveMoneyActivity extends AppCompatActivity implements
@@ -35,18 +38,18 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         ListView.OnItemClickListener,
         FloatingActionButton.OnClickListener {
 
-    private static final String TAG = ListRemoveMoneyActivity.class.getSimpleName();
-    private static final int LOADER_RETIRADA_LIST = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + ListRemoveMoneyActivity.class.getSimpleName();
 
+    private View mEmptyView;
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
     private ListView mListView;
-    private View mEmptyView;
     private FloatingActionButton mFab;
 
-    private RetAdapter mAdapter;
+    private RemoveMoneyAdapter mAdapter;
+    private Context mContext;
 
-    private String mDataPesquisarBD = null;
+    private String mSearchDateDB = null;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -58,27 +61,11 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         initViews();
         emptyLayout();
-
-        // Trata o botão Flutuante - Abre activity RegisterRemoveMoneyActivity
-        mFab.setOnClickListener(this);
-
-        // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new RetAdapter(this);
-        mListView.setAdapter(mAdapter);
-
-        // Clique simples e Longo no ListView
-        mListView.setOnItemLongClickListener(this);
-        mListView.setOnItemClickListener(this);
-
-        //  Pega data do Dialog de calendário
-        pegarDataDialogCalendario();
-
-        // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(String.format(getResources().getString(R.string.title_retirada_list), DataHora.obterFormatarDataBrTitulo()));
-        mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
+        initListenerAndObject();
+        initTitleData();
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
-        getLoaderManager().initLoader(LOADER_RETIRADA_LIST, null, this);
+        getLoaderManager().initLoader(ConstLoader.LOADER_LIST_REMOVE_MONEY, null, this);
     }
 
     private void initViews() {
@@ -100,17 +87,52 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_retirada_list_empty);
         mIvEmpty.setImageResource(R.drawable.ic_money_down);
-        mIvEmpty.setContentDescription(getString(R.string.image_desc_retirada_list_empty));
+        mIvEmpty.setContentDescription(getString(R.string.descr_remove_money_empty));
         mListView.setEmptyView(mEmptyView);
     }
 
+    private void initListenerAndObject() {
+
+        Log.v(TAG, "initListenerAndObject");
+
+        // Contexto da Activity
+        mContext = ListRemoveMoneyActivity.this;
+
+        // Cria o adapter e colocar o adapter no Listview
+        mAdapter = new RemoveMoneyAdapter(mContext);
+        mListView.setAdapter(mAdapter);
+
+        // Listener do botão Flutuante - Abre activity RegisterAddMoneyActivity
+        mFab.setOnClickListener(this);
+
+        // Listener do clique simples e Longo no ListView
+        mListView.setOnItemLongClickListener(this);
+        mListView.setOnItemClickListener(this);
+    }
+
+    private void initTitleData() {
+
+        Log.v(TAG, "initTitleData");
+
+        //  Obtem a data calendário do Dialog
+        getCalendarDate();
+
+        // Coloca o titulo e data na Activity, e define data da pesquisa no BD
+        setTitle(String.format(getString(R.string.title_remove_money_list),
+                TimeData.getDateTitleBr())
+        );
+
+        // Recebe a data do dia para pesquisa no banco de dados
+        mSearchDateDB = TimeData.formatDateSearch(TimeData.getDateTime());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_data, menu);
+        getMenuInflater().inflate(R.menu.menu_date, menu);
+
         return true;
     }
 
@@ -119,9 +141,12 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onOptionsItemSelected");
 
-        if (item.getItemId() == R.id.action_data) {
+        // Abre o caléndaria para obter data
+        switch (item.getItemId()) {
 
-            Dialogos.dialogoDatas(ListRemoveMoneyActivity.this, mDateSetListener);
+            case R.id.action_date:
+                Messages.dialogDate(ListRemoveMoneyActivity.this, mDateSetListener);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -132,6 +157,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateLoader");
 
+        // Colunas que serao retornadas
         String[] projection = {
                 EntryCashMove._ID,
                 EntryCashMove.COLUMN_TIMESTAMP,
@@ -140,13 +166,17 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
                 EntryCashMove.COLUMN_TYPE
         };
 
-         /* Retorna dados cadastrados em uma data especificada e se for do tipo retirada */
+        // O que sera pesquisado em casa coluna
         String selection = EntryCashMove.COLUMN_TYPE + " =? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
-        String[] selectionArgs = new String[]{String.valueOf(ConstDB.TIPO_RETIRADA), mDataPesquisarBD + "%"};
+
+        // Dados para a pesquisa em cada coluna
+        String[] selectionArgs = new String[]{String.valueOf(ConstDB.TIPO_RETIRADA), mSearchDateDB + "%"};
+
+        // Ordem que sera retonado os dados
         String sortOrder = EntryCashMove.COLUMN_TIMESTAMP;
 
         return new CursorLoader(
-                this,
+                mContext,
                 EntryCashMove.CONTENT_URI_CASHMOVE,
                 projection,
                 selection,
@@ -160,6 +190,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoadFinished");
 
+        // Envia dados retornados do BD para o adapter e ListView
         mAdapter.swapCursor(cursor);
     }
 
@@ -168,12 +199,13 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoaderReset");
 
+        // Se loader foi redefinido não passa nenhum dado ao adapter
         mAdapter.swapCursor(null);
     }
 
     /**
      * Click simples no ListView
-     * Ao clicar vai abrir um Dialog com a descrição e o valor da Retirada
+     * Ao clicar vair abir um Dialog com o valor e descrição da Retirada
      *
      * @param parent   adaptador
      * @param view     item do listview
@@ -187,26 +219,31 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog = getString(R.string.dialog_informacao_retirada_title);
+        String title = getString(R.string.dialog_informacao_retirada_title);
+        Double value = cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
+        String description = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
+        String timestamp = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
-        //  Mensagem do Dialog - Descrição
-        String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_entrada_retirada_list),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE))),
-                cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
+        String mensagemDialog = String.format(
+                getString(R.string.dialog_inf_add_remove_money_list),
+                Formatting.doubleToCurrency(value),
+                description,
+                TimeData.formatDateToHourAndMinute(timestamp)
+        );
 
-        Dialogos.dialogoExibirDados(ListRemoveMoneyActivity.this, tituloDialog, mensagemDialog);
+        Messages.displayData(mContext, title, mensagemDialog);
     }
 
     /**
      * Click longo no ListView
-     * Ao clicar vai abrir um dialog para escolher se vai editar ou excluir a retirada
+     * No click longo sera aberto um Dialog com opção Editar ou Excluir
+     * Se a escolha for editar abrira {@link RegisterRemoveMoneyActivity}
      *
      * @param parent   adaptador
      * @param view     item do listview
      * @param position posição da view no adaptador
      * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     * @return true de click longo foi efetuado com sucesso
+     * @return true se click longo foi efetuado com sucesso
      */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -214,43 +251,55 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(EntryCashMove.CONTENT_URI_CASHMOVE, id);
-
         Cursor cursor = mAdapter.getCursor();
 
-        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_valor),
-                cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP))));
+        Double value = cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
+        String description = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
+        String timestamp = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
-        Dialogos.dialogoEditarExcluir(
-                ListRemoveMoneyActivity.this,
+        String messageDelete = String.format(
+                getResources().getString(R.string.dialog_edit_del_message_delete),
+                description,
+                Formatting.doubleToCurrency(value),
+                TimeData.formatDateToHourAndMinute(timestamp)
+        );
+
+        Messages.editOurDelete(
+                mContext,
                 RegisterAddMoneyActivity.class,
                 uri,
-                mensagemExcluir
+                messageDelete
         );
 
         return true;
     }
 
-    /*
-     * Escolha no calendário uma data que será utilizada para pesquisar no banco de dados. Essa
-     * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
-     * pesquisa para verificar se há dados para esta data
+    /**
+     * Obtem a data que sera utilizada para pesquisa no banco de dados.
+     * <p>
+     * A data sera formatada em formato utilizado no Brasil.
+     * E a data sera mostrada no titulo da Activity {@link ListRemoveMoneyActivity}.
      */
-    private void pegarDataDialogCalendario() {
-
-        Log.v(TAG, "pegarDataDialogCalendario");
+    private void getCalendarDate() {
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+                Log.v(TAG, "getCalendarDate");
 
-                setTitle(String.format(getResources().getString(R.string.title_retirada_list),
-                        DataHora.dateSetListenerDataBrTitulo(year, month, day)));
+                mSearchDateDB = TimeData.getDateSearchDB(year, month, day);
 
-                getLoaderManager().restartLoader(LOADER_RETIRADA_LIST, null, ListRemoveMoneyActivity.this);
+                setTitle(
+                        String.format(getString(R.string.title_remove_money_list),
+                                TimeData.getDateTitleBr(year, month, day))
+                );
+
+                getLoaderManager().restartLoader(
+                        ConstLoader.LOADER_LIST_REMOVE_MONEY,
+                        null,
+                        ListRemoveMoneyActivity.this
+                );
             }
         };
     }
@@ -258,12 +307,17 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        Log.v(TAG, "onClick mFab");
+        Log.v(TAG, "onClick - FloatingActionButton");
 
-        if (view.getId() == R.id.fab_add) {
+        switch (view.getId()) {
 
-            Intent intentRetirada = new Intent(ListRemoveMoneyActivity.this, RegisterRemoveMoneyActivity.class);
-            startActivity(intentRetirada);
+            case R.id.fab_add:
+                Intent intentRegisterRemoveMoney = new Intent(
+                        mContext,
+                        RegisterRemoveMoneyActivity.class
+                );
+                startActivity(intentRegisterRemoveMoney);
+                break;
         }
     }
 }

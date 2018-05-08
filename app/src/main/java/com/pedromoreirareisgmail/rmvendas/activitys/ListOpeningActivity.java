@@ -22,9 +22,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.adapters.SaldoInicialAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 
@@ -74,10 +74,10 @@ public class ListOpeningActivity extends AppCompatActivity implements
         pegarDataDialogCalendario();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list), DataHora.obterFormatarDataBrTitulo()));
+        setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list), TimeData.getDateTitleBr()));
 
         // O Loader utiliza mDataPesquisarBD para fazer a pesquisa no banco de dados - "yyyy-MM-dd"
-        mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
+        mDataPesquisarBD = TimeData.formatDateSearch(TimeData.getDateTime());
 
         getLoaderManager().initLoader(LOADER_SALDO_INICIAL_LIST, null, this);
     }
@@ -110,7 +110,7 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_data, menu);
+        getMenuInflater().inflate(R.menu.menu_date, menu);
 
         return true;
     }
@@ -120,9 +120,9 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onOptionsItemSelected");
 
-        if (item.getItemId() == R.id.action_data) {
+        if (item.getItemId() == R.id.action_date) {
 
-            Dialogos.dialogoDatas(ListOpeningActivity.this, mDateSetListener);
+            Messages.dialogDate(ListOpeningActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);
@@ -199,11 +199,11 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         //  Mensagem do Dialog - Descrição
         String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
+                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
+                TimeData.formatDateBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))),
+                TimeData.formatDateToHourAndMinute(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
 
-        Dialogos.dialogoExibirDados(ListOpeningActivity.this, tituloDialog, mensagemDialog);
+        Messages.displayData(ListOpeningActivity.this, tituloDialog, mensagemDialog);
     }
 
     /**
@@ -228,10 +228,10 @@ public class ListOpeningActivity extends AppCompatActivity implements
         Cursor cursor = mAdapter.getCursor();
 
         String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
+                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
+                TimeData.formatDateBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
 
-        Dialogos.dialogoEditarExcluir(
+        Messages.editOurDelete(
                 ListOpeningActivity.this,
                 RegisterOpeningActivity.class,
                 uri,
@@ -254,10 +254,10 @@ public class ListOpeningActivity extends AppCompatActivity implements
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisarBD = TimeData.getDateSearchDB(year, month, day);
 
                 setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list),
-                        DataHora.dateSetListenerDataBrTitulo(year, month, day)));
+                        TimeData.getDateTitleBr(year, month, day)));
 
                 getLoaderManager().restartLoader(LOADER_SALDO_INICIAL_LIST, null, ListOpeningActivity.this);
             }

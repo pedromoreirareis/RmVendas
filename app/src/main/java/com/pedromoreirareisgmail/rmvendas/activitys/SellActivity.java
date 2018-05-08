@@ -30,9 +30,9 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.constantes.Const;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
@@ -45,11 +45,11 @@ import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 import java.text.NumberFormat;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Calculos.calcularValorTotalVendaString;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarCharSequenceDouble;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarCharSequenceString;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarEditsDouble;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarEditsInt;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarEditsString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsInt;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsString;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ADICIONAR;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ADICIONAR_VENDA;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
@@ -319,7 +319,7 @@ public class SellActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Dialogos.homeDescartarConfirmar(
+                Messages.homeDescartarConfirmar(
                         SellActivity.this,
                         SellActivity.this);
 
@@ -343,7 +343,7 @@ public class SellActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Dialogos.onBackPressedDescartarConfirmar(
+        Messages.onBackPressedDescartarConfirmar(
                 SellActivity.this,
                 SellActivity.this);
     }
@@ -389,9 +389,9 @@ public class SellActivity extends AppCompatActivity implements
         }
 
         // Converte as String dos campos valorAdicional, valorDesconto  e valorPrazo para double
-        double valorAdicionalDouble = Formatar.formatarParaDouble(valorAdicionalEditText);
-        double valorDescontoDouble = Formatar.formatarParaDouble(valorDescontoEditText);
-        double valorPrazoDouble = Formatar.formatarParaDouble(valorPrazoEditText);
+        double valorAdicionalDouble = Formatting.formatarParaDouble(valorAdicionalEditText);
+        double valorDescontoDouble = Formatting.formatarParaDouble(valorDescontoEditText);
+        double valorPrazoDouble = Formatting.formatarParaDouble(valorPrazoEditText);
 
 
         // Se Switch adicional estiver Checked
@@ -466,7 +466,7 @@ public class SellActivity extends AppCompatActivity implements
         values.put(EntrySeel.COLUMN_ADD_VALUE, valorAdicionalDouble);
         values.put(EntrySeel.COLUMN_DISCOUNT_VALUE, valorDescontoDouble);
         values.put(EntrySeel.COLUMN_FORWARD_VALUE, valorPrazoDouble);
-        valuesVendaPrazo.put(EntryReceive.COLUMN_TIMESTAMP, DataHora.obterDataHoraSistema());
+        valuesVendaPrazo.put(EntryReceive.COLUMN_TIMESTAMP, TimeData.getDateTime());
         if (temPrazoSwitch) {
             values.put(EntrySeel.COLUMN_CLIENT_ID, mIdCliente);
         }
@@ -474,7 +474,7 @@ public class SellActivity extends AppCompatActivity implements
         // Salva dados no BD
         if (mAdicionarProdutoBD) {
 
-            values.put(EntrySeel.COLUMN_TIMESTAMP, DataHora.obterDataHoraSistema());
+            values.put(EntrySeel.COLUMN_TIMESTAMP, TimeData.getDateTime());
 
             Crud.insert(SellActivity.this, EntrySeel.CONTENT_URI_SELL, values);
 
@@ -844,7 +844,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtAdicional.setText(Formatar.formatarParaCurrency(formatarCharSequenceString(charSequence)));
+                mEtAdicional.setText(Formatting.formatarParaCurrency(formatarCharSequenceString(charSequence)));
 
                 mEtAdicional.setSelection(mEtAdicional.getText().length());
             }
@@ -863,7 +863,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 if (formatarCharSequenceDouble(charSequence) > valorVendaAdicional) {
 
-                    mEtDesconto.setError(String.format(getResources().getString(R.string.error_campo_desconto_maior_venda), Formatar.formatarDoubleParaCurrency(valorVendaAdicional)));
+                    mEtDesconto.setError(String.format(getResources().getString(R.string.error_campo_desconto_maior_venda), Formatting.doubleToCurrency(valorVendaAdicional)));
                 }
 
             }
@@ -891,7 +891,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtDesconto.setText(Formatar.formatarParaCurrency(formatarCharSequenceString(charSequence)));
+                mEtDesconto.setText(Formatting.formatarParaCurrency(formatarCharSequenceString(charSequence)));
 
                 mEtDesconto.setSelection(mEtDesconto.getText().length());
             }
@@ -912,7 +912,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 if (formatarCharSequenceDouble(charSequence) / 100 > valorVendaAdicionalDesconto) {
 
-                    mEtDesconto.setError(String.format(getResources().getString(R.string.error_campo_prazo_maior_venda), Formatar.formatarDoubleParaCurrency(valorVendaAdicionalDesconto)));
+                    mEtDesconto.setError(String.format(getResources().getString(R.string.error_campo_prazo_maior_venda), Formatting.doubleToCurrency(valorVendaAdicionalDesconto)));
                 }
             }
 
@@ -939,7 +939,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtPrazo.setText(Formatar.formatarParaCurrency(formatarCharSequenceString(charSequence)));
+                mEtPrazo.setText(Formatting.formatarParaCurrency(formatarCharSequenceString(charSequence)));
 
                 mEtPrazo.setSelection(mEtPrazo.getText().length());
             }

@@ -22,8 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.adapters.ProdAdapter;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
@@ -188,9 +188,9 @@ public class ListProductActivity extends AppCompatActivity implements
         //  Mensagem do Dialog - Descrição
         String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_produtos_list),
                 cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE))));
+                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE))));
 
-        Dialogos.dialogoExibirDados(ListProductActivity.this, tituloDialog, mensagemDialog);
+        Messages.displayData(ListProductActivity.this, tituloDialog, mensagemDialog);
     }
 
     /**
@@ -214,9 +214,9 @@ public class ListProductActivity extends AppCompatActivity implements
 
         String mensagemExcluir = String.format(getResources().getString(R.string.dialog_excluir_produtos_list),
                 cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE))));
+                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE))));
 
-        Dialogos.dialogoEditarExcluir(
+        Messages.editOurDelete(
                 ListProductActivity.this,
                 RegisterProductActivity.class,
                 uri,

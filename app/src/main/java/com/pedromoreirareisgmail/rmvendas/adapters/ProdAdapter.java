@@ -10,7 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
 public class ProdAdapter extends CursorAdapter{
@@ -55,7 +55,7 @@ public class ProdAdapter extends CursorAdapter{
         double valor = cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE));
 
         holder.tvNome.setText(nomeProduto);
-        holder.tvPreco.setText(Formatar.formatarDoubleParaCurrency(valor));
+        holder.tvPreco.setText(Formatting.doubleToCurrency(valor));
     }
 
     /*

@@ -7,10 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_padrao_16"
-        android:layout_marginLeft="@dimen/margin_padrao_16"
-        android:layout_marginRight="@dimen/margin_padrao_16"
-        android:layout_marginTop="@dimen/margin_padrao_16"
+        android:layout_marginBottom="@dimen/margin_default_16"
+        android:layout_marginLeft="@dimen/margin_default_16"
+        android:layout_marginRight="@dimen/margin_default_16"
+        android:layout_marginTop="@dimen/margin_default_16"
         android:orientation="vertical"
         tools:context="com.pedromoreirareisgmail.rmtroco.MainActivity">
 
@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padrao_8"
+            android:layout_marginBottom="@dimen/margin_default_8"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
@@ -27,7 +27,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/margin_padrao_16"
+                android:layout_marginEnd="@dimen/margin_default_16"
                 android:layout_weight="1">
 
                 <android.support.design.widget.TextInputEditText
@@ -66,11 +66,11 @@
 
                 <TextView
                     android:id="@+id/tv_troco_valor_venda"
-                    style="@style/DestaqueNegrito"
+                    style="@style/textViewBold"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
-                    android:layout_marginTop="@dimen/margin_padrao_8"
+                    android:layout_marginTop="@dimen/margin_default_8"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="32sp"
                     android:textStyle="bold" />
@@ -83,8 +83,8 @@
             android:id="@+id/but_troco_limpar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/margin_padrao_16"
-            android:layout_marginTop="@dimen/margin_padrao_48"
+            android:layout_marginBottom="@dimen/margin_default_16"
+            android:layout_marginTop="@dimen/margin_default_48"
             android:layout_weight="1"
             android:background="@color/colorRed"
             android:text="@string/limpar"
@@ -95,7 +95,7 @@
             android:id="@+id/tv_troco_valor_troco_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padrao_8"
+            android:layout_marginBottom="@dimen/margin_default_8"
             android:fontFamily="serif-monospace"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorBlack"

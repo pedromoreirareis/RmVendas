@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.constantes.Const;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
@@ -138,7 +138,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Dialogos.homeDescartarConfirmar(
+                Messages.homeDescartarConfirmar(
                         RegisterProductActivity.this,
                         RegisterProductActivity.this);
 
@@ -161,7 +161,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Dialogos.onBackPressedDescartarConfirmar(
+        Messages.onBackPressedDescartarConfirmar(
                 RegisterProductActivity.this,
                 RegisterProductActivity.this);
     }
@@ -174,7 +174,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         String nomeEditText = mEtNome.getText().toString().trim();
         String precoEditText = mEtPreco.getText().toString().trim();
 
-        double precoDouble = Formatar.formatarParaDouble(precoEditText);
+        double precoDouble = Formatting.formatarParaDouble(precoEditText);
 
         // Campo não pode ficar vazio
         if (TextUtils.isEmpty(nomeEditText)) {
@@ -315,7 +315,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtPreco.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
+                mEtPreco.setText(Formatting.formatarParaCurrency(charSequence.toString().trim()));
                 mEtPreco.setSelection(mEtPreco.getText().length());
             }
 

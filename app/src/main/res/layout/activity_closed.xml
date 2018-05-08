@@ -10,32 +10,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/margin_padrao_16"
-        android:paddingEnd="@dimen/margin_padrao_16"
-        android:paddingStart="@dimen/margin_padrao_16"
-        android:paddingTop="@dimen/margin_padrao_8">
+        android:paddingBottom="@dimen/margin_default_16"
+        android:paddingEnd="@dimen/margin_default_16"
+        android:paddingStart="@dimen/margin_default_16"
+        android:paddingTop="@dimen/margin_default_8">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padrao_16"
-            android:elevation="@dimen/margin_padrao_16"
+            android:layout_marginBottom="@dimen/margin_default_16"
+            android:elevation="@dimen/margin_default_16"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padrao_16"
-                android:layout_marginEnd="@dimen/margin_padrao_4"
-                android:layout_marginStart="@dimen/margin_padrao_4"
-                android:layout_marginTop="@dimen/margin_padrao_4"
+                android:layout_marginBottom="@dimen/margin_default_16"
+                android:layout_marginEnd="@dimen/margin_default_4"
+                android:layout_marginStart="@dimen/margin_default_4"
+                android:layout_marginTop="@dimen/margin_default_4"
                 android:orientation="vertical">
 
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_16"
+                    android:layout_marginBottom="@dimen/margin_default_16"
                     app:cardBackgroundColor="@color/colorRed"
                     app:cardCornerRadius="8dp">
 
@@ -45,10 +45,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/margin_padrao_4"
-                        android:paddingEnd="@dimen/margin_padrao_16"
-                        android:paddingStart="@dimen/margin_padrao_16"
-                        android:paddingTop="@dimen/margin_padrao_4"
+                        android:paddingBottom="@dimen/margin_default_4"
+                        android:paddingEnd="@dimen/margin_default_16"
+                        android:paddingStart="@dimen/margin_default_16"
+                        android:paddingTop="@dimen/margin_default_4"
                         android:text="@string/text_fechamento_titulo_caixa"
                         android:textColor="@color/colorWhite" />
 
@@ -71,23 +71,23 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padrao_16"
-            android:elevation="@dimen/margin_padrao_16"
+            android:layout_marginBottom="@dimen/margin_default_16"
+            android:elevation="@dimen/margin_default_16"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padrao_16"
-                android:layout_marginEnd="@dimen/margin_padrao_4"
-                android:layout_marginStart="@dimen/margin_padrao_4"
-                android:layout_marginTop="@dimen/margin_padrao_4"
+                android:layout_marginBottom="@dimen/margin_default_16"
+                android:layout_marginEnd="@dimen/margin_default_4"
+                android:layout_marginStart="@dimen/margin_default_4"
+                android:layout_marginTop="@dimen/margin_default_4"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_16"
+                    android:layout_marginBottom="@dimen/margin_default_16"
                     app:cardBackgroundColor="@color/colorRed"
                     app:cardCornerRadius="8dp">
 
@@ -96,10 +96,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/margin_padrao_4"
-                        android:paddingEnd="@dimen/margin_padrao_16"
-                        android:paddingStart="@dimen/margin_padrao_16"
-                        android:paddingTop="@dimen/margin_padrao_4"
+                        android:paddingBottom="@dimen/margin_default_4"
+                        android:paddingEnd="@dimen/margin_default_16"
+                        android:paddingStart="@dimen/margin_default_16"
+                        android:paddingTop="@dimen/margin_default_4"
                         android:text="@string/text_fechamento_titulo_movimento"
                         android:textColor="@color/colorWhite" />
 
@@ -110,14 +110,14 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8" />
+                    android:layout_marginBottom="@dimen/margin_default_8" />
 
                 <TextView
                     android:id="@+id/tv_fechamento_valor_vendas_vista"
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
@@ -125,7 +125,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
@@ -133,7 +133,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
@@ -151,23 +151,23 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padrao_16"
-            android:elevation="@dimen/margin_padrao_16"
+            android:layout_marginBottom="@dimen/margin_default_16"
+            android:elevation="@dimen/margin_default_16"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padrao_16"
-                android:layout_marginEnd="@dimen/margin_padrao_4"
-                android:layout_marginStart="@dimen/margin_padrao_4"
-                android:layout_marginTop="@dimen/margin_padrao_4"
+                android:layout_marginBottom="@dimen/margin_default_16"
+                android:layout_marginEnd="@dimen/margin_default_4"
+                android:layout_marginStart="@dimen/margin_default_4"
+                android:layout_marginTop="@dimen/margin_default_4"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_16"
+                    android:layout_marginBottom="@dimen/margin_default_16"
                     app:cardBackgroundColor="@color/colorRed"
                     app:cardCornerRadius="8dp">
 
@@ -176,10 +176,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/margin_padrao_4"
-                        android:paddingEnd="@dimen/margin_padrao_16"
-                        android:paddingStart="@dimen/margin_padrao_16"
-                        android:paddingTop="@dimen/margin_padrao_4"
+                        android:paddingBottom="@dimen/margin_default_4"
+                        android:paddingEnd="@dimen/margin_default_16"
+                        android:paddingStart="@dimen/margin_default_16"
+                        android:paddingTop="@dimen/margin_default_4"
                         android:text="@string/text_fechamento_titulo_informacoes"
                         android:textColor="@color/colorWhite" />
 
@@ -190,7 +190,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
                 <TextView
@@ -198,7 +198,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
 
@@ -207,7 +207,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
                 <TextView
@@ -215,7 +215,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
@@ -223,7 +223,7 @@
                     style="@style/TituloFechamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorRed" />
 
                 <TextView
@@ -241,23 +241,23 @@
             android:id="@+id/cv_fechamento_clientes_prazo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padrao_8"
-            android:elevation="@dimen/margin_padrao_16"
+            android:layout_marginBottom="@dimen/margin_default_8"
+            android:elevation="@dimen/margin_default_16"
             android:visibility="gone"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_padrao_4"
-                android:layout_marginStart="@dimen/margin_padrao_4"
-                android:layout_marginTop="@dimen/margin_padrao_4"
+                android:layout_marginEnd="@dimen/margin_default_4"
+                android:layout_marginStart="@dimen/margin_default_4"
+                android:layout_marginTop="@dimen/margin_default_4"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_padrao_16"
+                    android:layout_marginBottom="@dimen/margin_default_16"
                     app:cardBackgroundColor="@color/colorRed"
                     app:cardCornerRadius="8dp">
 
@@ -266,10 +266,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/margin_padrao_4"
-                        android:paddingEnd="@dimen/margin_padrao_16"
-                        android:paddingStart="@dimen/margin_padrao_16"
-                        android:paddingTop="@dimen/margin_padrao_4"
+                        android:paddingBottom="@dimen/margin_default_4"
+                        android:paddingEnd="@dimen/margin_default_16"
+                        android:paddingStart="@dimen/margin_default_16"
+                        android:paddingTop="@dimen/margin_default_4"
                         android:text="@string/text_fechamento_titulo_clientes"
                         android:textColor="@color/colorWhite" />
 
@@ -281,8 +281,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-condensed"
-                    android:paddingEnd="@dimen/margin_padrao_4"
-                    android:paddingStart="@dimen/margin_padrao_4"
+                    android:paddingEnd="@dimen/margin_default_4"
+                    android:paddingStart="@dimen/margin_default_4"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />

@@ -15,12 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.constantes.Const;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarDoubleParaCurrency;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarParaCurrency;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatar.formatarParaDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.doubleToCurrency;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarParaCurrency;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarParaDouble;
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.*;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
 
@@ -59,7 +59,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
         mEtValorRecebido.requestFocus();
 
-        mTvValorVenda.setText(Formatar.formatarDoubleParaCurrency(mValorVenda));
+        mTvValorVenda.setText(Formatting.doubleToCurrency(mValorVenda));
         mEtValorRecebido.setOnTouchListener(this);
 
         mButLimpar.setOnClickListener(this);
@@ -93,7 +93,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
         Log.v(TAG, "calcularTroco");
 
         mValorRecebido = formatarParaDouble(mEtValorRecebido.getText().toString().trim());
-        mTextoErro = String.format(getResources().getString(R.string.valor_maior), formatarDoubleParaCurrency(mValorVenda));
+        mTextoErro = String.format(getResources().getString(R.string.valor_maior), doubleToCurrency(mValorVenda));
 
         if (mValorVenda != 0 && mValorRecebido != 0) {
 
@@ -105,7 +105,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
             } else {
 
-                mTvTroco.setText(formatarDoubleParaCurrency(mValorRecebido - mValorVenda));
+                mTvTroco.setText(doubleToCurrency(mValorRecebido - mValorVenda));
                 mTvTrocoLabel.setText(getString(R.string.valor_troco));
                 mEtValorRecebido.setError(null);
             }

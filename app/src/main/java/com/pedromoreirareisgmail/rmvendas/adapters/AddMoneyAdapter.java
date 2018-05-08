@@ -9,18 +9,18 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
-public class EntAdapter extends CursorAdapter {
+public class AddMoneyAdapter extends CursorAdapter {
 
     /**
      * Construtor
      *
      * @param context Contexto da Activity
      */
-    public EntAdapter(Context context) {
+    public AddMoneyAdapter(Context context) {
         super(context, null, 0);
     }
 
@@ -41,7 +41,7 @@ public class EntAdapter extends CursorAdapter {
     /**
      * Coloca informações nos itens(views) do layout a partir de dados de um Cursor
      *
-     * @param view    Um unico item do layout
+     * @param view    item do layout
      * @param context Contexto da Activity
      * @param cursor  Cursor com dados de uma pesquisa no BD
      */
@@ -50,30 +50,28 @@ public class EntAdapter extends CursorAdapter {
 
         EntViewHolder holder = new EntViewHolder(view);
 
-        /* Valor, hora e descrição de uma entrada */
-        double valor = cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
-        String hora = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
-        String descricao = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
+        /* Recebe o valor, hora e descrição de uma entrada do caixa */
+        double value = cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
+        String hour = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
+        String description = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
 
-        holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
-        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(hora));
-        holder.tvDescricao.setText(descricao);
+        holder.tvValue.setText(Formatting.doubleToCurrency(value));
+        holder.tvHour.setText(TimeData.formatDateToHourAndMinute(hour));
+        holder.tvDescription.setText(description);
     }
 
-    /*
-     *   Cria o ViewHolder para gerenciar a criação de itens(views)
-     */
+    /* Cria o ViewHolder para gerenciar a criação de itens(views) */
     class EntViewHolder {
 
-        final TextView tvValor;
-        final TextView tvHoraMinuto;
-        final TextView tvDescricao;
+        final TextView tvValue;
+        final TextView tvHour;
+        final TextView tvDescription;
 
         public EntViewHolder(View view) {
 
-            tvValor = view.findViewById(R.id.tv_ent_ret_valor_list);
-            tvHoraMinuto = view.findViewById(R.id.tv_ent_ret_hora_list);
-            tvDescricao = view.findViewById(R.id.tv_ent_ret_desconto_list);
+            tvValue = view.findViewById(R.id.tv_add_remove_list_value);
+            tvHour = view.findViewById(R.id.tv_add_remove_list_hour);
+            tvDescription = view.findViewById(R.id.tv_add_remove_list_description);
         }
     }
 }

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Array para o Dialog Editar ou Excluir registro-->
-    <string-array name="array_editar_excluir_prod">
+    <string-array name="array_edit_delete">
         <item>Editar</item>
         <item>Excluir</item>
     </string-array>

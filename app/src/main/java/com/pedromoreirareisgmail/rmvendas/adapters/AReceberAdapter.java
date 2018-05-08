@@ -9,8 +9,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
@@ -58,9 +58,9 @@ public class AReceberAdapter extends CursorAdapter {
         int tipoEntradaBD = cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE));
 
         /* Data, Descrição e Valor do Registro*/
-        String dataBD = DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP)));
+        String dataBD = TimeData.formatDateBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP)));
         String descricaoBD = cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION));
-        String valorBD = Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE)));
+        String valorBD = Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE)));
 
         /*  Recebimento - fonte do registro fica Azul
          *   Venda - fonte do registro fica vermelha

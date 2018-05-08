@@ -9,8 +9,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 
 public class SaldoInicialAdapter extends CursorAdapter {
@@ -55,8 +55,8 @@ public class SaldoInicialAdapter extends CursorAdapter {
         double valor = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
         String hora = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
 
-        holder.tvValor.setText(Formatar.formatarDoubleParaCurrency(valor));
-        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(hora));
+        holder.tvValor.setText(Formatting.doubleToCurrency(valor));
+        holder.tvHoraMinuto.setText(TimeData.formatDateToHourAndMinute(hora));
     }
 
     /*

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_padrao_16">
+    android:padding="@dimen/margin_default_16">
 
 
     <LinearLayout
@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/tv_clientes_nome_list"
-            style="@style/DestaqueNegrito"
+            style="@style/textViewBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -36,7 +36,7 @@
 
         <TextView
             android:id="@+id/tv_clientes_valor_receber_list"
-            style="@style/DireitaNormal"
+            style="@style/textViewRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical|end"

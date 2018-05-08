@@ -15,5 +15,5 @@ public class Const {
 
 
     /*Códigos de Result - startActivityForResult*/
-    public static final int COD_RESULT_VENDA_CLIENTES = 1001;
+    public static final int COD_RESULT_VENDA_CLIENTES = 10001;
 }

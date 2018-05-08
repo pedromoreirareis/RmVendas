@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.adapters.ClientesAdapter;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents;
 
@@ -187,7 +187,7 @@ public class ListClientActivity extends AppCompatActivity implements
         String mensagemExcluir = mAdapter.getCursor().getString(
                 cursor.getColumnIndex(EntryClient.COLUMN_NAME));
 
-        Dialogos.dialogoEditarExcluir(
+        Messages.editOurDelete(
                 ListClientActivity.this,
                 RegisterClientActivity.class,
                 uri,

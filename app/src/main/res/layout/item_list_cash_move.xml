@@ -3,25 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_padrao_16">
+    android:padding="@dimen/margin_default_16">
 
     <TextView
-        android:id="@+id/tv_ent_ret_valor_list"
-        style="@style/DestaqueNegrito"
+        android:id="@+id/tv_add_remove_list_value"
+        style="@style/textViewBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3" />
 
     <TextView
-        android:id="@+id/tv_ent_ret_desconto_list"
-        style="@style/DetalhesItemLabelEntRet"
+        android:id="@+id/tv_add_remove_list_description"
+        style="@style/textViewDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="7" />
 
     <TextView
-        android:id="@+id/tv_ent_ret_hora_list"
-        style="@style/DireitaNormal"
+        android:id="@+id/tv_add_remove_list_hour"
+        style="@style/textViewRight"
         android:layout_width="44dp"
         android:layout_height="wrap_content" />
 </LinearLayout>

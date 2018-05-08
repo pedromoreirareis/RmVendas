@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.constantes.Const;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
@@ -86,17 +86,17 @@ public class MainAdapter extends CursorAdapter {
                 valorDesconto,
                 valorAPrazo);
 
-        String valorVendaString = String.format(context.getResources().getString(R.string.text_item_main_valor_preco), Formatar.formatarDoubleParaCurrency(valorPrecoVenda));
-        String valorAdicionalString = String.format(context.getResources().getString(R.string.text_item_main_valor_adicional), Formatar.formatarDoubleParaCurrency(valorAdicional));
-        String valorDescontoString = String.format(context.getResources().getString(R.string.text_item_main_valor_desconto), Formatar.formatarDoubleParaCurrency(valorDesconto));
+        String valorVendaString = String.format(context.getResources().getString(R.string.text_item_main_valor_preco), Formatting.doubleToCurrency(valorPrecoVenda));
+        String valorAdicionalString = String.format(context.getResources().getString(R.string.text_item_main_valor_adicional), Formatting.doubleToCurrency(valorAdicional));
+        String valorDescontoString = String.format(context.getResources().getString(R.string.text_item_main_valor_desconto), Formatting.doubleToCurrency(valorDesconto));
 
-        String valorTotalString = String.format(context.getResources().getString(R.string.text_item_main_valor_total), Formatar.formatarDoubleParaCurrency(valorTotal));
-        String valorAPrazoString = String.format(context.getResources().getString(R.string.text_item_main_valor_prazo), Formatar.formatarDoubleParaCurrency(valorAPrazo));
-        String valorAVistaString = String.format(context.getResources().getString(R.string.text_item_main_valor_a_vista), Formatar.formatarDoubleParaCurrency(valorAVista));
+        String valorTotalString = String.format(context.getResources().getString(R.string.text_item_main_valor_total), Formatting.doubleToCurrency(valorTotal));
+        String valorAPrazoString = String.format(context.getResources().getString(R.string.text_item_main_valor_prazo), Formatting.doubleToCurrency(valorAPrazo));
+        String valorAVistaString = String.format(context.getResources().getString(R.string.text_item_main_valor_a_vista), Formatting.doubleToCurrency(valorAVista));
 
         holder.tvQuantidade.setText(String.valueOf(quantidadeProduto));
         holder.tvNomeProduto.setText(nomeProduto);
-        holder.tvHoraMinuto.setText(DataHora.formatarHoraMinutoBr(horaMinuto));
+        holder.tvHoraMinuto.setText(TimeData.formatDateToHourAndMinute(horaMinuto));
 
         holder.tvValorVenda.setText(valorVendaString);
 

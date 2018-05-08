@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
@@ -82,10 +82,10 @@ public class ClosedActivity extends AppCompatActivity implements
         pegarDataDialogCalendario();
 
         // coloca titulo na Activity  juntamente com a data da pesquisa
-        setTitle(String.format(getResources().getString(R.string.title_fechamento), DataHora.obterFormatarDataBrTitulo()));
+        setTitle(String.format(getResources().getString(R.string.title_fechamento), TimeData.getDateTitleBr()));
 
         // Data do dia para pesquisa no BD
-        mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
+        mDataPesquisarBD = TimeData.formatDateSearch(TimeData.getDateTime());
 
         // Inicia as pesquisas com a data do dia
         getLoaderManager().initLoader(LOADER_ENTRADAS_RETIRADAS, null, this);
@@ -120,7 +120,7 @@ public class ClosedActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_data, menu);
+        getMenuInflater().inflate(R.menu.menu_date, menu);
 
         return true;
     }
@@ -131,9 +131,9 @@ public class ClosedActivity extends AppCompatActivity implements
         Log.v(TAG, "onOptionsItemSelected");
 
         // Abre o Dialog de data para fazer pesquisa por data
-        if (item.getItemId() == R.id.action_data) {
+        if (item.getItemId() == R.id.action_date) {
 
-            Dialogos.dialogoDatas(ClosedActivity.this, mDateSetListener);
+            Messages.dialogDate(ClosedActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);
@@ -427,10 +427,10 @@ public class ClosedActivity extends AppCompatActivity implements
 
                 zeraVariaveisValores();
 
-                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisarBD = TimeData.getDateSearchDB(year, month, day);
 
                 setTitle(String.format(getResources().getString(R.string.title_fechamento),
-                        DataHora.dateSetListenerDataBrTitulo(year, month, day)));
+                        TimeData.getDateTitleBr(year, month, day)));
 
                 reiniciarPesquisas();
             }

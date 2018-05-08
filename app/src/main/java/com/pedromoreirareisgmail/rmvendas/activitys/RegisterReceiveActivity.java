@@ -25,16 +25,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.adapters.AReceberAdapter;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.DataHora.obterDataHoraSistema;
+import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
 import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
@@ -176,7 +176,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Dialogos.homeDescartarConfirmar(
+                Messages.homeDescartarConfirmar(
                         RegisterReceiveActivity.this,
                         RegisterReceiveActivity.this);
 
@@ -217,7 +217,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Dialogos.onBackPressedDescartarConfirmar(
+        Messages.onBackPressedDescartarConfirmar(
                 RegisterReceiveActivity.this,
                 RegisterReceiveActivity.this);
     }
@@ -255,7 +255,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         String descricaoEditText = mEtDescricao.getText().toString().trim();
         String valorEditText = mEtValor.getText().toString().trim();
 
-        double valor = Formatar.formatarParaDouble(valorEditText);
+        double valor = Formatting.formatarParaDouble(valorEditText);
 
         isDadosAlterado = valor > 0 || !descricaoEditText.isEmpty();
     }
@@ -270,7 +270,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         String descricaoEditText = mEtDescricao.getText().toString().trim();
         String valorEditText = mEtValor.getText().toString().trim();
 
-        double valorDouble = Formatar.formatarParaDouble(valorEditText);
+        double valorDouble = Formatting.formatarParaDouble(valorEditText);
 
         // Campo não pode ser vazio
         if (TextUtils.isEmpty(descricaoEditText)) {
@@ -301,7 +301,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
         values.put(EntryReceive._ID, Integer.parseInt(mIdCliente));
         values.put(EntryReceive.COLUMN_CLIENT_NAME, SearchDB.Pesquisarcliente(RegisterReceiveActivity.this, Integer.parseInt(mIdCliente)));
-        values.put(EntryReceive.COLUMN_TIMESTAMP, obterDataHoraSistema());
+        values.put(EntryReceive.COLUMN_TIMESTAMP, getDateTime());
         values.put(EntryReceive.COLUMN_DESCRIPTION, descricaoEditText);
         values.put(EntryReceive.COLUMN_TYPE, tipoEntrada);
         values.put(EntryReceive.COLUMN_VALUE, valorDouble);
@@ -381,14 +381,14 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
                     mTvTotal.setTextColor(getResources().getColor(R.color.colorRed));
                     mTvTotal.setText(
                             String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
-                                    Formatar.formatarDoubleParaCurrency(mValorTotal)));
+                                    Formatting.doubleToCurrency(mValorTotal)));
 
                 } else {
 
                     mTvTotal.setTextColor(getResources().getColor(R.color.colorBlue));
                     mTvTotal.setText(
                             String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
-                                    Formatar.formatarDoubleParaCurrency(mValorTotal)));
+                                    Formatting.doubleToCurrency(mValorTotal)));
                 }
 
                 cursor.moveToNext();
@@ -459,7 +459,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtValor.setText(Formatar.formatarParaCurrency(charSequence.toString().trim()));
+                mEtValor.setText(Formatting.formatarParaCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
             }
 
@@ -501,12 +501,12 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         }
 
         String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_registro_a_receber),
-                DataHora.formatarDataBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
-                DataHora.formatarHoraMinutoBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
+                TimeData.formatDateBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
+                TimeData.formatDateToHourAndMinute(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
                 cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION)),
-                Formatar.formatarDoubleParaCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE))));
+                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE))));
 
-        Dialogos.dialogoExibirDados(RegisterReceiveActivity.this, tituloDialogTipo, mensagemDialog);
+        Messages.displayData(RegisterReceiveActivity.this, tituloDialogTipo, mensagemDialog);
     }
 
     @Override

@@ -6,17 +6,17 @@
     <dimen name="nav_header_height">160dp</dimen>
 
     <!-- Espaçamentos de margin e padding padrões -->
-    <dimen name="margin_padrao_1">1dp</dimen>
-    <dimen name="margin_padrao_2">2dp</dimen>
-    <dimen name="margin_padrao_4">4dp</dimen>
-    <dimen name="margin_padrao_8">8dp</dimen>
-    <dimen name="margin_padrao_12">12dp</dimen>
-    <dimen name="margin_padrao_16">16dp</dimen>
-    <dimen name="margin_padrao_32">32dp</dimen>
-    <dimen name="margin_padrao_48">48dp</dimen>
+    <dimen name="margin_default_1">1dp</dimen>
+    <dimen name="margin_default_2">2dp</dimen>
+    <dimen name="margin_default_4">4dp</dimen>
+    <dimen name="margin_default_8">8dp</dimen>
+    <dimen name="margin_default_12">12dp</dimen>
+    <dimen name="margin_default_16">16dp</dimen>
+    <dimen name="margin_default_32">32dp</dimen>
+    <dimen name="margin_default_48">48dp</dimen>
 
     <!-- Espaçamentos de margin e padding padrões -->
-    <dimen name="sizeTextSaldo_32">28dp</dimen>
+    <dimen name="sizeTextBalance_32">28dp</dimen>
 
     <!-- Dimensões de Alturas e Larguras de margin e padding -->
     <dimen name="image_empty_196">196dp</dimen>

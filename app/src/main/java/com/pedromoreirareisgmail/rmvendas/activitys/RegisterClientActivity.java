@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.constantes.Const;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
@@ -159,7 +159,7 @@ public class RegisterClientActivity extends AppCompatActivity implements
                         };
 
                 // Chama o metodo para descartar alterações
-                Dialogos.dialogoConfirmarAlteracao(
+                Messages.dialogoConfirmarAlteracao(
                         RegisterClientActivity.this,
                         descartarButClickListener
                 );
@@ -182,7 +182,7 @@ public class RegisterClientActivity extends AppCompatActivity implements
         }
 
 
-        Dialogos.onBackPressedDescartarConfirmar(
+        Messages.onBackPressedDescartarConfirmar(
                 RegisterClientActivity.this,
                 RegisterClientActivity.this);
     }

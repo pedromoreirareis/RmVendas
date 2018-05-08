@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/margin_padrao_16"
-    android:paddingLeft="@dimen/margin_padrao_16"
-    android:paddingRight="@dimen/margin_padrao_16"
-    android:paddingTop="@dimen/margin_padrao_16">
+    android:paddingBottom="@dimen/margin_default_16"
+    android:paddingLeft="@dimen/margin_default_16"
+    android:paddingRight="@dimen/margin_default_16"
+    android:paddingTop="@dimen/margin_default_16">
 
     <TextView
         android:id="@+id/tv_produto_nome"
-        style="@style/DestaqueNegrito"
+        style="@style/textViewBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />

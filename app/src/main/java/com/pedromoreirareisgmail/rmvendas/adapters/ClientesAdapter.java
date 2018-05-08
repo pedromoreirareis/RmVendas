@@ -10,7 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatar;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.DbHelper;
 
@@ -70,12 +70,12 @@ public class ClientesAdapter extends CursorAdapter {
         if (valorAReceber < 0) {
 
             holder.tvValorReceber.setTextColor(context.getResources().getColor(R.color.colorRed));
-            holder.tvValorReceber.setText(Formatar.formatarDoubleParaCurrency(valorAReceber));
+            holder.tvValorReceber.setText(Formatting.doubleToCurrency(valorAReceber));
 
         } else {
 
             holder.tvValorReceber.setTextColor(context.getResources().getColor(R.color.colorBlue));
-            holder.tvValorReceber.setText(Formatar.formatarDoubleParaCurrency(valorAReceber));
+            holder.tvValorReceber.setText(Formatting.doubleToCurrency(valorAReceber));
         }
 
     }

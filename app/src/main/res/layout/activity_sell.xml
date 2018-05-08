@@ -10,17 +10,17 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_padrao_16"
-        android:layout_marginRight="@dimen/margin_padrao_16"
-        android:layout_marginTop="@dimen/margin_padrao_8"
+        android:layout_marginLeft="@dimen/margin_default_16"
+        android:layout_marginRight="@dimen/margin_default_16"
+        android:layout_marginTop="@dimen/margin_default_8"
         app:cardBackgroundColor="@color/colorAccent"
-        app:cardCornerRadius="@dimen/margin_padrao_8"
-        app:cardElevation="@dimen/margin_padrao_8">
+        app:cardCornerRadius="@dimen/margin_default_8"
+        app:cardElevation="@dimen/margin_default_8">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padrao_8"
+            android:layout_margin="@dimen/margin_default_8"
             android:orientation="horizontal">
 
             <TextView
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:paddingEnd="@dimen/margin_padrao_8"
+                android:paddingEnd="@dimen/margin_default_8"
                 android:textColor="@color/colorWhite" />
 
             <TextView
@@ -60,16 +60,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/margin_padrao_16"
-            android:paddingEnd="@dimen/margin_padrao_16"
-            android:paddingStart="@dimen/margin_padrao_16">
+            android:paddingBottom="@dimen/margin_default_16"
+            android:paddingEnd="@dimen/margin_default_16"
+            android:paddingStart="@dimen/margin_default_16">
 
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="@dimen/margin_padrao_8">
+                android:layout_marginTop="@dimen/margin_default_8">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/et_vend_quant_quantidade"
@@ -158,7 +158,7 @@
                 android:id="@+id/switch_vend_quant_prazo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padrao_8"
+                android:layout_marginTop="@dimen/margin_default_8"
                 android:text="@string/text_a_prazo" />
 
             <LinearLayout
@@ -171,8 +171,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/margin_padrao_8"
-                    android:layout_marginTop="@dimen/margin_padrao_8"
+                    android:layout_marginBottom="@dimen/margin_default_8"
+                    android:layout_marginTop="@dimen/margin_default_8"
                     android:orientation="horizontal">
 
                     <Button
@@ -191,11 +191,11 @@
 
                     <TextView
                         android:id="@+id/tv_vend_quant_cliente"
-                        style="@style/DestaqueNegrito"
+                        style="@style/textViewBold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/margin_padrao_16"
+                        android:layout_marginStart="@dimen/margin_default_16"
                         android:layout_weight="6"
                         android:ellipsize="end"
                         android:gravity="center_vertical" />
@@ -206,7 +206,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_padrao_8">
+                    android:layout_marginTop="@dimen/margin_default_8">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/et_vend_quant_valor_prazo"

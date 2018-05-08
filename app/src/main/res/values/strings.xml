@@ -12,6 +12,10 @@
     <string name="app_name">Rm Vendas</string>
 
     <!-- ***************************   Title Activitys ******************************************-->
+    <string name="title_add_money_list">Entradas  %1$s</string>
+    <string name="title_remove_money_list">Retiradas  %1$s</string>
+
+
     <string name="title_entrada_cad_add">Adicionar entrada</string>
     <string name="title_entrada_cad_edit">Editar entrada</string>
     <string name="title_produto_cad_add">Adicionar produto</string>
@@ -24,8 +28,7 @@
     <string name="title_venda_edit">Editar venda</string>
     <string name="title_venda_list">Produtos cadastrados</string>
     <string name="title_produto_list">Produtos</string>
-    <string name="title_retirada_list">Retiradas  %1$s</string>
-    <string name="title_entrada_list">Entradas  %1$s</string>
+
     <string name="title_saldo_inicial_list">Saldo inicial  %1$s</string>
     <string name="title_fechamento">Caixa  %1$s</string>
     <string name="title_clientes_list">Clientes</string>
@@ -60,26 +63,32 @@
     <string name="menu_caixa_title_drawer">Caixa</string>
 
 
-    <!-- ************************    Image Description ***************************************** -->
+    <!-- ************************    Descricao das Imagens ************************************* -->
+    <string name="descr_add_money_empty">Imagem de um cifrão e um seta para cima</string>
+    <string name="descr_remove_money_empty">Imagem de um cifrão e um seta para baixo</string>
+
     <string name="image_desc_main_empty">Imagem de um bolo</string>
     <string name="image_desc_produto_list_empty">Imagem de uma lista vazia</string>
-    <string name="image_desc_entrada_list_empty">Imagem de um cifrão e um seta para cima</string>
-    <string name="image_desc_retirada_list_empty">Imagem de um cifrão e um seta para baixo</string>
+
+
     <string name="image_desc_clientes_list_empty">Imagem cliente</string>
     <string name="image_desc_saldo_inicial_list_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
 
 
-    <!-- ************************    Textos **************************************************** -->
+    <!-- *******************************  Textos  ********************************************** -->
+    <string name="text_add_money_empty">Nenhuma entrada cadastrada !!!</string>
+    <string name="text_remove_money_empty">Nenhuma retirada cadastrada !!!</string>
+
     <string name="text_main_empty">Nenhuma venda realizada !!!</string>
     <string name="text_produto_list_empty">Nenhum produto cadastrado !!!</string>
     <string name="text_venda_list_empty">Que pena… não há produtos cadastrados !!!</string>
-    <string name="text_entrada_list_empty">Nenhuma entrada cadastrada !!!</string>
+
     <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
     <string name="text_clientes_list_empty_pesquisa">Nenhum cliente para essa pesquisa !!!</string>
     <string name="text_saldo_inicial_list_empty">Saldo inicial não foi cadastrado !!!</string>
-    <string name="text_retirada_list_empty">Nenhuma retirada cadastrada !!!</string>
+
     <string name="text_adicional">Adicional</string>
     <string name="text_desconto">Desconto</string>
     <string name="text_a_prazo">A prazo</string>
@@ -160,18 +169,23 @@
 
     <!--TODO: Aqui temos que usar o Formatações de Strings String.format xliff-->
     <!-- ************************    Mensagens dialog excluir ********************************** -->
-    <string name="dialog_exc_edit_tilte">O que deseja?</string>
-    <string name="dialog_exc_edit_sucesso">Registro excluido com sucesso</string>
-    <string name="dialog_exc_edit_erro">Erro ao excluir o registro </string>
-    <string name="dialog_exc_edit_conf_exc_title">Realmente deseja excluir?</string>
-    <string name="dialog_exc_edit_conf_exc_excluir">Excluir</string>
-    <string name="dialog_exc_edit_conf_exc_cancelar">Cancelar</string>
+    <string name="dialog_edit_del_title">O que deseja?</string>
+    <string name="dialog_edit_del_conf_delete_title">Realmente deseja excluir?</string>
+    <string name="dialog_edit_del_sucess">Registro excluido com sucesso</string>
+    <string name="dialog_edit_del_error">Erro ao excluir o registro </string>
+
+
+
+    <string name="dialog_edit_del_conf_delete_del">Excluir</string>
+    <string name="dialog_edit_del_conf_delete_cancel">Cancelar</string>
+
     <string name="dialog_exc_edit_texto_excluir_saldo_inicial">
         Saldo inicial
         \n\nValor: %1$s
         \n\nData: %2$s
     </string>
-    <string name="dialog_exc_edit_texto_excluir_valor">
+
+    <string name="dialog_edit_del_message_delete">
         Descrição: %1$s
         \n\nValor: %2$s
         \n\nHora: %3$s
@@ -185,11 +199,14 @@
 
 
     <!-- ************************    Mensagens dialog informações ****************************** -->
+    <string name="dialog_inf_title_add_money">Entrada</string>
+
     <string name="dialog_informacao_produto_title">Produto</string>
-    <string name="dialog_informacao_entrada_title">Entrada</string>
+
     <string name="dialog_informacao_retirada_title">Retirada</string>
     <string name="dialog_informacao_saldo_inicial_title">Saldo Inicial</string>
-    <string name="dialog_informacao_entrada_retirada_list">
+
+    <string name="dialog_inf_add_remove_money_list">
         \nValor:  %1$s
         \n\n
         Descrição:   %2$s

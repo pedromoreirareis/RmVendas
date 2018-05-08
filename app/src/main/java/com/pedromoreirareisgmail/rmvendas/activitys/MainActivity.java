@@ -30,8 +30,8 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
-import com.pedromoreirareisgmail.rmvendas.Utils.DataHora;
-import com.pedromoreirareisgmail.rmvendas.Utils.Dialogos;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.adapters.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 
@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity
         pegarDataDialogCalendario();
 
         // Adiciona data como Titulo da Activity
-        setTitle(DataHora.obterFormatarDataBrTitulo());
+        setTitle(TimeData.getDateTitleBr());
 
         // Pega data do sistema para iniciar pesquisa no banco de dados
-        mDataPesquisarBD = DataHora.formatarDataPesquisarBancoDados(DataHora.obterDataHoraSistema());
+        mDataPesquisarBD = TimeData.formatDateSearch(TimeData.getDateTime());
 
         // Inicia Pesquisa no banco de dados
         getLoaderManager().initLoader(LOADER_MAIN, null, this);
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity
 
             // Item Calendario - Abre para fazer uma pesquisa por data no BD vendas
             case R.id.action_data_main:
-                Dialogos.dialogoDatas(MainActivity.this, mDateSetListener);
+                Messages.dialogDate(MainActivity.this, mDateSetListener);
                 return true;
         }
 
@@ -337,9 +337,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisarBD = DataHora.dateSetListenerPesquisarBancoDados(year, month, day);
+                mDataPesquisarBD = TimeData.getDateSearchDB(year, month, day);
 
-                setTitle(DataHora.dateSetListenerDataBrTitulo(year, month, day));
+                setTitle(TimeData.getDateTitleBr(year, month, day));
 
                 getLoaderManager().restartLoader(LOADER_MAIN, null, MainActivity.this);
             }
@@ -429,7 +429,7 @@ public class MainActivity extends AppCompatActivity
         String mensagemExcluir = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)) + "  "
                 + cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
 
-        Dialogos.dialogoEditarExcluir(
+        Messages.editOurDelete(
                 MainActivity.this,
                 SellActivity.class,
                 uri,
