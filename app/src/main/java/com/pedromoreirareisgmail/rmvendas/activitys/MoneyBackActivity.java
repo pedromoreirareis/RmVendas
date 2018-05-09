@@ -16,13 +16,13 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.constantes.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.doubleToCurrency;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarParaCurrency;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarParaDouble;
-import static com.pedromoreirareisgmail.rmvendas.constantes.Const.*;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
 
 public class MoneyBackActivity extends AppCompatActivity implements
         EditText.OnTouchListener,

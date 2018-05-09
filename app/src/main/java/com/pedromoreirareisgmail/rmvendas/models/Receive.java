@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class Receive {
 
-    private int id;
+    private long id;
     private Uri uri;
     private int clientId;
     private String clientName;

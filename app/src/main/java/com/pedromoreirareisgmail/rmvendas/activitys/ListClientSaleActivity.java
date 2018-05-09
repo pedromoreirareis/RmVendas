@@ -22,8 +22,8 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.adapters.ClientesAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ACTIVITY_CHAMOU;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.VEND_LIST_CLIENTES_ACTIVITY;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ACTIVITY_CALLED;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.VEND_LIST_CLIENTES_ACTIVITY;
 
 
 public class ListClientSaleActivity extends AppCompatActivity implements
@@ -256,7 +256,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
                     new Intent(ListClientSaleActivity.this, RegisterClientActivity.class);
 
             Bundle bundle = new Bundle();
-            bundle.putString(ACTIVITY_CHAMOU, VEND_LIST_CLIENTES_ACTIVITY);
+            bundle.putString(ACTIVITY_CALLED, VEND_LIST_CLIENTES_ACTIVITY);
 
             intentCadastroClientes.putExtras(bundle);
 

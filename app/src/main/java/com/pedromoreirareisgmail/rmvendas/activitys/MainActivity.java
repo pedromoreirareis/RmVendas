@@ -35,7 +35,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.adapters.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,

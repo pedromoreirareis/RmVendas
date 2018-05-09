@@ -20,10 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.adapters.ProdAdapter;
+import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
 
 public class ListProductSaleActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -38,7 +38,7 @@ public class ListProductSaleActivity extends AppCompatActivity implements
     private ListView mListView;
     private View mEmptyView;
 
-    private ProdAdapter mAdapter;
+    private ProductAdapter mAdapter;
 
     private String mProdutoPesquisarBD = "";
 
@@ -53,7 +53,7 @@ public class ListProductSaleActivity extends AppCompatActivity implements
         emptyLayout();
 
         // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new ProdAdapter(this);
+        mAdapter = new ProductAdapter(this);
         mListView.setAdapter(mAdapter);
 
         // Clique simples e Longo no ListView
@@ -81,7 +81,7 @@ public class ListProductSaleActivity extends AppCompatActivity implements
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_venda_list_empty);
         mIvEmpty.setImageResource(R.drawable.ic_coracao_partido);
-        mIvEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
+        mIvEmpty.setContentDescription(getString(R.string.descr_product_empty));
         mListView.setEmptyView(mEmptyView);
     }
 

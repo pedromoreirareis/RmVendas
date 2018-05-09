@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class Opening {
 
-    private int id;
+    private long id;
     private Uri uri;
     private String timestamp;
     private String value;

@@ -34,8 +34,8 @@ import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.constantes.Const;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
@@ -50,8 +50,8 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSe
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsInt;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsString;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ADICIONAR;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ADICIONAR_VENDA;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ADICIONAR;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ADICIONAR_VENDA;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 

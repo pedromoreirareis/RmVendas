@@ -51,7 +51,7 @@
         </activity>
         <activity
             android:name=".activitys.ListRemoveMoneyActivity"
-            android:label="@string/title_retirada_list"
+            android:label="@string/title_remove_money_list"
             android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
@@ -69,7 +69,7 @@
         </activity>
         <activity
             android:name=".activitys.ListOpeningActivity"
-            android:label="@string/title_saldo_inicial_list"
+            android:label="@string/title_opening_list"
             android:parentActivityName=".activitys.MainActivity"
             android:screenOrientation="portrait">
             <meta-data

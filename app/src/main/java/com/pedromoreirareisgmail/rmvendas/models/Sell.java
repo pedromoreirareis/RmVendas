@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class Sell {
 
-    private int id;
+    private long id;
     private Uri uri;
     private String timestamp;
     private String name;
@@ -16,6 +16,7 @@ public class Sell {
     private int clientId;
     private String clientName;
 
-    public Sell(){}
+    public Sell() {
+    }
 
 }

@@ -27,9 +27,9 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.adapters.RemoveMoneyAdapter;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
 public class ListRemoveMoneyActivity extends AppCompatActivity implements
@@ -85,7 +85,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         Log.v(TAG, "emptyLayout");
 
         // Layout vazio - Cadastro sem registros
-        mTvEmpty.setText(R.string.text_retirada_list_empty);
+        mTvEmpty.setText(R.string.text_remove_money_empty);
         mIvEmpty.setImageResource(R.drawable.ic_money_down);
         mIvEmpty.setContentDescription(getString(R.string.descr_remove_money_empty));
         mListView.setEmptyView(mEmptyView);
@@ -102,7 +102,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         mAdapter = new RemoveMoneyAdapter(mContext);
         mListView.setAdapter(mAdapter);
 
-        // Listener do botão Flutuante - Abre activity RegisterAddMoneyActivity
+        // Listener do botão Flutuante
         mFab.setOnClickListener(this);
 
         // Listener do clique simples e Longo no ListView
@@ -203,15 +203,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         mAdapter.swapCursor(null);
     }
 
-    /**
-     * Click simples no ListView
-     * Ao clicar vair abir um Dialog com o valor e descrição da Retirada
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     */
+    /* Ao clicar vair abir um Dialog com o valor e descrição da Retirada */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -219,32 +211,22 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String title = getString(R.string.dialog_informacao_retirada_title);
+        String title = getString(R.string.dialog_inf_title_remove_money);
         Double value = cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
         String description = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
         String timestamp = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
-        String mensagemDialog = String.format(
+        String message = String.format(
                 getString(R.string.dialog_inf_add_remove_money_list),
                 Formatting.doubleToCurrency(value),
                 description,
                 TimeData.formatDateToHourAndMinute(timestamp)
         );
 
-        Messages.displayData(mContext, title, mensagemDialog);
+        Messages.displayData(mContext, title, message);
     }
 
-    /**
-     * Click longo no ListView
-     * No click longo sera aberto um Dialog com opção Editar ou Excluir
-     * Se a escolha for editar abrira {@link RegisterRemoveMoneyActivity}
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     * @return true se click longo foi efetuado com sucesso
-     */
+    /* No click longo sera aberto um Dialog com opção Editar ou Excluir */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -258,7 +240,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         String timestamp = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
         String messageDelete = String.format(
-                getResources().getString(R.string.dialog_edit_del_message_delete),
+                getString(R.string.dialog_edit_del_message_delete_add_remove_money),
                 description,
                 Formatting.doubleToCurrency(value),
                 TimeData.formatDateToHourAndMinute(timestamp)
@@ -274,12 +256,8 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         return true;
     }
 
-    /**
-     * Obtem a data que sera utilizada para pesquisa no banco de dados.
-     * <p>
-     * A data sera formatada em formato utilizado no Brasil.
-     * E a data sera mostrada no titulo da Activity {@link ListRemoveMoneyActivity}.
-     */
+    /* Obtem a data que sera utilizada para pesquisa no banco de dados. Sera formatada
+     * no formato usado no Barsil e sera mostrada no titulo da Activity*/
     private void getCalendarDate() {
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {

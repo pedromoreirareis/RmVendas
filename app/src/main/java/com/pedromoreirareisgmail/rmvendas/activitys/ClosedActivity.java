@@ -19,7 +19,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
@@ -27,7 +27,7 @@ import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 import java.text.NumberFormat;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
 
 public class ClosedActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {

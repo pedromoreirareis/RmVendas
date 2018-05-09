@@ -30,16 +30,16 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.adapters.AReceberAdapter;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
-import static com.pedromoreirareisgmail.rmvendas.constantes.Const.MIN_CARACT_10;
-import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstDB.TIPO_RECEBIMENTO;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstDB.TIPO_VENDA;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.MIN_CARACT_10;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TIPO_RECEBIMENTO;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TIPO_VENDA;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class RegisterReceiveActivity extends AppCompatActivity implements

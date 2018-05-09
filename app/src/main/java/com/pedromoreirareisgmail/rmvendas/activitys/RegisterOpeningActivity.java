@@ -29,7 +29,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
 
 public class RegisterOpeningActivity extends AppCompatActivity implements

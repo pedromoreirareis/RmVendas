@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 

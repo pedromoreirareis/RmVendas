@@ -6,14 +6,14 @@
     android:padding="@dimen/margin_default_16">
 
     <TextView
-        android:id="@+id/tv_saldo_inicial_valor_list"
+        android:id="@+id/tv_opening_list_value"
         style="@style/textViewBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_saldo_inicial_hora_list"
+        android:id="@+id/tv_opening_list_hour"
         style="@style/textViewRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

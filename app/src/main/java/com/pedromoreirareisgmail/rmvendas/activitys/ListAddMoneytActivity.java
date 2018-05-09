@@ -27,9 +27,9 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.adapters.AddMoneyAdapter;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
 public class ListAddMoneytActivity extends AppCompatActivity implements
@@ -102,7 +102,7 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
         mAdapter = new AddMoneyAdapter(mContext);
         mListView.setAdapter(mAdapter);
 
-        // Listener do botão Flutuante - Abre activity RegisterAddMoneyActivity
+        // Listener do botão Flutuante
         mFab.setOnClickListener(this);
 
         // Listener do clique simples e Longo no ListView
@@ -203,15 +203,7 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
         mAdapter.swapCursor(null);
     }
 
-    /**
-     * Click simples no ListView
-     * Ao clicar vair abir um Dialog com o valor e descrição da Entrada
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     */
+    /* Ao clicar vair abir um Dialog com o valor e descrição da Entrada */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -224,27 +216,17 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
         String description = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
         String timestamp = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
 
-        String mensagem = String.format(
+        String message = String.format(
                 getString(R.string.dialog_inf_add_remove_money_list),
                 Formatting.doubleToCurrency(value),
                 description,
                 TimeData.formatDateToHourAndMinute(timestamp)
         );
 
-        Messages.displayData(mContext, title, mensagem);
+        Messages.displayData(mContext, title, message);
     }
 
-    /**
-     * Click longo no ListView
-     * No click longo sera aberto um Dialog com opção Editar ou Excluir
-     * Se a escolha for editar abrira {@link RegisterAddMoneyActivity}
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     * @return true se click longo foi efetuado com sucesso
-     */
+    /* No click longo sera aberto um Dialog com opção Editar ou Excluir */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -259,7 +241,7 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
 
 
         String messageDelete = String.format(
-                getString(R.string.dialog_edit_del_message_delete),
+                getString(R.string.dialog_edit_del_message_delete_add_remove_money),
                 description,
                 Formatting.doubleToCurrency(value),
                 TimeData.formatDateToHourAndMinute(timestamp)
@@ -275,12 +257,8 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
         return true;
     }
 
-    /**
-     * Obtem a data que sera utilizada para pesquisa no banco de dados.
-     * <p>
-     * A data sera formatada em formato utilizado no Brasil.
-     * E a data sera mostrada no titulo da Activity {@link ListAddMoneytActivity}.
-     */
+    /* Obtem a data que sera utilizada para pesquisa no banco de dados. Sera formatada
+     * no formato usado no Barsil e sera mostrada no titulo da Activity*/
     private void getCalendarDate() {
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {

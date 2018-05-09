@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 
 public class Crud {
 

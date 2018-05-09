@@ -22,10 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.adapters.ProdAdapter;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
 public class ListProductActivity extends AppCompatActivity implements
@@ -36,18 +37,17 @@ public class ListProductActivity extends AppCompatActivity implements
         FloatingActionButton.OnClickListener {
 
     private static final String TAG = ConstTag.TAG_MAIN + ListProductActivity.class.getSimpleName();
-    private static final int LOADER_PRODUTOS_LIST = 0;
 
-    private FloatingActionButton mFab;
+    private View mEmptyView;
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
     private ListView mListView;
-    private View mEmptyView;
+    private FloatingActionButton mFab;
 
-    private ProdAdapter mAdapter;
-    private String mProdutoPesquisarBD = "";
-
+    private ProductAdapter mAdapter;
     private Context mContext;
+
+    private String mSearchDB = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +56,16 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreate");
 
-        // Instancia o contexto
-        mContext = ListProductActivity.this;
-
         initViews();
         emptyLayout();
         initListenersAndObjects();
 
-
-        // Inicia o gerenciamento de dados no BD - Busca de dados
-        getLoaderManager().initLoader(LOADER_PRODUTOS_LIST, null, this);
+        // Obtem e iniciar o gerenciador do carregar de dados
+        getLoaderManager().initLoader(
+                ConstLoader.LOADER_LIST_PRODUCT,
+                null,
+                this
+        );
     }
 
     private void initViews() {
@@ -85,9 +85,9 @@ public class ListProductActivity extends AppCompatActivity implements
         Log.v(TAG, "emptyLayout");
 
         //  layout vazio - cadastro sem registros
-        mTvEmpty.setText(R.string.text_produto_list_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_contract_list);
-        mIvEmpty.setContentDescription(getString(R.string.image_desc_produto_list_empty));
+        mTvEmpty.setText(R.string.text_product_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_products);
+        mIvEmpty.setContentDescription(getString(R.string.descr_product_empty));
         mListView.setEmptyView(mEmptyView);
     }
 
@@ -95,12 +95,14 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "initListenersAndObjects");
 
-        // Trata o botão Flutuante - Abre activity RegisterProductActivity
-        mFab.setOnClickListener(this);
+        mContext = ListProductActivity.this;
 
         // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new ProdAdapter(this);
+        mAdapter = new ProductAdapter(mContext);
         mListView.setAdapter(mAdapter);
+
+        // Trata o botão Flutuante
+        mFab.setOnClickListener(this);
 
         // Clique simples e Longo no ListView
         mListView.setOnItemLongClickListener(this);
@@ -114,10 +116,10 @@ public class ListProductActivity extends AppCompatActivity implements
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
-        // Referencia o menu de pesuisa
+        // Referencia o menu de pesquisa
         MenuItem menuItem = menu.findItem(R.id.action_search);
 
-        //  Instancia o SearchView e diz que quem vai tratar o evento é a Activity
+        //  Instancia o SearchView e diz que quem vai tratar o esse metodo é a Activity
         final SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(this);
 
@@ -129,20 +131,24 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateLoader");
 
+        // Colunas que serao retornadas
         String[] projection = {
                 EntryProduct._ID,
                 EntryProduct.COLUMN_NAME,
                 EntryProduct.COLUMN_PRICE
         };
 
-        /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
-         * utilizar o menu search, sera pesquisado pelo nome do produto */
+        // O que sera pesquisado em casa coluna
         String selection = EntryProduct.COLUMN_NAME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
+
+        // Dados para a pesquisa em cada coluna
+        String[] selectionArgs = new String[]{"%" + mSearchDB + "%"};
+
+        // Ordem que sera retonado os dados
         String sortOrder = EntryProduct.COLUMN_NAME;
 
         return new CursorLoader(
-                this,
+                mContext,
                 EntryProduct.CONTENT_URI_PRODUCT,
                 projection,
                 selection,
@@ -156,6 +162,7 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoadFinished");
 
+        // Envia dados retornados do BD para o adapter e ListView
         mAdapter.swapCursor(cursor);
     }
 
@@ -164,18 +171,11 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoaderReset");
 
+        // Se loader foi redefinido não passa nenhum dado ao adapter
         mAdapter.swapCursor(null);
     }
 
-    /**
-     * Click simples no ListView
-     * Abre um Dialog com o nome do Produto no Titulo e o valor na mensagem
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     */
+    /* Ao clicar vair abir um Dialog com o valor e descrição da Entrada */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -183,44 +183,41 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog = getString(R.string.dialog_informacao_produto_title);
+        String title = getString(R.string.dialog_inf_title_product);
+        String name = cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME));
+        Double price = cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE));
 
-        //  Mensagem do Dialog - Descrição
-        String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_produtos_list),
-                cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)),
-                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE))));
+        String message = String.format(
+                getString(R.string.dialog_inf_product_list),
+                name,
+                Formatting.doubleToCurrency(price)
+        );
 
-        Messages.displayData(ListProductActivity.this, tituloDialog, mensagemDialog);
+        Messages.displayData(mContext, title, message);
     }
 
-    /**
-     * Click longo no ListView
-     * Abre um Dialog para escolher se vai editar ou excluir produto
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     * @return true de click longo foi efetuado com sucesso
-     */
+    /* No click longo sera aberto um Dialog com opção Editar ou Excluir */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
         Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(EntryProduct.CONTENT_URI_PRODUCT, id);
-
         Cursor cursor = mAdapter.getCursor();
 
-        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_excluir_produtos_list),
-                cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)),
-                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE))));
+        String name = cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME));
+        Double price = cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE));
+
+        String messageDelete = String.format(
+                getString(R.string.dialog_excluir_produtos_list),
+                name,
+                Formatting.doubleToCurrency(price));
 
         Messages.editOurDelete(
-                ListProductActivity.this,
+                mContext,
                 RegisterProductActivity.class,
                 uri,
-                mensagemExcluir
+                messageDelete
         );
 
         return true;
@@ -239,11 +236,16 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onQueryTextChange");
 
-        // Ao digitar, automaticamente iniciar a pesquisa no BD
-        mProdutoPesquisarBD = newText;
+        // Ao digitar o searchView sera atualizada mSearchView
+        mSearchDB = newText;
 
-        //  Reiniciar o gerenciador de dados do BD - Pesquisa novamente e retornando novos dados
-        getLoaderManager().restartLoader(LOADER_PRODUTOS_LIST, null, ListProductActivity.this);
+        // Se mSearchView for diferente de vazio, o gerenciador de dados sera reiniciado
+        // e uma nova pesquisa ao banco de dados sera feita
+        getLoaderManager().restartLoader(
+                ConstLoader.LOADER_LIST_PRODUCT,
+                null,
+                ListProductActivity.this
+        );
 
         return true;
     }
@@ -251,11 +253,15 @@ public class ListProductActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.fab_add) {
+        switch (view.getId()) {
 
-            Intent intentCadastroProdutos =
-                    new Intent(ListProductActivity.this, RegisterProductActivity.class);
-            startActivity(intentCadastroProdutos);
+            case R.id.fab_add:
+                Intent intentCadastroProdutos = new Intent(
+                        mContext,
+                        RegisterProductActivity.class
+                );
+                startActivity(intentCadastroProdutos);
+                break;
         }
     }
 }

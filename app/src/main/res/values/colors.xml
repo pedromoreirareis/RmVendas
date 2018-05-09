@@ -13,15 +13,14 @@
     <!-- Azul -->
     <color name="colorBlue">#0000FF</color>
 
-
     <!-- Branco -->
     <color name="colorWhite">#FFFFFF</color>
 
-    <!-- Data -->
-    <color name="colorDataItemMain">#1C1C1C</color>
-
     <!-- Descrição e valor -->
-    <color name="colorDetalhes">#4F4F4F</color>
+    <color name="colorTextPrimary">#4F4F4F</color>
+
+    <!-- Cinza escuro para datas -->
+    <color name="colorTextSecundary">#1C1C1C</color>
 
     <!-- Texto List vazio  -->
     <color name="colorTextEmpty">#757575</color>

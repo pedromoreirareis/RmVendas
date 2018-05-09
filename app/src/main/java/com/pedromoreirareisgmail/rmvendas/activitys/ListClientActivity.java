@@ -2,6 +2,7 @@ package com.pedromoreirareisgmail.rmvendas.activitys;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,12 +24,12 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.adapters.ClientesAdapter;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
+import com.pedromoreirareisgmail.rmvendas.models.Client;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.ACTIVITY_CHAMOU;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.CLIENTE_FONE;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.CLIENTE_ID;
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.CLIENTE_NOME;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ACTIVITY_CALLED;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 
 public class ListClientActivity extends AppCompatActivity implements
@@ -37,42 +39,37 @@ public class ListClientActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener {
 
-    private static final int LOADER_CLIENTES_LIST = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + ListClientActivity.class.getSimpleName();
 
+    private View mEmptyView;
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
     private ListView mListView;
-    private View mEmptyView;
     private FloatingActionButton mFab;
 
     private ClientesAdapter mAdapter;
+    private Context mContext;
 
-    private String mPesquisar = "";
+    private String mSearchDB = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_client);
 
+        Log.v(TAG, "onCreate");
+
         initViews();
         emptyLayout();
+        initListenerAndObject();
 
-        // Trata o botão Flutuante - Abre activity EntCadActivity
-        mFab.setOnClickListener(this);
-
-        // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new ClientesAdapter(this);
-        mListView.setAdapter(mAdapter);
-
-        // Clique simples e Longo no ListView
-        mListView.setOnItemLongClickListener(this);
-        mListView.setOnItemClickListener(this);
-
-        // Inicia o gerenciamento de dados no BD - Busca de dados
-        getLoaderManager().initLoader(LOADER_CLIENTES_LIST, null, this);
+        // Obtem e iniciar o gerenciador do carregar de dados
+        getLoaderManager().initLoader(ConstLoader.LOADER_LIST_CLIENT, null, this);
     }
 
     private void initViews() {
+
+        Log.v(TAG, "initViews");
 
         // Referencia itens do layout
         mFab = findViewById(R.id.fab_add);
@@ -85,6 +82,8 @@ public class ListClientActivity extends AppCompatActivity implements
 
     private void emptyLayout() {
 
+        Log.v(TAG, "emptyLayout");
+
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_clientes_list_empty);
         mIvEmpty.setImageResource(R.drawable.ic_money_up);
@@ -92,8 +91,29 @@ public class ListClientActivity extends AppCompatActivity implements
         mListView.setEmptyView(mEmptyView);
     }
 
+    private void initListenerAndObject() {
+
+        Log.v(TAG, "initListenerAndObject");
+
+        // Contexto da Activity
+        mContext = ListClientActivity.this;
+
+        // Cria o adapter e colocar o adapter no Listview
+        mAdapter = new ClientesAdapter(mContext);
+        mListView.setAdapter(mAdapter);
+
+        // Listener do botão Flutuante
+        mFab.setOnClickListener(this);
+
+        // Clique simples e Longo no ListView
+        mListView.setOnItemLongClickListener(this);
+        mListView.setOnItemClickListener(this);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        Log.v(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
@@ -109,21 +129,26 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
+        Log.v(TAG, "onCreateLoader");
+
+        // Colunas que serao retornadas
         String[] projection = {
                 EntryClient._ID,
                 EntryClient.COLUMN_NAME,
                 EntryClient.COLUMN_FONE
         };
 
-        /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
-         * utilizar o menu search, sera pesquisado pelo nome do produto
-         */
+        // Coluna onde havera a busca
         String selection = EntryClient.COLUMN_NAME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
+
+        // Parametro da busca
+        String[] selectionArgs = new String[]{"%" + mSearchDB + "%"};
+
+        // Ordem de retorno dos dados
         String sortOrder = EntryClient.COLUMN_NAME;
 
         return new CursorLoader(
-                this,
+                mContext,
                 EntryClient.CONTENT_URI_CLIENT,
                 projection,
                 selection,
@@ -135,63 +160,62 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
+        Log.v(TAG, "onLoadFinished");
+
+        // Dados da busca serao repassados ao adapter e listview
         mAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+        Log.v(TAG, "onLoaderReset");
+
+        // Se a busca for redefinida não faz nada
         mAdapter.swapCursor(null);
     }
 
-    /**
-     * Click simples no ListView
-     * Ao clicar ira abrir a {@link RegisterReceiveActivity} para fazer edição de um registro de
-     * um cliente ou para adicionar um novo registro
-     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // No cursor pode-se obter os dados de cada cliente
+        Log.v(TAG, "onItemClick");
+
         Cursor cursor = mAdapter.getCursor();
-                
-        String nomeCliente = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME));
-        String foneCliente = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_FONE));
 
-        Intent intentRegistroAReceber = new Intent(
-                ListClientActivity.this, RegisterReceiveActivity.class);
+        Client client = new Client();
+        client.setId(id);
+        client.setName(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME)));
+        client.setFone(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_FONE)));
 
-        Bundle bundle = new Bundle();
-        bundle.putString(CLIENTE_ID, String.valueOf(id));
-        bundle.putString(CLIENTE_NOME, nomeCliente);
-        bundle.putString(CLIENTE_FONE, foneCliente);
+        Intent intentClient = new Intent(
+                mContext,
+                RegisterReceiveActivity.class
+        );
 
-        intentRegistroAReceber.putExtras(bundle);
-        startActivity(intentRegistroAReceber);
+        intentClient.putExtra(ConstIntents.INTENT_CLIENT_DATA, client);
+        startActivity(intentClient);
     }
 
-    /**
-     * Click longo no ListView
-     * Ao ter um click longo sera aberto um Dialog para escolher se deve editar ou excluir o registro
-     */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-        //TODO: Ao excluir tem de fazer verificação se o cliente tem vendas associadas ou registro a prazo - se tiver não pode excluir
+        Log.v(TAG, "onItemLongClick");
 
-        // Caminho especifico de um cliente no BD
+        //TODO: Ao excluir tem de fazer verificação se o cliente tem vendas associadas
+        // ou registro a prazo - se tiver não pode excluir
+        // Ver se forenginKey resolve
+
         Uri uri = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, id);
-
         Cursor cursor = mAdapter.getCursor();
 
-        String mensagemExcluir = mAdapter.getCursor().getString(
+        String messageDelete = mAdapter.getCursor().getString(
                 cursor.getColumnIndex(EntryClient.COLUMN_NAME));
 
         Messages.editOurDelete(
-                ListClientActivity.this,
+                mContext,
                 RegisterClientActivity.class,
                 uri,
-                mensagemExcluir
+                messageDelete
         );
 
         return true;
@@ -201,15 +225,23 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public boolean onQueryTextSubmit(String query) {
 
+        Log.v(TAG, "onQueryTextSubmit");
+
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
 
-        mPesquisar = newText;
+        Log.v(TAG, "onQueryTextChange");
 
-        getLoaderManager().restartLoader(LOADER_CLIENTES_LIST, null, ListClientActivity.this);
+        mSearchDB = newText;
+
+        getLoaderManager().restartLoader(
+                ConstLoader.LOADER_LIST_CLIENT,
+                null,
+                ListClientActivity.this
+        );
 
         return true;
     }
@@ -217,17 +249,25 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.fab_add) {
+        switch (view.getId()) {
 
-            Intent intentCadastroClientes =
-                    new Intent(ListClientActivity.this, RegisterClientActivity.class);
+            case R.id.fab_add:
 
-            Bundle bundle = new Bundle();
-            bundle.putString(ACTIVITY_CHAMOU, ConstIntents.CLIENTES_LIST_ACTIVITY);
+                Log.v(TAG, "onClick - FloatingActionButton");
 
-            intentCadastroClientes.putExtras(bundle);
+                Intent intentRegisterClient = new Intent(
+                        mContext,
+                        RegisterClientActivity.class
+                );
 
-            startActivity(intentCadastroClientes);
+                Bundle bundle = new Bundle();
+                bundle.putString(ACTIVITY_CALLED, ConstIntents.LIST_CLIENT_ACTIVITY);
+
+                intentRegisterClient.putExtras(bundle);
+
+                startActivity(intentRegisterClient);
+
+                break;
         }
     }
 }

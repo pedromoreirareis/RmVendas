@@ -24,14 +24,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.constantes.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.Const.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
 
 public class RegisterProductActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,

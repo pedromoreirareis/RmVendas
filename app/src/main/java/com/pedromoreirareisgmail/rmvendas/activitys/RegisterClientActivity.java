@@ -21,14 +21,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.constantes.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.constantes.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
 
 
 public class RegisterClientActivity extends AppCompatActivity implements
@@ -87,13 +87,13 @@ public class RegisterClientActivity extends AppCompatActivity implements
         Intent intentInicial = getIntent();
         mUriAtual = intentInicial.getData();
 
-        if (intentInicial.hasExtra(ConstIntents.ACTIVITY_CHAMOU)) {
+        if (intentInicial.hasExtra(ConstIntents.ACTIVITY_CALLED)) {
 
-            switch (intentInicial.getStringExtra(ConstIntents.ACTIVITY_CHAMOU)) {
+            switch (intentInicial.getStringExtra(ConstIntents.ACTIVITY_CALLED)) {
 
                 /* Vem da lista de clientes normal*/
-                case CLIENTES_LIST_ACTIVITY:
-                    mVemActivity = CLIENTES_LIST_ACTIVITY;
+                case LIST_CLIENT_ACTIVITY:
+                    mVemActivity = LIST_CLIENT_ACTIVITY;
                     break;
 
                     /* Vem da lista de clientes de vendas*/
@@ -144,7 +144,7 @@ public class RegisterClientActivity extends AppCompatActivity implements
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                if (mVemActivity.equals(ConstIntents.CLIENTES_LIST_ACTIVITY)) {
+                                if (mVemActivity.equals(ConstIntents.LIST_CLIENT_ACTIVITY)) {
 
                                     Intent intent = NavUtils.getParentActivityIntent(RegisterClientActivity.this);
                                     NavUtils.navigateUpTo(RegisterClientActivity.this, intent);

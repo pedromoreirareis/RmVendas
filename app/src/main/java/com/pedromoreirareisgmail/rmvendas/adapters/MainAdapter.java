@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
-import com.pedromoreirareisgmail.rmvendas.constantes.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
@@ -38,7 +38,7 @@ public class MainAdapter extends CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return LayoutInflater.from(context).inflate(R.layout.item_list_maint, viewGroup, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_list_main, viewGroup, false);
     }
 
     /**

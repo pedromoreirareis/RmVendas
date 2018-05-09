@@ -3,21 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/margin_default_16"
-    android:paddingLeft="@dimen/margin_default_16"
-    android:paddingRight="@dimen/margin_default_16"
-    android:paddingTop="@dimen/margin_default_16">
+    android:padding="@dimen/margin_default_16">
 
     <TextView
-        android:id="@+id/tv_produto_nome"
+        android:id="@+id/tv_product_list_name"
         style="@style/textViewBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_produto_preco"
-        style="@style/DetalhesItemValor"
+        android:id="@+id/tv_product_list_price"
+        style="@style/textViewDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

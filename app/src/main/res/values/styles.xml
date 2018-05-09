@@ -26,22 +26,22 @@
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
     </style>
 
+    <style name="textViewDescription" parent="textViewBasic">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
     <style name="textViewBold" parent="textViewBasic">
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textStyle">bold</item>
 
     </style>
 
-    <style name="textViewDescription" parent="textViewBasic">
-        <item name="android:textColor">@color/colorDetalhes</item>
-    </style>
-
-
     <style name="textViewRight" parent="textViewBasic">
         <item name="android:gravity">center_vertical|end</item>
         <item name="android:layout_gravity">center_vertical|end</item>
-        <item name="android:textColor">@color/colorDataItemMain</item>
+        <item name="android:textColor">@color/colorTextSecundary</item>
     </style>
+
 
     <style name="DescricaoNormal">
         <item name="android:maxLines">1</item>
@@ -50,18 +50,8 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">@color/colorDetalhes</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
-    <style name="DetalhesItemValor">
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/colorDetalhes</item>
-        <item name="android:fontFamily">ca</item>
-        <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
     </style>
 
 

@@ -3,6 +3,7 @@ package com.pedromoreirareisgmail.rmvendas.activitys;
 import android.app.DatePickerDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -22,10 +23,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
-import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.adapters.SaldoInicialAdapter;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.adapters.OpeningAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 
 public class ListOpeningActivity extends AppCompatActivity implements
@@ -34,20 +37,19 @@ public class ListOpeningActivity extends AppCompatActivity implements
         ListView.OnItemClickListener,
         FloatingActionButton.OnClickListener {
 
-    private static final String TAG = ListOpeningActivity.class.getSimpleName();
-    private static final int LOADER_SALDO_INICIAL_LIST = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + ListOpeningActivity.class.getSimpleName();
 
-    private FloatingActionButton mFab;
+    private View mEmptyView;
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
     private ListView mListView;
-    private View mEmptyView;
+    private FloatingActionButton mFab;
 
-    private SaldoInicialAdapter mAdapter;
+    private OpeningAdapter mAdapter;
+    private Context mContext;
+
+    private String mSearchDateDB = null;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-
-
-    private String mDataPesquisarBD = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,28 +60,28 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         initViews();
         emptyLayout();
+        initListenerAndObject();
+        initTitleData();
 
-        // Trata o botão Flutuante - Abre activity RegisterOpeningActivity
-        mFab.setOnClickListener(this);
+        // Inicia o gerenciamento de dados no BD - Busca de dados
+        getLoaderManager().initLoader(ConstLoader.LOADER_LIST_OPENING, null, this);
+    }
 
-        // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new SaldoInicialAdapter(this);
-        mListView.setAdapter(mAdapter);
+    private void initTitleData() {
 
-        // Clique simples e Longo no ListView
-        mListView.setOnItemClickListener(this);
-        mListView.setOnItemLongClickListener(this);
+        Log.v(TAG, "initTitleData");
 
-        //  Pega data calendário do Dialog
-        pegarDataDialogCalendario();
+        //  Obtem a data calendário do Dialog
+        getCalendarDate();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
-        setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list), TimeData.getDateTitleBr()));
+        setTitle(String.format(
+                getResources().getString(R.string.title_opening_list),
+                TimeData.getDateTitleBr())
+        );
 
-        // O Loader utiliza mDataPesquisarBD para fazer a pesquisa no banco de dados - "yyyy-MM-dd"
-        mDataPesquisarBD = TimeData.formatDateSearch(TimeData.getDateTime());
-
-        getLoaderManager().initLoader(LOADER_SALDO_INICIAL_LIST, null, this);
+        // Recebe a data do dia para pesquisa no banco de dados
+        mSearchDateDB = TimeData.formatDateSearch(TimeData.getDateTime());
     }
 
     private void initViews() {
@@ -99,10 +101,29 @@ public class ListOpeningActivity extends AppCompatActivity implements
         Log.v(TAG, "emptyLayout");
 
         //  layout vazio - cadastro sem registros
-        mTvEmpty.setText(R.string.text_saldo_inicial_list_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_dinheiro_duas_maos);
-        mIvEmpty.setContentDescription(getString(R.string.image_desc_saldo_inicial_list_empty));
+        mTvEmpty.setText(R.string.text_opening_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_money_two_hands);
+        mIvEmpty.setContentDescription(getString(R.string.descr_opening_empty));
         mListView.setEmptyView(mEmptyView);
+    }
+
+    private void initListenerAndObject() {
+
+        Log.v(TAG, "initListenerAndObject");
+
+        // Contexto da Activity
+        mContext = ListOpeningActivity.this;
+
+        // Cria o adapter e colocar o adapter no Listview
+        mAdapter = new OpeningAdapter(mContext);
+        mListView.setAdapter(mAdapter);
+
+        // Listener do botão Flutuante
+        mFab.setOnClickListener(this);
+
+        // Listener do clique simples e Longo no ListView
+        mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -120,9 +141,11 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onOptionsItemSelected");
 
-        if (item.getItemId() == R.id.action_date) {
+        switch (item.getItemId()) {
 
-            Messages.dialogDate(ListOpeningActivity.this, mDateSetListener);
+            case R.id.action_date:
+                Messages.dialogDate(ListOpeningActivity.this, mDateSetListener);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -133,18 +156,21 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateLoader");
 
+        // Colunas que serao retornadas
         String[] projection = {
                 EntryOpening._ID,
                 EntryOpening.COLUMN_TIMESTAMP,
                 EntryOpening.COLUMN_VALUE
         };
 
-        // Procura por todos os dados salvos na tabela com parte da data do tipo "yyyy-MM-dd"
-        String selection = EntryOpening.COLUMN_TIMESTAMP + " LIKE ?";
-        String[] selectionArgs = new String[]{mDataPesquisarBD + "%"};
+        // Define a coluna onde vai acontecer a pesquisa e a forma da pesquisa
+        String selection = EntryOpening.COLUMN_TIMESTAMP + " LIKE ? ";
+
+        // Define o que vai ser pesquisado
+        String[] selectionArgs = new String[]{mSearchDateDB + "%"};
 
         return new CursorLoader(
-                this,
+                mContext,
                 EntryOpening.CONTENT_URI_OPENING,
                 projection,
                 selection,
@@ -158,13 +184,14 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoadFinished");
 
+        // Passa os dados retonados da pesquisa para o adapter e listview
         mAdapter.swapCursor(cursor);
 
-        /* Se encontrar pelo menos um dado salvo para a data o FloatingActionButton deve ficar
-           invisivel, se não tiver nenhum dado deve ficar visivel */
+        /* Se pesquisa tiver retorno FloatingActionButton deve ficar invisivel */
         if (mAdapter.getCount() > 0) {
 
             mFab.setVisibility(View.GONE);
+
         } else {
 
             mFab.setVisibility(View.VISIBLE);
@@ -176,18 +203,11 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoaderReset");
 
+        // Se loader foi redefinido não passa nenhum dado ao adapter
         mAdapter.swapCursor(null);
     }
 
-    /**
-     * Click simples no ListView
-     * Ao clicar vair abir um Dialog com o valor, saldo inicial e hora do registro
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     */
+    /* Ao clicar vair abir um Dialog com o valor, saldo inicial e hora do registro */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -195,44 +215,41 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String tituloDialog = getString(R.string.dialog_informacao_saldo_inicial_title);
+        String title = getString(R.string.dialog_inf_title_opening);
+        Double value = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
+        String timestampDate = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
+        String timestampHour = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
 
-        //  Mensagem do Dialog - Descrição
-        String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_saldo_inicial_list),
-                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
-                TimeData.formatDateBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))),
-                TimeData.formatDateToHourAndMinute(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
+        String message = String.format(
+                getString(R.string.dialog_informacao_saldo_inicial_list),
+                Formatting.doubleToCurrency(value),
+                TimeData.formatDateBr(timestampDate),
+                TimeData.formatDateToHourAndMinute(timestampHour)
+        );
 
-        Messages.displayData(ListOpeningActivity.this, tituloDialog, mensagemDialog);
+        Messages.displayData(mContext, title, message);
     }
 
-    /**
-     * Click Longo no ListView
-     * Ao ter um click longo em um item do listview, será indentificado o id, deste item na
-     * tabela do banco de dados, e abrirá um dialogo para escolher se será editado ou excluido
-     * se for editar será aberta a activity de cadastro para fazer a edição
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     * @return true de click longo foi efetuado com sucesso
-     */
+    /* No click longo sera aberto um Dialog com opção Editar ou Excluir */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
         Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(EntryOpening.CONTENT_URI_OPENING, id);
-
         Cursor cursor = mAdapter.getCursor();
 
-        String mensagemExcluir = String.format(getResources().getString(R.string.dialog_exc_edit_texto_excluir_saldo_inicial),
-                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE))),
-                TimeData.formatDateBr(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP))));
+        Double value = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
+        String timestamp = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
+
+        String mensagemExcluir = String.format(
+                getResources().getString(R.string.dialog_edit_del_message_delete_opening),
+                Formatting.doubleToCurrency(value),
+                TimeData.formatDateBr(timestamp)
+        );
 
         Messages.editOurDelete(
-                ListOpeningActivity.this,
+                mContext,
                 RegisterOpeningActivity.class,
                 uri,
                 mensagemExcluir
@@ -241,25 +258,28 @@ public class ListOpeningActivity extends AppCompatActivity implements
         return true;
     }
 
-    /*
-     * Escolha no calendário uma data que será utilizada para pesquisar no banco de dados. Essa
-     * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
-     * pesquisa para verificar se há dados para esta data
-     */
-    private void pegarDataDialogCalendario() {
+    /* Obtem a data que sera utilizada para pesquisa no banco de dados. Sera formatada
+     * no formato usado no Barsil e sera mostrada no titulo da Activity*/
+    private void getCalendarDate() {
 
-        Log.v(TAG, "pegarDataDialogCalendario");
+        Log.v(TAG, "getCalendarDate");
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mDataPesquisarBD = TimeData.getDateSearchDB(year, month, day);
+                mSearchDateDB = TimeData.getDateSearchDB(year, month, day);
 
-                setTitle(String.format(getResources().getString(R.string.title_saldo_inicial_list),
-                        TimeData.getDateTitleBr(year, month, day)));
+                setTitle(String.format(
+                        getString(R.string.title_opening_list),
+                        TimeData.getDateTitleBr(year, month, day))
+                );
 
-                getLoaderManager().restartLoader(LOADER_SALDO_INICIAL_LIST, null, ListOpeningActivity.this);
+                getLoaderManager().restartLoader(
+                        ConstLoader.LOADER_LIST_OPENING,
+                        null,
+                        ListOpeningActivity.this
+                );
             }
         };
     }
@@ -267,13 +287,18 @@ public class ListOpeningActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        Log.v(TAG, "onClick - mFab");
+        Log.v(TAG, "onClick - FloatingActionButton");
 
-        if (view.getId() == R.id.fab_add) {
+        switch (view.getId()) {
 
-            Intent intentSaldoInicial = new Intent(
-                    ListOpeningActivity.this, RegisterOpeningActivity.class);
-            startActivity(intentSaldoInicial);
+            case R.id.fab_add:
+                Intent intentSaldoInicial = new Intent(
+                        mContext,
+                        RegisterOpeningActivity.class
+                );
+                startActivity(intentSaldoInicial);
+
+                break;
         }
     }
 }

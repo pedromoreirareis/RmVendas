@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pedromoreirareisgmail.rmvendas.constantes.ConstTag;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
