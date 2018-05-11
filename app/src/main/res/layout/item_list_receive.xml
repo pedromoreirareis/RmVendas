@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/tv_a_receber_list_data"
-        style="@style/DescricaoNormal"
+        style="@style/textViewDescriptionRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_default_8"
@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/tv_a_receber_list_descricao"
-        style="@style/DescricaoNormal"
+        style="@style/textViewDescriptionRight"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/margin_default_4"

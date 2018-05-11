@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.adapters.ClientesAdapter;
+import com.pedromoreirareisgmail.rmvendas.adapters.ClientAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
@@ -47,7 +47,7 @@ public class ListClientActivity extends AppCompatActivity implements
     private ListView mListView;
     private FloatingActionButton mFab;
 
-    private ClientesAdapter mAdapter;
+    private ClientAdapter mAdapter;
     private Context mContext;
 
     private String mSearchDB = "";
@@ -99,7 +99,7 @@ public class ListClientActivity extends AppCompatActivity implements
         mContext = ListClientActivity.this;
 
         // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new ClientesAdapter(mContext);
+        mAdapter = new ClientAdapter(mContext);
         mListView.setAdapter(mAdapter);
 
         // Listener do botão Flutuante
@@ -201,25 +201,22 @@ public class ListClientActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onItemLongClick");
 
-        //TODO: Ao excluir tem de fazer verificação se o cliente tem vendas associadas
-        // ou registro a prazo - se tiver não pode excluir
-        // Ver se forenginKey resolve
-
         Uri uri = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, id);
         Cursor cursor = mAdapter.getCursor();
 
         String messageDelete = mAdapter.getCursor().getString(
                 cursor.getColumnIndex(EntryClient.COLUMN_NAME));
 
+        // Verifica se cliente tem divida antes de excluir
         Messages.editOurDelete(
                 mContext,
                 RegisterClientActivity.class,
                 uri,
+                id,
                 messageDelete
         );
 
         return true;
-
     }
 
     @Override

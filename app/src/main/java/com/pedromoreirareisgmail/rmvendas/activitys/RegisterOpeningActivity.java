@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
+import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
@@ -83,7 +83,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         mEtValor.setOnTouchListener(this);
 
         // Retira o foco e coloca o valor zero no edit
-        Utilidades.semFocoZerado(mEtValor);
+        ControlViews.noFocusAndZero(mEtValor);
     }
 
     private void initViews() {
@@ -136,7 +136,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Messages.homeDescartarConfirmar(
+                Messages.homePressed(
                         RegisterOpeningActivity.this,
                         RegisterOpeningActivity.this);
 
@@ -160,7 +160,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Messages.onBackPressedDescartarConfirmar(
+        Messages.backPressed(
                 RegisterOpeningActivity.this,
                 RegisterOpeningActivity.this);
     }
@@ -174,11 +174,11 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         String valorEditText = mEtValor.getText().toString().trim();
 
-        double valorDouble = Formatting.formatarParaDouble(valorEditText);
+        double valorDouble = Formatting.currencyToDouble(valorEditText);
 
         // Valor não pode ser zero
         if (valorDouble == NUMERO_ZERO) {
-            mEtValor.setError(getString(R.string.error_valor_valido));
+            mEtValor.setError(getString(R.string.error_valide_value));
             mEtValor.requestFocus();
             return;
         }
@@ -260,7 +260,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
             case R.id.et_valor:
                 mEtValor.requestFocus();
                 mEtValor.setSelection(mEtValor.getText().length());
-                Utilidades.mostrarTeclado(RegisterOpeningActivity.this, mEtValor);
+                ControlViews.showKeyboard(RegisterOpeningActivity.this, mEtValor);
                 return true;
 
             default:
@@ -311,7 +311,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtValor.setText(Formatting.formatarParaCurrency(charSequence.toString().trim()));
+                mEtValor.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
             }
 

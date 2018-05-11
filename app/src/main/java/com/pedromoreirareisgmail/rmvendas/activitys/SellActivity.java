@@ -29,11 +29,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
+import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
@@ -44,10 +44,10 @@ import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 import java.text.NumberFormat;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Calculos.calcularValorTotalVendaString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calcularValorTotalVendaString;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceString;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editsToDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsInt;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsString;
 import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ADICIONAR;
@@ -170,9 +170,9 @@ public class SellActivity extends AppCompatActivity implements
         mEtQuantidade.setSelectAllOnFocus(true);
 
         // Tira o foco e coloca valor zero nos edits
-        Utilidades.semFocoZerado(mEtAdicional);
-        Utilidades.semFocoZerado(mEtDesconto);
-        Utilidades.semFocoZerado(mEtPrazo);
+        ControlViews.noFocusAndZero(mEtAdicional);
+        ControlViews.noFocusAndZero(mEtDesconto);
+        ControlViews.noFocusAndZero(mEtPrazo);
     }
 
 
@@ -268,7 +268,7 @@ public class SellActivity extends AppCompatActivity implements
 
             startActivityForResult(intentListaCliente, Const.COD_RESULT_VENDA_CLIENTES);
 
-            Utilidades.fecharTecladoView(SellActivity.this, mButCliente);
+            ControlViews.hideKeyboard(SellActivity.this, mButCliente);
         }
 
     }
@@ -319,7 +319,7 @@ public class SellActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Messages.homeDescartarConfirmar(
+                Messages.homePressed(
                         SellActivity.this,
                         SellActivity.this);
 
@@ -343,7 +343,7 @@ public class SellActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Messages.onBackPressedDescartarConfirmar(
+        Messages.backPressed(
                 SellActivity.this,
                 SellActivity.this);
     }
@@ -383,15 +383,15 @@ public class SellActivity extends AppCompatActivity implements
         // Se campo tiver valor zero, apresenta mensagem erro
         if (quantidadeInt == Const.NUMERO_ZERO) {
 
-            mEtQuantidade.setError(getString(R.string.error_valor_valido));
+            mEtQuantidade.setError(getString(R.string.error_valide_value));
             mEtQuantidade.requestFocus();
             return;
         }
 
         // Converte as String dos campos valorAdicional, valorDesconto  e valorPrazo para double
-        double valorAdicionalDouble = Formatting.formatarParaDouble(valorAdicionalEditText);
-        double valorDescontoDouble = Formatting.formatarParaDouble(valorDescontoEditText);
-        double valorPrazoDouble = Formatting.formatarParaDouble(valorPrazoEditText);
+        double valorAdicionalDouble = Formatting.currencyToDouble(valorAdicionalEditText);
+        double valorDescontoDouble = Formatting.currencyToDouble(valorDescontoEditText);
+        double valorPrazoDouble = Formatting.currencyToDouble(valorPrazoEditText);
 
 
         // Se Switch adicional estiver Checked
@@ -400,7 +400,7 @@ public class SellActivity extends AppCompatActivity implements
             // O valor desse campo deve ser positivo
             if (valorAdicionalDouble == 0) {
 
-                mEtAdicional.setError(getString(R.string.error_valor_valido_adicional));
+                mEtAdicional.setError(getString(R.string.error_valide_value_adicional));
                 mEtAdicional.requestFocus();
                 return;
             }
@@ -412,7 +412,7 @@ public class SellActivity extends AppCompatActivity implements
             // O valor desse campo deve ser positivo
             if (valorDescontoDouble == 0) {
 
-                mEtDesconto.setError(getString(R.string.error_valor_valido_desconto));
+                mEtDesconto.setError(getString(R.string.error_valide_value_desconto));
                 mEtDesconto.requestFocus();
                 return;
             }
@@ -423,7 +423,7 @@ public class SellActivity extends AppCompatActivity implements
             // O valor desse campo deve ser positivo
             if (valorPrazoDouble == 0) {
 
-                mEtPrazo.setError(getString(R.string.error_valor_valido_prazo));
+                mEtPrazo.setError(getString(R.string.error_valide_value_prazo));
                 mEtPrazo.requestFocus();
                 return;
             }
@@ -606,7 +606,7 @@ public class SellActivity extends AppCompatActivity implements
             double valorAdicionalBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
             double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
             double valorPrazoBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
-            double valorTotalBD = Calculos.calcularValorTotalVendaDouble(
+            double valorTotalBD = Calculus.calcularValorTotalVendaDouble(
                     quantidadeBD,
                     valorUnidadeBD,
                     valorAdicionalBD,
@@ -621,7 +621,7 @@ public class SellActivity extends AppCompatActivity implements
 
             String nomeClienteBD = "";
             if (mIdCliente > 0) {
-                nomeClienteBD = SearchDB.Pesquisarcliente(SellActivity.this, idCliente);
+                nomeClienteBD = SearchDB.searchClientName(SellActivity.this, idCliente);
                 mNomeCliente = nomeClienteBD;
                 mTvNomeCliente.setText(mNomeCliente);
             }
@@ -719,25 +719,25 @@ public class SellActivity extends AppCompatActivity implements
             case R.id.et_vend_quant_quantidade:
                 mEtQuantidade.requestFocus();
                 mEtQuantidade.setSelection(mEtQuantidade.getText().length());
-                Utilidades.mostrarTeclado(SellActivity.this, mEtQuantidade);
+                ControlViews.showKeyboard(SellActivity.this, mEtQuantidade);
                 return true;
 
             case R.id.et_vend_quant_valor_desconto:
                 mEtDesconto.requestFocus();
                 mEtDesconto.setSelection(mEtDesconto.getText().length());
-                Utilidades.mostrarTeclado(SellActivity.this, mEtDesconto);
+                ControlViews.showKeyboard(SellActivity.this, mEtDesconto);
                 return true;
 
             case R.id.et_vend_quant_valor_adicional:
                 mEtAdicional.requestFocus();
                 mEtAdicional.setSelection(mEtAdicional.getText().length());
-                Utilidades.mostrarTeclado(SellActivity.this, mEtAdicional);
+                ControlViews.showKeyboard(SellActivity.this, mEtAdicional);
                 return true;
 
             case R.id.et_vend_quant_valor_prazo:
                 mEtPrazo.requestFocus();
                 mEtPrazo.setSelection(mEtPrazo.getText().length());
-                Utilidades.mostrarTeclado(SellActivity.this, mEtPrazo);
+                ControlViews.showKeyboard(SellActivity.this, mEtPrazo);
                 return true;
 
             case R.id.switch_vend_quant_adicional:
@@ -844,7 +844,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtAdicional.setText(Formatting.formatarParaCurrency(formatarCharSequenceString(charSequence)));
+                mEtAdicional.setText(Formatting.currencyToStringToCurrency(formatarCharSequenceString(charSequence)));
 
                 mEtAdicional.setSelection(mEtAdicional.getText().length());
             }
@@ -859,7 +859,7 @@ public class SellActivity extends AppCompatActivity implements
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 double valorVendaAdicional = formatarEditsInt(mEtQuantidade) * mValorUnidadeProduto +
-                        formatarEditsDouble(mEtAdicional);
+                        editsToDouble(mEtAdicional);
 
                 if (formatarCharSequenceDouble(charSequence) > valorVendaAdicional) {
 
@@ -891,7 +891,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtDesconto.setText(Formatting.formatarParaCurrency(formatarCharSequenceString(charSequence)));
+                mEtDesconto.setText(Formatting.currencyToStringToCurrency(formatarCharSequenceString(charSequence)));
 
                 mEtDesconto.setSelection(mEtDesconto.getText().length());
             }
@@ -908,7 +908,7 @@ public class SellActivity extends AppCompatActivity implements
 
 
                 double valorVendaAdicionalDesconto = formatarEditsInt(mEtQuantidade) * mValorUnidadeProduto +
-                        formatarEditsDouble(mEtAdicional) - formatarEditsDouble(mEtDesconto);
+                        editsToDouble(mEtAdicional) - editsToDouble(mEtDesconto);
 
                 if (formatarCharSequenceDouble(charSequence) / 100 > valorVendaAdicionalDesconto) {
 
@@ -939,7 +939,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtPrazo.setText(Formatting.formatarParaCurrency(formatarCharSequenceString(charSequence)));
+                mEtPrazo.setText(Formatting.currencyToStringToCurrency(formatarCharSequenceString(charSequence)));
 
                 mEtPrazo.setSelection(mEtPrazo.getText().length());
             }

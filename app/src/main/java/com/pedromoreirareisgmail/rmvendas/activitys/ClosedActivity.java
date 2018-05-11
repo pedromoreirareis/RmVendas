@@ -16,7 +16,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
@@ -133,7 +133,7 @@ public class ClosedActivity extends AppCompatActivity implements
         // Abre o Dialog de data para fazer pesquisa por data
         if (item.getItemId() == R.id.action_date) {
 
-            Messages.dialogDate(ClosedActivity.this, mDateSetListener);
+            Messages.dialogCalendar(ClosedActivity.this, mDateSetListener);
         }
 
         return super.onOptionsItemSelected(item);
@@ -249,13 +249,13 @@ public class ClosedActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                if (ConstDB.TIPO_ENTRADA ==
+                if (ConstDB.TYPE_CASHMOVE_ADD_MONEY ==
                         cursor.getInt(cursor.getColumnIndex(EntryCashMove.COLUMN_TYPE))) {
 
                     mValorEntradas = mValorEntradas +
                             cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
 
-                } else if (ConstDB.TIPO_RETIRADA ==
+                } else if (ConstDB.TYPE_CASHMOVE_REMOVE_MONEY ==
                         cursor.getInt(cursor.getColumnIndex(EntryCashMove.COLUMN_TYPE))) {
 
                     mValorRetiradas = mValorRetiradas +
@@ -325,7 +325,7 @@ public class ClosedActivity extends AppCompatActivity implements
 
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) == NUMERO_ZERO) {
 
-                    mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVistaDouble(
+                    mValorVendasVista = mValorVendasVista + Calculus.CalcularValorAVistaDouble(
                             cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
@@ -344,7 +344,7 @@ public class ClosedActivity extends AppCompatActivity implements
                     mValorVendasPrazo = mValorVendasPrazo +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
 
-                    mValorVendasVista = mValorVendasVista + Calculos.CalcularValorAVistaDouble(
+                    mValorVendasVista = mValorVendasVista + Calculus.CalcularValorAVistaDouble(
                             cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
@@ -352,12 +352,12 @@ public class ClosedActivity extends AppCompatActivity implements
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
 
                     int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
-                    mNomeClientesPrazo = mNomeClientesPrazo + SearchDB.Pesquisarcliente(ClosedActivity.this, idCliente) + "\n";
+                    mNomeClientesPrazo = mNomeClientesPrazo + SearchDB.searchClientName(ClosedActivity.this, idCliente) + "\n";
 
 
                 }
 
-                mValorVendasTotal = mValorVendasTotal + Calculos.calcularValorTotalVendaDouble(
+                mValorVendasTotal = mValorVendasTotal + Calculus.calcularValorTotalVendaDouble(
                         cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                         cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                         cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),

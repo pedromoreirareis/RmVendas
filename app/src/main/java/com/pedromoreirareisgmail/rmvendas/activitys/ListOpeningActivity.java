@@ -144,7 +144,7 @@ public class ListOpeningActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             case R.id.action_date:
-                Messages.dialogDate(ListOpeningActivity.this, mDateSetListener);
+                Messages.dialogCalendar(ListOpeningActivity.this, mDateSetListener);
                 return true;
         }
 

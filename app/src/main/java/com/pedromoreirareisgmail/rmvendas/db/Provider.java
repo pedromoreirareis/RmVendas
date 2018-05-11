@@ -398,7 +398,7 @@ public class Provider extends ContentProvider {
 
             /* SELL */
             case MATCH_SELL:
-                return EntrySeel.CONTENT_ITEM_TYPE_SELL;
+                return EntrySeel.CONTENT_TYPE_SELL;
 
             case MATCH_SELL_ID:
                 return EntrySeel.CONTENT_ITEM_TYPE_SELL;

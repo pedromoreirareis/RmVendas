@@ -24,10 +24,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.constant.Const;
-import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
@@ -74,7 +75,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         // Verifica se o texto do edit nome foi alterado
         if (!isDadosAlterados) {
 
-            isDadosAlterados = Utilidades.verificarAlteracaoDados(mEtNome);
+            isDadosAlterados = Verify.dataChanged(mEtNome);
         }
 
         // Monitora o EditorAction do teclado
@@ -84,7 +85,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         mEtPreco.setOnTouchListener(this);
 
         // Retira o foco do edit e coloca o valor zero nele
-        Utilidades.semFocoZerado(mEtPreco);
+        ControlViews.noFocusAndZero(mEtPreco);
     }
 
     private void initViews() {
@@ -138,7 +139,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Messages.homeDescartarConfirmar(
+                Messages.homePressed(
                         RegisterProductActivity.this,
                         RegisterProductActivity.this);
 
@@ -161,7 +162,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Messages.onBackPressedDescartarConfirmar(
+        Messages.backPressed(
                 RegisterProductActivity.this,
                 RegisterProductActivity.this);
     }
@@ -174,7 +175,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         String nomeEditText = mEtNome.getText().toString().trim();
         String precoEditText = mEtPreco.getText().toString().trim();
 
-        double precoDouble = Formatting.formatarParaDouble(precoEditText);
+        double precoDouble = Formatting.currencyToDouble(precoEditText);
 
         // Campo não pode ficar vazio
         if (TextUtils.isEmpty(nomeEditText)) {
@@ -195,7 +196,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         // Valor não pode ser negativo
         if (precoDouble == NUMERO_ZERO) {
 
-            mEtPreco.setError(getString(R.string.error_valor_valido));
+            mEtPreco.setError(getString(R.string.error_valide_value));
             mEtPreco.requestFocus();
             return;
         }
@@ -315,7 +316,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtPreco.setText(Formatting.formatarParaCurrency(charSequence.toString().trim()));
+                mEtPreco.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
                 mEtPreco.setSelection(mEtPreco.getText().length());
             }
 
@@ -339,7 +340,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
             case R.id.et_preco:
                 mEtPreco.requestFocus();
                 mEtPreco.setSelection(mEtPreco.getText().length());
-                Utilidades.mostrarTeclado(RegisterProductActivity.this, mEtPreco);
+                ControlViews.showKeyboard(RegisterProductActivity.this, mEtPreco);
                 return true;
 
             default:

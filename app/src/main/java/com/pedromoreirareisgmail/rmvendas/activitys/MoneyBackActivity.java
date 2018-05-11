@@ -19,8 +19,8 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.doubleToCurrency;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarParaCurrency;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarParaDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.currencyToStringToCurrency;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.currencyToDouble;
 import static com.pedromoreirareisgmail.rmvendas.constant.Const.*;
 import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
 
@@ -92,7 +92,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
         Log.v(TAG, "calcularTroco");
 
-        mValorRecebido = formatarParaDouble(mEtValorRecebido.getText().toString().trim());
+        mValorRecebido = currencyToDouble(mEtValorRecebido.getText().toString().trim());
         mTextoErro = String.format(getResources().getString(R.string.valor_maior), doubleToCurrency(mValorVenda));
 
         if (mValorVenda != 0 && mValorRecebido != 0) {
@@ -112,9 +112,9 @@ public class MoneyBackActivity extends AppCompatActivity implements
         }
     }
 
-    private void mostrarTeclado(EditText meuEdit) {
+    private void showKeyboard(EditText meuEdit) {
 
-        Log.v(TAG, "mostrarTeclado");
+        Log.v(TAG, "showKeyboard");
 
         if (meuEdit != null) {
 
@@ -137,7 +137,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
             case R.id.et_troco_valor_recebido:
                 mEtValorRecebido.requestFocus();
                 mEtValorRecebido.setSelection(mEtValorRecebido.getText().length());
-                mostrarTeclado(mEtValorRecebido);
+                showKeyboard(mEtValorRecebido);
                 return true;
 
             default:
@@ -166,7 +166,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtValorRecebido.setText(formatarParaCurrency(charSequence.toString().trim()));
+                mEtValorRecebido.setText(currencyToStringToCurrency(charSequence.toString().trim()));
                 mEtValorRecebido.setSelection(mEtValorRecebido.getText().length());
 
                 calcularTroco();

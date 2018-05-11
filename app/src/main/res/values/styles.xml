@@ -42,17 +42,11 @@
         <item name="android:textColor">@color/colorTextSecundary</item>
     </style>
 
-
-    <style name="DescricaoNormal">
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
+    <style name="textViewDescriptionRight" parent="textViewBasic">
         <item name="android:textColor">@color/colorTextPrimary</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:layout_marginRight">16dp</item>
     </style>
+
 
 
     <style name="TextEmpty">

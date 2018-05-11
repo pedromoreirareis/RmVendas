@@ -13,18 +13,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_clientes_nome_list"
+            android:id="@+id/tv_client_list_name"
             style="@style/textViewBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
         <TextView
-            android:id="@+id/tv_clientes_fone_list"
-            style="@style/DescricaoNormal"
+            android:id="@+id/tv_client_list_fone"
+            style="@style/textViewDescriptionRight"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" />
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <RelativeLayout
@@ -35,7 +34,7 @@
         android:gravity="center_vertical|end">
 
         <TextView
-            android:id="@+id/tv_clientes_valor_receber_list"
+            android:id="@+id/tv_client_value_receive_list"
             style="@style/textViewRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +42,5 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
-
 
 </LinearLayout>

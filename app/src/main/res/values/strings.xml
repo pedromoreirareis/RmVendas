@@ -15,10 +15,12 @@
     <string name="title_add_money_list">Entradas  %1$s</string>
     <string name="title_remove_money_list">Retiradas  %1$s</string>
     <string name="title_opening_list">Saldo inicial  %1$s</string>
+    <string name="title_add_money_register_add">Adicionar entrada</string>
+    <string name="title_add_money_register_edit">Editar entrada</string>
 
 
-    <string name="title_entrada_cad_add">Adicionar entrada</string>
-    <string name="title_entrada_cad_edit">Editar entrada</string>
+
+
     <string name="title_produto_cad_add">Adicionar produto</string>
     <string name="title_produto_cad_edit">Editar produto</string>
     <string name="title_retirada_cad_add">Adicionar retirada</string>
@@ -69,6 +71,7 @@
     <string name="descr_remove_money_empty">Imagem de um cifrão e um seta para baixo</string>
     <string name="descr_opening_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="descr_product_empty">Imagem de uma lista vazia</string>
+    <string name="descr_product_sale_empty">Imagem de um coração partido</string>
 
     <string name="image_desc_main_empty">Imagem de um bolo</string>
 
@@ -85,11 +88,11 @@
     <string name="text_remove_money_empty">Nenhuma retirada cadastrada !!!</string>
     <string name="text_opening_empty">Saldo inicial não foi cadastrado !!!</string>
     <string name="text_product_empty">Nenhum produto cadastrado !!!</string>
-
-
+    <string name="text_product_sale_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_main_empty">Nenhuma venda realizada !!!</string>
 
-    <string name="text_venda_list_empty">Que pena… não há produtos cadastrados !!!</string>
+
+    
 
     <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
     <string name="text_clientes_list_empty_pesquisa">Nenhum cliente para essa pesquisa !!!</string>
@@ -181,6 +184,8 @@
     <string name="dialog_edit_del_error">Erro ao excluir o registro </string>
     <string name="dialog_edit_del_conf_delete_del">Excluir</string>
     <string name="dialog_edit_del_conf_delete_cancel">Cancelar</string>
+    <string name="dialog_edit_del_conf_credit">Cliente não pode ser excluido. Tem crédito no valor : %1$s</string>
+    <string name="dialog_edit_del_conf_debt">Cliente não pode ser excluido. Tem dívida no valor : %1$s</string>
 
     <string name="dialog_edit_del_message_delete_opening">
         Saldo inicial
@@ -244,21 +249,26 @@
 
 
     <!-- *****************************    setError ********************************************* -->
+    <string name="error_valide_value">Digite um valor válido</string>
+    <string name="error_empty_description">Digite a descrição</string>
+    <string name="error_lenght_description_10">A descrição deve ter no mínimo 10 caracteres</string>
+
+
 
     <string name="error_campo_desconto_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
     <string name="error_campo_prazo_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
     <string name="error_campo_vazio_fone">Digite o telefone</string>
     <string name="error_campo_vazio_nome">Digite o nome</string>
-    <string name="error_campo_vazio_descricao">Digite a descrição</string>
+
     <string name="error_campo_vazio_valor">Digite o valor</string>
     <string name="error_campo_vazio_quantidade">Digite a quantidade</string>
-    <string name="error_valor_valido">Digite um valor válido</string>
-    <string name="error_valor_valido_adicional">Digite um valor adicional válido</string>
-    <string name="error_valor_valido_desconto">Digite um valor de desconto válido</string>
-    <string name="error_valor_valido_prazo">Digite um valor a prazo válido</string>
+
+    <string name="error_valide_value_adicional">Digite um valor adicional válido</string>
+    <string name="error_valide_value_desconto">Digite um valor de desconto válido</string>
+    <string name="error_valide_value_prazo">Digite um valor a prazo válido</string>
     <string name="error_nome_cliente">Pesquise um cliente</string>
     <string name="error_nome_edicao_nao_permitida">Edição de venda a prazo não permitida</string>
-    <string name="error_campo_lenght_descricao_10">A descrição deve ter no mínimo 10 caracteres</string>
+
     <string name="error_campo_lenght_nome_3">O nome deve ter no mínimo 3 caracteres</string>
     <string name="error_campo_lenght_nome_5">O nome deve ter no mínio 5 caracteres</string>
     <string name="error_campo_lenght_fone">O telefone deve ter no mínimo 8 dígitos</string>

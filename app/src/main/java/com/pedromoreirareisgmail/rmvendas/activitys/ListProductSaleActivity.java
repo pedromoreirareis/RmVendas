@@ -2,6 +2,7 @@ package com.pedromoreirareisgmail.rmvendas.activitys;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -21,46 +22,43 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ADICIONAR_VENDA;
 
 public class ListProductSaleActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener {
 
-    private static final String TAG = ListProductSaleActivity.class.getSimpleName();
-    private static final int LOADER_VEND_LIST = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + ListProductSaleActivity.class.getSimpleName();
 
+    private View mEmptyView;
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
     private ListView mListView;
-    private View mEmptyView;
+
 
     private ProductAdapter mAdapter;
+    private Context mContext;
 
-    private String mProdutoPesquisarBD = "";
+    private String mSearchDB = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product_sale);
 
-        Log.v(TAG, "");
+        Log.v(TAG, "onCreate");
 
         initViews();
         emptyLayout();
+        initListenerAndObject();
 
-        // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new ProductAdapter(this);
-        mListView.setAdapter(mAdapter);
-
-        // Clique simples e Longo no ListView
-        mListView.setOnItemClickListener(this);
-
-        // Inicia o gerenciamento de dados no BD - Busca de dados
-        getLoaderManager().initLoader(LOADER_VEND_LIST, null, this);
+        // Obtem e iniciar o gerenciador do carregar de dados
+        getLoaderManager().initLoader(ConstLoader.LOADER_LIST_PRODUCT_SALE, null, this);
     }
 
     private void initViews() {
@@ -79,10 +77,25 @@ public class ListProductSaleActivity extends AppCompatActivity implements
         Log.v(TAG, "emptyLayout");
 
         // Layout vazio - Cadastro sem registros
-        mTvEmpty.setText(R.string.text_venda_list_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_coracao_partido);
-        mIvEmpty.setContentDescription(getString(R.string.descr_product_empty));
+        mTvEmpty.setText(R.string.text_product_sale_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_heart);
+        mIvEmpty.setContentDescription(getString(R.string.descr_product_sale_empty));
         mListView.setEmptyView(mEmptyView);
+    }
+
+    private void initListenerAndObject() {
+
+        Log.v(TAG, "initListenerAndObject");
+
+        // Contexto da Activity
+        mContext = ListProductSaleActivity.this;
+
+        // Cria o adapter e colocar o adapter no Listview
+        mAdapter = new ProductAdapter(mContext);
+        mListView.setAdapter(mAdapter);
+
+        // Clique simples
+        mListView.setOnItemClickListener(this);
     }
 
     @Override
@@ -106,21 +119,24 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateLoader");
 
+        // Colunas que serao retornadas
         String[] projection = {
                 EntryProduct._ID,
                 EntryProduct.COLUMN_NAME,
                 EntryProduct.COLUMN_PRICE
         };
 
-        /* A pesquisa inicial traz todos os produtos cadastrados, se clicar no menu search, sera
-        pesquisado de acordo com nome do produto digitado
-         */
+        // Coluna que sera pesquisada e tipo da pesquisa
         String selection = EntryProduct.COLUMN_NAME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mProdutoPesquisarBD + "%"};
+
+        // Argumentos da pesquisa
+        String[] selectionArgs = new String[]{"%" + mSearchDB + "%"};
+
+        // Ordem de retorno da pesquisa
         String sortOrder = EntryProduct.COLUMN_NAME;
 
         return new CursorLoader(
-                this,
+                mContext,
                 EntryProduct.CONTENT_URI_PRODUCT,
                 projection,
                 selection,
@@ -134,6 +150,7 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoadFinished");
 
+        // Passa retorno da pesquisa para o adapter e listview
         mAdapter.swapCursor(cursor);
     }
 
@@ -142,20 +159,10 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onLoaderReset");
 
+        // Se pesquisa redefinida não faz nada
         mAdapter.swapCursor(null);
     }
 
-    /**
-     * Click simples no ListView
-     * Ao clicar, vai ser aberto a Activity {@link ListProductSaleActivity} , onde podera ser escolhido
-     * a quantidade do produto, se a venda sera a prazo ou a vista, se tem adicional ou não e
-     * se tem desconto ou não
-     *
-     * @param parent   adaptador
-     * @param view     item do listview
-     * @param position posição da view no adaptador
-     * @param id       id do item (id dentro do BD, vem pelo cursor junto com pesquisa)
-     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -163,14 +170,18 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
         Uri uri = ContentUris.withAppendedId(EntryProduct.CONTENT_URI_PRODUCT, id);
 
-        Intent intentRegistrarVenda = new Intent(
-                ListProductSaleActivity.this, SellActivity.class);
-        intentRegistrarVenda.putExtra(ADICIONAR_VENDA, ADICIONAR_VENDA);
-        intentRegistrarVenda.setData(uri);
-        startActivity(intentRegistrarVenda);
+        //TODO: Verificar melhor forma de passa produto e informar que é nova venda
+
+        Intent intentSale = new Intent(
+                mContext,
+                SellActivity.class
+        );
+
+        intentSale.putExtra(ADICIONAR_VENDA, ADICIONAR_VENDA);
+        intentSale.setData(uri);
+        startActivity(intentSale);
         finish();
     }
-
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -183,9 +194,13 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onQueryTextChange");
 
-        mProdutoPesquisarBD = newText;
+        mSearchDB = newText;
 
-        getLoaderManager().restartLoader(LOADER_VEND_LIST, null, ListProductSaleActivity.this);
+        getLoaderManager().restartLoader(
+                ConstLoader.LOADER_LIST_PRODUCT_SALE,
+                null,
+                ListProductSaleActivity.this
+        );
 
         return true;
     }

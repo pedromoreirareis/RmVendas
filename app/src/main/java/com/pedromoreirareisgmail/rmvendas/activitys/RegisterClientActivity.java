@@ -21,14 +21,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
+import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.LIST_CLIENT_ACTIVITY;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.VEND_LIST_CLIENTES_ACTIVITY;
 
 
 public class RegisterClientActivity extends AppCompatActivity implements
@@ -67,8 +68,8 @@ public class RegisterClientActivity extends AppCompatActivity implements
         // Verifica se houve alteração nos caracteres do edit
         if (!isDadosAlterado) {
 
-            isDadosAlterado = Utilidades.verificarAlteracaoDados(mEtFone)
-                    || Utilidades.verificarAlteracaoDados(mEtNome);
+            isDadosAlterado = Verify.dataChanged(mEtFone)
+                    || Verify.dataChanged(mEtNome);
         }
 
         mEtFone.setOnEditorActionListener(this);
@@ -159,7 +160,7 @@ public class RegisterClientActivity extends AppCompatActivity implements
                         };
 
                 // Chama o metodo para descartar alterações
-                Messages.dialogoConfirmarAlteracao(
+                Messages.continueOrDiscart(
                         RegisterClientActivity.this,
                         descartarButClickListener
                 );
@@ -182,7 +183,7 @@ public class RegisterClientActivity extends AppCompatActivity implements
         }
 
 
-        Messages.onBackPressedDescartarConfirmar(
+        Messages.backPressed(
                 RegisterClientActivity.this,
                 RegisterClientActivity.this);
     }

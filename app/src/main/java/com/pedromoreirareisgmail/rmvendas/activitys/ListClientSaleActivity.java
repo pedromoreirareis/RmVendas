@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.adapters.ClientesAdapter;
+import com.pedromoreirareisgmail.rmvendas.adapters.ClientAdapter;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 
 import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ACTIVITY_CALLED;
@@ -45,7 +45,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     private View mEmptyView;
     private FloatingActionButton mFab;
 
-    private ClientesAdapter mAdapter;
+    private ClientAdapter mAdapter;
     private String mUri;
     private String mValorUnidade;
     private String mPesquisar = "";
@@ -76,7 +76,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
         mFab.setOnClickListener(this);
 
         // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new ClientesAdapter(this);
+        mAdapter = new ClientAdapter(this);
         mListView.setAdapter(mAdapter);
 
         // Clique simples no ListView

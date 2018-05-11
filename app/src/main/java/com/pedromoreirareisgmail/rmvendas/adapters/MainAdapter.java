@@ -9,7 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
@@ -62,7 +62,7 @@ public class MainAdapter extends CursorAdapter {
         String nomeCliente = "";
         if (idCliente > 0) {
 
-            nomeCliente = SearchDB.Pesquisarcliente(context, idCliente);
+            nomeCliente = SearchDB.searchClientName(context, idCliente);
         }
 
         /* Nome do produto e hora de uma venda */
@@ -73,13 +73,13 @@ public class MainAdapter extends CursorAdapter {
         double valorAdicional = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
         double valorDesconto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
         double valorAPrazo = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
-        double valorTotal = Calculos.calcularValorTotalVendaDouble(
+        double valorTotal = Calculus.calcularValorTotalVendaDouble(
                 quantidadeProduto,
                 valorUnidadeProduto,
                 valorAdicional,
                 valorDesconto
         );
-        double valorAVista = Calculos.CalcularValorAVistaDouble(
+        double valorAVista = Calculus.CalcularValorAVistaDouble(
                 quantidadeProduto,
                 valorUnidadeProduto,
                 valorAdicional,

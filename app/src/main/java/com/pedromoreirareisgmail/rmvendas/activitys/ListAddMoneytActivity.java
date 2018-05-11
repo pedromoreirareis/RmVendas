@@ -145,7 +145,7 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             case R.id.action_date:
-                Messages.dialogDate(mContext, mDateSetListener);
+                Messages.dialogCalendar(mContext, mDateSetListener);
                 return true;
         }
 
@@ -170,7 +170,7 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
         String selection = EntryCashMove.COLUMN_TYPE + " = ? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
 
         // Dados para a pesquisa em cada coluna
-        String[] selectionArgs = new String[]{String.valueOf(ConstDB.TIPO_ENTRADA), mSearchDateDB + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(ConstDB.TYPE_CASHMOVE_ADD_MONEY), mSearchDateDB + "%"};
 
         // Ordem que sera retonado os dados
         String sortOrder = EntryCashMove.COLUMN_TIMESTAMP;

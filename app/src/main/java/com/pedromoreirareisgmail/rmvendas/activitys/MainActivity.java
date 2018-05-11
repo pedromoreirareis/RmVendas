@@ -29,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Calculos;
+import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.adapters.MainAdapter;
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         mDataPesquisarBD = TimeData.formatDateSearch(TimeData.getDateTime());
 
         // Inicia Pesquisa no banco de dados
-        getLoaderManager().initLoader(LOADER_MAIN, null, this);
+       // getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }
 
     private void initViews() {
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity
 
             // Item Calendario - Abre para fazer uma pesquisa por data no BD vendas
             case R.id.action_data_main:
-                Messages.dialogDate(MainActivity.this, mDateSetListener);
+                Messages.dialogCalendar(MainActivity.this, mDateSetListener);
                 return true;
         }
 
@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity
 
         Cursor cursor = mAdapter.getCursor();
 
-        double valorVendaVista = Calculos.CalcularValorAVistaDouble(
+        double valorVendaVista = Calculus.CalcularValorAVistaDouble(
                 cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                 cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                 cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),

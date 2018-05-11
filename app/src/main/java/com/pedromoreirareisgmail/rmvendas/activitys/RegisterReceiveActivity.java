@@ -28,7 +28,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.Utils.Utilidades;
+import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.adapters.AReceberAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
@@ -99,7 +99,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         mEtValor.setOnTouchListener(this);
 
         // Retira foco e coloca o valor zero no edit
-        Utilidades.semFocoZerado(mEtValor);
+        ControlViews.noFocusAndZero(mEtValor);
 
         // Inicia pesquisa no banco de dados
         getLoaderManager().initLoader(LOADER_BUSCAR_CLIENTE_REGISTRO, null, this);
@@ -176,7 +176,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
                     return true;
                 }
 
-                Messages.homeDescartarConfirmar(
+                Messages.homePressed(
                         RegisterReceiveActivity.this,
                         RegisterReceiveActivity.this);
 
@@ -217,7 +217,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
-        Messages.onBackPressedDescartarConfirmar(
+        Messages.backPressed(
                 RegisterReceiveActivity.this,
                 RegisterReceiveActivity.this);
     }
@@ -255,7 +255,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         String descricaoEditText = mEtDescricao.getText().toString().trim();
         String valorEditText = mEtValor.getText().toString().trim();
 
-        double valor = Formatting.formatarParaDouble(valorEditText);
+        double valor = Formatting.currencyToDouble(valorEditText);
 
         isDadosAlterado = valor > 0 || !descricaoEditText.isEmpty();
     }
@@ -270,12 +270,12 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         String descricaoEditText = mEtDescricao.getText().toString().trim();
         String valorEditText = mEtValor.getText().toString().trim();
 
-        double valorDouble = Formatting.formatarParaDouble(valorEditText);
+        double valorDouble = Formatting.currencyToDouble(valorEditText);
 
         // Campo não pode ser vazio
         if (TextUtils.isEmpty(descricaoEditText)) {
 
-            mEtDescricao.setError(getString(R.string.error_campo_vazio_descricao));
+            mEtDescricao.setError(getString(R.string.error_empty_description));
             mEtDescricao.requestFocus();
             return;
         }
@@ -283,7 +283,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         // Campo deve ter pelo menos 10 caracteres
         if (descricaoEditText.length() < MIN_CARACT_10) {
 
-            mEtDescricao.setError(getString(R.string.error_campo_lenght_descricao_10));
+            mEtDescricao.setError(getString(R.string.error_lenght_description_10));
             mEtDescricao.requestFocus();
             return;
         }
@@ -291,7 +291,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         // Valor não pode ser negativo
         if (valorDouble == NUMERO_ZERO) {
 
-            mEtValor.setError(getString(R.string.error_valor_valido));
+            mEtValor.setError(getString(R.string.error_valide_value));
             mEtValor.requestFocus();
             return;
         }
@@ -300,7 +300,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
 
         values.put(EntryReceive._ID, Integer.parseInt(mIdCliente));
-        values.put(EntryReceive.COLUMN_CLIENT_NAME, SearchDB.Pesquisarcliente(RegisterReceiveActivity.this, Integer.parseInt(mIdCliente)));
+        values.put(EntryReceive.COLUMN_CLIENT_NAME, SearchDB.searchClientName(RegisterReceiveActivity.this, Integer.parseInt(mIdCliente)));
         values.put(EntryReceive.COLUMN_TIMESTAMP, getDateTime());
         values.put(EntryReceive.COLUMN_DESCRIPTION, descricaoEditText);
         values.put(EntryReceive.COLUMN_TYPE, tipoEntrada);
@@ -313,7 +313,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         limparEdits();
 
         // Fecha teclado para visualizar o ListView com registro do cliente
-        Utilidades.fecharTecladoView(RegisterReceiveActivity.this, mButRecebimento);
+        ControlViews.hideKeyboard(RegisterReceiveActivity.this, mButRecebimento);
 
         Log.v(TAG, "salvarDadosBD - Fim");
     }
@@ -426,7 +426,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
             case R.id.et_a_receber_valor:
                 mEtValor.requestFocus();
                 mEtValor.setSelection(mEtValor.getText().length());
-                Utilidades.mostrarTeclado(RegisterReceiveActivity.this, mEtValor);
+                ControlViews.showKeyboard(RegisterReceiveActivity.this, mEtValor);
                 return true;
 
             default:
@@ -459,7 +459,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
                 isFormatarCurrencyAtualizado = true;
 
-                mEtValor.setText(Formatting.formatarParaCurrency(charSequence.toString().trim()));
+                mEtValor.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
                 mEtValor.setSelection(mEtValor.getText().length());
             }
 
