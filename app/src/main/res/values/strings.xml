@@ -7,7 +7,6 @@
      ############################################################################################-->
 
 
-
     <!-- *****************************   Title do App *******************************************-->
     <string name="app_name">Rm Vendas</string>
 
@@ -17,14 +16,14 @@
     <string name="title_opening_list">Saldo inicial  %1$s</string>
     <string name="title_add_money_register_add">Adicionar entrada</string>
     <string name="title_add_money_register_edit">Editar entrada</string>
-
-
+    <string name="title_remove_money_register_add">Adicionar retirada</string>
+    <string name="title_remove_money_register_edit">Editar retirada</string>
 
 
     <string name="title_produto_cad_add">Adicionar produto</string>
     <string name="title_produto_cad_edit">Editar produto</string>
-    <string name="title_retirada_cad_add">Adicionar retirada</string>
-    <string name="title_retirada_cad_edit">Editar retirada</string>
+
+
     <string name="title_saldo_inicial_cad_add">Adicionar saldo inicial</string>
     <string name="title_saldo_inicial_cad_edit">Editar saldo inicial</string>
     <string name="title_venda_add">Adicionar venda</string>
@@ -76,7 +75,6 @@
     <string name="image_desc_main_empty">Imagem de um bolo</string>
 
 
-
     <string name="image_desc_clientes_list_empty">Imagem cliente</string>
 
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
@@ -91,8 +89,6 @@
     <string name="text_product_sale_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_main_empty">Nenhuma venda realizada !!!</string>
 
-
-    
 
     <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
     <string name="text_clientes_list_empty_pesquisa">Nenhum cliente para essa pesquisa !!!</string>
@@ -154,10 +150,13 @@
      ############################################################################################-->
 
     <!-- ************************    Hints -->
+    <string name="hint_value">Valor R$</string>
+
+
     <string name="hint_quantidade">Quantidade</string>
     <string name="hint_nome">Nome</string>
     <string name="hint_preco">Preço R$</string>
-    <string name="hint_valor">Valor R$</string>
+
     <string name="hint_descricao">Descrição</string>
     <string name="hint_numero_fone">Nº Telefone</string>
     <string name="hint_nome_cliente">Nome do Cliente</string>
@@ -213,8 +212,6 @@
     <string name="dialog_inf_title_product">Produtos</string>
 
 
-
-
     <string name="dialog_inf_add_remove_money_list">
         \nValor:  %1$s
         \n\n
@@ -252,7 +249,6 @@
     <string name="error_valide_value">Digite um valor válido</string>
     <string name="error_empty_description">Digite a descrição</string>
     <string name="error_lenght_description_10">A descrição deve ter no mínimo 10 caracteres</string>
-
 
 
     <string name="error_campo_desconto_maior_venda">O valor do desconto não pode ser maior que %1$s</string>

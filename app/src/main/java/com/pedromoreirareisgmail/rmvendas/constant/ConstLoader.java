@@ -11,5 +11,6 @@ public class ConstLoader {
 
 
     public static final int LOADER_REGISTER_ADD_MONEY = 2001;
+    public static final int LOADER_REGISTER_REMOVE_MONEY = 2002;
 
 }

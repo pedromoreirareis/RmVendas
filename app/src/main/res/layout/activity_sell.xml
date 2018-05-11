@@ -111,7 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:digits="0123456789"
-                        android:hint="@string/hint_valor"
+                        android:hint="@string/hint_value"
                         android:imeOptions="actionDone"
                         android:inputType="number"
                         android:selectAllOnFocus="true" />
@@ -145,7 +145,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:digits="0123456789"
-                        android:hint="@string/hint_valor"
+                        android:hint="@string/hint_value"
                         android:imeOptions="actionDone"
                         android:inputType="number"
                         android:selectAllOnFocus="true" />
@@ -213,7 +213,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:digits="0123456789"
-                        android:hint="@string/hint_valor"
+                        android:hint="@string/hint_value"
                         android:imeOptions="actionDone"
                         android:inputType="number"
                         android:selectAllOnFocus="true" />

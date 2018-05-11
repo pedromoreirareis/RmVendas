@@ -91,7 +91,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         Log.v(TAG, "initViews");
 
         // Referencia intens do layout
-        mEtValor = findViewById(R.id.et_valor);
+        mEtValor = findViewById(R.id.et_value);
     }
 
     private void initIntents() {
@@ -257,7 +257,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         switch (view.getId()) {
 
-            case R.id.et_valor:
+            case R.id.et_value:
                 mEtValor.requestFocus();
                 mEtValor.setSelection(mEtValor.getText().length());
                 ControlViews.showKeyboard(RegisterOpeningActivity.this, mEtValor);

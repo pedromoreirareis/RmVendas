@@ -6,12 +6,12 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_valor"
+            android:id="@+id/et_value"
             style="@style/CampoNunberText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:digits="0123456789"
-            android:hint="@string/hint_valor"
+            android:hint="@string/hint_value"
             android:imeOptions="actionNext"
             android:inputType="number" />
 

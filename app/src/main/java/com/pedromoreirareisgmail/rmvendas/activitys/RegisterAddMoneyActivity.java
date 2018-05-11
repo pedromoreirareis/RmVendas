@@ -27,8 +27,8 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.Validates;
 import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
@@ -101,7 +101,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         Log.v(TAG, "initViews");
 
         // Referencia itens do layout
-        mEtValue = findViewById(R.id.et_valor);
+        mEtValue = findViewById(R.id.et_value);
         mEtDescription = findViewById(R.id.et_descricao);
     }
 
@@ -148,7 +148,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
             // Botao salvar
             case R.id.action_salvar:
-                initSaveDataDB();
+                saveDataDB();
                 return true;
 
             /* Botão Up - Verifica se algum dado foi alterado, ou houve tentativa de alteração
@@ -194,41 +194,48 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         );
     }
 
-    private void initSaveDataDB() {
+    private void saveDataDB() {
 
-        Log.v(TAG, "initSaveDataDB");
+        Log.v(TAG, "saveDataDB - Iniciando ");
 
-        saveDataDB(captureData());
-    }
-
-
-    private CashMove captureData() {
-
-        Log.v(TAG, "captureData");
-
+        Log.v(TAG, "saveDataDB - captureData");
         String value = mEtValue.getText().toString();
         String description = mEtDescription.getText().toString();
 
-        return validateCashMove(value, description);
-    }
-
-    private CashMove validateCashMove(String value, String description) {
-
-        Log.v(TAG, "validateCashMove");
+        Log.v(TAG, "saveDataDB - validateCashMove");
 
         Double valueDouble = Formatting.currencyToDouble(value);
 
-        Validates.dataCashMove(mContext, valueDouble, description, mEtValue, mEtDescription);
+        // Valor não pode ser zero
+        if (valueDouble == Const.NUMERO_ZERO) {
+
+            mEtValue.setError(getString(R.string.error_valide_value));
+            mEtValue.requestFocus();
+            return;
+        }
+
+        // A descrição não pode fica vazia
+        if (description.isEmpty()) {
+
+            mEtDescription.setError(getString(R.string.error_empty_description));
+            mEtDescription.requestFocus();
+            return;
+        }
+
+        // A descrição deve ter pelo menos 10 caracteres
+        if (description.length() < Const.MIN_CARACT_10) {
+
+            mEtDescription.setError(getString(R.string.error_lenght_description_10));
+            mEtDescription.requestFocus();
+            return;
+        }
+
+        Log.v(TAG, "saveDataDB - cashMove");
 
         cashMove.setValue(valueDouble);
         cashMove.setDescription(description);
 
-        return cashMove;
-    }
-
-    private void saveDataDB(CashMove cashMove) {
-
-        Log.v(TAG, "saveDataDB");
+        Log.v(TAG, "saveDataDB - insertContentValues");
 
         // Coloca os dados para salvar em um Objeto
         ContentValues values = new ContentValues();
@@ -314,10 +321,13 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onTouch");
 
+
         switch (view.getId()) {
 
             /* Recebe o foco, coloca o cursor no fim da string e se teclado tiver fechado abre ele */
-            case R.id.et_valor:
+            case R.id.et_value:
+
+                view.performClick();
 
                 mEtValue.requestFocus();
                 mEtValue.setSelection(mEtValue.getText().length());
@@ -382,7 +392,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         // Salvar dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-            initSaveDataDB();
+            saveDataDB();
             return true;
         }
 
