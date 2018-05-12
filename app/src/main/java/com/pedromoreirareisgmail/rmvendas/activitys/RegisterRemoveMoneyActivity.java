@@ -7,12 +7,10 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,6 +27,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
@@ -37,8 +36,6 @@ import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.CashMove;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.MIN_CARACT_10;
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
 
 public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -53,8 +50,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     private Context mContext;
     private CashMove cashMove;
 
-    private Uri mUriInitial = null;
-
     private boolean isDataChanged = false;
     private boolean isFormatCurrencyUpdated = false;
 
@@ -66,10 +61,9 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreate");
 
         initViews();
-        initIntents();
         initListenerAndObject();
 
-        if (mUriInitial == null) {
+        if (cashMove.getUri() == null) {
 
             // Se Uri nulo, então é uma nova entrada
             setTitle(R.string.title_remove_money_register_add);
@@ -98,14 +92,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         }
     }
 
-    private void initListenerAndObject() {
-
-        // Verifica se foi clicado um EditorAction
-        mEtDescription.setOnEditorActionListener(this);
-
-        // Monitora toques em uma view especifica
-        mEtValue.setOnTouchListener(this);
-    }
 
     private void initViews() {
 
@@ -113,16 +99,29 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
         // Referencia itens do layout
         mEtValue = findViewById(R.id.et_value);
-        mEtDescription = findViewById(R.id.et_descricao);
+        mEtDescription = findViewById(R.id.et_description);
     }
 
-    private void initIntents() {
 
-        Log.v(TAG, "initIntents");
+    private void initListenerAndObject() {
 
-        // Recebe dados da activity ListRemoveMoneyActivity
+        Log.v(TAG, "initListenerAndObject");
+
+        // Contexto da Activity
+        mContext = RegisterRemoveMoneyActivity.this;
+
+        // Instanciando o Objeto CashMove
+        cashMove = new CashMove();
+
+        /* Tem dados - Editar / Não tem dados - Adicionar*/
         Intent intent = getIntent();
-        mUriInitial = intent.getData();
+        cashMove.setUri(intent.getData());
+
+        // Verifica se foi clicado um EditorAction
+        mEtDescription.setOnEditorActionListener(this);
+
+        // Monitora toques em uma view especifica
+        mEtValue.setOnTouchListener(this);
     }
 
     @Override
@@ -143,13 +142,12 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
             // Salva dados no BD
             case R.id.action_salvar:
-                salvarDadosBD();
+                saveDataDB();
                 return true;
 
-            /* Menu Up -
-             * Verifica se algum dado foi alterado, caso tenha sido alterado abre Dialog para decidir
-             * se deseja descartar alterações ou se deseja continuar alterando
-             */
+            /* Botão Up - Verifica se algum dado foi alterado, ou houve tentativa de alteração
+             * Em caso afirmativo abre Dialog para escolha se deseja descartar alteração ou se deseja
+             * continuar alterado */
             case android.R.id.home:
                 if (!isDataChanged) {
 
@@ -158,8 +156,9 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
                 }
 
                 Messages.homePressed(
-                        RegisterRemoveMoneyActivity.this,
-                        RegisterRemoveMoneyActivity.this);
+                        mContext,
+                        RegisterRemoveMoneyActivity.this
+                );
 
                 return true;
         }
@@ -167,10 +166,8 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    /* Botão voltar (embaixo)
-     * Se tiver ocorrido alteração abre Dialog para decidir se vai descartar a alteração ou se
-     * vai continuar alterando dados
-     */
+    /* Botao voltar (embaixo) - Verifica se houve alteração
+     * Se houve - Abre dialog para confirmar se deseja descartar alterações ou não*/
     @Override
     public void onBackPressed() {
 
@@ -182,73 +179,79 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         }
 
         Messages.backPressed(
-                RegisterRemoveMoneyActivity.this,
-                RegisterRemoveMoneyActivity.this);
+                mContext,
+                RegisterRemoveMoneyActivity.this
+        );
     }
 
     /* Salva dados no BD
-     * Recebe dados do edits, faz validações, coloca dados no objeto values e salva no BD
-     */
-    private void salvarDadosBD() {
+     * Recebe dados do edits, faz validações, coloca dados no objeto values e salva no BD*/
+    private void saveDataDB() {
 
-        Log.v(TAG, "salvarDadosBD - Inicio");
+        Log.v(TAG, "saveDataDB - Inicio");
 
-        String valorEditText = mEtValue.getText().toString().trim();
-        String descricaoEditText = mEtDescription.getText().toString().trim();
+        Log.v(TAG, "saveDataDB - captureData");
+        String value = mEtValue.getText().toString().trim();
+        String description = mEtDescription.getText().toString().trim();
 
-        double valorDouble = Formatting.currencyToDouble(valorEditText);
+        double valueDouble = Formatting.currencyToDouble(value);
 
-        // Campo nao pode ficar vazio
-        if (TextUtils.isEmpty(descricaoEditText)) {
-
-            mEtDescription.setError(getString(R.string.error_empty_description));
-            mEtDescription.requestFocus();
-            return;
-        }
-
-        // Quantidade minima de caracteres aceita nesse campo
-        if (descricaoEditText.length() < MIN_CARACT_10) {
-
-            mEtDescription.setError(getString(R.string.error_lenght_description_10));
-            mEtDescription.requestFocus();
-            return;
-        }
-
-        if (valorDouble == NUMERO_ZERO) {
+        Log.v(TAG, "saveDataDB - validateCashMove");
+        // Valor não pode ser zero
+        if (valueDouble == Const.NUMERO_ZERO) {
 
             mEtValue.setError(getString(R.string.error_valide_value));
             mEtValue.requestFocus();
             return;
         }
 
+        // A descrição não pode fica vazia
+        if (description.isEmpty()) {
+
+            mEtDescription.setError(getString(R.string.error_empty_description));
+            mEtDescription.requestFocus();
+            return;
+        }
+
+        // A descrição deve ter pelo menos 10 caracteres
+        if (description.length() < Const.MIN_CARACT_10) {
+
+            mEtDescription.setError(getString(R.string.error_lenght_description_10));
+            mEtDescription.requestFocus();
+            return;
+        }
+
+        Log.v(TAG, "saveDataDB - cashMove");
+
+        cashMove.setValue(valueDouble);
+        cashMove.setDescription(description);
+
         // Coloca dados no objeto values
         ContentValues values = new ContentValues();
-        values.put(EntryCashMove.COLUMN_VALUE, valorDouble);
-        values.put(EntryCashMove.COLUMN_DESCRIPTION, descricaoEditText);
-        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TYPE_CASHMOVE_REMOVE_MONEY);
+        values.put(EntryCashMove.COLUMN_VALUE, cashMove.getValue());
+        values.put(EntryCashMove.COLUMN_DESCRIPTION, cashMove.getDescription());
+        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TYPE_REMOVE_MONEY_CASHMOVE);
 
-        /* Salva dados no banco de dados
-         * Se mUriInitial tiver vazio (null) vai adicionar registro
-         * Se mUriInitial contiver o Uri de um registro, vai editar um registro
-         */
-        if (mUriInitial == null) {
+
+        if (cashMove.getUri() == null) { /* Adicionando registro */
+
 
             values.put(EntryCashMove.COLUMN_TIMESTAMP, getDateTime());
 
-            Crud.insert(RegisterRemoveMoneyActivity.this, EntryCashMove.CONTENT_URI_CASHMOVE, values);
+            Crud.insert(mContext, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
-            Log.v(TAG, "salvarDadosBD - inserir");
+            Log.v(TAG, "saveDataDB - inserir");
 
-        } else {
+        } else { /* Editando Registro */
 
-         //   values.put(EntryCashMove.COLUMN_TIMESTAMP, mDataHoraBD);
+            values.put(EntryCashMove.COLUMN_TIMESTAMP, cashMove.getTimestamp());
 
-            Crud.update(RegisterRemoveMoneyActivity.this, mUriInitial, values);
+            Crud.update(mContext, cashMove.getUri(), values);
 
-            Log.v(TAG, "salvarDadosBD - editar");
+            Log.v(TAG, "saveDataDB - editar");
         }
 
-        Log.v(TAG, "salvarDadosBD - Fim");
+        Log.v(TAG, "saveDataDB - Fim");
 
         finish();
     }
@@ -267,8 +270,8 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         };
 
         return new CursorLoader(
-                this,
-                mUriInitial,
+                mContext,
+                cashMove.getUri(),
                 projection,
                 null,
                 null,
@@ -283,17 +286,12 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
         if (cursor.moveToFirst()) {
 
-            double valorBD = cursor.getDouble(
-                    cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
+            cashMove.setValue(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE)));
+            cashMove.setDescription(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION)));
+            cashMove.setTimestamp(cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP)));
 
-            String descricaoBD = cursor.getString(
-                    cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
-
-         //   mDataHoraBD = cursor.getString(
-                  //  cursor.getColumnIndex(EntryCashMove.COLUMN_TIMESTAMP));
-
-            mEtValue.setText(String.valueOf(valorBD * 100));
-            mEtDescription.setText(descricaoBD);
+            mEtValue.setText(Formatting.doubleDBToString(cashMove.getValue()));
+            mEtDescription.setText(cashMove.getDescription());
         }
     }
 
@@ -312,10 +310,12 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         switch (view.getId()) {
 
             case R.id.et_value:
+
                 mEtValue.requestFocus();
                 mEtValue.setSelection(mEtValue.getText().length());
                 ControlViews.showKeyboard(RegisterRemoveMoneyActivity.this, mEtValue);
-                return true;
+
+                return mEtValue.performClick();
 
             default:
                 return false;
@@ -329,7 +329,7 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-            salvarDadosBD();
+            saveDataDB();
             return true;
         }
 
@@ -342,8 +342,11 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "watcherControl");
 
-        /* Edit abre teclado numerico, entao ao entrar um caractere de numero ele é formatado
-         *  no estilo de moeda para ser apresentado ao usuario
+        /* Os caracteres que entram no mEtValue são apenas numeros
+         * Na entrada de caracteres envia para fazer uma formatação, para que os caracteres sejam
+         * apresentados ao usuario em forma de moeda(currency). Tambem controla o cursor para que ele
+         * sempre esteja no fim e não seja possivel apagar um caraceter do centro de um conjunto de
+         * caracteres, sem antes apagar todos a sua direita
          */
         mEtValue.addTextChangedListener(new TextWatcher() {
             @Override
@@ -367,7 +370,7 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
                 isFormatCurrencyUpdated = true;
 
                 mEtValue.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
-             //   mEtValue.setSelection(mEtValor.getText().length());
+                mEtValue.setSelection(mEtValue.getText().length());
             }
 
             @Override

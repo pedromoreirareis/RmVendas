@@ -3,6 +3,7 @@ package com.pedromoreirareisgmail.rmvendas.activitys;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -30,28 +31,29 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
-import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
+import com.pedromoreirareisgmail.rmvendas.models.Product;
+import com.pedromoreirareisgmail.rmvendas.models.Sell;
 
 import java.text.NumberFormat;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calcularValorTotalVendaString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editsToDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceString;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editsToDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsInt;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsString;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ADICIONAR;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ADICIONAR_VENDA;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 
@@ -87,7 +89,10 @@ public class SellActivity extends AppCompatActivity implements
     private TextInputLayout layoutDesconto;
     private LinearLayout layoutPrazo;
 
-    private Uri mUriAtual = null;
+    private Context mContext;
+    private Product product;
+    private Sell sell;
+
     private Uri mUriCliente = null;
 
     private long mIdCliente = Const.MENOS_UM;
@@ -96,7 +101,6 @@ public class SellActivity extends AppCompatActivity implements
     private String mDataHoraBD = null;
     private String mNomeCliente = "";
 
-    private boolean mAdicionarProdutoBD = false;
     private boolean isDadosAlterado = false;
     private boolean isFormatarCurrencyAtualizado = false;
     private boolean isFormatarIntegerAtualizado = false;
@@ -108,23 +112,14 @@ public class SellActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreate");
 
         initViews();
+        initListenerAndObject();
 
-        // Recebe dados de ListProductSaleActivity
-        Intent intentDadosProduto = getIntent();
-        mUriAtual = intentDadosProduto.getData();
-
-        // Verifica se os dados recebidos indica se e para Adicionar ou Editar registro
-        if (intentDadosProduto.hasExtra(ADICIONAR_VENDA)) {
-
-            mAdicionarProdutoBD = intentDadosProduto.getStringExtra(
-                    ADICIONAR_VENDA).equals(ADICIONAR);
-        }
 
         // Se for para adicionar coloca titulo na activity ADICIONAR
-        if (mAdicionarProdutoBD) {
+        if (product.getAddSell()) {
 
             Log.v(TAG, "mAdicionarProdutoBD - Adicionar");
-            Log.v(TAG, "mAdicionarProdutoBD - Adicionar :" + mUriAtual.toString());
+            Log.v(TAG, "mAdicionarProdutoBD - Adicionar :" + product.getUri().toString());
 
             setTitle(R.string.title_venda_add);
             getLoaderManager().initLoader(LOADER_VENDA_ADICIONAR, null, this);
@@ -135,7 +130,7 @@ public class SellActivity extends AppCompatActivity implements
         }
 
         // Se não for para adicionar coloca titulo na activity para EDITAR
-        if (!mAdicionarProdutoBD) {
+        if (!product.getAddSell()) {
 
             Log.v(TAG, "!mAdicionarProdutoBD - Editar");
 
@@ -147,12 +142,45 @@ public class SellActivity extends AppCompatActivity implements
         verificarSavedInstanceState(savedInstanceState);
 
         // Verifica a entrada de caracteres nos edits
-        controleTextWatcher();
+        watcherControl();
 
         // Verifica a maudança de estado do Switch
-        controleSwitchCheckedChange();
+        switchControlChange();
 
-        // Botão abre activity ListClientSaleActivity, para selecionar cliente para venda a prazo
+        // Coloca foco e seleciona dados do edit quantidade
+        mEtQuantidade.setSelectAllOnFocus(true);
+
+        // Tira o foco e coloca valor zero nos edits
+        ControlViews.noFocusAndZero(mEtAdicional);
+        ControlViews.noFocusAndZero(mEtDesconto);
+        ControlViews.noFocusAndZero(mEtPrazo);
+    }
+
+    private void initListenerAndObject() {
+
+        // Contexto da Activity
+        mContext = SellActivity.this;
+
+        // Instancia o objeto Sell
+        sell = new Sell();
+
+        // Instancia o objeto Product
+        product = new Product();
+
+        // Recebe dados de ListProductSaleActivity
+        Intent intentProduct = getIntent();
+        product.setUri(intentProduct.getData());
+
+        if (intentProduct.hasExtra(ConstIntents.INTENT_ADD_SELL)) {
+
+            product = intentProduct.getParcelableExtra(ConstIntents.INTENT_ADD_SELL);
+
+        } else {
+
+            product.setAddSell(false);
+        }
+
+        /* Abre activity ListClientSaleActivity para selecionar cliente para venda a prazo */
         mButCliente.setOnClickListener(this);
 
         // Monitora toques nos edits
@@ -165,16 +193,9 @@ public class SellActivity extends AppCompatActivity implements
         mSwitchAdicional.setOnTouchListener(this);
         mSwitchDesconto.setOnTouchListener(this);
         mSwitchPrazo.setOnTouchListener(this);
-
-        // Coloca foco e seleciona dados do edit quantidade
-        mEtQuantidade.setSelectAllOnFocus(true);
-
-        // Tira o foco e coloca valor zero nos edits
-        ControlViews.noFocusAndZero(mEtAdicional);
-        ControlViews.noFocusAndZero(mEtDesconto);
-        ControlViews.noFocusAndZero(mEtPrazo);
     }
 
+    //TODO: parei aqui
 
     private void initViews() {
 
@@ -261,7 +282,7 @@ public class SellActivity extends AppCompatActivity implements
                     new Intent(SellActivity.this, ListClientSaleActivity.class);
 
             Bundle bundle = new Bundle();
-            bundle.putString(URI_ATUAL, mUriAtual.toString());
+            bundle.putString(URI_ATUAL, product.getUri().toString());
             bundle.putString(VALOR_UNIDADE, String.valueOf(mValorUnidadeProduto));
 
             intentListaCliente.putExtras(bundle);
@@ -472,7 +493,7 @@ public class SellActivity extends AppCompatActivity implements
         }
 
         // Salva dados no BD
-        if (mAdicionarProdutoBD) {
+        if (product.getAddSell()) {
 
             values.put(EntrySeel.COLUMN_TIMESTAMP, TimeData.getDateTime());
 
@@ -496,7 +517,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 values.put(EntrySeel.COLUMN_TIMESTAMP, mDataHoraBD);
 
-                Crud.update(SellActivity.this, mUriAtual, values);
+                Crud.update(SellActivity.this, product.getUri(), values);
 
                 Log.v(TAG, "salvarDadosBD - editar");
             }
@@ -526,7 +547,7 @@ public class SellActivity extends AppCompatActivity implements
 
             return new CursorLoader(
                     this,
-                    mUriAtual,
+                    product.getUri(),
                     projection,
                     null,
                     null,
@@ -556,7 +577,7 @@ public class SellActivity extends AppCompatActivity implements
 
             return new CursorLoader(
                     this,
-                    mUriAtual,
+                    product.getUri(),
                     projection,
                     null,
                     null,
@@ -758,9 +779,9 @@ public class SellActivity extends AppCompatActivity implements
     }
 
     /* Verifica a entrada de caracteres nos edits*/
-    private void controleTextWatcher() {
+    private void watcherControl() {
 
-        Log.v(TAG, "controleTextWatcher");
+        Log.v(TAG, "watcherControl");
 
         /* Edits tem apenas caracteres numericos em seu teclado
          * Apos a entrada de caracteres, e feita a formatação para o estilo moeda para ser
@@ -954,7 +975,7 @@ public class SellActivity extends AppCompatActivity implements
 
 
     /* Veifica se houve alteração no estado do Switch*/
-    private void controleSwitchCheckedChange() {
+    private void switchControlChange() {
 
         Log.v(TAG, "");
 
@@ -969,7 +990,7 @@ public class SellActivity extends AppCompatActivity implements
 
                     layoutAdicional.setVisibility(View.VISIBLE);
 
-                    if (mAdicionarProdutoBD) {
+                    if (product.getAddSell()) {
                         mEtAdicional.setText("0");
                     }
 
@@ -992,7 +1013,7 @@ public class SellActivity extends AppCompatActivity implements
 
                     layoutDesconto.setVisibility(View.VISIBLE);
 
-                    if (mAdicionarProdutoBD) {
+                    if (product.getAddSell()) {
                         mEtDesconto.setText("0");
                     }
 
@@ -1014,7 +1035,7 @@ public class SellActivity extends AppCompatActivity implements
 
                     layoutPrazo.setVisibility(View.VISIBLE);
 
-                    if (mAdicionarProdutoBD) {
+                    if (product.getAddSell()) {
                         mEtPrazo.setText("0");
                     }
 

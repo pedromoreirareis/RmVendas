@@ -27,10 +27,11 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.adapters.RemoveMoneyAdapter;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
+
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_REMOVE_MONEY_CASHMOVE;
 
 public class ListRemoveMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -145,7 +146,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             case R.id.action_date:
-                Messages.dialogCalendar(ListRemoveMoneyActivity.this, mDateSetListener);
+                Messages.dialogCalendar(mContext, mDateSetListener);
                 return true;
         }
 
@@ -167,10 +168,10 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         };
 
         // O que sera pesquisado em casa coluna
-        String selection = EntryCashMove.COLUMN_TYPE + " =? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
+        String selection = EntryCashMove.COLUMN_TYPE + " = ? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
 
         // Dados para a pesquisa em cada coluna
-        String[] selectionArgs = new String[]{String.valueOf(ConstDB.TYPE_CASHMOVE_REMOVE_MONEY), mSearchDateDB + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(TYPE_REMOVE_MONEY_CASHMOVE), mSearchDateDB + "%"};
 
         // Ordem que sera retonado os dados
         String sortOrder = EntryCashMove.COLUMN_TIMESTAMP;
@@ -248,7 +249,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         Messages.editOurDelete(
                 mContext,
-                RegisterAddMoneyActivity.class,
+                RegisterRemoveMoneyActivity.class,
                 uri,
                 messageDelete
         );

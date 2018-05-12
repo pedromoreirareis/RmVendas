@@ -8,11 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,146 +24,153 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
-
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.LIST_CLIENT_ACTIVITY;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.VEND_LIST_CLIENTES_ACTIVITY;
+import com.pedromoreirareisgmail.rmvendas.models.Client;
 
 
 public class RegisterClientActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnEditorActionListener {
 
-    private static final int LOADER_CLIENTES_CAD = 0;
+    public static final String TAG = ConstTag.TAG_MAIN + RegisterClientActivity.class.getSimpleName();
 
-    private EditText mEtNome;
+    private EditText mEtName;
     private EditText mEtFone;
 
-    private String mVemActivity = null;
-    private Uri mUriAtual = null;
-    private boolean isDadosAlterado = false;
     private Context mContext;
+    private Client client;
+
+    private boolean isDataChanged = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_client);
 
+        Log.v(TAG, "onCreate");
+
         initViews();
-        initIntents();
+        initListenerAndObject();
 
-        /* Se Uri vazio, Activity vai adicionar registro. Senão então editar.*/
-        if (mUriAtual == null) {
+        if (client.getUri() == null) { // Adicionar
 
-            setTitle(getResources().getString(R.string.title_clientes_add));
-        } else {
+            setTitle(getString(R.string.title_client_add));
 
-            /* Para editar fazer pesquisa no BD para pegar dados do Uri passado*/
-            setTitle(getResources().getString(R.string.title_clientes_edit));
-            getLoaderManager().initLoader(LOADER_CLIENTES_CAD, null, this);
+        } else { // Editar
+
+            setTitle(getString(R.string.title_client_edit));
+
+            // Faz pesquisa no DB do uri pra editar
+            getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_CLIENT, null, this);
         }
 
         // Verifica se houve alteração nos caracteres do edit
-        if (!isDadosAlterado) {
+        if (!isDataChanged) {
 
-            isDadosAlterado = Verify.dataChanged(mEtFone)
-                    || Verify.dataChanged(mEtNome);
+            isDataChanged = Verify.dataChanged(mEtFone)
+                    || Verify.dataChanged(mEtName);
+        }
+    }
+
+    private void initViews() {
+
+        Log.v(TAG, "initViews");
+
+        // Referencia itens do layout
+        mEtName = findViewById(R.id.et_client_name);
+        mEtFone = findViewById(R.id.et_client_fone);
+    }
+
+    private void initListenerAndObject() {
+
+        Log.v(TAG, "initListenerAndObject");
+
+        // Contexto da activity
+        mContext = RegisterClientActivity.this;
+
+        // Instancia o obejto Client
+        client = new Client();
+
+        /* Se tiver uri é uma edição*/
+        Intent intentInit = getIntent();
+        client.setUri(intentInit.getData());
+
+        // Indica qual Activity chamou RegisterClientActivity
+        if (intentInit.hasExtra(ConstIntents.INTENT_CALLED_CLIENT)) {
+
+            client = intentInit.getParcelableExtra(ConstIntents.INTENT_CALLED_CLIENT);
         }
 
         mEtFone.setOnEditorActionListener(this);
     }
 
-    private void initViews() {
-
-        // Referencia itens do layout
-        mEtNome = findViewById(R.id.et_clientes_nome);
-        mEtFone = findViewById(R.id.et_clientes_numero_fone);
-    }
-
-    private void initIntents() {
-
-        /* Se Activity foi aberta para alteração, vair receber uma Uri*/
-        Intent intentInicial = getIntent();
-        mUriAtual = intentInicial.getData();
-
-        if (intentInicial.hasExtra(ConstIntents.ACTIVITY_CALLED)) {
-
-            switch (intentInicial.getStringExtra(ConstIntents.ACTIVITY_CALLED)) {
-
-                /* Vem da lista de clientes normal*/
-                case LIST_CLIENT_ACTIVITY:
-                    mVemActivity = LIST_CLIENT_ACTIVITY;
-                    break;
-
-                    /* Vem da lista de clientes de vendas*/
-                case VEND_LIST_CLIENTES_ACTIVITY:
-                    mVemActivity = VEND_LIST_CLIENTES_ACTIVITY;
-                    break;
-            }
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        Log.v(TAG, "onCreateOptionsMenu");
+
         getMenuInflater().inflate(R.menu.menu_salvar, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        Log.v(TAG, "onOptionsItemSelected");
+
         switch (item.getItemId()) {
 
-            // Menu salvar
+            // Botão salvar
             case R.id.action_salvar:
-                salvarDadosBD();
+                saveDataDB();
                 return true;
 
             /* Botão Up - Verifica alteração de dados antes de voltar a Activity que chamou
              *
              * Não Alterados - volta para activity que chamou a RegisterClientActivity
-             *
-             * Alterados - Abre um Dialog para confirmar se os dados alterados serão descartados e
-             * devem voltar a Activity que chamou a activity RegisterClientActivity ou se deve
-             * permanecer na Activity atual e manter os dados que estão sendo alterados
-             */
+             * Alterados - Abre um Dialog para confirmar se deseja continuar alterando ou de
+             * se deve descartar e voltar a activity que chamou RegisterClientActivity*/
             case android.R.id.home:
 
-                // Não foi alterado - Volta a Activity que chamou a activity RegisterClientActivity
-                if (!isDadosAlterado) {
+                // Não foi alterado
+                if (!isDataChanged) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
-
-                DialogInterface.OnClickListener descartarButClickListener =
+                // Voltar para activity que chamou
+                DialogInterface.OnClickListener discartClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                if (mVemActivity.equals(ConstIntents.LIST_CLIENT_ACTIVITY)) {
+                                if (client.getCalled() == Const.CALL_LIST_CLIENT) {
 
-                                    Intent intent = NavUtils.getParentActivityIntent(RegisterClientActivity.this);
-                                    NavUtils.navigateUpTo(RegisterClientActivity.this, intent);
+                                    Intent intentCalled = NavUtils.getParentActivityIntent(
+                                            RegisterClientActivity.this);
+                                    NavUtils.navigateUpTo(RegisterClientActivity.this, intentCalled);
 
                                 } else {
 
-                                    Intent intent = new Intent(RegisterClientActivity.this, ListClientSaleActivity.class);
-                                    NavUtils.navigateUpTo(RegisterClientActivity.this, intent);
+                                    Intent intentCalled = new Intent(
+                                            RegisterClientActivity.this, ListClientSaleActivity.class);
+                                    NavUtils.navigateUpTo(RegisterClientActivity.this, intentCalled);
                                 }
 
                             }
                         };
 
-                // Chama o metodo para descartar alterações
+                // Descartar alterações
                 Messages.continueOrDiscart(
-                        RegisterClientActivity.this,
-                        descartarButClickListener
+                        mContext,
+                        discartClickListener
                 );
-
 
                 return true;
         }
@@ -177,69 +183,72 @@ public class RegisterClientActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        if (!isDadosAlterado) {
+        Log.v(TAG, "onBackPressed");
+
+        if (!isDataChanged) {
 
             super.onBackPressed();
         }
 
-
         Messages.backPressed(
-                RegisterClientActivity.this,
+                mContext,
                 RegisterClientActivity.this);
     }
 
-    /* Recebe os dados que foram digitados nos Edits, faz validações, coloca em um ContentValues,
-     * verifica se deve criar um novo registro com os dados ou se é uma alteração de dados dados e
-     * depois salva no banco de dados*/
-    private void salvarDadosBD() {
+    private void saveDataDB() {
 
-        String nomeEditText = mEtNome.getText().toString().trim();
-        String foneEditText = mEtFone.getText().toString().trim();
+        Log.v(TAG, "saveDataDB");
 
-        // O campo nome não pode ficar vazio
-        if (TextUtils.isEmpty(nomeEditText)) {
+        String name = mEtName.getText().toString().trim();
+        String fone = mEtFone.getText().toString().trim();
 
-            mEtNome.setError(getString(R.string.error_campo_vazio_nome));
-            mEtNome.requestFocus();
+        // O nome não pode ficar vazio
+        if (name.isEmpty()) {
+
+            mEtName.setError(getString(R.string.error_empty_name));
+            mEtName.requestFocus();
             return;
         }
 
         // O campo nome deve ter pelo menos 3 caracteres
-        if (nomeEditText.length() < Const.MIN_CARACT_3) {
+        if (name.length() < Const.MIN_CARACT_3) {
 
-            mEtNome.setError(getString(R.string.error_campo_lenght_nome_3));
-            mEtNome.requestFocus();
+            mEtName.setError(getString(R.string.error_length_name_3));
+            mEtName.requestFocus();
             return;
         }
 
         // Campo não pode ficar vazio
-        if (TextUtils.isEmpty(foneEditText)) {
+        if (fone.isEmpty()) {
 
-            mEtFone.setError(getString(R.string.error_campo_vazio_fone));
+            mEtFone.setError(getString(R.string.error_empty_fone));
             mEtFone.requestFocus();
             return;
         }
 
         // Campo não pode ficar vazio
-        if (foneEditText.length() < Const.MIN_NUM_FONE) {
+        if (fone.length() < Const.MIN_NUM_FONE_8) {
 
-            mEtFone.setError(getString(R.string.error_campo_lenght_fone));
+            mEtFone.setError(getString(R.string.error_lenght_fone_8));
             mEtFone.requestFocus();
             return;
         }
+
+        client.setName(name);
+        client.setFone(fone);
+
 
         ContentValues values = new ContentValues();
-        values.put(EntryClient.COLUMN_NAME, nomeEditText);
-        values.put(EntryClient.COLUMN_FONE, foneEditText);
+        values.put(EntryClient.COLUMN_NAME, client.getName());
+        values.put(EntryClient.COLUMN_FONE, client.getFone());
 
-        if (mUriAtual == null) {
+        if (client.getUri() == null) { // Adicionar
 
-            Crud.insert(RegisterClientActivity.this, EntryClient.CONTENT_URI_CLIENT, values);
+            Crud.insert(mContext, EntryClient.CONTENT_URI_CLIENT, values);
 
-        } else {
+        } else { // Editar
 
-
-            Crud.update(RegisterClientActivity.this, mUriAtual, values);
+            Crud.update(mContext, client.getUri(), values);
         }
 
         finish();
@@ -248,7 +257,8 @@ public class RegisterClientActivity extends AppCompatActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
+        Log.v(TAG, "onCreateLoader");
+
         String[] projection = {
                 EntryClient._ID,
                 EntryClient.COLUMN_NAME,
@@ -256,8 +266,8 @@ public class RegisterClientActivity extends AppCompatActivity implements
         };
 
         return new CursorLoader(
-                this,
-                mUriAtual,
+                mContext,
+                client.getUri(),
                 projection,
                 null,
                 null,
@@ -268,41 +278,37 @@ public class RegisterClientActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        Log.v(TAG, "onLoadFinished");
+
         // Pega nome e telefone do cliente e coloca nos Edits, caso esteja editando
         if (cursor.moveToFirst()) {
 
-            String nomeBD = cursor.getString(
-                    cursor.getColumnIndex(EntryClient.COLUMN_NAME));
+            client.setName(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME)));
+            client.setFone(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_FONE)));
 
-            String foneBD = cursor.getString(
-                    cursor.getColumnIndex(EntryClient.COLUMN_FONE));
-
-            mEtNome.setText(nomeBD);
-            mEtFone.setText(foneBD);
+            mEtName.setText(client.getName());
+            mEtFone.setText(client.getFone());
         }
     }
 
-    /**
-     * O que fazer com dados atuais no caso de iniciar nova pesquisa
-     *
-     * @param loader loader com dados atuais
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+        Log.v(TAG, "onLoaderReset");
     }
 
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
+        Log.v(TAG, "onEditorAction");
+
         // Salvar dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-            salvarDadosBD();
+            saveDataDB();
             return true;
         }
-
         return false;
     }
 }

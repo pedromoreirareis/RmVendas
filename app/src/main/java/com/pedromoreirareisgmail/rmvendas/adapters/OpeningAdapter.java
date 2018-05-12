@@ -30,11 +30,11 @@ public class OpeningAdapter extends CursorAdapter {
 
         OpeningViewHolder holder = new OpeningViewHolder(view);
 
-        Double valor = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
-        String hora = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
+        Double value = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
+        String hour = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
 
-        holder.tvValue.setText(Formatting.doubleToCurrency(valor));
-        holder.tvHour.setText(TimeData.formatDateToHourAndMinute(hora));
+        holder.tvValue.setText(Formatting.doubleToCurrency(value));
+        holder.tvHour.setText(TimeData.formatDateToHourAndMinute(hour));
     }
 
     class OpeningViewHolder {

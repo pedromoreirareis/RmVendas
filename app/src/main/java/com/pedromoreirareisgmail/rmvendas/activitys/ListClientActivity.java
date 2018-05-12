@@ -24,12 +24,12 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.adapters.ClientAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
 
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ACTIVITY_CALLED;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 
 public class ListClientActivity extends AppCompatActivity implements
@@ -86,8 +86,8 @@ public class ListClientActivity extends AppCompatActivity implements
 
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_clientes_list_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_money_up);
-        mIvEmpty.setContentDescription(getString(R.string.image_desc_clientes_list_empty));
+        mIvEmpty.setImageResource(R.drawable.ic_money_up); //TODO: mudar icone dos clientes
+        mIvEmpty.setContentDescription(getString(R.string.descr_client_empty));
         mListView.setEmptyView(mEmptyView);
     }
 
@@ -257,11 +257,11 @@ public class ListClientActivity extends AppCompatActivity implements
                         RegisterClientActivity.class
                 );
 
-                Bundle bundle = new Bundle();
-                bundle.putString(ACTIVITY_CALLED, ConstIntents.LIST_CLIENT_ACTIVITY);
+                Client client = new Client();
 
-                intentRegisterClient.putExtras(bundle);
+                client.setCalled(Const.CALL_LIST_CLIENT);
 
+                intentRegisterClient.putExtra(ConstIntents.INTENT_CALLED_CLIENT, client);
                 startActivity(intentRegisterClient);
 
                 break;

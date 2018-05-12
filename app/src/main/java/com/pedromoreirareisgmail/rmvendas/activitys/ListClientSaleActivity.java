@@ -1,6 +1,7 @@
 package com.pedromoreirareisgmail.rmvendas.activitys;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -20,10 +21,12 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.adapters.ClientAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
-
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ACTIVITY_CALLED;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.VEND_LIST_CLIENTES_ACTIVITY;
+import com.pedromoreirareisgmail.rmvendas.models.Client;
 
 
 public class ListClientSaleActivity extends AppCompatActivity implements
@@ -32,8 +35,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener {
 
-    private static final String TAG = ListClientSaleActivity.class.getSimpleName();
-    private static final int LOADER_VEND_CLIENTES_LIST = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + ListClientSaleActivity.class.getSimpleName();
 
     private static final String URI_ATUAL = "uri_atual";
     private static final String VALOR_UNIDADE = "valor_unidade";
@@ -45,10 +47,11 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     private View mEmptyView;
     private FloatingActionButton mFab;
 
+    private Context mContext;
     private ClientAdapter mAdapter;
     private String mUri;
     private String mValorUnidade;
-    private String mPesquisar = "";
+    private String mSearch = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         initViews();
         emptyLayout();
+        initListenerAndObject();
 
         Intent intentDadosVenda = getIntent();
 
@@ -72,19 +76,8 @@ public class ListClientSaleActivity extends AppCompatActivity implements
             mValorUnidade = intentDadosVenda.getStringExtra(VALOR_UNIDADE);
         }
 
-        // Trata o botão Flutuante - Abre activity EntCadActivity
-        mFab.setOnClickListener(this);
-
-        // Cria o adapter e colocar o adapter no Listview
-        mAdapter = new ClientAdapter(this);
-        mListView.setAdapter(mAdapter);
-
-        // Clique simples no ListView
-        mListView.setOnItemClickListener(this);
-
         // Inicia o gerenciamento de dados no BD - Busca de dados
-        getLoaderManager().initLoader(LOADER_VEND_CLIENTES_LIST, null, this);
-
+        getLoaderManager().initLoader(ConstLoader.LOADER_LIST_CLIENT_SALE, null, this);
     }
 
     private void initViews() {
@@ -103,12 +96,27 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         Log.v(TAG, "emptyLayout");
 
-        //TODO: TROCAR ICONE DE CLIENTE ALGO VERMELHO
         // Layout vazio - Cadastro sem registros
-        mTvEmpty.setText(R.string.text_clientes_list_empty_pesquisa);
-        mIvEmpty.setImageResource(R.drawable.ic_money_up);
-        mIvEmpty.setContentDescription(getString(R.string.image_desc_clientes_list_empty));
+        mTvEmpty.setText(R.string.text_client_search_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_money_up); //TODO: mudar icone dos clientes TROCAR ICONE DE CLIENTE ALGO VERMELHO
+        mIvEmpty.setContentDescription(getString(R.string.descr_client_empty));
         mListView.setEmptyView(mEmptyView);
+    }
+
+    private void initListenerAndObject() {
+
+        // Contexto da Activty
+        mContext = ListClientSaleActivity.this;
+
+        // Cria o adapter e colocar o adapter no Listview
+        mAdapter = new ClientAdapter(mContext);
+        mListView.setAdapter(mAdapter);
+
+        // Listener do botão Flutuante
+        mFab.setOnClickListener(this);
+
+        // Clique simples no ListView
+        mListView.setOnItemClickListener(this);
     }
 
     @Override
@@ -142,6 +150,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
 
+                // TODO: implemntar junto com a venda
                 bundle.putString(URI_ATUAL, mUri);
                 bundle.putString(VALOR_UNIDADE, mValorUnidade);
 
@@ -170,14 +179,12 @@ public class ListClientSaleActivity extends AppCompatActivity implements
                 EntryClient.COLUMN_FONE
         };
 
-        /* retorna todos os produtos cadastrados - A pesquisa inicial traz todos os produtos, se
-         * utilizar o menu search, sera pesquisado pelo nome do produto */
         String selection = EntryClient.COLUMN_NAME + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + mPesquisar + "%"};
+        String[] selectionArgs = new String[]{"%" + mSearch + "%"};
         String sortOrder = EntryClient.COLUMN_NAME;
 
         return new CursorLoader(
-                this,
+                mContext,
                 EntryClient.CONTENT_URI_CLIENT,
                 projection,
                 selection,
@@ -213,9 +220,13 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onQueryTextChange");
 
-        mPesquisar = newText;
+        mSearch = newText;
 
-        getLoaderManager().restartLoader(LOADER_VEND_CLIENTES_LIST, null, ListClientSaleActivity.this);
+        getLoaderManager().restartLoader(
+                ConstLoader.LOADER_LIST_CLIENT_SALE,
+                null,
+                ListClientSaleActivity.this
+        );
 
         return true;
     }
@@ -229,6 +240,8 @@ public class ListClientSaleActivity extends AppCompatActivity implements
         Cursor cursor = mAdapter.getCursor();
 
         String idCliente = cursor.getString(cursor.getColumnIndex(EntryClient._ID));
+
+        //TODO: ver como implementar
 
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
@@ -250,17 +263,20 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         if (view.getId() == R.id.fab_add) {
 
-            Log.v(TAG, "FloatingActionButton");
+            Log.v(TAG, "OnClick - FloatingActionButton");
 
-            Intent intentCadastroClientes =
-                    new Intent(ListClientSaleActivity.this, RegisterClientActivity.class);
+            Intent intentRegisterClient = new Intent(
+                    ListClientSaleActivity.this,
+                    RegisterClientActivity.class
+            );
 
-            Bundle bundle = new Bundle();
-            bundle.putString(ACTIVITY_CALLED, VEND_LIST_CLIENTES_ACTIVITY);
+            Client client = new Client();
 
-            intentCadastroClientes.putExtras(bundle);
+            client.setCalled(Const.CALL_LIST_CLIENT_SALE);
 
-            startActivity(intentCadastroClientes);
+            intentRegisterClient.putExtra(ConstIntents.INTENT_CALLED_CLIENT, client);
+
+            startActivity(intentRegisterClient);
         }
     }
 }

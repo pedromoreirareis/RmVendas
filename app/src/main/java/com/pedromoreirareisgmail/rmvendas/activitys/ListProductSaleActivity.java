@@ -22,11 +22,11 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
-
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.ADICIONAR_VENDA;
+import com.pedromoreirareisgmail.rmvendas.models.Product;
 
 public class ListProductSaleActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -177,9 +177,13 @@ public class ListProductSaleActivity extends AppCompatActivity implements
                 SellActivity.class
         );
 
-        intentSale.putExtra(ADICIONAR_VENDA, ADICIONAR_VENDA);
+        Product product = new Product();
+        product.setAddSell(true);
+
+        intentSale.putExtra(ConstIntents.INTENT_ADD_SELL,product);
         intentSale.setData(uri);
         startActivity(intentSale);
+
         finish();
     }
 

@@ -10,16 +10,18 @@ public class Client implements Parcelable{
     private Uri uri;
     private String name;
     private String fone;
+    private int called;
 
     public Client(){
 
     }
 
-    public Client(long id, Uri uri, String name, String fone) {
+    public Client(long id, Uri uri, String name, String fone, int called) {
         this.id = id;
         this.uri = uri;
         this.name = name;
         this.fone = fone;
+        this.called = called;
     }
 
     protected Client(Parcel in) {
@@ -27,6 +29,7 @@ public class Client implements Parcelable{
         uri = in.readParcelable(Uri.class.getClassLoader());
         name = in.readString();
         fone = in.readString();
+        called = in.readInt();
     }
 
     @Override
@@ -35,6 +38,7 @@ public class Client implements Parcelable{
         dest.writeParcelable(uri, flags);
         dest.writeString(name);
         dest.writeString(fone);
+        dest.writeInt(called);
     }
 
     @Override
@@ -84,5 +88,13 @@ public class Client implements Parcelable{
 
     public void setFone(String fone) {
         this.fone = fone;
+    }
+
+    public int getCalled() {
+        return called;
+    }
+
+    public void setCalled(int called) {
+        this.called = called;
     }
 }

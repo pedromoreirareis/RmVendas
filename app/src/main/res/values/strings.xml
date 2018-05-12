@@ -18,6 +18,11 @@
     <string name="title_add_money_register_edit">Editar entrada</string>
     <string name="title_remove_money_register_add">Adicionar retirada</string>
     <string name="title_remove_money_register_edit">Editar retirada</string>
+    <string name="title_client_add">Adicionar Cliente</string>
+    <string name="title_client_edit">Editar Cliente</string>
+
+
+
 
 
     <string name="title_produto_cad_add">Adicionar produto</string>
@@ -34,8 +39,8 @@
 
     <string name="title_fechamento">Caixa  %1$s</string>
     <string name="title_clientes_list">Clientes</string>
-    <string name="title_clientes_add">Adicionar Cliente</string>
-    <string name="title_clientes_edit">Editar Cliente</string>
+
+
     <string name="title_venda_clientes_list">Clientes Cadastrados</string>
     <string name="title_troco">Troco</string>
 
@@ -71,11 +76,15 @@
     <string name="descr_opening_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="descr_product_empty">Imagem de uma lista vazia</string>
     <string name="descr_product_sale_empty">Imagem de um coração partido</string>
+    <string name="descr_client_empty">Imagem cliente</string>
+
+
+
 
     <string name="image_desc_main_empty">Imagem de um bolo</string>
 
 
-    <string name="image_desc_clientes_list_empty">Imagem cliente</string>
+
 
     <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
@@ -88,10 +97,11 @@
     <string name="text_product_empty">Nenhum produto cadastrado !!!</string>
     <string name="text_product_sale_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_main_empty">Nenhuma venda realizada !!!</string>
+    <string name="text_client_search_empty">Nenhum cliente para essa pesquisa !!!</string>
 
 
     <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
-    <string name="text_clientes_list_empty_pesquisa">Nenhum cliente para essa pesquisa !!!</string>
+
 
 
     <string name="text_adicional">Adicional</string>
@@ -151,13 +161,14 @@
 
     <!-- ************************    Hints -->
     <string name="hint_value">Valor R$</string>
+    <string name="hint_description">Descrição</string>
 
 
     <string name="hint_quantidade">Quantidade</string>
     <string name="hint_nome">Nome</string>
     <string name="hint_preco">Preço R$</string>
 
-    <string name="hint_descricao">Descrição</string>
+
     <string name="hint_numero_fone">Nº Telefone</string>
     <string name="hint_nome_cliente">Nome do Cliente</string>
 
@@ -248,13 +259,17 @@
     <!-- *****************************    setError ********************************************* -->
     <string name="error_valide_value">Digite um valor válido</string>
     <string name="error_empty_description">Digite a descrição</string>
+    <string name="error_empty_name">Digite o nome</string>
+    <string name="error_empty_fone">Digite o telefone</string>
     <string name="error_lenght_description_10">A descrição deve ter no mínimo 10 caracteres</string>
+    <string name="error_lenght_fone_8">O telefone deve ter no mínimo 8 dígitos</string>
+    <string name="error_length_name_3">O nome deve ter no mínimo 3 caracteres</string>
 
 
     <string name="error_campo_desconto_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
     <string name="error_campo_prazo_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
-    <string name="error_campo_vazio_fone">Digite o telefone</string>
-    <string name="error_campo_vazio_nome">Digite o nome</string>
+
+
 
     <string name="error_campo_vazio_valor">Digite o valor</string>
     <string name="error_campo_vazio_quantidade">Digite a quantidade</string>
@@ -265,9 +280,9 @@
     <string name="error_nome_cliente">Pesquise um cliente</string>
     <string name="error_nome_edicao_nao_permitida">Edição de venda a prazo não permitida</string>
 
-    <string name="error_campo_lenght_nome_3">O nome deve ter no mínimo 3 caracteres</string>
+
     <string name="error_campo_lenght_nome_5">O nome deve ter no mínio 5 caracteres</string>
-    <string name="error_campo_lenght_fone">O telefone deve ter no mínimo 8 dígitos</string>
+
 
 
     <!-- ###########################################################################################

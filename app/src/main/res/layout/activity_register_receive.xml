@@ -60,7 +60,7 @@
                 style="@style/CampoNunberText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/hint_descricao"
+                android:hint="@string/hint_description"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences|textAutoCorrect" />
         </android.support.design.widget.TextInputLayout>

@@ -27,10 +27,11 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.adapters.AddMoneyAdapter;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
+
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_ADD_MONEY_CASHMOVE;
 
 public class ListAddMoneytActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -170,7 +171,7 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
         String selection = EntryCashMove.COLUMN_TYPE + " = ? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
 
         // Dados para a pesquisa em cada coluna
-        String[] selectionArgs = new String[]{String.valueOf(ConstDB.TYPE_CASHMOVE_ADD_MONEY), mSearchDateDB + "%"};
+        String[] selectionArgs = new String[]{String.valueOf(TYPE_ADD_MONEY_CASHMOVE), mSearchDateDB + "%"};
 
         // Ordem que sera retonado os dados
         String sortOrder = EntryCashMove.COLUMN_TIMESTAMP;
@@ -292,6 +293,7 @@ public class ListAddMoneytActivity extends AppCompatActivity implements
 
                 Log.v(TAG, "onClick - FloatingActionButton");
 
+                //TODO: tentar passar o CashMove com URI aqui, para receber no Register
                 Intent intentRegisterAddMoney = new Intent(
                         mContext,
                         RegisterAddMoneyActivity.class

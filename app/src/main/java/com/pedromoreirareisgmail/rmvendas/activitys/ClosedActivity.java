@@ -249,13 +249,13 @@ public class ClosedActivity extends AppCompatActivity implements
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
-                if (ConstDB.TYPE_CASHMOVE_ADD_MONEY ==
+                if (ConstDB.TYPE_ADD_MONEY_CASHMOVE ==
                         cursor.getInt(cursor.getColumnIndex(EntryCashMove.COLUMN_TYPE))) {
 
                     mValorEntradas = mValorEntradas +
                             cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE));
 
-                } else if (ConstDB.TYPE_CASHMOVE_REMOVE_MONEY ==
+                } else if (ConstDB.TYPE_REMOVE_MONEY_CASHMOVE ==
                         cursor.getInt(cursor.getColumnIndex(EntryCashMove.COLUMN_TYPE))) {
 
                     mValorRetiradas = mValorRetiradas +

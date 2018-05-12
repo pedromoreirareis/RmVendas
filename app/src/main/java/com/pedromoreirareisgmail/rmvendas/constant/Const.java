@@ -7,7 +7,7 @@ public class Const {
     public static final int MIN_CARACT_3 = 3;
     public static final int MIN_CARACT_5 = 5;
     public static final int MIN_CARACT_10 = 10;
-    public static final int MIN_NUM_FONE = 8;
+    public static final int MIN_NUM_FONE_8 = 8;
     public static final int MENOS_UM = -1;
     public static final double NUMERO_ZERO = 0;
     public static final String NUMERO_ZERO_STRING = "0";
@@ -16,4 +16,11 @@ public class Const {
 
     /*Códigos de Result - startActivityForResult*/
     public static final int COD_RESULT_VENDA_CLIENTES = 10001;
+
+
+    /* Identifica a Activity de origem */
+    public static final int CALL_LIST_CLIENT = 50;
+    public static final int CALL_LIST_CLIENT_SALE = 51;
+
+
 }

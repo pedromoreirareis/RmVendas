@@ -7,7 +7,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -51,8 +50,6 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
     private Context mContext;
     private CashMove cashMove;
 
-    private Uri mUriInitial = null;
-
     private boolean isDataChanged = false;
     private boolean isFormatCurrencyUpdated = false;
 
@@ -64,10 +61,9 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreate");
 
         initViews();
-        initIntents();
         initListenerAndObject();
 
-        if (mUriInitial == null) {
+        if (cashMove.getUri() == null) {
 
             // Se Uri nulo então é uma nova entrada
             setTitle(R.string.title_add_money_register_add);
@@ -102,17 +98,9 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
         // Referencia itens do layout
         mEtValue = findViewById(R.id.et_value);
-        mEtDescription = findViewById(R.id.et_descricao);
+        mEtDescription = findViewById(R.id.et_description);
     }
 
-    private void initIntents() {
-
-        Log.v(TAG, "initIntents");
-
-        /* Tem dados - Editar / Não tem dados - Adicionar*/
-        Intent intentUri = getIntent();
-        mUriInitial = intentUri.getData();
-    }
 
     private void initListenerAndObject() {
 
@@ -122,11 +110,14 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         // Instanciando o Objeto CashMove
         cashMove = new CashMove();
 
+        Intent intentUri = getIntent();
+        cashMove.setUri(intentUri.getData());
+
         // Define o que ação tomar a clicar no botão EditorAction do teclado
         mEtDescription.setOnEditorActionListener(this);
 
         // Monitora toques no edit de valor
-        mEtValue.setOnTouchListener(this); //TODO: ver como corrigir performClick
+        mEtValue.setOnTouchListener(this);
     }
 
     @Override
@@ -199,12 +190,13 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         Log.v(TAG, "saveDataDB - Iniciando ");
 
         Log.v(TAG, "saveDataDB - captureData");
+
         String value = mEtValue.getText().toString();
         String description = mEtDescription.getText().toString();
 
-        Log.v(TAG, "saveDataDB - validateCashMove");
-
         Double valueDouble = Formatting.currencyToDouble(value);
+
+        Log.v(TAG, "saveDataDB - validateCashMove");
 
         // Valor não pode ser zero
         if (valueDouble == Const.NUMERO_ZERO) {
@@ -241,24 +233,24 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
         values.put(EntryCashMove.COLUMN_VALUE, cashMove.getValue());
         values.put(EntryCashMove.COLUMN_DESCRIPTION, cashMove.getDescription());
-        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TYPE_CASHMOVE_ADD_MONEY);
+        values.put(EntryCashMove.COLUMN_TYPE, ConstDB.TYPE_ADD_MONEY_CASHMOVE);
 
 
-        if (mUriInitial == null) { /* Adicionando registro */
+        if (cashMove.getUri() == null) { /* Adicionando registro */
 
             values.put(EntryCashMove.COLUMN_TIMESTAMP, getDateTime());
 
             Crud.insert(mContext, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
-            Log.v(TAG, "Adicionar - adicionou cliente");
+            Log.v(TAG, "Adicionar - adicionou");
 
         } else { /* Editando Registro */
 
             values.put(EntryCashMove.COLUMN_TIMESTAMP, cashMove.getTimestamp());
 
-            Crud.update(mContext, mUriInitial, values);
+            Crud.update(mContext, cashMove.getUri(), values);
 
-            Log.v(TAG, "Editando - editou cliente");
+            Log.v(TAG, "Editando - editou");
         }
 
         Log.v(TAG, "Finalizando salvar BD");
@@ -282,8 +274,8 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         };
 
         return new CursorLoader(
-                this,
-                mUriInitial,
+                mContext,
+                cashMove.getUri(),
                 projection,
                 null,
                 null,

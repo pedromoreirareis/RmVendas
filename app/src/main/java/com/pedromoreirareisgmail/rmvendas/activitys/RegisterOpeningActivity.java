@@ -2,11 +2,11 @@ package com.pedromoreirareisgmail.rmvendas.activitys;
 
 import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -23,29 +23,32 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
+import com.pedromoreirareisgmail.rmvendas.models.Opening;
 
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
 
 public class RegisterOpeningActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
 
-    private static final String TAG = RegisterOpeningActivity.class.getSimpleName();
-    private static final int LOADER_RET_CAD = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + RegisterOpeningActivity.class.getSimpleName();
 
-    private EditText mEtValor;
+    private EditText mEtValue;
 
-    private String mDataHoraBD = null;
-    private Uri mUriAtual = null;
-    private boolean isDadosAlterado = false;
-    private boolean isFormatarCurrencyAtualizado = false;
+    private Opening opening;
+    private Context mContext;
+
+    private boolean isDataChaged = false;
+    private boolean isFormatCurrencyUpdate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,52 +58,55 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreate");
 
         initViews();
-        initIntents();
+        initListenerAndObject();
 
         // Se mUriAtual tiver for nulo então vai adicionar, se tiver dados vai editar
-        if (mUriAtual == null) {
+        if (opening.getUri() == null) {
 
             setTitle(R.string.title_saldo_inicial_cad_add);
 
         } else {
 
             setTitle(R.string.title_saldo_inicial_cad_edit);
-            getLoaderManager().initLoader(LOADER_RET_CAD, null, this);
+            getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_OPENING, null, this);
         }
 
-        /* Define o EditorAction do teclado, refrente a view mEtValor
-         * Quando o teclado estiver aberto referente ao edit mEtValor, o EditorAction sera DONE
-         */
-        mEtValor.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        // Faz controle de entrada de dados no edit
+        watcherControl();
 
-        // Verifica a entrada de caractres em um edit especifico
-        controleTextWatcher();
-
-        // define qual ação sera tomada ao clicar no EditorAction
-        mEtValor.setOnEditorActionListener(this);
-
-        // Monitora se há toques em uma view especifica
-        mEtValor.setOnTouchListener(this);
-
-        // Retira o foco e coloca o valor zero no edit
-        ControlViews.noFocusAndZero(mEtValor);
+        // Retira o foco e coloca o valor zero
+        ControlViews.noFocusAndZero(mEtValue);
     }
+
 
     private void initViews() {
 
         Log.v(TAG, "initViews");
 
         // Referencia intens do layout
-        mEtValor = findViewById(R.id.et_value);
+        mEtValue = findViewById(R.id.et_value);
     }
 
-    private void initIntents() {
+    private void initListenerAndObject() {
 
-        Log.v(TAG, "initIntents");
+        Log.v(TAG, "initListenerAndObject");
 
-        // Recebe dados de ListOpeningActivity
+        // Contexto da Activity
+        mContext = RegisterOpeningActivity.this;
+
+        opening = new Opening();
+
         Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        opening.setUri(intent.getData());
+
+        /* EditorAction sera Done - No layout esta definido como Next que é para as outras Activitys*/
+        mEtValue.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        // define qual ação sera tomada ao clicar no EditorAction
+        mEtValue.setOnEditorActionListener(this);
+
+        // Monitora se há toques em uma view especifica
+        mEtValue.setOnTouchListener(this);
     }
 
     @Override
@@ -119,26 +125,26 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         switch (item.getItemId()) {
 
-            // Salva dados no BD
+            // Salva dados no DB
             case R.id.action_salvar:
-                salvarDadosBD();
+                saveDataDB();
                 return true;
 
-            /* Menu Up
+            /* Botão Up
              * Se dados foram alterados abre Dialog para decidir se os dados alterados vao ser
-              * descartados ou se vão ser mantidos e a alteração continuara
-             */
+             * descartados ou se vão ser mantidos e a alteração continuara*/
             case android.R.id.home:
 
-                if (!isDadosAlterado) {
+                if (!isDataChaged) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
                 Messages.homePressed(
-                        RegisterOpeningActivity.this,
-                        RegisterOpeningActivity.this);
+                        mContext,
+                        RegisterOpeningActivity.this
+                );
 
                 return true;
         }
@@ -148,64 +154,63 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
     /* Botão voltar (embaixo)
      * Verifica se houve alterações, se houve abre Dialog para decidir se as alterações vao ser
-     * descartadas ou se continuara a fazendo alterações
-     */
+     * descartadas ou se continuara a fazendo alterações*/
     @Override
     public void onBackPressed() {
 
         Log.v(TAG, "onBackPressed");
 
-        if (!isDadosAlterado) {
+        if (!isDataChaged) {
 
             super.onBackPressed();
         }
 
         Messages.backPressed(
-                RegisterOpeningActivity.this,
-                RegisterOpeningActivity.this);
+                mContext,
+                RegisterOpeningActivity.this
+        );
     }
 
-    /* Salva dados no BD
-     * Recebe dados dos edits, faz validações, coloca dados no objeto values e salva no BD
-     */
-    private void salvarDadosBD() {
+    private void saveDataDB() {
 
-        Log.v(TAG, "salvarDadosBD - Inicio");
+        Log.v(TAG, "saveDataDB - Inicio");
 
-        String valorEditText = mEtValor.getText().toString().trim();
+        String value = mEtValue.getText().toString().trim();
 
-        double valorDouble = Formatting.currencyToDouble(valorEditText);
+        double valueDouble = Formatting.currencyToDouble(value);
 
         // Valor não pode ser zero
-        if (valorDouble == NUMERO_ZERO) {
-            mEtValor.setError(getString(R.string.error_valide_value));
-            mEtValor.requestFocus();
+        if (valueDouble == NUMERO_ZERO) {
+
+            mEtValue.setError(getString(R.string.error_valide_value));
+            mEtValue.requestFocus();
             return;
         }
 
-        // Coloca dados no objeto values
-        ContentValues values = new ContentValues();
-        values.put(EntryOpening.COLUMN_VALUE, valorDouble);
+        opening.setValue(valueDouble);
 
-        // Salva dados no BD
-        if (mUriAtual == null) {
+        // Coloca os dados para salvar em um Objeto values
+        ContentValues values = new ContentValues();
+        values.put(EntryOpening.COLUMN_VALUE, opening.getValue());
+
+        if (opening.getUri() == null) { // Adicionar
 
             values.put(EntryOpening.COLUMN_TIMESTAMP, getDateTime());
 
-            Crud.insert(RegisterOpeningActivity.this, EntryOpening.CONTENT_URI_OPENING, values);
+            Crud.insert(mContext, EntryOpening.CONTENT_URI_OPENING, values);
 
-            Log.v(TAG, "salvarDadosBD - inserir");
+            Log.v(TAG, "saveDataDB - inserir");
 
-        } else {
+        } else { // Editar
 
-            values.put(EntryOpening.COLUMN_TIMESTAMP, mDataHoraBD);
+            values.put(EntryOpening.COLUMN_TIMESTAMP, opening.getTimestamp());
 
-            Crud.update(RegisterOpeningActivity.this, mUriAtual, values);
+            Crud.update(mContext, opening.getUri(), values);
 
-            Log.v(TAG, "salvarDadosBD - editar");
+            Log.v(TAG, "saveDataDB - editar");
         }
 
-        Log.v(TAG, "salvarDadosBD - Fim");
+        Log.v(TAG, "saveDataDB - Fim");
 
         finish();
     }
@@ -222,8 +227,8 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         };
 
         return new CursorLoader(
-                this,
-                mUriAtual,
+                mContext,
+                opening.getUri(),
                 projection,
                 null,
                 null,
@@ -238,16 +243,17 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         if (cursor.moveToFirst()) {
 
-            double valorBD = cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
+            opening.setValue(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE)));
+            opening.setTimestamp(cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP)));
 
-            mEtValor.setText(String.valueOf(valorBD * 100));
+            mEtValue.setText(Formatting.doubleDBToString(opening.getValue()));
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Nao implementado
+
+        Log.v(TAG, "onLoaderReset");
     }
 
     @Override
@@ -258,9 +264,10 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         switch (view.getId()) {
 
             case R.id.et_value:
-                mEtValor.requestFocus();
-                mEtValor.setSelection(mEtValor.getText().length());
-                ControlViews.showKeyboard(RegisterOpeningActivity.this, mEtValor);
+
+                mEtValue.requestFocus();
+                mEtValue.setSelection(mEtValue.getText().length());
+                ControlViews.showKeyboard(mContext, mEtValue);
                 return true;
 
             default:
@@ -275,7 +282,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-            salvarDadosBD();
+            saveDataDB();
             return true;
         }
 
@@ -283,14 +290,13 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     }
 
     /* Verifica a entrada de caracteres nos edits*/
-    private void controleTextWatcher() {
+    private void watcherControl() {
 
-        Log.v(TAG, "controleTextWatcher");
+        Log.v(TAG, "watcherControl");
 
-        /* O teclado por esse edit possui apenas numeros, faz a captura desses caracteres e formata
-         * para o estilo moeda (currency) para ser apresentado ao usuario
-         */
-        mEtValor.addTextChangedListener(new TextWatcher() {
+        /* O teclado para esse edit possui apenas numeros, faz a captura desses caracteres e formata
+         * para o estilo moeda (currency) para ser apresentado ao usuario*/
+        mEtValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -299,20 +305,20 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (!isDadosAlterado) {
+                if (!isDataChaged) {
 
-                    isDadosAlterado = true;
+                    isDataChaged = true;
                 }
 
-                if (isFormatarCurrencyAtualizado) {
-                    isFormatarCurrencyAtualizado = false;
+                if (isFormatCurrencyUpdate) {
+                    isFormatCurrencyUpdate = false;
                     return;
                 }
 
-                isFormatarCurrencyAtualizado = true;
+                isFormatCurrencyUpdate = true;
 
-                mEtValor.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
-                mEtValor.setSelection(mEtValor.getText().length());
+                mEtValue.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
+                mEtValue.setSelection(mEtValue.getText().length());
             }
 
             @Override

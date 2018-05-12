@@ -180,7 +180,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         // Campo não pode ficar vazio
         if (TextUtils.isEmpty(nomeEditText)) {
 
-            mEtNome.setError(getString(R.string.error_campo_vazio_nome));
+            mEtNome.setError(getString(R.string.error_empty_name));
             mEtNome.requestFocus();
             return;
         }

@@ -2,8 +2,18 @@ package com.pedromoreirareisgmail.rmvendas.constant;
 
 public class ConstIntents {
 
-    /*Const para Intents*/
-    public static final String ADICIONAR_VENDA = "adicionar";
+    /* Adicionar nova venda */
+    public static final String INTENT_ADD_SELL = "add_sell";
+
+    /* Identifica qual Activity chamou RegisterClientActivity */
+    public static final String INTENT_CALLED_CLIENT = "called_client";
+
+
+
+
+    //TODO: ver para que serve e modificar
+    public static final String INTENT_CLIENT_DATA = "client_data";
+
     public static final String ADICIONAR = "adicionar";
 
     /* Chamadas Intents*/
@@ -13,10 +23,7 @@ public class ConstIntents {
 
 
     public static final String VALOR_VENDA_TROCO = "valor_troco";
-    public static final String ACTIVITY_CALLED = "activity_called";
-    public static final String LIST_CLIENT_ACTIVITY = "list_client_activity";
-    public static final String VEND_LIST_CLIENTES_ACTIVITY = "activity_vend_list_cliente";
 
 
-    public static final String INTENT_CLIENT_DATA = "client_data";
+
 }
