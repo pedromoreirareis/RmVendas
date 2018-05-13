@@ -20,29 +20,18 @@
     <string name="title_remove_money_register_edit">Editar retirada</string>
     <string name="title_client_add">Adicionar Cliente</string>
     <string name="title_client_edit">Editar Cliente</string>
-
-
-
-
-
-    <string name="title_produto_cad_add">Adicionar produto</string>
-    <string name="title_produto_cad_edit">Editar produto</string>
-
-
-    <string name="title_saldo_inicial_cad_add">Adicionar saldo inicial</string>
-    <string name="title_saldo_inicial_cad_edit">Editar saldo inicial</string>
-    <string name="title_venda_add">Adicionar venda</string>
-    <string name="title_venda_edit">Editar venda</string>
-    <string name="title_venda_list">Produtos cadastrados</string>
-    <string name="title_produto_list">Produtos</string>
-
-
-    <string name="title_fechamento">Caixa  %1$s</string>
-    <string name="title_clientes_list">Clientes</string>
-
-
-    <string name="title_venda_clientes_list">Clientes Cadastrados</string>
-    <string name="title_troco">Troco</string>
+    <string name="title_product_register_add">Adicionar produto</string>
+    <string name="title_product_register_edit">Editar produto</string>
+    <string name="title_sell_add">Adicionar venda</string>
+    <string name="title_sell_edit">Editar venda</string>
+    <string name="title_opening_register_add">Adicionar saldo inicial</string>
+    <string name="title_opening_register_edit">Editar saldo inicial</string>
+    <string name="title_product_list_sell">Produtos cadastrados</string>
+    <string name="title_product_list">Produtos</string>
+    <string name="title_closed">Caixa  %1$s</string>
+    <string name="title_client_list">Clientes</string>
+    <string name="title_client_list_sell">Clientes Cadastrados</string>
+    <string name="title_changed_money">Troco</string>
 
 
     <!-- ****************************   Menus - Title *******************************************-->
@@ -77,16 +66,12 @@
     <string name="descr_product_empty">Imagem de uma lista vazia</string>
     <string name="descr_product_sale_empty">Imagem de um coração partido</string>
     <string name="descr_client_empty">Imagem cliente</string>
-
-
+    <string name="descr_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
 
 
     <string name="image_desc_main_empty">Imagem de um bolo</string>
 
 
-
-
-    <string name="image_desc_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="image_desc_rm">Rm Vendas</string>
 
 
@@ -98,24 +83,26 @@
     <string name="text_product_sale_empty">Que pena… não há produtos cadastrados !!!</string>
     <string name="text_main_empty">Nenhuma venda realizada !!!</string>
     <string name="text_client_search_empty">Nenhum cliente para essa pesquisa !!!</string>
-
+    <string name="text_change_value_sale">Valor da Venda</string>
+    <string name="text_change_clear">Limpar</string>
+    <string name="text_receive_credit">Recebimento</string>
+    <string name="text_receive_debit">Venda</string>
+    <string name="text_receiv_list_balance">Saldo: %1$s</string>
+    <string name="text_receiv_list_balance_empty">Não há registros!!!</string>
+    <string name="text_forward_sell">Venda a prazo - %1$s %2$s</string>
 
     <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
-
 
 
     <string name="text_adicional">Adicional</string>
     <string name="text_desconto">Desconto</string>
     <string name="text_a_prazo">A prazo</string>
-    <string name="text_venda">Venda</string>
-    <string name="text_recebimento">Recebimento</string>
+
     <string name="text_msg_as"> às </string>
     <string name="text_valor_dois_pontos"> Valor: </string>
-    <string name="text_registro_a_receber_recebimento">Recebimento</string>
-    <string name="text_registro_a_receber_venda">Venda</string>
-    <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente">Saldo: %1$s</string>
-    <string name="text_registro_a_receber_valor_saldo_total_a_receber_cliente_sem_registro">Não há registros!!!</string>
-    <string name="text_venda_a_prazo_venda">Venda a prazo - %1$s %2$s</string>
+
+
+
     <string name="text_vend_quant_prazo_cliente">Cliente</string>
     <string name="text_vend_quant_nome_produto">%1$s  %2$s</string>
 
@@ -162,16 +149,14 @@
     <!-- ************************    Hints -->
     <string name="hint_value">Valor R$</string>
     <string name="hint_description">Descrição</string>
+    <string name="hitn_client_name">Nome do Cliente</string>
+    <string name="hitn_client_fone">Nº Telefone</string>
+    <string name="hint_change_value_amount">Valor Recebido</string>
+    <string name="hint_product_name">Nome</string>
+    <string name="hint_product_price">Preço R$</string>
 
 
     <string name="hint_quantidade">Quantidade</string>
-    <string name="hint_nome">Nome</string>
-    <string name="hint_preco">Preço R$</string>
-
-
-    <string name="hint_numero_fone">Nº Telefone</string>
-    <string name="hint_nome_cliente">Nome do Cliente</string>
-
 
     <!-- ************************    Mensagens Edição ****************************************** -->
     <string name="msg_inserido_sucesso">Inserido com sucesso</string>
@@ -245,7 +230,7 @@
         Hora:    %3$s
     </string>
 
-    <string name="dialog_informacao_registro_a_receber">
+    <string name="dialog_inf_receive">
         \nData:  %1$s
         \n\n
         Hora:   %2$s
@@ -264,25 +249,32 @@
     <string name="error_lenght_description_10">A descrição deve ter no mínimo 10 caracteres</string>
     <string name="error_lenght_fone_8">O telefone deve ter no mínimo 8 dígitos</string>
     <string name="error_length_name_3">O nome deve ter no mínimo 3 caracteres</string>
+    <string name="error_discount_value_greater_sale">O valor do desconto não pode ser maior que %1$s</string>
+    <string name="error_forward_value_greater_sale">O valor do desconto não pode ser maior que %1$s</string>
+    <string name="error_empty_quantity">Digite a quantidade</string>
+    <string name="error_valide_value_add">Digite um valor adicional válido</string>
+    <string name="error_valide_value_discount">Digite um valor de desconto válido</string>
+    <string name="error_valide_value_forward">Digite um valor a prazo válido</string>
+    <string name="error_client_name_empty">Pesquise um cliente</string>
+    <string name="error_no_edition">Edição de venda a prazo não permitida</string>
 
 
-    <string name="error_campo_desconto_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
-    <string name="error_campo_prazo_maior_venda">O valor do desconto não pode ser maior que %1$s</string>
+
+
 
 
 
     <string name="error_campo_vazio_valor">Digite o valor</string>
-    <string name="error_campo_vazio_quantidade">Digite a quantidade</string>
 
-    <string name="error_valide_value_adicional">Digite um valor adicional válido</string>
-    <string name="error_valide_value_desconto">Digite um valor de desconto válido</string>
-    <string name="error_valide_value_prazo">Digite um valor a prazo válido</string>
-    <string name="error_nome_cliente">Pesquise um cliente</string>
-    <string name="error_nome_edicao_nao_permitida">Edição de venda a prazo não permitida</string>
+
+
+
+
+
+
 
 
     <string name="error_campo_lenght_nome_5">O nome deve ter no mínio 5 caracteres</string>
-
 
 
     <!-- ###########################################################################################
@@ -311,9 +303,7 @@
 
          ********************************************************************************************-->
 
-    <string name="limpar">Limpar</string>
-    <string name="valor_venda">Valor da Venda</string>
-    <string name="valor_recebido">Valor Recebido</string>
+
     <string name="valor_troco">O valor do Troco é:</string>
     <string name="valor_maior">Esse valor deve ser igual ou maior que %1$s </string>
 </resources>

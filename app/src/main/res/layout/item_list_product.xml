@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_default_16">
+    android:paddingTop="@dimen/margin_default_24"
+    android:paddingBottom="@dimen/margin_default_24"
+    android:paddingStart="@dimen/margin_default_16"
+    android:paddingEnd="@dimen/margin_default_16">
 
     <TextView
         android:id="@+id/tv_product_list_name"

@@ -18,11 +18,10 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.doubleToCurrency;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.currencyToStringToCurrency;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.currencyToDouble;
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.*;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.currencyToStringToCurrency;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.doubleToCurrency;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.VALOR_VENDA_TROCO;
 
 public class MoneyBackActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
@@ -55,7 +54,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
         // Faz controle de entrada de dados no edit
         controleTextWatcher();
 
-        mEtValorRecebido.setText(NUMERO_ZERO_STRING);
+        mEtValorRecebido.setText(Const.NUMBER_ZERO_STRING);
 
         mEtValorRecebido.requestFocus();
 
@@ -69,11 +68,11 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
         Log.v(TAG, "initViews");
 
-        mTvValorVenda = findViewById(R.id.tv_troco_valor_venda);
-        mEtValorRecebido = findViewById(R.id.et_troco_valor_recebido);
-        mButLimpar = findViewById(R.id.but_troco_limpar);
-        mTvTroco = findViewById(R.id.tv_troco_valor_troco);
-        mTvTrocoLabel = findViewById(R.id.tv_troco_valor_troco_label);
+        mTvValorVenda = findViewById(R.id.tv_change_value_sale);
+        mEtValorRecebido = findViewById(R.id.et_change_amount_received);
+        mButLimpar = findViewById(R.id.but_change_clear);
+        mTvTroco = findViewById(R.id.tv_change_value_change);
+        mTvTrocoLabel = findViewById(R.id.tv_change_value_change_label);
     }
 
     private void initItents() {
@@ -84,7 +83,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
         if (intentTroco.hasExtra(VALOR_VENDA_TROCO)) {
 
-            mValorVenda = intentTroco.getDoubleExtra(VALOR_VENDA_TROCO, Const.NUMERO_ZERO);
+            mValorVenda = intentTroco.getDoubleExtra(VALOR_VENDA_TROCO, Const.NUMBER_ZERO);
         }
     }
 
@@ -134,7 +133,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
         switch (view.getId()) {
 
-            case R.id.et_troco_valor_recebido:
+            case R.id.et_change_amount_received:
                 mEtValorRecebido.requestFocus();
                 mEtValorRecebido.setSelection(mEtValorRecebido.getText().length());
                 showKeyboard(mEtValorRecebido);
@@ -216,7 +215,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
         Log.v(TAG, "onClick but limpar");
 
 
-        if (view.getId() == R.id.but_troco_limpar) {
+        if (view.getId() == R.id.but_change_clear) {
 
             mValorRecebido = 0;
             mTextoErro = "";

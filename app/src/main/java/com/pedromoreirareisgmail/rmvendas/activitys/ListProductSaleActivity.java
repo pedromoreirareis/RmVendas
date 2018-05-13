@@ -22,11 +22,11 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
-import com.pedromoreirareisgmail.rmvendas.models.Product;
 
 public class ListProductSaleActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -94,7 +94,7 @@ public class ListProductSaleActivity extends AppCompatActivity implements
         mAdapter = new ProductAdapter(mContext);
         mListView.setAdapter(mAdapter);
 
-        // Clique simples
+        // Clique simples no listview
         mListView.setOnItemClickListener(this);
     }
 
@@ -170,18 +170,13 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
         Uri uri = ContentUris.withAppendedId(EntryProduct.CONTENT_URI_PRODUCT, id);
 
-        //TODO: Verificar melhor forma de passa produto e informar que é nova venda
-
         Intent intentSale = new Intent(
                 mContext,
                 SellActivity.class
         );
 
-        Product product = new Product();
-        product.setAddSell(true);
-
-        intentSale.putExtra(ConstIntents.INTENT_ADD_SELL,product);
         intentSale.setData(uri);
+        intentSale.putExtra(ConstIntents.INTENT_ADD_SELL, Const.CALL_SELL_ADD);
         startActivity(intentSale);
 
         finish();

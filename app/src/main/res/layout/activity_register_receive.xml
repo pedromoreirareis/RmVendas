@@ -3,33 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/margin_default_16"
     android:orientation="vertical"
     tools:context="com.pedromoreirareisgmail.rmvendas.activitys.RegisterReceiveActivity">
-
-
-    <TextView
-        android:id="@+id/tv_a_receber_total"
-        style="@style/textViewBold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/margin_default_8"
-        android:layout_marginEnd="@dimen/margin_default_16"
-        android:layout_marginStart="@dimen/margin_default_16"
-        android:layout_marginTop="@dimen/margin_default_8"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textColor="@color/colorBlue"
-        android:textSize="@dimen/sizeTextBalance_32" />
-
 
     <LinearLayout
         android:id="@+id/linear_botton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_default_16"
-        android:layout_marginEnd="@dimen/margin_default_16"
-        android:layout_marginStart="@dimen/margin_default_16"
+        android:layout_marginTop="@dimen/margin_default_32"
         android:orientation="vertical">
 
 
@@ -39,30 +21,27 @@
             android:layout_marginBottom="@dimen/margin_default_8">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_a_receber_valor"
-                style="@style/CampoNunberText"
+                android:id="@+id/et_receive_value"
+                style="@style/editNumber"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:digits="0123456789"
                 android:hint="@string/hint_value"
-                android:imeOptions="actionNext"
-                android:inputType="number" />
+                android:imeOptions="actionNext" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default_16">
+            android:layout_marginBottom="@dimen/margin_default_32">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_a_receber_descricao"
-                style="@style/CampoNunberText"
+                android:id="@+id/et_receive_description"
+                style="@style/editTexts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/hint_description"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences|textAutoCorrect" />
+                android:imeOptions="actionDone" />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -71,41 +50,25 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/but_a_receber_venda"
+                android:id="@+id/but_receive_debit"
+                style="@style/butRed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:background="@color/colorRed"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/text_venda"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="@string/text_receive_debit"/>
 
             <Button
-                android:id="@+id/but_a_receber_recebimento"
+                android:id="@+id/but_receive_credit"
+                style="@style/butBlue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:background="@color/colorBlue"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/text_recebimento"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="@string/text_receive_credit" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-
-    <ListView
-        android:id="@+id/lv_list_registro_receber"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:paddingTop="@dimen/margin_default_16"
-        android:scrollbars="none" />
 </LinearLayout>

@@ -28,6 +28,10 @@
         <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
     </style>
 
+    <style name="textViewSell" parent="textViewBasic">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
     <style name="textViewDescription" parent="textViewBasic">
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
@@ -46,19 +50,19 @@
 
     <style name="textViewDescriptionRight" parent="textViewBasic">
         <item name="android:textColor">@color/colorTextPrimary</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
     </style>
 
 
     <!-- EditText - Style para aplicar nos EditText -->
     <style name="editBasic">
-        <item name="android:focusable">true</item>
         <item name="android:maxLines">1</item>
-        <item name="android:selectable">true</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
+        <item name="android:focusable">true</item>
+        <item name="android:selectable">true</item>
         <item name="android:backgroundTint">@color/colorRed</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textAppearanceSmall">?android:attr/textAppearanceSmall</item>
     </style>
 
     <style name="editNumber" parent="editBasic">
@@ -80,6 +84,22 @@
         <item name="android:backgroundTint">@color/colorRed</item>
     </style>
 
+    <!-- Botões -->
+
+    <style name="butBasic">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="butRed" parent="butBasic">
+        <item name="android:background">@color/colorRed</item>
+    </style>
+
+    <style name="butBlue" parent="butBasic">
+        <item name="android:background">@color/colorBlue</item>
+    </style>
 
     <!-- Outros -->
 

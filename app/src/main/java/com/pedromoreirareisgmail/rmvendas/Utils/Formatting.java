@@ -9,7 +9,6 @@ public class Formatting {
 
     private static final NumberFormat numberFormatting = NumberFormat.getCurrencyInstance();
 
-
     /**
      * Faz o contole da apresentação Currency
      * Ao digitar o numero é adicionado no fim da string currency, mas posição da virgula
@@ -101,16 +100,11 @@ public class Formatting {
         return String.valueOf(value * 100);
     }
 
-    /**
-     * Recebe o View EditText, captura seu dados e retira mascara currency,
-     * deixando apenas inteiros e depois formata para double
-     *
-     * @param editText Edit que terar valor formatado
-     * @return valor double do edit
-     */
-    public static double editsToDouble(EditText editText) {
 
-        String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
+    /* Retira as mascara, e converte a String numerica para Double */
+    public static double charSequenceToDouble(CharSequence charSequence) {
+
+        String str = charSequence.toString().trim().replaceAll("[^\\d]", "");
 
         if (TextUtils.isEmpty(str)) {
 
@@ -126,10 +120,36 @@ public class Formatting {
 
             return 0;
         }
-
     }
 
-    public static int formatarEditsInt(EditText editText) {
+    /* Retira maskara de uma String, retorna a String sem formtação */
+    public static String charSequenceToString(CharSequence charSequence) {
+
+        String str = charSequence.toString().trim().replaceAll("[^\\d]", "");
+
+        if (TextUtils.isEmpty(str)) {
+
+            str = "0";
+        }
+
+        return str;
+    }
+
+    /* recebe um EditTxet, captura seus dados, retira a mascara e retorna uma String sem formatação */
+    public static String editToString(EditText editText) {
+
+        String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
+
+        if (TextUtils.isEmpty(str)) {
+
+            str = "0";
+        }
+
+        return str;
+    }
+
+    /* recebe o EditText, captura seus dados, retira a mascara e converte a String numerica para inteiro */
+    public static int editToInteger(EditText editText) {
 
         String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
 
@@ -148,12 +168,12 @@ public class Formatting {
 
             return 0;
         }
-
     }
 
-    public static double formatarCharSequenceDouble(CharSequence charSequence) {
+    /* recebe o EditText, captura seus dados, retira a mascara e converte a String numerica para Double */
+    public static double editToDouble(EditText editText) {
 
-        String str = charSequence.toString().trim().replaceAll("[^\\d]", "");
+        String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
 
         if (TextUtils.isEmpty(str)) {
 
@@ -169,30 +189,6 @@ public class Formatting {
 
             return 0;
         }
+
     }
-
-    public static String formatarEditsString(EditText editText) {
-
-        String str = editText.getText().toString().trim().replaceAll("[^\\d]", "");
-
-        if (TextUtils.isEmpty(str)) {
-
-            str = "0";
-        }
-
-        return str;
-    }
-
-    public static String formatarCharSequenceString(CharSequence charSequence) {
-
-        String str = charSequence.toString().trim().replaceAll("[^\\d]", "");
-
-        if (TextUtils.isEmpty(str)) {
-
-            str = "0";
-        }
-
-        return str;
-    }
-
 }

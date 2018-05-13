@@ -129,7 +129,7 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_salvar, menu);
+        getMenuInflater().inflate(R.menu.menu_save, menu);
         return true;
     }
 
@@ -198,7 +198,7 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "saveDataDB - validateCashMove");
         // Valor não pode ser zero
-        if (valueDouble == Const.NUMERO_ZERO) {
+        if (valueDouble == Const.NUMBER_ZERO) {
 
             mEtValue.setError(getString(R.string.error_valide_value));
             mEtValue.requestFocus();
@@ -313,7 +313,7 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
                 mEtValue.requestFocus();
                 mEtValue.setSelection(mEtValue.getText().length());
-                ControlViews.showKeyboard(RegisterRemoveMoneyActivity.this, mEtValue);
+                ControlViews.showKeyboard(mContext, mEtValue);
 
                 return mEtValue.performClick();
 

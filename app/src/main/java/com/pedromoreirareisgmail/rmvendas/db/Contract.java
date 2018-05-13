@@ -205,6 +205,7 @@ public class Contract {
         public static final String COLUMN_CLIENT_ID = "client_id";
         // TODO: Trocar CLIENTE_ID pelo nome do cliente na venda
         public static final String COLUMN_CLIENT_NAME = "client_name";
+        public static final String COLUMN_RECEIVE_ID = "client_name";
 
 
         public static final String CREATE_TABLE_SELL =
@@ -219,7 +220,8 @@ public class Contract {
                         + COLUMN_DISCOUNT_VALUE + " REAL, "
                         + COLUMN_FORWARD_VALUE + " REAL, "
                         + COLUMN_CLIENT_ID + " INTEGER, "
-                        + COLUMN_CLIENT_NAME + " TEXT "
+                        + COLUMN_CLIENT_NAME + " TEXT, "
+                        + COLUMN_RECEIVE_ID + " INTEGER "
                         + " ); ";
 
         public static final String CONTENT_ITEM_TYPE_SELL =
@@ -260,10 +262,12 @@ public class Contract {
                         + COLUMN_TYPE + " INTEGER NOT NULL, "
                         + COLUMN_DESCRIPTION + " TEXT NOT NULL, "
                         + COLUMN_VALUE + " REAL NOT NULL DEFAULT 0, "
-                        + COLUMN_CLIENT_ID + " INTEGER NOT NULL, "
-                        + COLUMN_CLIENT_NAME + " TEXT NOT NULL, "
-                        + " FOREIGN KEY ( " + COLUMN_CLIENT_ID + " ) REFERENCES " + EntryClient.TABLE_CLIENT + " ( " + EntryClient._ID + " ) "
+                        + COLUMN_CLIENT_ID + " INTEGER, "
+                        + COLUMN_CLIENT_NAME + " TEXT "
                         + " ); ";
+
+                       /* + " FOREIGN KEY ( " + COLUMN_CLIENT_ID + " ) REFERENCES " + EntryClient.TABLE_CLIENT + " ( " + EntryClient._ID + " ) "
+                        + " ); ";*/
 
 
         public static final String CONTENT_ITEM_TYPE_RECEIVE =

@@ -8,13 +8,13 @@ public class ConstIntents {
     /* Identifica qual Activity chamou RegisterClientActivity */
     public static final String INTENT_CALLED_CLIENT = "called_client";
 
-
-
-
-    //TODO: ver para que serve e modificar
+    /* Identifica os dados do cliente e passa para vendas a prazo e registro */
     public static final String INTENT_CLIENT_DATA = "client_data";
 
-    public static final String ADICIONAR = "adicionar";
+
+    public static final String INTENT_SELL_TO_CLIENT = "sell_to_client";
+    public static final String INTENT_CLIENT_TO_SELL = "client_to_sell";
+
 
     /* Chamadas Intents*/
     public static final String CLIENTE_ID = "clienteId";
@@ -23,7 +23,6 @@ public class ConstIntents {
 
 
     public static final String VALOR_VENDA_TROCO = "valor_troco";
-
 
 
 }

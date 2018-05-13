@@ -1,72 +1,54 @@
 package com.pedromoreirareisgmail.rmvendas.activitys;
 
-import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.CursorLoader;
+import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
-import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
-import com.pedromoreirareisgmail.rmvendas.adapters.AReceberAdapter;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
+import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
+import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
-import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
+import com.pedromoreirareisgmail.rmvendas.models.Client;
+import com.pedromoreirareisgmail.rmvendas.models.Receive;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.*;
 import static com.pedromoreirareisgmail.rmvendas.constant.Const.MIN_CARACT_10;
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TIPO_RECEBIMENTO;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TIPO_VENDA;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_CREDIT;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_DEBIT;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class RegisterReceiveActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
-        ListView.OnItemClickListener, Button.OnClickListener {
+        Button.OnClickListener {
 
-    private static final String TAG = RegisterReceiveActivity.class.getSimpleName();
-    private static final int LOADER_BUSCAR_CLIENTE_REGISTRO = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + RegisterReceiveActivity.class.getSimpleName();
 
-    private AReceberAdapter mAdapter;
+    private Button mButSell;
+    private Button mButReceip;
+    private EditText mEtDescription;
+    private EditText mEtValue;
 
-    private Button mButVenda;
-    private Button mButRecebimento;
-    private TextView mTvTotal;
-    private EditText mEtDescricao;
-    private EditText mEtValor;
-    private ListView mListview;
+    private Context mContext;
+    private Client client;
+    private Receive receive;
 
-    private double mValorTotal = 0;
-    private double mRecebimentos = 0;
-    private double mVendas = 0;
-    private String mIdCliente = null;
-    private String mNomeCliente = null;
-    private String mNumTelefone = null;
-    private boolean isDadosAlterado = false;
-    private boolean isFormatarCurrencyAtualizado = false;
+    private boolean isDataChaged = false;
+    private boolean isFormatCurrencyUpdate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,33 +58,14 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreate");
 
         initViews();
-        initIntents();
-
-        /* Coloca o nome do cliente no titulo da Activity*/
-        setTitle(mNomeCliente);
+        initListenerAndObject();
+        initTitleData();
 
         // Controla a entrada de caracteres nos edits
-        controleTextWatcher();
-
-        // Cria o adapter e o ListView
-        mAdapter = new AReceberAdapter(this);
-        mListview.setAdapter(mAdapter);
-
-        // Click simples no listview
-        mListview.setOnItemClickListener(this);
-
-        // Click nos botões
-        mButVenda.setOnClickListener(this);
-        mButRecebimento.setOnClickListener(this);
-
-        // Monitora se houve toque em mEtValor
-        mEtValor.setOnTouchListener(this);
+        watcherControl();
 
         // Retira foco e coloca o valor zero no edit
-        ControlViews.noFocusAndZero(mEtValor);
-
-        // Inicia pesquisa no banco de dados
-        getLoaderManager().initLoader(LOADER_BUSCAR_CLIENTE_REGISTRO, null, this);
+        ControlViews.noFocusAndZero(mEtValue);
     }
 
     private void initViews() {
@@ -110,48 +73,46 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         Log.v(TAG, "initViews");
 
         // Referencia os itens do layout
-        mButVenda = findViewById(R.id.but_a_receber_venda);
-        mButRecebimento = findViewById(R.id.but_a_receber_recebimento);
-        mEtDescricao = findViewById(R.id.et_a_receber_descricao);
-        mEtValor = findViewById(R.id.et_a_receber_valor);
-        mTvTotal = findViewById(R.id.tv_a_receber_total);
-        mListview = findViewById(R.id.lv_list_registro_receber);
+        mButSell = findViewById(R.id.but_receive_debit);
+        mButReceip = findViewById(R.id.but_receive_credit);
+        mEtDescription = findViewById(R.id.et_receive_description);
+        mEtValue = findViewById(R.id.et_receive_value);
+
     }
 
-    private void initIntents() {
+    private void initListenerAndObject() {
 
-        Log.v(TAG, "initIntents");
+        // Contexto da Activity
+        mContext = RegisterReceiveActivity.this;
 
-        /* Recebe dados da activity ClientesListActivity */
-        Intent intentDadosCliente = getIntent();
+        // Instancia o objeto Receive
+        receive = new Receive();
 
-        /* Coloca nas variaveis mIdCliente, mNomeCliente e mNumTelefone
-         * os dados que vieram da ClientesListActivity
-         */
-        if (intentDadosCliente.hasExtra(CLIENTE_ID)) {
+        // Instancia o objeto Client
+        client = new Client();
 
-            mIdCliente = intentDadosCliente.getStringExtra(CLIENTE_ID);
+        Intent intent = getIntent();
+        client.setUri(intent.getData());
+
+        if (intent.hasExtra(ConstIntents.INTENT_CLIENT_DATA)) {
+
+            client = intent.getParcelableExtra(ConstIntents.INTENT_CLIENT_DATA);
         }
 
-        if (intentDadosCliente.hasExtra(CLIENTE_NOME)) {
+        /* Botão click venda */
+        mButSell.setOnClickListener(this);
 
-            mNomeCliente = intentDadosCliente.getStringExtra(CLIENTE_NOME);
-        }
+        /* Botão click recebimento */
+        mButReceip.setOnClickListener(this);
 
-        if (intentDadosCliente.hasExtra(CLIENTE_FONE)) {
-
-            mNumTelefone = intentDadosCliente.getStringExtra(CLIENTE_FONE);
-        }
+        // Monitora se houve toque em mEtValue
+        mEtValue.setOnTouchListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    private void initTitleData() {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
-        getMenuInflater().inflate(R.menu.menu_fone_cliente, menu);
-
-        return true;
+        /* Coloca o nome do cliente no titulo da Activity*/
+        setTitle(client.getName());
     }
 
     @Override
@@ -162,37 +123,22 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             /* Menu Up
-             * Verifica se dados foram alterados, se foi alterado abre Dialog para decidir se vai
-             * descartar dados alterados ou se vai continuar alterando, se nada foi alterado volta
-             * a activity que chamou RegisterReceiveActivity
-             */
+             * Verifica se houve alteração, se houve, da opção de continuar editando ou
+             * volta a activity anterior*/
             case android.R.id.home:
 
                 dadosAlterados();
 
-                if (!isDadosAlterado) {
+                if (!isDataChaged) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
                 Messages.homePressed(
-                        RegisterReceiveActivity.this,
-                        RegisterReceiveActivity.this);
-
-                return true;
-
-             /* Abre o App de telefone para fazer ligação para o cliente, no numero que esta
-              * cadastrado
-              */
-            case R.id.action_fone_cliente:
-
-                //TODO: TROCAR PARA ACTION_CALL - ligar direto verificar commons intents
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + mNumTelefone));
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
+                        mContext,
+                        RegisterReceiveActivity.this
+                );
 
                 return true;
         }
@@ -201,10 +147,8 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
     }
 
     /* Botao voltar (embaixo)
-     * Verifica se houve alteração, se houve abre Dialog para verificar se as alterações vao ser
-     * descartadas ou não, se forem descartadas volkta para activity ClientesListActivity, se não
-     * forem fica na activity RegistroReceberAcitivty
-     */
+     * Verifica se houve alteração, se houve, da opção de continuar editando ou
+     * volta a activity anterior*/
     @Override
     public void onBackPressed() {
 
@@ -212,205 +156,88 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
         dadosAlterados();
 
-        if (!isDadosAlterado) {
+        if (!isDataChaged) {
 
             super.onBackPressed();
         }
 
         Messages.backPressed(
-                RegisterReceiveActivity.this,
-                RegisterReceiveActivity.this);
-    }
-
-    /* Zera as variaveis antes de iniciar salvamento, dessa forma o novo saldo do cliente sera
-     * calculado de forma correta
-     */
-    private void zerarVariaveis() {
-
-        Log.v(TAG, "zerarVariaveis");
-
-        mVendas = 0;
-        mRecebimentos = 0;
-        mValorTotal = 0;
-    }
-
-    /* Apos fazer o salvamento de dados e feita limpeza dos edits para que possa digitar novodados*/
-    private void limparEdits() {
-
-        Log.v(TAG, "limparEdits");
-
-        mEtDescricao.setText("");
-        mEtValor.setText("");
-        mEtValor.requestFocus();
+                mContext,
+                RegisterReceiveActivity.this
+        );
     }
 
     /* Verifica se os dados foram alterados
      * Se o valor for maior que zero, ou
-     * Se o campo descrição não estiver vazio, e considerado que os dados foram alterados
-     */
+     * Se o campo descrição não estiver vazio, e considerado que os dados foram alterados*/
     private void dadosAlterados() {
 
         Log.v(TAG, "dadosAlterados");
 
-        String descricaoEditText = mEtDescricao.getText().toString().trim();
-        String valorEditText = mEtValor.getText().toString().trim();
+        String description = mEtDescription.getText().toString().trim();
+        String value = mEtValue.getText().toString().trim();
 
-        double valor = Formatting.currencyToDouble(valorEditText);
+        double valor = Formatting.currencyToDouble(value);
 
-        isDadosAlterado = valor > 0 || !descricaoEditText.isEmpty();
+        isDataChaged = valor > 0 || !description.isEmpty();
     }
 
-    /* Salva dados no BD
-     * Recebe dados dos edits, faz validações, coloca dados no objeto values, e salva no BD
-     */
-    private void salvarDadosBD(int tipoEntrada) {
+    private void saveDataDB(int type) {
 
-        Log.v(TAG, "salvarDadosBD - Inicio");
+        Log.v(TAG, "saveDataDB - Inicio");
 
-        String descricaoEditText = mEtDescricao.getText().toString().trim();
-        String valorEditText = mEtValor.getText().toString().trim();
+        String description = mEtDescription.getText().toString().trim();
+        String value = mEtValue.getText().toString().trim();
 
-        double valorDouble = Formatting.currencyToDouble(valorEditText);
+        double valueDouble = Formatting.currencyToDouble(value);
 
         // Campo não pode ser vazio
-        if (TextUtils.isEmpty(descricaoEditText)) {
+        if (description.isEmpty()) {
 
-            mEtDescricao.setError(getString(R.string.error_empty_description));
-            mEtDescricao.requestFocus();
+            mEtDescription.setError(getString(R.string.error_empty_description));
+            mEtDescription.requestFocus();
             return;
         }
 
         // Campo deve ter pelo menos 10 caracteres
-        if (descricaoEditText.length() < MIN_CARACT_10) {
+        if (description.length() < MIN_CARACT_10) {
 
-            mEtDescricao.setError(getString(R.string.error_lenght_description_10));
-            mEtDescricao.requestFocus();
+            mEtDescription.setError(getString(R.string.error_lenght_description_10));
+            mEtDescription.requestFocus();
             return;
         }
 
         // Valor não pode ser negativo
-        if (valorDouble == NUMERO_ZERO) {
+        if (valueDouble == NUMBER_ZERO) {
 
-            mEtValor.setError(getString(R.string.error_valide_value));
-            mEtValor.requestFocus();
+            mEtValue.setError(getString(R.string.error_valide_value));
+            mEtValue.requestFocus();
             return;
         }
+
+        receive.setClientId(client.getId());
+        receive.setClientName(client.getName());
+        receive.setDescription(description);
+        receive.setTimestamp(getDateTime());
+        receive.setType(type);
+        receive.setValue(valueDouble);
 
         // Cria objeto values a recebe dados em campos tipo chave valor para salvar no BD
         ContentValues values = new ContentValues();
 
-        values.put(EntryReceive._ID, Integer.parseInt(mIdCliente));
-        values.put(EntryReceive.COLUMN_CLIENT_NAME, SearchDB.searchClientName(RegisterReceiveActivity.this, Integer.parseInt(mIdCliente)));
-        values.put(EntryReceive.COLUMN_TIMESTAMP, getDateTime());
-        values.put(EntryReceive.COLUMN_DESCRIPTION, descricaoEditText);
-        values.put(EntryReceive.COLUMN_TYPE, tipoEntrada);
-        values.put(EntryReceive.COLUMN_VALUE, valorDouble);
+        values.put(EntryReceive.COLUMN_CLIENT_ID, Integer.parseInt(String.valueOf(receive.getClientId())));
+        values.put(EntryReceive.COLUMN_CLIENT_NAME, receive.getClientName());
+        values.put(EntryReceive.COLUMN_TIMESTAMP, receive.getTimestamp());
+        values.put(EntryReceive.COLUMN_DESCRIPTION, receive.getDescription());
+        values.put(EntryReceive.COLUMN_TYPE, receive.getType());
+        values.put(EntryReceive.COLUMN_VALUE, receive.getValue());
 
         // Salva dados no BD
-        Crud.insert(RegisterReceiveActivity.this, EntryReceive.CONTENT_URI_RECEIVE, values);
+        Crud.insert(mContext, EntryReceive.CONTENT_URI_RECEIVE, values);
 
-        // Limpa edits e coloca foco no mEtValor
-        limparEdits();
+        finish();
 
-        // Fecha teclado para visualizar o ListView com registro do cliente
-        ControlViews.hideKeyboard(RegisterReceiveActivity.this, mButRecebimento);
-
-        Log.v(TAG, "salvarDadosBD - Fim");
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int loader, Bundle args) {
-
-        Log.v(TAG, "onCreateLoader");
-
-        /* Retorna todas as colunas e registro a receber de um unico cliente*/
-        String[] projection = {
-                EntryReceive._ID,
-                EntryReceive._ID,
-                EntryReceive.COLUMN_CLIENT_NAME,
-                EntryReceive.COLUMN_TIMESTAMP,
-                EntryReceive.COLUMN_DESCRIPTION,
-                EntryReceive.COLUMN_TYPE,
-                EntryReceive.COLUMN_VALUE
-        };
-
-        String selection = EntryReceive._ID + " LIKE ? ";
-        String[] selectionArgs = new String[]{mIdCliente};
-        String sortOrder = EntryReceive.COLUMN_TIMESTAMP + " DESC ";
-
-        return new CursorLoader(
-                this,
-                EntryReceive.CONTENT_URI_RECEIVE,
-                projection,
-                selection,
-                selectionArgs,
-                sortOrder
-        );
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
-        Log.v(TAG, "onLoadFinished");
-
-        /* Recebe os registro de um cliente
-         * Soma os registro de venda na variavel mVendas
-         * Soma os registro de recebimento na variavel mRecebimento
-         * Calcula o saldo e coloca na variavel mValorTotal
-         *
-         * Se o saldo for positivo a cor da fonte fica azul
-         * Se o saldo for negativo a cor da fonte fica vermelha
-         */
-        if (loader.getId() == LOADER_BUSCAR_CLIENTE_REGISTRO && cursor.moveToFirst()) {
-
-            for (int i = 0; i < cursor.getCount(); i++) {
-
-                if (cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE)) == TIPO_VENDA) {
-
-                    mVendas = mVendas + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
-
-                } else {
-
-                    mRecebimentos = mRecebimentos + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
-                }
-
-                mValorTotal = mRecebimentos - mVendas;
-
-                if (mValorTotal < 0) {
-
-                    mTvTotal.setTextColor(getResources().getColor(R.color.colorRed));
-                    mTvTotal.setText(
-                            String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
-                                    Formatting.doubleToCurrency(mValorTotal)));
-
-                } else {
-
-                    mTvTotal.setTextColor(getResources().getColor(R.color.colorBlue));
-                    mTvTotal.setText(
-                            String.format(getResources().getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente),
-                                    Formatting.doubleToCurrency(mValorTotal)));
-                }
-
-                cursor.moveToNext();
-            }
-
-        } else {
-
-            /* Não encontrou nenhum registro a receber para esse cliente, logo não conseguiu colocar
-             * no primeiro registro - Informa ao usuario que não a nenhum registro para esse cliente
-             */
-            mTvTotal.setText(getString(R.string.text_registro_a_receber_valor_saldo_total_a_receber_cliente_sem_registro));
-        }
-
-        mAdapter.swapCursor(cursor);
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-        Log.v(TAG, "onLoaderReset");
-
+        Log.v(TAG, "saveDataDB - Fim");
     }
 
     @Override
@@ -423,10 +250,10 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         switch (id) {
 
             // Recebe o foco, coloca o cursor no fim e abre o teclado se tiver fechado
-            case R.id.et_a_receber_valor:
-                mEtValor.requestFocus();
-                mEtValor.setSelection(mEtValor.getText().length());
-                ControlViews.showKeyboard(RegisterReceiveActivity.this, mEtValor);
+            case R.id.et_receive_value:
+                mEtValue.requestFocus();
+                mEtValue.setSelection(mEtValue.getText().length());
+                ControlViews.showKeyboard(mContext, mEtValue);
                 return true;
 
             default:
@@ -435,14 +262,13 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
     }
 
     /* Controla a entrada de caracteres */
-    private void controleTextWatcher() {
+    private void watcherControl() {
 
-        Log.v(TAG, "controleTextWatcher");
+        Log.v(TAG, "watcherControl");
 
         /* Nesse edit entrara apenas caracteres numericos. Ao entrar um caracteres ele sera capturado
-         * e enviado para formatação, e sera apresentao ao usuario em formato moeda (currency)
-         */
-        mEtValor.addTextChangedListener(new TextWatcher() {
+         * e enviado para formatação, e sera apresentao ao usuario em formato moeda (currency)*/
+        mEtValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -451,16 +277,16 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
 
-                if (isFormatarCurrencyAtualizado) {
+                if (isFormatCurrencyUpdate) {
 
-                    isFormatarCurrencyAtualizado = false;
+                    isFormatCurrencyUpdate = false;
                     return;
                 }
 
-                isFormatarCurrencyAtualizado = true;
+                isFormatCurrencyUpdate = true;
 
-                mEtValor.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
-                mEtValor.setSelection(mEtValor.getText().length());
+                mEtValue.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
+                mEtValue.setSelection(mEtValue.getText().length());
             }
 
             @Override
@@ -470,45 +296,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         });
     }
 
-    /**
-     * Click simples no ListView
-     * Ao ter um click simples no listview, abre Dialog simples com informações sobre o registro
-     * Sera informado o nome do cliente e o tipo de entrada, a data, hora, descrição e valor
-     *
-     * @param parent   layout parent onde esta a view item,
-     * @param view     view item onde os dados estão
-     * @param position posição da view no parent
-     * @param id       id no BD do registro que um view esta representando
-     */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onCreateLoader");
-
-        Cursor cursor = mAdapter.getCursor();
-
-        String tituloDialogTipo;
-        int tipoInt;
-
-        tipoInt = cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE));
-
-        if (tipoInt == ConstDB.TIPO_RECEBIMENTO) {
-
-            tituloDialogTipo = getString(R.string.text_registro_a_receber_recebimento);
-        } else {
-
-            tituloDialogTipo = getString(R.string.text_registro_a_receber_venda);
-        }
-
-        String mensagemDialog = String.format(getResources().getString(R.string.dialog_informacao_registro_a_receber),
-                TimeData.formatDateBr(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
-                TimeData.formatDateToHourAndMinute(cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP))),
-                cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION)),
-                Formatting.doubleToCurrency(cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE))));
-
-        Messages.displayData(RegisterReceiveActivity.this, tituloDialogTipo, mensagemDialog);
-    }
-
     @Override
     public void onClick(View view) {
 
@@ -516,14 +303,12 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
         switch (view.getId()) {
 
-            case R.id.but_a_receber_venda:
-                zerarVariaveis();
-                salvarDadosBD(TIPO_VENDA);
+            case R.id.but_receive_debit:
+                saveDataDB(TYPE_DEBIT);
                 break;
 
-            case R.id.but_a_receber_recebimento:
-                zerarVariaveis();
-                salvarDadosBD(TIPO_RECEBIMENTO);
+            case R.id.but_receive_credit:
+                saveDataDB(TYPE_CREDIT);
                 break;
         }
     }

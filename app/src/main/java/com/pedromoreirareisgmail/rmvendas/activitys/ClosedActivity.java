@@ -27,7 +27,7 @@ import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 import java.text.NumberFormat;
 
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
 
 public class ClosedActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -82,7 +82,7 @@ public class ClosedActivity extends AppCompatActivity implements
         pegarDataDialogCalendario();
 
         // coloca titulo na Activity  juntamente com a data da pesquisa
-        setTitle(String.format(getResources().getString(R.string.title_fechamento), TimeData.getDateTitleBr()));
+        setTitle(String.format(getResources().getString(R.string.title_closed), TimeData.getDateTitleBr()));
 
         // Data do dia para pesquisa no BD
         mDataPesquisarBD = TimeData.formatDateSearch(TimeData.getDateTime());
@@ -310,20 +310,20 @@ public class ClosedActivity extends AppCompatActivity implements
                         cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
 
 
-                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)) != NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)) != NUMBER_ZERO) {
 
                     mValorAdicional = mValorAdicional +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
                 }
 
-                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)) != NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)) != NUMBER_ZERO) {
 
                     mValorDescontos = mValorDescontos +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
                 }
 
 
-                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) == NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) == NUMBER_ZERO) {
 
                     mValorVendasVista = mValorVendasVista + Calculus.CalcularValorAVistaDouble(
                             cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
@@ -339,7 +339,7 @@ public class ClosedActivity extends AppCompatActivity implements
                 }
 
 
-                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) != NUMERO_ZERO) {
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) != NUMBER_ZERO) {
 
                     mValorVendasPrazo = mValorVendasPrazo +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
@@ -429,7 +429,7 @@ public class ClosedActivity extends AppCompatActivity implements
 
                 mDataPesquisarBD = TimeData.getDateSearchDB(year, month, day);
 
-                setTitle(String.format(getResources().getString(R.string.title_fechamento),
+                setTitle(String.format(getResources().getString(R.string.title_closed),
                         TimeData.getDateTitleBr(year, month, day)));
 
                 reiniciarPesquisas();

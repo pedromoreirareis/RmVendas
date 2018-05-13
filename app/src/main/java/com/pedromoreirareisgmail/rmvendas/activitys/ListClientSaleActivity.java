@@ -27,6 +27,7 @@ import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
+import com.pedromoreirareisgmail.rmvendas.models.SellToClient;
 
 
 public class ListClientSaleActivity extends AppCompatActivity implements
@@ -37,9 +38,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
     private static final String TAG = ConstTag.TAG_MAIN + ListClientSaleActivity.class.getSimpleName();
 
-    private static final String URI_ATUAL = "uri_atual";
-    private static final String VALOR_UNIDADE = "valor_unidade";
-    private static final String ID_CLIENTE = "id_cliente";
 
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
@@ -47,10 +45,10 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     private View mEmptyView;
     private FloatingActionButton mFab;
 
+    private SellToClient sellToClient;
+
     private Context mContext;
     private ClientAdapter mAdapter;
-    private String mUri;
-    private String mValorUnidade;
     private String mSearch = "";
 
     @Override
@@ -63,18 +61,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
         initViews();
         emptyLayout();
         initListenerAndObject();
-
-        Intent intentDadosVenda = getIntent();
-
-        if (intentDadosVenda.hasExtra(URI_ATUAL)) {
-
-            mUri = intentDadosVenda.getStringExtra(URI_ATUAL);
-        }
-
-        if (intentDadosVenda.hasExtra(VALOR_UNIDADE)) {
-
-            mValorUnidade = intentDadosVenda.getStringExtra(VALOR_UNIDADE);
-        }
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(ConstLoader.LOADER_LIST_CLIENT_SALE, null, this);
@@ -108,9 +94,17 @@ public class ListClientSaleActivity extends AppCompatActivity implements
         // Contexto da Activty
         mContext = ListClientSaleActivity.this;
 
+        sellToClient = new SellToClient();
+
         // Cria o adapter e colocar o adapter no Listview
         mAdapter = new ClientAdapter(mContext);
         mListView.setAdapter(mAdapter);
+
+        Intent intentSell = getIntent();
+        if (intentSell.hasExtra(ConstIntents.INTENT_SELL_TO_CLIENT)) {
+
+            sellToClient = intentSell.getParcelableExtra(ConstIntents.INTENT_SELL_TO_CLIENT);
+        }
 
         // Listener do botão Flutuante
         mFab.setOnClickListener(this);
@@ -142,21 +136,14 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         switch (item.getItemId()) {
 
-
             case android.R.id.home:
 
                 Log.v(TAG, "onOptionsItemSelected - android.R.id.home");
 
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
+                Intent intentSell = new Intent();
+                intentSell.putExtra(ConstIntents.INTENT_CLIENT_TO_SELL, sellToClient);
 
-                // TODO: implemntar junto com a venda
-                bundle.putString(URI_ATUAL, mUri);
-                bundle.putString(VALOR_UNIDADE, mValorUnidade);
-
-                intent.putExtras(bundle);
-
-                setResult(RESULT_OK, intent);
+                setResult(RESULT_OK, intentSell);
 
                 finish();
 
@@ -239,20 +226,12 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         Cursor cursor = mAdapter.getCursor();
 
-        String idCliente = cursor.getString(cursor.getColumnIndex(EntryClient._ID));
+        Intent intentSell = new Intent();
+        sellToClient.setClientId(cursor.getLong(cursor.getColumnIndex(EntryClient._ID)));
 
-        //TODO: ver como implementar
+        intentSell.putExtra(ConstIntents.INTENT_CLIENT_TO_SELL, sellToClient);
 
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-
-        bundle.putString(ID_CLIENTE, idCliente);
-        bundle.putString(URI_ATUAL, mUri);
-        bundle.putString(VALOR_UNIDADE, mValorUnidade);
-
-        intent.putExtras(bundle);
-
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_OK, intentSell);
 
         finish();
     }
@@ -266,7 +245,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
             Log.v(TAG, "OnClick - FloatingActionButton");
 
             Intent intentRegisterClient = new Intent(
-                    ListClientSaleActivity.this,
+                    mContext,
                     RegisterClientActivity.class
             );
 

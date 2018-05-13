@@ -113,7 +113,7 @@ public class RegisterClientActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_salvar, menu);
+        getMenuInflater().inflate(R.menu.menu_save, menu);
 
         return true;
     }

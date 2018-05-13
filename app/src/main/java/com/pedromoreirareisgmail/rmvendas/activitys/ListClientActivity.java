@@ -180,6 +180,7 @@ public class ListClientActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onItemClick");
 
+        Uri uri = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, id);
         Cursor cursor = mAdapter.getCursor();
 
         Client client = new Client();
@@ -189,9 +190,10 @@ public class ListClientActivity extends AppCompatActivity implements
 
         Intent intentClient = new Intent(
                 mContext,
-                RegisterReceiveActivity.class
+                ListReceiveClientActivity.class
         );
 
+        intentClient.setData(uri);
         intentClient.putExtra(ConstIntents.INTENT_CLIENT_DATA, client);
         startActivity(intentClient);
     }

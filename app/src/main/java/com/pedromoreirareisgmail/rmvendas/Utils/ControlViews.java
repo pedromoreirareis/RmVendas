@@ -65,7 +65,7 @@ public class ControlViews {
     public static Boolean noChangedValueDescription(EditText editValue, EditText editDescription) {
 
         String description = editDescription.getText().toString();
-        Double valueDouble = Formatting.editsToDouble(editValue);
+        Double valueDouble = Formatting.editToDouble(editValue);
 
         return description.isEmpty() && valueDouble == 0;
     }

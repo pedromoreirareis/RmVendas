@@ -125,7 +125,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_salvar, menu);
+        getMenuInflater().inflate(R.menu.menu_save, menu);
 
         return true;
     }
@@ -199,7 +199,7 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         Log.v(TAG, "saveDataDB - validateCashMove");
 
         // Valor não pode ser zero
-        if (valueDouble == Const.NUMERO_ZERO) {
+        if (valueDouble == Const.NUMBER_ZERO) {
 
             mEtValue.setError(getString(R.string.error_valide_value));
             mEtValue.requestFocus();

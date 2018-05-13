@@ -14,7 +14,7 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 public class SearchDB {
 
 
-    public static String searchClientName(Context context, int id) {
+    public static String searchClientName(Context context, long id) {
 
         DbHelper mDbHelper = new DbHelper(context);
 
@@ -94,7 +94,7 @@ public class SearchDB {
 
         String[] projection = {
                 EntryReceive._ID,
-                EntryReceive._ID,
+                EntryReceive.COLUMN_CLIENT_ID,
                 EntryReceive.COLUMN_CLIENT_NAME,
                 EntryReceive.COLUMN_TYPE,
                 EntryReceive.COLUMN_TIMESTAMP,
@@ -103,7 +103,7 @@ public class SearchDB {
                 EntryReceive.COLUMN_VALUE
         };
 
-        String selection = EntryReceive._ID + " = ? ";
+        String selection = EntryReceive.COLUMN_CLIENT_ID + " = ? ";
         String[] selectionArgs = new String[]{String.valueOf(idCliente)};
         String sortOrder = EntryReceive.COLUMN_TIMESTAMP;
 
@@ -121,7 +121,7 @@ public class SearchDB {
 
         for (int i = 0; i < cursor.getCount(); i++) {
 
-            if (cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE)) == ConstDB.TIPO_VENDA) {
+            if (cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE)) == ConstDB.TYPE_DEBIT) {
 
                 sales = sales + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
 

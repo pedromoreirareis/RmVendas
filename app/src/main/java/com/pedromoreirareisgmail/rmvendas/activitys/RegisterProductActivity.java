@@ -2,16 +2,15 @@ package com.pedromoreirareisgmail.rmvendas.activitys;
 
 import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,25 +28,29 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
+import com.pedromoreirareisgmail.rmvendas.models.Product;
 
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
 
 public class RegisterProductActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnEditorActionListener,
         EditText.OnTouchListener {
 
-    private static final String TAG = RegisterProductActivity.class.getSimpleName();
-    private static final int LOADER_PROD_CAD = 0;
+    private static final String TAG = ConstTag.TAG_MAIN + RegisterProductActivity.class.getSimpleName();
 
-    private EditText mEtNome;
-    private EditText mEtPreco;
+    private EditText mEtName;
+    private EditText mEtPrice;
 
-    private Uri mUriAtual = null;
-    private boolean isDadosAlterados = false;
-    private boolean isFormatarCurrencyAtualizado = false;
+    private Context mContext;
+    private Product product;
+
+    private boolean isDataChanged = false;
+    private boolean isFormatCurrencyUpdate = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,36 +59,47 @@ public class RegisterProductActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreate");
 
         initViews();
-        initIntents();
+        initListenerAndObject();
 
-        // Se tiver dados em mUriAtual, então vai editar, senão vai adicionar
-        if (mUriAtual == null) {
+        if (product.getUri() == null) { // Adicionar
 
-            setTitle(R.string.title_produto_cad_add);
+            setTitle(R.string.title_product_register_add);
 
-        } else {
+        } else { // Editar
 
-            setTitle(R.string.title_produto_cad_edit);
-            getLoaderManager().initLoader(LOADER_PROD_CAD, null, this);
+            setTitle(R.string.title_product_register_edit);
+            getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_PRODUCT, null, this);
         }
 
         // Controle entrada de caracteres nos edits
-        controleTextWatcher();
-
-        // Verifica se o texto do edit nome foi alterado
-        if (!isDadosAlterados) {
-
-            isDadosAlterados = Verify.dataChanged(mEtNome);
-        }
-
-        // Monitora o EditorAction do teclado
-        mEtPreco.setOnEditorActionListener(this);
-
-        // Monitora toques em uma view especifica
-        mEtPreco.setOnTouchListener(this);
+        watcherControl();
 
         // Retira o foco do edit e coloca o valor zero nele
-        ControlViews.noFocusAndZero(mEtPreco);
+        ControlViews.noFocusAndZero(mEtPrice);
+
+        // Verifica se o texto do edit nome foi alterado
+        if (!isDataChanged) {
+
+            isDataChanged = Verify.dataChanged(mEtName);
+        }
+    }
+
+    private void initListenerAndObject() {
+
+        // Contexto da Activity
+        mContext = RegisterProductActivity.this;
+
+        // Instacia o objeto Product
+        product = new Product();
+
+        Intent intent = getIntent();
+        product.setUri(intent.getData());
+
+        // Monitora o EditorAction do teclado
+        mEtPrice.setOnEditorActionListener(this);
+
+        // Monitora toques em uma view especifica
+        mEtPrice.setOnTouchListener(this);
     }
 
     private void initViews() {
@@ -93,17 +107,8 @@ public class RegisterProductActivity extends AppCompatActivity implements
         Log.v(TAG, "initViews");
 
         // Referencia itens do layout
-        mEtNome = findViewById(R.id.et_nome);
-        mEtPreco = findViewById(R.id.et_preco);
-    }
-
-    private void initIntents() {
-
-        Log.v(TAG, "initIntents");
-
-        // Recebe dados de Uri de ProdutosListActivity
-        Intent intent = getIntent();
-        mUriAtual = intent.getData();
+        mEtName = findViewById(R.id.et_register_product_name);
+        mEtPrice = findViewById(R.id.et_register_product_price);
     }
 
     @Override
@@ -111,7 +116,8 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_salvar, menu);
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+
         return true;
     }
 
@@ -124,23 +130,22 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
             // Menu Salvar
             case R.id.action_salvar:
-                salvarDadosBD();
+                saveDataDB();
                 return true;
 
             /* Menu Up - Verifica de houve alteração, se houve abre Dialog para confirma se vai
-             * descartar a alteração ou se vai continuar alteradnto
-             */
+             * descartar a alteração ou se vai continuar alteradnto*/
             case android.R.id.home:
 
                 // Não houve alteracao
-                if (!isDadosAlterados) {
+                if (!isDataChanged) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
                 Messages.homePressed(
-                        RegisterProductActivity.this,
+                        mContext,
                         RegisterProductActivity.this);
 
                 return true;
@@ -150,77 +155,78 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
     /* Botão voltar (embaixo)
      * Verifica se houve alteração, se houve abre Dialog para escolher se deseja descatar dados
-     * alterados ou se deseja continua alterando, se não houve volta
-     */
+     * alterados ou se deseja continua alterando, se não houve volta*/
     @Override
     public void onBackPressed() {
 
         Log.v(TAG, "onBackPressed");
 
-        if (!isDadosAlterados) {
+        if (!isDataChanged) {
 
             super.onBackPressed();
         }
 
         Messages.backPressed(
-                RegisterProductActivity.this,
+                mContext,
                 RegisterProductActivity.this);
     }
 
-    /* Recebe dados dos edits, faz validações, coloca no obejtos values e salva os dados no BD */
-    private void salvarDadosBD() {
+    private void saveDataDB() {
 
-        Log.v(TAG, "salvarDadosBD - Inicio");
+        Log.v(TAG, "saveDataDB - Inicio");
 
-        String nomeEditText = mEtNome.getText().toString().trim();
-        String precoEditText = mEtPreco.getText().toString().trim();
+        String name = mEtName.getText().toString().trim();
+        String price = mEtPrice.getText().toString().trim();
 
-        double precoDouble = Formatting.currencyToDouble(precoEditText);
+        double priceDouble = Formatting.currencyToDouble(price);
 
         // Campo não pode ficar vazio
-        if (TextUtils.isEmpty(nomeEditText)) {
+        if (name.isEmpty()) {
 
-            mEtNome.setError(getString(R.string.error_empty_name));
-            mEtNome.requestFocus();
+            mEtName.setError(getString(R.string.error_empty_name));
+            mEtName.requestFocus();
             return;
         }
 
         // determina quantidade minima de caracteres no campo de nome
-        if (nomeEditText.length() < Const.MIN_CARACT_5) {
+        if (name.length() < Const.MIN_CARACT_5) {
 
-            mEtNome.setError(getString(R.string.error_campo_lenght_nome_5));
-            mEtNome.requestFocus();
+            mEtName.setError(getString(R.string.error_campo_lenght_nome_5));
+            mEtName.requestFocus();
             return;
         }
 
         // Valor não pode ser negativo
-        if (precoDouble == NUMERO_ZERO) {
+        if (priceDouble == NUMBER_ZERO) {
 
-            mEtPreco.setError(getString(R.string.error_valide_value));
-            mEtPreco.requestFocus();
+            mEtPrice.setError(getString(R.string.error_valide_value));
+            mEtPrice.requestFocus();
             return;
         }
 
+        product.setName(name);
+        product.setPrice(priceDouble);
+
         // Coloca dados no Objeto values para salvar no BD
         ContentValues values = new ContentValues();
-        values.put(EntryProduct.COLUMN_NAME, nomeEditText);
-        values.put(EntryProduct.COLUMN_PRICE, precoDouble);
+        values.put(EntryProduct.COLUMN_NAME, product.getName());
+        values.put(EntryProduct.COLUMN_PRICE, product.getPrice());
 
         // Salva dados no BD
-        if (mUriAtual == null) {
+        if (product.getUri() == null) { // Adicionar
 
-            Log.v(TAG, "salvarDadosBD - inserir");
+            Log.v(TAG, "saveDataDB - inserir");
 
-            Crud.insert(RegisterProductActivity.this, EntryProduct.CONTENT_URI_PRODUCT, values);
+            Crud.insert(mContext, EntryProduct.CONTENT_URI_PRODUCT, values);
 
-        } else {
+        } else { // Editar
 
-            Log.v(TAG, "salvarDadosBD - editar");
+            Log.v(TAG, "saveDataDB - editar");
 
-            Crud.update(RegisterProductActivity.this, mUriAtual, values);
+            Crud.update(mContext, product.getUri(), values);
         }
 
-        Log.v(TAG, "salvarDadosBD - Fim");
+        Log.v(TAG, "saveDataDB - Fim");
 
         finish();
     }
@@ -230,7 +236,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateLoader");
 
-        // Pesquisa especifica pelo mUriAtual por um unico produto cadastrado
         String[] projection = {
                 EntryProduct._ID,
                 EntryProduct.COLUMN_NAME,
@@ -238,8 +243,8 @@ public class RegisterProductActivity extends AppCompatActivity implements
         };
 
         return new CursorLoader(
-                this,
-                mUriAtual,
+                mContext,
+                product.getUri(),
                 projection,
                 null,
                 null,
@@ -254,14 +259,11 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
         if (cursor.moveToFirst()) {
 
-            double valorBD = cursor.getDouble(
-                    cursor.getColumnIndex(EntryProduct.COLUMN_PRICE));
+            product.setName(cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)));
+            product.setPrice(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE)));
 
-            String nomeBD = cursor.getString(
-                    cursor.getColumnIndex(EntryProduct.COLUMN_NAME));
-
-            mEtPreco.setText(String.valueOf(valorBD * 100));
-            mEtNome.setText(nomeBD);
+            mEtPrice.setText(Formatting.doubleDBToString(product.getPrice()));
+            mEtName.setText(product.getName());
         }
     }
 
@@ -278,7 +280,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         // Salva dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-            salvarDadosBD();
+            saveDataDB();
             return true;
         }
 
@@ -286,15 +288,15 @@ public class RegisterProductActivity extends AppCompatActivity implements
     }
 
     /* Verifica entrada de caracteres nos edits e formata os caracteres se necessario */
-    private void controleTextWatcher() {
+    private void watcherControl() {
 
-        Log.v(TAG, "controleTextWatcher");
+        Log.v(TAG, "watcherControl");
 
         /* No edit mEtValor e permitido a entrada apenas de numeros
          * Captura a entrada dos caracteres de numero no edit e faz a formatação para moeda
          * (currency) para ser apresentado para o usuario
          */
-        mEtPreco.addTextChangedListener(new TextWatcher() {
+        mEtPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -303,21 +305,21 @@ public class RegisterProductActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (!isDadosAlterados) {
+                if (!isDataChanged) {
 
-                    isDadosAlterados = true;
+                    isDataChanged = true;
                 }
 
-                if (isFormatarCurrencyAtualizado) {
+                if (isFormatCurrencyUpdate) {
 
-                    isFormatarCurrencyAtualizado = false;
+                    isFormatCurrencyUpdate = false;
                     return;
                 }
 
-                isFormatarCurrencyAtualizado = true;
+                isFormatCurrencyUpdate = true;
 
-                mEtPreco.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
-                mEtPreco.setSelection(mEtPreco.getText().length());
+                mEtPrice.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
+                mEtPrice.setSelection(mEtPrice.getText().length());
             }
 
             @Override
@@ -336,11 +338,10 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
         switch (id) {
 
-            // Recebe o foco, coloca cursor a direita dos caracteres e abre teclado se tiver fechado
-            case R.id.et_preco:
-                mEtPreco.requestFocus();
-                mEtPreco.setSelection(mEtPreco.getText().length());
-                ControlViews.showKeyboard(RegisterProductActivity.this, mEtPreco);
+            case R.id.et_register_product_price:
+                mEtPrice.requestFocus();
+                mEtPrice.setSelection(mEtPrice.getText().length());
+                ControlViews.showKeyboard(mContext, mEtPrice);
                 return true;
 
             default:

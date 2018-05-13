@@ -33,7 +33,7 @@ import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Opening;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
-import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMERO_ZERO;
+import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
 
 public class RegisterOpeningActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -60,14 +60,14 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         initViews();
         initListenerAndObject();
 
-        // Se mUriAtual tiver for nulo então vai adicionar, se tiver dados vai editar
-        if (opening.getUri() == null) {
+        // Se mUriInitial tiver for nulo então vai adicionar, se tiver dados vai editar
+        if (opening.getUri() == null) { // Adicionar
 
-            setTitle(R.string.title_saldo_inicial_cad_add);
+            setTitle(R.string.title_opening_register_add);
 
-        } else {
+        } else { // Editar
 
-            setTitle(R.string.title_saldo_inicial_cad_edit);
+            setTitle(R.string.title_opening_register_edit);
             getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_OPENING, null, this);
         }
 
@@ -114,7 +114,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_salvar, menu);
+        getMenuInflater().inflate(R.menu.menu_save, menu);
         return true;
     }
 
@@ -180,7 +180,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         double valueDouble = Formatting.currencyToDouble(value);
 
         // Valor não pode ser zero
-        if (valueDouble == NUMERO_ZERO) {
+        if (valueDouble == NUMBER_ZERO) {
 
             mEtValue.setError(getString(R.string.error_valide_value));
             mEtValue.requestFocus();

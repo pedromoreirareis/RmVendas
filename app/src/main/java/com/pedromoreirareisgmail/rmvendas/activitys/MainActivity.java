@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         mDataPesquisarBD = TimeData.formatDateSearch(TimeData.getDateTime());
 
         // Inicia Pesquisa no banco de dados
-       // getLoaderManager().initLoader(LOADER_MAIN, null, this);
+        getLoaderManager().initLoader(LOADER_MAIN, null, this);
     }
 
     private void initViews() {

@@ -9,6 +9,7 @@ public class ConstLoader {
     public static final int LOADER_LIST_CLIENT = 1005;
     public static final int LOADER_LIST_CLIENT_SALE = 1006;
     public static final int LOADER_LIST_PRODUCT_SALE = 1007;
+    public static final int LOADER_LIST_RECEIVE_CLIENT = 1008;
 
 
     public static final int LOADER_REGISTER_ADD_MONEY = 2001;
@@ -16,5 +17,10 @@ public class ConstLoader {
     public static final int LOADER_REGISTER_OPENING = 2003;
     public static final int LOADER_REGISTER_PRODUCT = 2004;
     public static final int LOADER_REGISTER_CLIENT = 2005;
+
+    public static final int LOADER_REGISTER_SELL_ADD = 2006;
+    public static final int LOADER_REGISTER_SELL_EDIT = 2007;
+    public static final int LOADER_REGISTER_SELL_CLIENT = 2008;
+
 
 }

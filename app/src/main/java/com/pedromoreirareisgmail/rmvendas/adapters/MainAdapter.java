@@ -57,7 +57,7 @@ public class MainAdapter extends CursorAdapter {
         int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
         double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
 
-        int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
+        long idCliente = cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
 
         String nomeCliente = "";
         if (idCliente > 0) {
@@ -100,7 +100,7 @@ public class MainAdapter extends CursorAdapter {
 
         holder.tvValorVenda.setText(valorVendaString);
 
-        if (valorAdicional != Const.NUMERO_ZERO) {
+        if (valorAdicional != Const.NUMBER_ZERO) {
 
             holder.tvValorAdicional.setText(valorAdicionalString);
 
@@ -109,7 +109,7 @@ public class MainAdapter extends CursorAdapter {
             holder.tvValorAdicional.setText(valorAdicionalString);
         }
 
-        if (valorDesconto != Const.NUMERO_ZERO) {
+        if (valorDesconto != Const.NUMBER_ZERO) {
 
             holder.tvValorDesconto.setText(valorDescontoString);
 
@@ -121,7 +121,7 @@ public class MainAdapter extends CursorAdapter {
         holder.tvValorTotal.setText(valorTotalString);
         holder.tvValorAVIsta.setText(valorAVistaString);
 
-        if (valorAPrazo != Const.NUMERO_ZERO) {
+        if (valorAPrazo != Const.NUMBER_ZERO) {
 
             holder.tvValorAPrazo.setText(valorAPrazoString);
             holder.tvValorAPrazoNomeCliente.setText(String.format(context.getResources().getString(R.string.text_item_main_valor_prazo_cliente), nomeCliente));

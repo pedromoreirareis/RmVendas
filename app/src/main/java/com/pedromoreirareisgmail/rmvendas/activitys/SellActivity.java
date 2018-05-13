@@ -15,7 +15,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -38,22 +37,25 @@ import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
-import com.pedromoreirareisgmail.rmvendas.models.Product;
+import com.pedromoreirareisgmail.rmvendas.models.Client;
+import com.pedromoreirareisgmail.rmvendas.models.Receive;
 import com.pedromoreirareisgmail.rmvendas.models.Sell;
+import com.pedromoreirareisgmail.rmvendas.models.SellToClient;
 
 import java.text.NumberFormat;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calcularValorTotalVendaString;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editsToDouble;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceDouble;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarCharSequenceString;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsInt;
-import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.formatarEditsString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.charSequenceToDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.charSequenceToString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editToDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editToInteger;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editToString;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 
@@ -63,47 +65,41 @@ public class SellActivity extends AppCompatActivity implements
         Button.OnClickListener {
 
     private static final String TAG = SellActivity.class.getSimpleName();
-    private static final int LOADER_VENDA_ADICIONAR = 0;
-    private static final int LOADER_VENDA_EDITAR = 1;
-    private static final int LOADER_CLIENTE = 2;
 
-    private static final String URI_ATUAL = "uri_atual";
-    private static final String VALOR_UNIDADE = "valor_unidade";
-    private static final String ID_CLIENTE = "id_cliente";
 
-    private final NumberFormat mValorFormatarCurrency = NumberFormat.getCurrencyInstance();
+    private final NumberFormat mFormatCurrency = NumberFormat.getCurrencyInstance();
 
-    private TextView mTvQuantidadeProduto;
-    private TextView mTvNomeProduto;
-    private TextView mTvValorTotalVista;
-    private TextView mTvNomeCliente;
-    private EditText mEtQuantidade;
-    private EditText mEtAdicional;
-    private EditText mEtDesconto;
-    private EditText mEtPrazo;
-    private Button mButCliente;
-    private Switch mSwitchAdicional;
-    private Switch mSwitchDesconto;
-    private Switch mSwitchPrazo;
-    private TextInputLayout layoutAdicional;
-    private TextInputLayout layoutDesconto;
-    private LinearLayout layoutPrazo;
+    private TextView mTvQuantity;
+    private TextView mTvProductName;
+    private TextView mTvTotalValue;
+    private TextView mTvClientName;
+    private EditText mEtQuantity;
+    private EditText mEtAdd;
+    private EditText mEtDiscount;
+    private EditText mEtForward;
+    private Button mButClient;
+    private Switch mSwitchAdd;
+    private Switch mSwitchDiscount;
+    private Switch mSwitchForward;
+    private TextInputLayout mLayoutAdd;
+    private TextInputLayout mLayoutDiscount;
+    private LinearLayout mLayoutForward;
+
+    private Uri mUriInitial = null;
+    //private Uri mUriClient = null;
 
     private Context mContext;
-    private Product product;
+    private Client client;
     private Sell sell;
 
-    private Uri mUriCliente = null;
+    // private double mProductValue = 0;
 
-    private long mIdCliente = Const.MENOS_UM;
-    private double mValorUnidadeProduto = 0;
     private String mValorTotalBundle = "";
-    private String mDataHoraBD = null;
-    private String mNomeCliente = "";
 
-    private boolean isDadosAlterado = false;
-    private boolean isFormatarCurrencyAtualizado = false;
-    private boolean isFormatarIntegerAtualizado = false;
+    private boolean isAddProduct = false;
+    private boolean idDataChanged = false;
+    private boolean isFormatCurrencyUpdate = false;
+    private boolean isFormatIntegerUpdate = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,186 +108,110 @@ public class SellActivity extends AppCompatActivity implements
         Log.v(TAG, "onCreate");
 
         initViews();
-        initListenerAndObject();
+        initObject();
 
+        if (isAddProduct) { // Adicionar
 
-        // Se for para adicionar coloca titulo na activity ADICIONAR
-        if (product.getAddSell()) {
+            Log.v(TAG, "mAdicionarProdutoBD - Adicionar :" + mUriInitial.toString());
 
-            Log.v(TAG, "mAdicionarProdutoBD - Adicionar");
-            Log.v(TAG, "mAdicionarProdutoBD - Adicionar :" + product.getUri().toString());
+            setTitle(R.string.title_sell_add);
+            getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_ADD, null, this);
 
-            setTitle(R.string.title_venda_add);
-            getLoaderManager().initLoader(LOADER_VENDA_ADICIONAR, null, this);
-
-            mTvQuantidadeProduto.setText(Const.UMA_UNIDADE_STRING);
-            mEtQuantidade.setText(Const.UMA_UNIDADE_STRING);
-            mEtQuantidade.setSelection(mEtQuantidade.getText().length());
+            mTvQuantity.setText(Const.A_UNIT_STRING);
+            mEtQuantity.setText(Const.A_UNIT_STRING);
+            mEtQuantity.setSelection(mEtQuantity.getText().length());
         }
 
-        // Se não for para adicionar coloca titulo na activity para EDITAR
-        if (!product.getAddSell()) {
+        if (!isAddProduct) { // Editar
 
             Log.v(TAG, "!mAdicionarProdutoBD - Editar");
 
-            setTitle(R.string.title_venda_edit);
-            getLoaderManager().initLoader(LOADER_VENDA_EDITAR, null, this);
+            setTitle(R.string.title_sell_edit);
+            getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_EDIT, null, this);
         }
 
-        // Se tiver uma instancia salva então ativa
-        verificarSavedInstanceState(savedInstanceState);
+        // Instancia estado da Activity se tiver salvo
+        verifySavedInstanceState(savedInstanceState);
 
-        // Verifica a entrada de caracteres nos edits
+        // Controle da entrada dos edits
         watcherControl();
 
-        // Verifica a maudança de estado do Switch
-        switchControlChange();
+        // Controle de mudanças dos switchs
+        switchControl();
 
-        // Coloca foco e seleciona dados do edit quantidade
-        mEtQuantidade.setSelectAllOnFocus(true);
+        // Instancia os Listener
+        initListener();
+
+        // Foco no edit Quantity
+        mEtQuantity.setSelectAllOnFocus(true);
 
         // Tira o foco e coloca valor zero nos edits
-        ControlViews.noFocusAndZero(mEtAdicional);
-        ControlViews.noFocusAndZero(mEtDesconto);
-        ControlViews.noFocusAndZero(mEtPrazo);
+        ControlViews.noFocusAndZero(mEtAdd);
+        ControlViews.noFocusAndZero(mEtDiscount);
+        ControlViews.noFocusAndZero(mEtForward);
     }
-
-    private void initListenerAndObject() {
-
-        // Contexto da Activity
-        mContext = SellActivity.this;
-
-        // Instancia o objeto Sell
-        sell = new Sell();
-
-        // Instancia o objeto Product
-        product = new Product();
-
-        // Recebe dados de ListProductSaleActivity
-        Intent intentProduct = getIntent();
-        product.setUri(intentProduct.getData());
-
-        if (intentProduct.hasExtra(ConstIntents.INTENT_ADD_SELL)) {
-
-            product = intentProduct.getParcelableExtra(ConstIntents.INTENT_ADD_SELL);
-
-        } else {
-
-            product.setAddSell(false);
-        }
-
-        /* Abre activity ListClientSaleActivity para selecionar cliente para venda a prazo */
-        mButCliente.setOnClickListener(this);
-
-        // Monitora toques nos edits
-        mEtQuantidade.setOnTouchListener(this);
-        mEtAdicional.setOnTouchListener(this);
-        mEtDesconto.setOnTouchListener(this);
-        mEtPrazo.setOnTouchListener(this);
-
-        // Monitora toques nos Switchs
-        mSwitchAdicional.setOnTouchListener(this);
-        mSwitchDesconto.setOnTouchListener(this);
-        mSwitchPrazo.setOnTouchListener(this);
-    }
-
-    //TODO: parei aqui
 
     private void initViews() {
 
         Log.v(TAG, "initViews");
 
         // Referencia itens do layout
-        mTvQuantidadeProduto = findViewById(R.id.tv_vend_quant_quantidade);
-        mTvNomeProduto = findViewById(R.id.tv_vend_quant_nome_produto);
-        mTvValorTotalVista = findViewById(R.id.tv_vend_quant_valor_total_vista);
-        mTvNomeCliente = findViewById(R.id.tv_vend_quant_cliente);
-        mButCliente = findViewById(R.id.but_vend_quant_cliente);
-        mEtQuantidade = findViewById(R.id.et_vend_quant_quantidade);
-        mEtDesconto = findViewById(R.id.et_vend_quant_valor_desconto);
-        mEtAdicional = findViewById(R.id.et_vend_quant_valor_adicional);
-        mEtPrazo = findViewById(R.id.et_vend_quant_valor_prazo);
-        mSwitchAdicional = findViewById(R.id.switch_vend_quant_adicional);
-        mSwitchDesconto = findViewById(R.id.switch_vend_quant_desconto);
-        mSwitchPrazo = findViewById(R.id.switch_vend_quant_prazo);
-        layoutDesconto = findViewById(R.id.til_vend_quant_desconto);
-        layoutAdicional = findViewById(R.id.til_vend_quant_adicional);
-        layoutPrazo = findViewById(R.id.ll_vend_quant_prazo);
+        mTvQuantity = findViewById(R.id.tv_sell_quantity);
+        mTvProductName = findViewById(R.id.tv_sell_product_name);
+        mTvTotalValue = findViewById(R.id.tv_sell_total_value);
+        mTvClientName = findViewById(R.id.tv_sell_client_name);
+        mButClient = findViewById(R.id.but_sell_client);
+        mEtQuantity = findViewById(R.id.et_sell_quantity);
+        mEtDiscount = findViewById(R.id.et_sell_discount_value);
+        mEtAdd = findViewById(R.id.et_sell_add_value);
+        mEtForward = findViewById(R.id.et_sell_forward_value);
+        mSwitchAdd = findViewById(R.id.switch_sell_add);
+        mSwitchDiscount = findViewById(R.id.switch_sell_discount);
+        mSwitchForward = findViewById(R.id.switch_sell_forward);
+        mLayoutDiscount = findViewById(R.id.til_sell_discount);
+        mLayoutAdd = findViewById(R.id.til_sell_add);
+        mLayoutForward = findViewById(R.id.til_sell_forward);
     }
 
-    private void verificarSavedInstanceState(Bundle savedInstanceState) {
+    private void initObject() {
+
+        Log.v(TAG, "initObject");
+
+        // Contexto da Activity
+        mContext = SellActivity.this;
+
+        sell = new Sell();
+
+        client = new Client();
+        client.setId(Const.ONE_LESS);
+
+        // Recebe dados de ListProductSaleActivity
+        Intent intentInitial = getIntent();
+        mUriInitial = intentInitial.getData();
+
+        if (intentInitial.hasExtra(ConstIntents.INTENT_ADD_SELL)) {
+
+            // Verificar se vai adicionar ou editar venda
+            isAddProduct = intentInitial.getBooleanExtra(ConstIntents.INTENT_ADD_SELL, true);
+        }
+    }
+
+    private void verifySavedInstanceState(Bundle savedInstanceState) {
+
+        Log.v(TAG, "verifySavedInstanceState");
 
         if (savedInstanceState != null) {
 
             Log.v(TAG, "savedInstanceState != null");
 
-            if (savedInstanceState.containsKey("idCliente")) {
+            // Tiver dados salvos no Objeto savedInstanceState captura os dados e repassa a Activity
+            client = savedInstanceState.getParcelable(Const.SELL_SAVED_INSTANCE_STATE);
+            if (client != null) {
 
-                mIdCliente = savedInstanceState.getLong("idCliente");
+                mTvClientName.setText(client.getName());
             }
 
-            if (savedInstanceState.containsKey("nomeCliente")) {
-
-                mNomeCliente = savedInstanceState.getString("nomeCliente");
-                mTvNomeCliente.setText(savedInstanceState.getString("nomeCliente"));
-            }
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Log.v(TAG, "onActivityResult");
-
-        if (requestCode == Const.COD_RESULT_VENDA_CLIENTES && resultCode == RESULT_OK) {
-
-            if (data != null) {
-
-                Log.v(TAG, "onActivityResult -  data != null ");
-
-                if (data.hasExtra(ID_CLIENTE)) {
-
-                    mIdCliente = Long.parseLong(data.getStringExtra(ID_CLIENTE));
-                    mUriCliente = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, mIdCliente);
-                    getLoaderManager().initLoader(LOADER_CLIENTE, null, this);
-                }
-
-                mValorTotalBundle = calcularValorTotalVendaString(
-                        formatarEditsString(mEtQuantidade),
-                        Double.parseDouble(data.getStringExtra(VALOR_UNIDADE)),
-                        formatarEditsString(mEtAdicional),
-                        formatarEditsString(mEtDesconto),
-                        formatarEditsString(mEtPrazo));
-            }
-        }
-    }
-
-
-    @Override
-    public void onClick(View view) {
-
-        Log.v(TAG, "onClick - but_vend_quant_cliente");
-
-        if (view.getId() == R.id.but_vend_quant_cliente) {
-
-            mIdCliente = Const.MENOS_UM;
-            mNomeCliente = "";
-
-            Intent intentListaCliente =
-                    new Intent(SellActivity.this, ListClientSaleActivity.class);
-
-            Bundle bundle = new Bundle();
-            bundle.putString(URI_ATUAL, product.getUri().toString());
-            bundle.putString(VALOR_UNIDADE, String.valueOf(mValorUnidadeProduto));
-
-            intentListaCliente.putExtras(bundle);
-
-            startActivityForResult(intentListaCliente, Const.COD_RESULT_VENDA_CLIENTES);
-
-            ControlViews.hideKeyboard(SellActivity.this, mButCliente);
-        }
-
     }
 
     @Override
@@ -300,11 +220,101 @@ public class SellActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onSaveInstanceState");
 
-        if (mIdCliente != Const.MENOS_UM && !mNomeCliente.isEmpty()) {
+        // Salva dados no estado da aplicação para ser usados no retorno da Acitivyt
+        if (client.getId() != Const.ONE_LESS && !client.getName().isEmpty()) {
 
-            outState.putLong("idCliente", mIdCliente);
-            outState.putString("nomeCliente", mNomeCliente);
+            Client clientOut = new Client();
 
+            clientOut.setId(client.getId());
+            clientOut.setName(client.getName());
+
+            outState.putParcelable(Const.SELL_SAVED_INSTANCE_STATE, clientOut);
+        }
+    }
+
+    private void initListener() {
+
+        Log.v(TAG, "initListener");
+
+        // Botão abre activity ListClientSaleActivity, para selecionar cliente para venda a prazo
+        mButClient.setOnClickListener(this);
+
+        // Monitora toques nos edits
+        mEtQuantity.setOnTouchListener(this);
+        mEtAdd.setOnTouchListener(this);
+        mEtDiscount.setOnTouchListener(this);
+        mEtForward.setOnTouchListener(this);
+
+        // Monitora toques nos Switchs
+        mSwitchAdd.setOnTouchListener(this);
+        mSwitchDiscount.setOnTouchListener(this);
+        mSwitchForward.setOnTouchListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        Log.v(TAG, "onClick - but_vend_quant_cliente");
+
+        /* Abre activity para buscar cliente para uma venda a prazo */
+        if (view.getId() == R.id.but_sell_client) {
+
+
+            Intent intentClientList = new Intent(
+                    mContext,
+                    ListClientSaleActivity.class
+            );
+
+            client.setId(Const.ONE_LESS);
+            client.setName("");
+
+            SellToClient sellToClient = new SellToClient();
+            sellToClient.setUriInitial(mUriInitial);
+            sellToClient.setUnitValue(sell.getPrice());
+
+            intentClientList.putExtra(ConstIntents.INTENT_SELL_TO_CLIENT, sellToClient);
+
+            startActivityForResult(intentClientList, Const.COD_RESULT_CLIENT_SELL);
+
+            ControlViews.hideKeyboard(mContext, mButClient);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.v(TAG, "onActivityResult");
+
+        // Recebe os dados do cliente para venda a prazo
+        if (requestCode == Const.COD_RESULT_CLIENT_SELL && resultCode == RESULT_OK) {
+
+            if (data != null) {
+
+                Log.v(TAG, "onActivityResult -  data != null ");
+
+                client = new Client();
+                SellToClient sellToClient = new SellToClient();
+
+                if (data.hasExtra(ConstIntents.INTENT_CLIENT_TO_SELL)) {
+
+                    sellToClient = data.getParcelableExtra(ConstIntents.INTENT_CLIENT_TO_SELL);
+
+                    client.setId(sellToClient.getClientId());
+                    //mUriClient = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, client.getId());
+                    client.setUri(ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, client.getId()));
+                    getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_CLIENT, null, this);
+
+                }
+
+                mValorTotalBundle = calcularValorTotalVendaString(
+                        editToString(mEtQuantity),
+                        sellToClient.getUnitValue(),
+                        editToString(mEtAdd),
+                        editToString(mEtDiscount),
+                        editToString(mEtForward));
+            }
         }
     }
 
@@ -313,7 +323,8 @@ public class SellActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onCreateOptionsMenu");
 
-        getMenuInflater().inflate(R.menu.menu_salvar, menu);
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+
         return true;
     }
 
@@ -326,22 +337,21 @@ public class SellActivity extends AppCompatActivity implements
 
             // Salva dados no BD
             case R.id.action_salvar:
-                salvarDadosBD();
+                saveDataDB();
                 return true;
 
             /* Menu Up
              * Verifica se houve alteração, se houve abre um Dialog para verificar se deseja descatar
-             * as alterações e sair da activity ou se deseja continuar na activity e continua alterando
-             */
+             * as alterações e sair da activity ou se deseja continuar na activity e continua alterando*/
             case android.R.id.home:
-                if (!isDadosAlterado) {
+                if (!idDataChanged) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
                 }
 
                 Messages.homePressed(
-                        SellActivity.this,
+                        mContext,
                         SellActivity.this);
 
                 return true;
@@ -352,190 +362,28 @@ public class SellActivity extends AppCompatActivity implements
 
     /* Botão voltar (embaixo)
      * Se dados foram alterados abre Dialog para decidir se ira descatar dados alterados e sair
-     * da Activity ou se deseja ficar na activity e continuar as alterações
-     */
+     * da Activity ou se deseja ficar na activity e continuar as alterações*/
     @Override
     public void onBackPressed() {
 
         Log.v(TAG, "onBackPressed");
 
-        if (!isDadosAlterado) {
+        if (!idDataChanged) {
 
             super.onBackPressed();
         }
 
         Messages.backPressed(
-                SellActivity.this,
+                mContext,
                 SellActivity.this);
     }
 
-    /* Salva dados no BD
-     * Recebe dados dos edits e dos Switchs, faz validações, coloca dados no objeto values e
-     * salva no banco de dados
-     */
-    private void salvarDadosBD() {
-
-        Log.v(TAG, "salvarDadosBD - Inicio");
-
-        // Pega os valores nos edits
-        String nomeProdutoTextView = mTvNomeProduto.getText().toString().trim();
-        String quatidadeEditText = mEtQuantidade.getText().toString().trim();
-        String valorAdicionalEditText = mEtAdicional.getText().toString().trim();
-        String valorDescontoEditText = mEtDesconto.getText().toString().trim();
-        String valorPrazoEditText = mEtPrazo.getText().toString().trim();
-        String nomeClienteTextView = mTvNomeCliente.getText().toString();
-
-        // Verifica se os Switch estão checked
-        boolean temAdicionalSwitch = mSwitchAdicional.isChecked();
-        boolean temDescontoSwitch = mSwitchDesconto.isChecked();
-        boolean temPrazoSwitch = mSwitchPrazo.isChecked();
-
-        // Campo não pode ser vazio
-        if (TextUtils.isEmpty(quatidadeEditText)) {
-
-            mEtQuantidade.setError(getString(R.string.error_campo_vazio_quantidade));
-            mEtQuantidade.requestFocus();
-            return;
-        }
-
-        // Converte os String do campo valorQuantidade para inteiro
-        int quantidadeInt = Integer.parseInt(quatidadeEditText);
-
-        // Se campo tiver valor zero, apresenta mensagem erro
-        if (quantidadeInt == Const.NUMERO_ZERO) {
-
-            mEtQuantidade.setError(getString(R.string.error_valide_value));
-            mEtQuantidade.requestFocus();
-            return;
-        }
-
-        // Converte as String dos campos valorAdicional, valorDesconto  e valorPrazo para double
-        double valorAdicionalDouble = Formatting.currencyToDouble(valorAdicionalEditText);
-        double valorDescontoDouble = Formatting.currencyToDouble(valorDescontoEditText);
-        double valorPrazoDouble = Formatting.currencyToDouble(valorPrazoEditText);
-
-
-        // Se Switch adicional estiver Checked
-        if (temAdicionalSwitch) {
-
-            // O valor desse campo deve ser positivo
-            if (valorAdicionalDouble == 0) {
-
-                mEtAdicional.setError(getString(R.string.error_valide_value_adicional));
-                mEtAdicional.requestFocus();
-                return;
-            }
-        }
-
-        // Se Switch desconto estiver Checked
-        if (temDescontoSwitch) {
-
-            // O valor desse campo deve ser positivo
-            if (valorDescontoDouble == 0) {
-
-                mEtDesconto.setError(getString(R.string.error_valide_value_desconto));
-                mEtDesconto.requestFocus();
-                return;
-            }
-        }
-
-        if (temPrazoSwitch) {
-
-            // O valor desse campo deve ser positivo
-            if (valorPrazoDouble == 0) {
-
-                mEtPrazo.setError(getString(R.string.error_valide_value_prazo));
-                mEtPrazo.requestFocus();
-                return;
-            }
-
-
-            // Deve se realizar a busca de um cliente para venda a prazo
-            if (mNomeCliente.isEmpty()) {
-
-                Snackbar.make(mButCliente, getString(R.string.error_nome_cliente), Snackbar.LENGTH_LONG).show();
-                return;
-            }
-
-            // Deve se realizar a busca de um cliente para venda a prazo
-            if (mIdCliente == -1) {
-
-                Snackbar.make(mButCliente, getString(R.string.error_nome_cliente), Snackbar.LENGTH_LONG).show();
-                return;
-            }
-        }
-
-        // Colocando dados dentro de objeto para salvar venda a prazo
-        ContentValues valuesVendaPrazo = new ContentValues();
-        if (temPrazoSwitch) {
-
-            valuesVendaPrazo.put(EntryReceive._ID, mIdCliente);
-            valuesVendaPrazo.put(EntryReceive.COLUMN_CLIENT_NAME, nomeClienteTextView);
-            valuesVendaPrazo.put(EntryReceive.COLUMN_TYPE, ConstDB.TIPO_VENDA);
-            valuesVendaPrazo.put(EntryReceive.COLUMN_VALUE, valorPrazoDouble);
-            valuesVendaPrazo.put(EntryReceive.COLUMN_DESCRIPTION, String.format(
-                    getResources().getString(R.string.text_venda_a_prazo_venda),
-                    quatidadeEditText,
-                    nomeProdutoTextView));
-        }
-
-        // Coloca dados em um objeto values para ser salvo no BD
-        ContentValues values = new ContentValues();
-        values.put(EntrySeel.COLUMN_NAME, nomeProdutoTextView);
-        values.put(EntrySeel.COLUMN_QUANTITY, quantidadeInt);
-        values.put(EntrySeel.COLUMN_PRICE, mValorUnidadeProduto);
-        values.put(EntrySeel.COLUMN_ADD_VALUE, valorAdicionalDouble);
-        values.put(EntrySeel.COLUMN_DISCOUNT_VALUE, valorDescontoDouble);
-        values.put(EntrySeel.COLUMN_FORWARD_VALUE, valorPrazoDouble);
-        valuesVendaPrazo.put(EntryReceive.COLUMN_TIMESTAMP, TimeData.getDateTime());
-        if (temPrazoSwitch) {
-            values.put(EntrySeel.COLUMN_CLIENT_ID, mIdCliente);
-        }
-
-        // Salva dados no BD
-        if (product.getAddSell()) {
-
-            values.put(EntrySeel.COLUMN_TIMESTAMP, TimeData.getDateTime());
-
-            Crud.insert(SellActivity.this, EntrySeel.CONTENT_URI_SELL, values);
-
-            if (temPrazoSwitch) {
-
-                Crud.insert(SellActivity.this, EntryReceive.CONTENT_URI_RECEIVE, valuesVendaPrazo);
-            }
-
-            Log.v(TAG, "salvarDadosBD - inserir");
-
-        } else {
-
-            if (temPrazoSwitch) {
-
-                Snackbar.make(mButCliente, getString(R.string.error_nome_edicao_nao_permitida), Snackbar.LENGTH_INDEFINITE).show();
-                return;
-
-            } else {
-
-                values.put(EntrySeel.COLUMN_TIMESTAMP, mDataHoraBD);
-
-                Crud.update(SellActivity.this, product.getUri(), values);
-
-                Log.v(TAG, "salvarDadosBD - editar");
-            }
-        }
-
-        Log.v(TAG, "salvarDadosBD - Fim");
-
-        finish();
-    }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    public Loader<Cursor> onCreateLoader(int iLoader, Bundle bundle) {
 
-        /* Se LOADER_VENDA_ADICIONAR
-         * com Uri do produto a ser adicionado, faz a pesquisa por esse produto e retorna com o nome
-         * do produto, valor e seu id
-         */
-        if (i == LOADER_VENDA_ADICIONAR) {
+        /* Adicionar Venda */
+        if (iLoader == ConstLoader.LOADER_REGISTER_SELL_ADD) {
 
             Log.v(TAG, "onCreateLoader - LOADER_VENDA_ADICIONAR");
 
@@ -546,8 +394,8 @@ public class SellActivity extends AppCompatActivity implements
             };
 
             return new CursorLoader(
-                    this,
-                    product.getUri(),
+                    mContext,
+                    mUriInitial,
                     projection,
                     null,
                     null,
@@ -555,11 +403,8 @@ public class SellActivity extends AppCompatActivity implements
             );
         }
 
-        /* se LOADER_VENDA_EDITAR
-         * com Uri da venda, faz pesquisa e retorna com todos os dados referentes a essa venda
-         * especifica
-         */
-        if (i == LOADER_VENDA_EDITAR) {
+        /* Editar Venda */
+        if (iLoader == ConstLoader.LOADER_REGISTER_SELL_EDIT) {
 
             Log.v(TAG, "onCreateLoader - LOADER_VENDA_EDITAR");
 
@@ -572,12 +417,14 @@ public class SellActivity extends AppCompatActivity implements
                     EntrySeel.COLUMN_DISCOUNT_VALUE,
                     EntrySeel.COLUMN_FORWARD_VALUE,
                     EntrySeel.COLUMN_CLIENT_ID,
-                    EntrySeel.COLUMN_PRICE
+                    EntrySeel.COLUMN_PRICE,
+                    EntrySeel.COLUMN_CLIENT_NAME,
+                    EntrySeel.COLUMN_RECEIVE_ID
             };
 
             return new CursorLoader(
-                    this,
-                    product.getUri(),
+                    mContext,
+                    mUriInitial,
                     projection,
                     null,
                     null,
@@ -585,11 +432,12 @@ public class SellActivity extends AppCompatActivity implements
             );
         }
 
-        if (i == LOADER_CLIENTE) {
+        /* Pesquisa dados do cliente para venda a prazo */
+        if (iLoader == ConstLoader.LOADER_REGISTER_SELL_CLIENT) {
 
             Log.v(TAG, "onCreateLoader - LOADER_CLIENTE");
 
-            // Trazer todos os dados de um clientes especifico indentificado pelo mUriAtual
+            // Trazer todos os dados de um clientes especifico indentificado pelo mUriInitial
             String[] projection = {
                     EntryClient._ID,
                     EntryClient.COLUMN_NAME,
@@ -597,8 +445,8 @@ public class SellActivity extends AppCompatActivity implements
             };
 
             return new CursorLoader(
-                    this,
-                    mUriCliente,
+                    mContext,
+                    client.getUri(),
                     projection,
                     null,
                     null,
@@ -612,115 +460,123 @@ public class SellActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        /* Retorna todos os dados de uma vena especifica, e coloca resultados em seus respectivos
-         * campos, de forma que possa ser feita a edicao
-         */
-        if (loader.getId() == LOADER_VENDA_EDITAR && cursor.moveToFirst()) {
+        /* Retorna dados de uma venda especifica, e coloca resultados em seus respectivos
+         * campos, de forma que possa ser feita a edicao*/
+        if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_EDIT && cursor.moveToFirst()) {
 
             Log.v(TAG, "onLoadFinished - LOADER_VENDA_EDITAR");
 
-            String nomeProdutoBD = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
-            mDataHoraBD = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP));
+            sell.setName(cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME)));
+            sell.setTimestamp(cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP)));
 
-            int quantidadeBD = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
-            double valorUnidadeBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
-            double valorAdicionalBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
-            double valorDescontoBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
-            double valorPrazoBD = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
-            double valorTotalBD = Calculus.calcularValorTotalVendaDouble(
-                    quantidadeBD,
-                    valorUnidadeBD,
-                    valorAdicionalBD,
-                    valorDescontoBD
+            sell.setQuantity(cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)));
+            sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)));
+            sell.setAddValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)));
+            sell.setDiscountValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)));
+            sell.setForwardValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
+            sell.setReceiveId(cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_RECEIVE_ID)));
+
+            double totalValueDB = Calculus.calcularValorTotalVendaDouble(
+                    sell.getQuantity(),
+                    sell.getPrice(),
+                    sell.getAddValue(),
+                    sell.getDiscountValue()
             );
 
-            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
+            sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)));
+            sell.setClientId(cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID)));
 
-            int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
-            mIdCliente = idCliente;
-            mUriCliente = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, mIdCliente);
+            client.setId(sell.getClientId());
+            client.setUri(ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, client.getId()));
 
-            String nomeClienteBD = "";
-            if (mIdCliente > 0) {
-                nomeClienteBD = SearchDB.searchClientName(SellActivity.this, idCliente);
-                mNomeCliente = nomeClienteBD;
-                mTvNomeCliente.setText(mNomeCliente);
-            }
-            mTvNomeProduto.setText(nomeProdutoBD);
-            mEtQuantidade.setText(String.valueOf(quantidadeBD));
-            mTvQuantidadeProduto.setText(String.valueOf(quantidadeBD));
-
-            if (valorAdicionalBD != Const.NUMERO_ZERO) {
-
-                mSwitchAdicional.setChecked(true);
-                layoutAdicional.setVisibility(View.VISIBLE);
-                mEtAdicional.setText(mValorFormatarCurrency.format(valorAdicionalBD));
-
-            } else {
-
-                mSwitchAdicional.setChecked(false);
-                layoutAdicional.setVisibility(View.GONE);
+            if (client.getId() > 0) {
+                sell.setClientName(SearchDB.searchClientName(mContext, client.getId()));
+                client.setName(sell.getClientName());
+                mTvClientName.setText(client.getName());
             }
 
-            if (valorDescontoBD != Const.NUMERO_ZERO) {
+            mTvProductName.setText(sell.getName());
+            mEtQuantity.setText(String.valueOf(sell.getQuantity()));
+            mTvQuantity.setText(String.valueOf(sell.getQuantity()));
 
-                mSwitchDesconto.setChecked(true);
-                layoutDesconto.setVisibility(View.VISIBLE);
-                mEtDesconto.setText(mValorFormatarCurrency.format(valorDescontoBD));
+            if (sell.getAddValue() != Const.NUMBER_ZERO) { // Tem valor adicional
 
-            } else {
-                mSwitchDesconto.setChecked(false);
-                layoutDesconto.setVisibility(View.GONE);
+                mSwitchAdd.setChecked(true);
+                mLayoutAdd.setVisibility(View.VISIBLE);
+                mEtAdd.setText(mFormatCurrency.format(sell.getAddValue()));
+
+            } else { // Não tem valor adicional
+
+                mSwitchAdd.setChecked(false);
+                mLayoutAdd.setVisibility(View.GONE);
+            }
+
+            if (sell.getDiscountValue() != Const.NUMBER_ZERO) { // Tem desconto
+
+                mSwitchDiscount.setChecked(true);
+                mLayoutDiscount.setVisibility(View.VISIBLE);
+                mEtDiscount.setText(mFormatCurrency.format(sell.getDiscountValue()));
+
+            } else { // Não tem desconto
+
+                mSwitchDiscount.setChecked(false);
+                mLayoutDiscount.setVisibility(View.GONE);
             }
 
 
-            if (valorPrazoBD != Const.NUMERO_ZERO) {
+            if (sell.getForwardValue() != Const.NUMBER_ZERO) { // Tem valor a prazo
 
-                mSwitchPrazo.setChecked(true);
-                layoutPrazo.setVisibility(View.VISIBLE);
-                mEtPrazo.setText(mValorFormatarCurrency.format(valorPrazoBD));
-                mTvNomeProduto.setText(nomeClienteBD);
+                mSwitchForward.setChecked(true);
+                mLayoutForward.setVisibility(View.VISIBLE);
+                mEtForward.setText(mFormatCurrency.format(sell.getForwardValue()));
+                mTvProductName.setText(sell.getClientName());
 
-            } else {
+            } else { // Não tem valor a prazo
 
-                mSwitchPrazo.setChecked(false);
-                layoutPrazo.setVisibility(View.GONE);
+                mSwitchForward.setChecked(false);
+                mLayoutForward.setVisibility(View.GONE);
             }
 
-            mTvValorTotalVista.setText(mValorFormatarCurrency.format(valorTotalBD));
+            mTvTotalValue.setText(mFormatCurrency.format(totalValueDB));
 
-            mEtQuantidade.requestFocus();
+            mEtQuantity.requestFocus();
         }
 
-        /* Faz pesquisa pelo id de um produto e econtro o seu nome e seu valor e colocar nos
-         * respectivos campos
-         */
-        if (loader.getId() == LOADER_VENDA_ADICIONAR && cursor.moveToFirst()) {
+        /* Faz pesquisa pelo id de um produto e econtra o seu nome e seu valor e colocar nos
+         * respectivos campos*/
+        if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_ADD && cursor.moveToFirst()) {
 
             Log.v(TAG, "onLoadFinished - LOADER_VENDA_ADICIONAR");
 
-            String nomeProduto = cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME));
-            mValorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE));
+            sell.setName(cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)));
+            sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE)));
 
-            mTvNomeProduto.setText(nomeProduto);
+            mTvProductName.setText(sell.getName());
 
-            mTvValorTotalVista.setText(
+            if (sell.getPrice() == null) {
+
+                sell.setPrice(0.0);
+            }
+
+            mTvTotalValue.setText(
                     calcularValorTotalVendaString(
-                            formatarEditsString(mEtQuantidade),
-                            mValorUnidadeProduto,
-                            formatarEditsString(mEtAdicional),
-                            formatarEditsString(mEtDesconto),
-                            formatarEditsString(mEtPrazo)));
+                            editToString(mEtQuantity),
+                            sell.getPrice(),
+                            editToString(mEtAdd),
+                            editToString(mEtDiscount),
+                            editToString(mEtForward)));
         }
 
-        if (loader.getId() == LOADER_CLIENTE && cursor.moveToFirst()) {
+        /* Faz pesquisa dos dados do cliente */
+        if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_CLIENT && cursor.moveToFirst()) {
 
             Log.v(TAG, "onLoadFinished - LOADER_CLIENTE");
 
-            mNomeCliente = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME));
-            mTvNomeCliente.setText(mNomeCliente);
+            client.setName(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME)));
+            sell.setClientName(client.getName());
+            mTvClientName.setText(client.getName());
 
-            mTvValorTotalVista.setText(mValorTotalBundle);
+            mTvTotalValue.setText(mValorTotalBundle);
         }
     }
 
@@ -737,40 +593,40 @@ public class SellActivity extends AppCompatActivity implements
 
         switch (view.getId()) {
 
-            case R.id.et_vend_quant_quantidade:
-                mEtQuantidade.requestFocus();
-                mEtQuantidade.setSelection(mEtQuantidade.getText().length());
-                ControlViews.showKeyboard(SellActivity.this, mEtQuantidade);
+            case R.id.et_sell_quantity:
+                mEtQuantity.requestFocus();
+                mEtQuantity.setSelection(mEtQuantity.getText().length());
+                ControlViews.showKeyboard(mContext, mEtQuantity);
                 return true;
 
-            case R.id.et_vend_quant_valor_desconto:
-                mEtDesconto.requestFocus();
-                mEtDesconto.setSelection(mEtDesconto.getText().length());
-                ControlViews.showKeyboard(SellActivity.this, mEtDesconto);
+            case R.id.et_sell_discount_value:
+                mEtDiscount.requestFocus();
+                mEtDiscount.setSelection(mEtDiscount.getText().length());
+                ControlViews.showKeyboard(mContext, mEtDiscount);
                 return true;
 
-            case R.id.et_vend_quant_valor_adicional:
-                mEtAdicional.requestFocus();
-                mEtAdicional.setSelection(mEtAdicional.getText().length());
-                ControlViews.showKeyboard(SellActivity.this, mEtAdicional);
+            case R.id.et_sell_add_value:
+                mEtAdd.requestFocus();
+                mEtAdd.setSelection(mEtAdd.getText().length());
+                ControlViews.showKeyboard(mContext, mEtAdd);
                 return true;
 
-            case R.id.et_vend_quant_valor_prazo:
-                mEtPrazo.requestFocus();
-                mEtPrazo.setSelection(mEtPrazo.getText().length());
-                ControlViews.showKeyboard(SellActivity.this, mEtPrazo);
+            case R.id.et_sell_forward_value:
+                mEtForward.requestFocus();
+                mEtForward.setSelection(mEtForward.getText().length());
+                ControlViews.showKeyboard(mContext, mEtForward);
                 return true;
 
-            case R.id.switch_vend_quant_adicional:
-                isDadosAlterado = true;
+            case R.id.switch_sell_add:
+                idDataChanged = true;
                 return false;
 
-            case R.id.switch_vend_quant_desconto:
-                isDadosAlterado = true;
+            case R.id.switch_sell_discount:
+                idDataChanged = true;
                 return false;
 
-            case R.id.switch_vend_quant_prazo:
-                isDadosAlterado = true;
+            case R.id.switch_sell_forward:
+                idDataChanged = true;
                 return false;
 
             default:
@@ -787,9 +643,8 @@ public class SellActivity extends AppCompatActivity implements
          * Apos a entrada de caracteres, e feita a formatação para o estilo moeda para ser
          * apresentado ao usuario
          * Tambem e feito o calculo do valor de venda do produto apos a etrada da quantidade de
-         * produto, valor adicional e do desconto caso tenha
-         */
-        mEtQuantidade.addTextChangedListener(new TextWatcher() {
+         * produto, valor adicional e do desconto caso tenha */
+        mEtQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -799,36 +654,40 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (mEtQuantidade.length() > Const.NUMERO_ZERO) {
+                if (mEtQuantity.length() > Const.NUMBER_ZERO) {
 
                     int numero = Integer.parseInt(charSequence.toString());
                     charSequence = String.valueOf(numero);
                 }
 
-                if (!isDadosAlterado) {
+                if (!idDataChanged) {
 
-                    isDadosAlterado = true;
+                    idDataChanged = true;
                 }
 
-                mTvValorTotalVista.setText(calcularValorTotalVendaString(
-                        formatarCharSequenceString(charSequence),
-                        mValorUnidadeProduto,
-                        formatarEditsString(mEtAdicional),
-                        formatarEditsString(mEtDesconto),
-                        formatarEditsString(mEtPrazo)));
+                if (sell.getPrice() == null) {
 
+                    sell.setPrice(0.0);
+                }
 
-                if (isFormatarIntegerAtualizado) {
+                mTvTotalValue.setText(calcularValorTotalVendaString(
+                        charSequenceToString(charSequence),
+                        sell.getPrice(),
+                        editToString(mEtAdd),
+                        editToString(mEtDiscount),
+                        editToString(mEtForward)));
 
-                    isFormatarIntegerAtualizado = false;
+                if (isFormatIntegerUpdate) {
+
+                    isFormatIntegerUpdate = false;
                     return;
                 }
 
-                isFormatarIntegerAtualizado = true;
+                isFormatIntegerUpdate = true;
 
-                mEtQuantidade.setText(charSequence);
-                mEtQuantidade.setSelection(mEtQuantidade.getText().length());
-                mTvQuantidadeProduto.setText(charSequence);
+                mEtQuantity.setText(charSequence);
+                mEtQuantity.setSelection(mEtQuantity.getText().length());
+                mTvQuantity.setText(charSequence);
             }
 
             @Override
@@ -837,7 +696,7 @@ public class SellActivity extends AppCompatActivity implements
             }
         });
 
-        mEtAdicional.addTextChangedListener(new TextWatcher() {
+        mEtAdd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -845,29 +704,34 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (!isDadosAlterado) {
+                if (!idDataChanged) {
 
-                    isDadosAlterado = true;
+                    idDataChanged = true;
                 }
 
+                if (sell.getPrice() == null) {
 
-                mTvValorTotalVista.setText(calcularValorTotalVendaString(
-                        formatarEditsString(mEtQuantidade),
-                        mValorUnidadeProduto,
-                        formatarCharSequenceString(charSequence),
-                        formatarEditsString(mEtDesconto),
-                        formatarEditsString(mEtPrazo)));
+                    sell.setPrice(0.0);
+                }
 
-                if (isFormatarCurrencyAtualizado) {
-                    isFormatarCurrencyAtualizado = false;
+                mTvTotalValue.setText(calcularValorTotalVendaString(
+                        editToString(mEtQuantity),
+                        sell.getPrice(),
+                        charSequenceToString(charSequence),
+                        editToString(mEtDiscount),
+                        editToString(mEtForward)));
+
+                if (isFormatCurrencyUpdate) {
+
+                    isFormatCurrencyUpdate = false;
                     return;
                 }
 
-                isFormatarCurrencyAtualizado = true;
+                isFormatCurrencyUpdate = true;
 
-                mEtAdicional.setText(Formatting.currencyToStringToCurrency(formatarCharSequenceString(charSequence)));
+                mEtAdd.setText(Formatting.currencyToStringToCurrency(charSequenceToString(charSequence)));
 
-                mEtAdicional.setSelection(mEtAdicional.getText().length());
+                mEtAdd.setSelection(mEtAdd.getText().length());
             }
 
             @Override
@@ -875,16 +739,19 @@ public class SellActivity extends AppCompatActivity implements
             }
         });
 
-        mEtDesconto.addTextChangedListener(new TextWatcher() {
+        mEtDiscount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                double valorVendaAdicional = formatarEditsInt(mEtQuantidade) * mValorUnidadeProduto +
-                        editsToDouble(mEtAdicional);
+                double sellValueAdd = editToInteger(mEtQuantity) * sell.getPrice() +
+                        editToDouble(mEtAdd);
 
-                if (formatarCharSequenceDouble(charSequence) > valorVendaAdicional) {
+                if (charSequenceToDouble(charSequence) > sellValueAdd) {
 
-                    mEtDesconto.setError(String.format(getResources().getString(R.string.error_campo_desconto_maior_venda), Formatting.doubleToCurrency(valorVendaAdicional)));
+                    mEtDiscount.setError(String.format(
+                            getString(R.string.error_discount_value_greater_sale),
+                            Formatting.doubleToCurrency(sellValueAdd))
+                    );
                 }
 
             }
@@ -892,29 +759,35 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (!isDadosAlterado) {
+                if (!idDataChanged) {
 
-                    isDadosAlterado = true;
+                    idDataChanged = true;
                 }
 
-                mTvValorTotalVista.setText(calcularValorTotalVendaString(
-                        formatarEditsString(mEtQuantidade),
-                        mValorUnidadeProduto,
-                        formatarEditsString(mEtAdicional),
-                        formatarCharSequenceString(charSequence),
-                        formatarEditsString(mEtPrazo)));
+                if (sell.getPrice() == null) {
+
+                    sell.setPrice(0.0);
+                }
+
+                mTvTotalValue.setText(calcularValorTotalVendaString(
+                        editToString(mEtQuantity),
+                        sell.getPrice(),
+                        editToString(mEtAdd),
+                        charSequenceToString(charSequence),
+                        editToString(mEtForward)));
 
 
-                if (isFormatarCurrencyAtualizado) {
-                    isFormatarCurrencyAtualizado = false;
+                if (isFormatCurrencyUpdate) {
+
+                    isFormatCurrencyUpdate = false;
                     return;
                 }
 
-                isFormatarCurrencyAtualizado = true;
+                isFormatCurrencyUpdate = true;
 
-                mEtDesconto.setText(Formatting.currencyToStringToCurrency(formatarCharSequenceString(charSequence)));
+                mEtDiscount.setText(Formatting.currencyToStringToCurrency(charSequenceToString(charSequence)));
 
-                mEtDesconto.setSelection(mEtDesconto.getText().length());
+                mEtDiscount.setSelection(mEtDiscount.getText().length());
             }
 
             @Override
@@ -923,17 +796,20 @@ public class SellActivity extends AppCompatActivity implements
         });
 
 
-        mEtPrazo.addTextChangedListener(new TextWatcher() {
+        mEtForward.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
 
-                double valorVendaAdicionalDesconto = formatarEditsInt(mEtQuantidade) * mValorUnidadeProduto +
-                        editsToDouble(mEtAdicional) - editsToDouble(mEtDesconto);
+                double sellValueDiscount =
+                        editToInteger(mEtQuantity) * sell.getPrice() + editToDouble(mEtAdd) - editToDouble(mEtDiscount);
 
-                if (formatarCharSequenceDouble(charSequence) / 100 > valorVendaAdicionalDesconto) {
+                if (charSequenceToDouble(charSequence) / 100 > sellValueDiscount) {
 
-                    mEtDesconto.setError(String.format(getResources().getString(R.string.error_campo_prazo_maior_venda), Formatting.doubleToCurrency(valorVendaAdicionalDesconto)));
+                    mEtDiscount.setError(String.format(
+                            getString(R.string.error_forward_value_greater_sale),
+                            Formatting.doubleToCurrency(sellValueDiscount))
+                    );
                 }
             }
 
@@ -941,28 +817,33 @@ public class SellActivity extends AppCompatActivity implements
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
 
 
-                if (!isDadosAlterado) {
+                if (!idDataChanged) {
 
-                    isDadosAlterado = true;
+                    idDataChanged = true;
                 }
 
-                mTvValorTotalVista.setText(calcularValorTotalVendaString(
-                        formatarEditsString(mEtQuantidade),
-                        mValorUnidadeProduto,
-                        formatarEditsString(mEtAdicional),
-                        formatarEditsString(mEtDesconto),
-                        formatarCharSequenceString(charSequence)));
+                if (sell.getPrice() == null) {
 
-                if (isFormatarCurrencyAtualizado) {
-                    isFormatarCurrencyAtualizado = false;
+                    sell.setPrice(0.0);
+                }
+
+                mTvTotalValue.setText(calcularValorTotalVendaString(
+                        editToString(mEtQuantity),
+                        sell.getPrice(),
+                        editToString(mEtAdd),
+                        editToString(mEtDiscount),
+                        charSequenceToString(charSequence)));
+
+                if (isFormatCurrencyUpdate) {
+                    isFormatCurrencyUpdate = false;
                     return;
                 }
 
-                isFormatarCurrencyAtualizado = true;
+                isFormatCurrencyUpdate = true;
 
-                mEtPrazo.setText(Formatting.currencyToStringToCurrency(formatarCharSequenceString(charSequence)));
+                mEtForward.setText(Formatting.currencyToStringToCurrency(charSequenceToString(charSequence)));
 
-                mEtPrazo.setSelection(mEtPrazo.getText().length());
+                mEtForward.setSelection(mEtForward.getText().length());
             }
 
             @Override
@@ -974,83 +855,269 @@ public class SellActivity extends AppCompatActivity implements
     }
 
 
-    /* Veifica se houve alteração no estado do Switch*/
-    private void switchControlChange() {
+    /* Veifica se houve alteração no estado do Switch */
+    private void switchControl() {
 
         Log.v(TAG, "");
 
         /* Se Switch estiver Checked fica visivel edit para entrada de valores
-         * Se Switch não estiver Checked o edit para entrada de dados fica invisivel
-         */
-        mSwitchAdicional.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+         * Se Switch não estiver Checked o edit para entrada de dados fica invisivel */
+        mSwitchAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
-                if (isChecked) {
+                if (isChecked) { // Se tiver checked
 
-                    layoutAdicional.setVisibility(View.VISIBLE);
+                    mLayoutAdd.setVisibility(View.VISIBLE);
 
-                    if (product.getAddSell()) {
-                        mEtAdicional.setText("0");
+                    if (isAddProduct) {
+
+                        mEtAdd.setText("0");
                     }
 
-                    mEtAdicional.requestFocus();
+                    mEtAdd.requestFocus();
 
 
-                } else {
+                } else { // Se não tiver checked
 
-                    layoutAdicional.setVisibility(View.GONE);
-                    mEtAdicional.setText("0");
+                    mLayoutAdd.setVisibility(View.GONE);
+                    mEtAdd.setText("0");
                 }
             }
         });
 
-        mSwitchDesconto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSwitchDiscount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
-                if (isChecked) {
+                if (isChecked) { // Se tiver checked
 
-                    layoutDesconto.setVisibility(View.VISIBLE);
+                    mLayoutDiscount.setVisibility(View.VISIBLE);
 
-                    if (product.getAddSell()) {
-                        mEtDesconto.setText("0");
+                    if (isAddProduct) {
+
+                        mEtDiscount.setText("0");
                     }
 
-                    mEtDesconto.requestFocus();
+                    mEtDiscount.requestFocus();
 
-                } else {
+                } else { // Se não tiver checked
 
-                    layoutDesconto.setVisibility(View.GONE);
-                    mEtDesconto.setText("0");
+                    mLayoutDiscount.setVisibility(View.GONE);
+                    mEtDiscount.setText("0");
                 }
             }
         });
 
-        mSwitchPrazo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSwitchForward.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if (isChecked) {
+                if (isChecked) { // Se tiver checked
 
-                    layoutPrazo.setVisibility(View.VISIBLE);
+                    mLayoutForward.setVisibility(View.VISIBLE);
 
-                    if (product.getAddSell()) {
-                        mEtPrazo.setText("0");
+                    if (isAddProduct) {
+
+                        mEtForward.setText("0");
                     }
 
-                    mEtPrazo.requestFocus();
+                    mEtForward.requestFocus();
 
-                } else {
+                } else { // Se não tiver checked
 
-                    layoutPrazo.setVisibility(View.GONE);
-                    mEtPrazo.setText("0");
-                    mTvNomeCliente.setText("");
-                    mNomeCliente = "";
+                    mLayoutForward.setVisibility(View.GONE);
+                    mEtForward.setText("0");
+                    mTvClientName.setText("");
+                    client.setName("");
                 }
 
             }
         });
+    }
+
+    private void saveDataDB() {
+
+        Log.v(TAG, "saveDataDB - Inicio");
+
+        // Captura os valores nos edits
+        String productName = mTvProductName.getText().toString().trim();
+        String quantity = mEtQuantity.getText().toString().trim();
+        String addValue = mEtAdd.getText().toString().trim();
+        String discountValue = mEtDiscount.getText().toString().trim();
+        String forwardValue = mEtForward.getText().toString().trim();
+        String clientName = mTvClientName.getText().toString();
+
+
+        // Verifica se os Switch estão checked
+        boolean isCheckAdd = mSwitchAdd.isChecked();
+        boolean isCheckDiscount = mSwitchDiscount.isChecked();
+        boolean isCheckForward = mSwitchForward.isChecked();
+
+        // Campo não pode ser vazio
+        if (quantity.isEmpty()) {
+
+            mEtQuantity.setError(getString(R.string.error_empty_quantity));
+            mEtQuantity.requestFocus();
+            return;
+        }
+
+        // Converte os String do campo valorQuantidade para inteiro
+        int quantityInteger = Integer.parseInt(quantity);
+
+        // Se campo tiver valor zero, apresenta mensagem erro
+        if (quantityInteger == Const.NUMBER_ZERO) {
+
+            mEtQuantity.setError(getString(R.string.error_valide_value));
+            mEtQuantity.requestFocus();
+            return;
+        }
+
+        // Converte as String dos campos valorAdicional, valorDesconto  e valorPrazo para double
+        double addValueDouble = Formatting.currencyToDouble(addValue);
+        double discountValueDouble = Formatting.currencyToDouble(discountValue);
+        double forwardValueDouble = Formatting.currencyToDouble(forwardValue);
+
+        // Se Switch adicional estiver Checked
+        if (isCheckAdd) {
+
+            // O valor desse campo deve ser positivo
+            if (addValueDouble == 0) {
+
+                mEtAdd.setError(getString(R.string.error_valide_value_add));
+                mEtAdd.requestFocus();
+                return;
+            }
+        }
+
+        // Se Switch desconto estiver Checked
+        if (isCheckDiscount) {
+
+            // O valor desse campo deve ser positivo
+            if (discountValueDouble == 0) {
+
+                mEtDiscount.setError(getString(R.string.error_valide_value_discount));
+                mEtDiscount.requestFocus();
+                return;
+            }
+        }
+
+        if (isCheckForward) {
+
+            // O valor desse campo deve ser positivo
+            if (forwardValueDouble == 0) {
+
+                mEtForward.setError(getString(R.string.error_valide_value_forward));
+                mEtForward.requestFocus();
+                return;
+            }
+
+
+            // Deve se realizar a busca de um cliente para venda a prazo
+            if (client.getName().isEmpty()) {
+
+                Snackbar.make(mButClient, getString(R.string.error_client_name_empty), Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            // Deve se realizar a busca de um cliente para venda a prazo
+            if (client.getId() == -1) {
+
+                Snackbar.make(mButClient, getString(R.string.error_client_name_empty), Snackbar.LENGTH_LONG).show();
+                return;
+            }
+        }
+
+        //TODO usar receiveID para poder excluir ou eidtar uma venda a prazo
+
+
+        Receive receive = new Receive();
+        receive.setClientId(sell.getClientId());
+        receive.setClientName(clientName);
+        receive.setType(ConstDB.TYPE_DEBIT);
+        receive.setValue(forwardValueDouble);
+        receive.setDescription(String.format(
+                getString(R.string.text_forward_sell),
+                quantity,
+                productName
+        ));
+
+
+        sell.setClientName(clientName);
+        sell.setQuantity(quantityInteger);
+        sell.setName(productName);
+        sell.setAddValue(addValueDouble);
+        sell.setDiscountValue(discountValueDouble);
+        sell.setForwardValue(forwardValueDouble);
+        sell.setClientName(clientName);
+
+        // Se tiver venda a prazo Objeto values
+        ContentValues valuesForward = new ContentValues();
+
+
+        // Venda a prazo
+        if (isCheckForward) {
+
+            valuesForward.put(EntryReceive.COLUMN_CLIENT_ID, receive.getClientId());
+            valuesForward.put(EntryReceive.COLUMN_CLIENT_NAME, receive.getClientId());
+            valuesForward.put(EntryReceive.COLUMN_TYPE, receive.getType());
+            valuesForward.put(EntryReceive.COLUMN_VALUE, receive.getValue());
+            valuesForward.put(EntryReceive.COLUMN_DESCRIPTION, receive.getDescription());
+        }
+
+
+        // Coloca dados em um objeto values para ser salvo no BD
+        ContentValues valuesSell = new ContentValues();
+        valuesSell.put(EntrySeel.COLUMN_NAME, sell.getName());
+        valuesSell.put(EntrySeel.COLUMN_QUANTITY, sell.getQuantity());
+        valuesSell.put(EntrySeel.COLUMN_PRICE, sell.getPrice());
+        valuesSell.put(EntrySeel.COLUMN_ADD_VALUE, sell.getAddValue());
+        valuesSell.put(EntrySeel.COLUMN_DISCOUNT_VALUE, sell.getDiscountValue());
+        valuesSell.put(EntrySeel.COLUMN_FORWARD_VALUE, sell.getForwardValue());
+
+
+        if (isCheckForward) {
+
+            valuesForward.put(EntryReceive.COLUMN_TIMESTAMP, TimeData.getDateTime());
+
+            valuesSell.put(EntrySeel.COLUMN_CLIENT_ID, client.getId());
+        }
+
+        // Salva dados no BD
+        if (isAddProduct) {
+
+            valuesSell.put(EntrySeel.COLUMN_TIMESTAMP, TimeData.getDateTime());
+
+            Crud.insert(mContext, EntrySeel.CONTENT_URI_SELL, valuesSell);
+
+            if (isCheckForward) {
+
+                Crud.insert(mContext, EntryReceive.CONTENT_URI_RECEIVE, valuesForward);
+            }
+
+            Log.v(TAG, "saveDataDB - inserir");
+
+        } else {
+
+            if (isCheckForward) {
+
+                Snackbar.make(mButClient, getString(R.string.error_no_edition),
+                        Snackbar.LENGTH_INDEFINITE).show();
+                return;
+
+            } else {
+
+                valuesSell.put(EntrySeel.COLUMN_TIMESTAMP, sell.getTimestamp());
+
+                Crud.update(mContext, mUriInitial, valuesSell);
+
+                Log.v(TAG, "saveDataDB - editar");
+            }
+        }
+
+        Log.v(TAG, "saveDataDB - Fim");
+
+        finish();
     }
 
 }

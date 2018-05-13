@@ -5,11 +5,11 @@
         <menu>
             <item
                 android:id="@+id/nav_action_entrada"
-                android:icon="@drawable/ic_add_circle_outline_black_48px"
+                android:icon="@drawable/ic_add_circle_outline_black"
                 android:title="@string/menu_entrada_title_drawer" />
             <item
                 android:id="@+id/nav_Action_retirada"
-                android:icon="@drawable/ic_remove_circle_outline_black_48px"
+                android:icon="@drawable/ic_remove_circle_outline_black"
                 android:title="@string/menu_retirada_title_drawer" />
             <item
                 android:id="@+id/nav_action_saldo_inicial"
@@ -26,12 +26,12 @@
         <menu>
             <item
                 android:id="@+id/nav_action_list_clientes"
-                android:icon="@drawable/ic_people_black_48px"
+                android:icon="@drawable/ic_people_black"
                 android:title="@string/menu_clientes_title_drawer" />
 
             <item
                 android:id="@+id/nav_action_list_prod"
-                android:icon="@drawable/ic_cake_black_48px"
+                android:icon="@drawable/ic_cake_black"
                 android:title="@string/menu_produtos_title_drawer" />
 
         </menu>
