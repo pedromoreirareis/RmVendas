@@ -6,4 +6,10 @@
         <item>Editar</item>
         <item>Excluir</item>
     </string-array>
+
+    <!-- Array para o Dialog Editar ou Excluir registro-->
+    <string-array name="array_delete">
+        <item>Excluir</item>
+    </string-array>
+
 </resources>

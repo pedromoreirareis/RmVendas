@@ -11,18 +11,12 @@ public class ConstIntents {
     /* Identifica os dados do cliente e passa para vendas a prazo e registro */
     public static final String INTENT_CLIENT_DATA = "client_data";
 
-
+    /* Identifica dados da activity Sell para ListClientSale */
     public static final String INTENT_SELL_TO_CLIENT = "sell_to_client";
+
+    /* Identifica dados da Activity ListClientSale para Sell */
     public static final String INTENT_CLIENT_TO_SELL = "client_to_sell";
 
-
-    /* Chamadas Intents*/
-    public static final String CLIENTE_ID = "clienteId";
-    public static final String CLIENTE_NOME = "clienteNome";
-    public static final String CLIENTE_FONE = "clienteFone";
-
-
-    public static final String VALOR_VENDA_TROCO = "valor_troco";
-
-
+    /* Identifica dados da activity Main para MoneyBack */
+    public static final String INTENT_MONEY_BACK = "money_back";
 }

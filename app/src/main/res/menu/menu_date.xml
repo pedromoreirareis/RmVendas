@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/action_date"
-        android:icon="@drawable/ic_calendar"
+        android:icon="@drawable/ic_calendar_white"
         android:orderInCategory="1"
-        android:title="@string/menu_data_title"
+        android:title="@string/menu_date_title"
         app:showAsAction="ifRoom" />
 </menu>

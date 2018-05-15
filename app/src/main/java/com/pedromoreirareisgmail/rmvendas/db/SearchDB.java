@@ -41,38 +41,12 @@ public class SearchDB {
 
         String name = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME));
 
+        cursor.close();
         db.close();
 
         return name;
     }
 
-    public static int searchClientExist(Context context, long id) {
-
-        DbHelper mDbHelper = new DbHelper(context);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = {
-                EntryClient._ID
-        };
-
-        String selection = EntryClient._ID + " = ? ";
-        String[] selectionArgs = new String[]{String.valueOf(id)};
-
-        Cursor cursor = db.query(
-                EntryClient.TABLE_CLIENT,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-
-        cursor.moveToFirst();
-        db.close();
-
-        return cursor.getCount();
-    }
 
     /**
      * Faz pesquisa nos registros de vendas a prazo de um cliente especifico
@@ -135,6 +109,7 @@ public class SearchDB {
             cursor.moveToNext();
         }
 
+        cursor.close();
         db.close();
 
         return total;

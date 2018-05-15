@@ -86,7 +86,7 @@ public class ListProductActivity extends AppCompatActivity implements
 
         //  layout vazio - cadastro sem registros
         mTvEmpty.setText(R.string.text_product_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_products);
+        mIvEmpty.setImageResource(R.drawable.ic_barcode_search_black);
         mIvEmpty.setContentDescription(getString(R.string.descr_product_empty));
         mListView.setEmptyView(mEmptyView);
     }
@@ -139,7 +139,7 @@ public class ListProductActivity extends AppCompatActivity implements
         };
 
         // O que sera pesquisado em casa coluna
-        String selection = EntryProduct.COLUMN_NAME + " LIKE ?";
+        String selection = EntryProduct.COLUMN_NAME + " LIKE ? ";
 
         // Dados para a pesquisa em cada coluna
         String[] selectionArgs = new String[]{"%" + mSearchDB + "%"};

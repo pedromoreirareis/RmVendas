@@ -25,7 +25,4 @@
     <!-- Texto List vazio  -->
     <color name="colorTextEmpty">#757575</color>
 
-    <!-- Descrição e valor -->
-    <color name="colorFabMoney">#0000FF</color>
-
 </resources>

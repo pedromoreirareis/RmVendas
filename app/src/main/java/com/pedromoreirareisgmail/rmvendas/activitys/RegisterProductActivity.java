@@ -191,7 +191,7 @@ public class RegisterProductActivity extends AppCompatActivity implements
         // determina quantidade minima de caracteres no campo de nome
         if (name.length() < Const.MIN_CARACT_5) {
 
-            mEtName.setError(getString(R.string.error_campo_lenght_nome_5));
+            mEtName.setError(getString(R.string.error_name_lenght_5));
             mEtName.requestFocus();
             return;
         }

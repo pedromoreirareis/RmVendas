@@ -58,9 +58,9 @@ public class ClientAdapter extends CursorAdapter {
 
     class ClientViewHolder {
 
-        private TextView tvName;
-        private TextView tvFone;
-        private TextView tvValueReceive;
+        private final TextView tvName;
+        private final TextView tvFone;
+        private final TextView tvValueReceive;
 
         public ClientViewHolder(View view) {
 

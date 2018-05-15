@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.adapters.OpeningAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
@@ -61,15 +61,15 @@ public class ListOpeningActivity extends AppCompatActivity implements
         initViews();
         emptyLayout();
         initListenerAndObject();
-        initTitleData();
+        initTitleDate();
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(ConstLoader.LOADER_LIST_OPENING, null, this);
     }
 
-    private void initTitleData() {
+    private void initTitleDate() {
 
-        Log.v(TAG, "initTitleData");
+        Log.v(TAG, "initTitleDate");
 
         //  Obtem a data calendário do Dialog
         getCalendarDate();
@@ -77,11 +77,11 @@ public class ListOpeningActivity extends AppCompatActivity implements
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
         setTitle(String.format(
                 getResources().getString(R.string.title_opening_list),
-                TimeData.getDateTitleBr())
+                TimeDate.getDateTitleBr())
         );
 
         // Recebe a data do dia para pesquisa no banco de dados
-        mSearchDateDB = TimeData.formatDateSearch(TimeData.getDateTime());
+        mSearchDateDB = TimeDate.formatDateSearch(TimeDate.getDateTime());
     }
 
     private void initViews() {
@@ -223,8 +223,8 @@ public class ListOpeningActivity extends AppCompatActivity implements
         String message = String.format(
                 getString(R.string.dialog_informacao_saldo_inicial_list),
                 Formatting.doubleToCurrency(value),
-                TimeData.formatDateBr(timestampDate),
-                TimeData.formatDateToHourAndMinute(timestampHour)
+                TimeDate.formatDateBr(timestampDate),
+                TimeDate.formatDateToHourAndMinute(timestampHour)
         );
 
         Messages.displayData(mContext, title, message);
@@ -245,7 +245,7 @@ public class ListOpeningActivity extends AppCompatActivity implements
         String mensagemExcluir = String.format(
                 getResources().getString(R.string.dialog_edit_del_message_delete_opening),
                 Formatting.doubleToCurrency(value),
-                TimeData.formatDateBr(timestamp)
+                TimeDate.formatDateBr(timestamp)
         );
 
         Messages.editOurDelete(
@@ -268,11 +268,11 @@ public class ListOpeningActivity extends AppCompatActivity implements
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                mSearchDateDB = TimeData.getDateSearchDB(year, month, day);
+                mSearchDateDB = TimeDate.getDateSearchDB(year, month, day);
 
                 setTitle(String.format(
                         getString(R.string.title_opening_list),
-                        TimeData.getDateTitleBr(year, month, day))
+                        TimeDate.getDateTitleBr(year, month, day))
                 );
 
                 getLoaderManager().restartLoader(

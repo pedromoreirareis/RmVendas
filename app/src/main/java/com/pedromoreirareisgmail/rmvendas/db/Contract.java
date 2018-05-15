@@ -203,9 +203,8 @@ public class Contract {
         public static final String COLUMN_DISCOUNT_VALUE = "discount";
         public static final String COLUMN_FORWARD_VALUE = "forward";
         public static final String COLUMN_CLIENT_ID = "client_id";
-        // TODO: Trocar CLIENTE_ID pelo nome do cliente na venda
         public static final String COLUMN_CLIENT_NAME = "client_name";
-        public static final String COLUMN_RECEIVE_ID = "client_name";
+        public static final String COLUMN_RECEIVE_ID = "receive_id";
 
 
         public static final String CREATE_TABLE_SELL =

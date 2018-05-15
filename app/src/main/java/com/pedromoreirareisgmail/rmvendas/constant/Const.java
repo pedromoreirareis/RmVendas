@@ -13,6 +13,7 @@ public class Const {
     public static final int MIN_NUM_FONE_8 = 8;
     public static final double NUMBER_ZERO = 0;
 
+
     /* Identifica a Activity de origem */
     public static final int CALL_LIST_CLIENT = 50;
     public static final int CALL_LIST_CLIENT_SALE = 51;

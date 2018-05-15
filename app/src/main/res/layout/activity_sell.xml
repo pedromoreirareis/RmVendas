@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:digits="0123456789"
-                    android:hint="@string/hint_quantidade"
+                    android:hint="@string/hint_quantity"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:selectAllOnFocus="true" />
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/text_adicional" />
+                    android:text="@string/text_add" />
 
 
                 <android.support.design.widget.TextInputLayout
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/text_desconto" />
+                    android:text="@string/text_discount" />
 
 
                 <android.support.design.widget.TextInputLayout
@@ -163,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/text_a_prazo" />
+                android:text="@string/text_forward" />
 
             <LinearLayout
                 android:id="@+id/til_sell_forward"
@@ -188,7 +188,7 @@
                         android:backgroundTint="@color/colorRed"
                         android:drawableStart="@drawable/ic_search_white"
                         android:fontFamily="sans-serif-condensed"
-                        android:text="@string/text_vend_quant_prazo_cliente"
+                        android:text="@string/text_client"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorWhite"
                         android:textStyle="bold" />

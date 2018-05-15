@@ -84,7 +84,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_client_search_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_money_up); //TODO: mudar icone dos clientes TROCAR ICONE DE CLIENTE ALGO VERMELHO
+        mIvEmpty.setImageResource(R.drawable.ic_money_arrow_up);
         mIvEmpty.setContentDescription(getString(R.string.descr_client_empty));
         mListView.setEmptyView(mEmptyView);
     }
@@ -166,7 +166,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
                 EntryClient.COLUMN_FONE
         };
 
-        String selection = EntryClient.COLUMN_NAME + " LIKE ?";
+        String selection = EntryClient.COLUMN_NAME + " LIKE ? ";
         String[] selectionArgs = new String[]{"%" + mSearch + "%"};
         String sortOrder = EntryClient.COLUMN_NAME;
 

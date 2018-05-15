@@ -10,15 +10,14 @@ public class Product implements Parcelable {
     private long id;
     private Uri uri;
     private String name;
-    private Double price;
+    private double price;
     private Boolean addSell;
 
     public Product() {
 
     }
 
-    public Product(long id, Uri uri, String name, Double price, Boolean addSell) {
-
+    public Product(long id, Uri uri, String name, double price, Boolean addSell) {
         this.id = id;
         this.uri = uri;
         this.name = name;
@@ -30,11 +29,7 @@ public class Product implements Parcelable {
         id = in.readLong();
         uri = in.readParcelable(Uri.class.getClassLoader());
         name = in.readString();
-        if (in.readByte() == 0) {
-            price = null;
-        } else {
-            price = in.readDouble();
-        }
+        price = in.readDouble();
         byte tmpAddSell = in.readByte();
         addSell = tmpAddSell == 0 ? null : tmpAddSell == 1;
     }
@@ -44,12 +39,7 @@ public class Product implements Parcelable {
         dest.writeLong(id);
         dest.writeParcelable(uri, flags);
         dest.writeString(name);
-        if (price == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(price);
-        }
+        dest.writeDouble(price);
         dest.writeByte((byte) (addSell == null ? 0 : addSell ? 1 : 2));
     }
 
@@ -94,11 +84,11 @@ public class Product implements Parcelable {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -109,6 +99,4 @@ public class Product implements Parcelable {
     public void setAddSell(Boolean addSell) {
         this.addSell = addSell;
     }
-
-
 }

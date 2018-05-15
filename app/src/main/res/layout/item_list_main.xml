@@ -7,13 +7,12 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_default_4"
-        android:layout_marginStart="@dimen/margin_default_16"
+        android:layout_marginBottom="@dimen/margin_default_8"
         android:layout_marginEnd="@dimen/margin_default_16"
+        android:layout_marginStart="@dimen/margin_default_16"
         android:layout_marginTop="@dimen/margin_default_8"
         app:cardCornerRadius="8dp"
         app:elevation="16dp">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_default_4"
-                android:layout_marginStart="@dimen/margin_default_8"
                 android:layout_marginEnd="@dimen/margin_default_8"
+                android:layout_marginStart="@dimen/margin_default_8"
                 android:layout_marginTop="@dimen/margin_default_8"
                 app:cardBackgroundColor="@color/colorRed"
                 app:cardCornerRadius="8dp"
@@ -38,7 +37,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_main_valor_quantidade"
+                        android:id="@+id/tv_main_value_quantity"
                         style="@style/textViewBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -47,7 +46,7 @@
                         android:textColor="@color/colorWhite" />
 
                     <TextView
-                        android:id="@+id/tv_main_nome_produto"
+                        android:id="@+id/tv_main_product_name"
                         style="@style/textViewBold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -55,7 +54,7 @@
                         android:textColor="@color/colorWhite" />
 
                     <TextView
-                        android:id="@+id/tv_main_data_hora"
+                        android:id="@+id/tv_main_hour_minute"
                         style="@style/textViewRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -80,74 +79,80 @@
                     android:layout_marginBottom="@dimen/margin_default_4"
                     android:background="@color/colorAccent" />
 
+                <!-- Linha 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_main_valor_venda"
+                        android:id="@+id/tv_main_value_in_cash"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_attach_money_black" />
+                        android:drawableStart="@drawable/ic_money_black" />
+
 
                     <TextView
-                        android:id="@+id/tv_main_valor_total"
+                        android:id="@+id/tv_main_value_sale"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_attach_money_black" />
+                        android:drawableStart="@drawable/ic_money_black" />
 
                 </LinearLayout>
 
-
+                <!-- Linha 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_main_valor_adicional"
-                        style="@style/textViewDescription"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_attach_money_black" />
 
                     <TextView
-                        android:id="@+id/tv_main_valor_a_vista"
+                        android:id="@+id/tv_main_value_forward"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_attach_money_black" />
+                        android:drawableStart="@drawable/ic_money_black" />
+
+
+                    <TextView
+                        android:id="@+id/tv_main_value_add"
+                        style="@style/textViewDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_money_black" />
                 </LinearLayout>
 
-
+                <!-- Linha 3 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_main_valor_desconto"
-                        style="@style/textViewDescription"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_attach_money_black" />
 
                     <TextView
-                        android:id="@+id/tv_main_valor_a_prazo"
+                        android:id="@+id/tv_main_value_total"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_attach_money_black"
-                        android:visibility="gone" />
+                        android:drawableStart="@drawable/ic_money_black" />
+
+
+                    <TextView
+                        android:id="@+id/tv_main_value_discount"
+                        style="@style/textViewDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_money_black" />
+
 
                 </LinearLayout>
 
@@ -158,7 +163,7 @@
                     android:background="@color/colorAccent" />
 
                 <TextView
-                    android:id="@+id/tv_main_valor_a_prazo_nome_cliente"
+                    android:id="@+id/tv_main_value_client_name_forward"
                     style="@style/textViewDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

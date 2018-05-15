@@ -17,11 +17,11 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.currencyToDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.currencyToStringToCurrency;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.doubleToCurrency;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstIntents.VALOR_VENDA_TROCO;
 
 public class MoneyBackActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
@@ -29,17 +29,17 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
     private static final String TAG = MoneyBackActivity.class.getSimpleName();
 
-    private EditText mEtValorRecebido;
-    private TextView mTvValorVenda;
-    private TextView mTvTroco;
-    private TextView mTvTrocoLabel;
-    private Button mButLimpar;
+    private EditText mEtReceipValue;
+    private TextView mTvSellValue;
+    private TextView mTvChangeValue;
+    private TextView mTvChangeValueLabel;
+    private Button mButClear;
 
-    private double mValorVenda = 0;
-    private double mValorRecebido = 0;
-    private String mTextoErro = "";
+    private double mSellValue = 0;
+    private double mReceipValue = 0;
+    private String mErrorText = "";
 
-    private boolean isFormatarCurrencyAtualizado = false;
+    private boolean isFormatCurrencyUpdate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,77 +50,57 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
         initViews();
         initItents();
+        initListener();
 
         // Faz controle de entrada de dados no edit
-        controleTextWatcher();
+        watcherControl();
 
-        mEtValorRecebido.setText(Const.NUMBER_ZERO_STRING);
+        mEtReceipValue.setText(Const.NUMBER_ZERO_STRING);
+        mEtReceipValue.requestFocus();
 
-        mEtValorRecebido.requestFocus();
-
-        mTvValorVenda.setText(Formatting.doubleToCurrency(mValorVenda));
-        mEtValorRecebido.setOnTouchListener(this);
-
-        mButLimpar.setOnClickListener(this);
+        mTvSellValue.setText(Formatting.doubleToCurrency(mSellValue));
     }
 
     private void initViews() {
 
         Log.v(TAG, "initViews");
 
-        mTvValorVenda = findViewById(R.id.tv_change_value_sale);
-        mEtValorRecebido = findViewById(R.id.et_change_amount_received);
-        mButLimpar = findViewById(R.id.but_change_clear);
-        mTvTroco = findViewById(R.id.tv_change_value_change);
-        mTvTrocoLabel = findViewById(R.id.tv_change_value_change_label);
+        mTvSellValue = findViewById(R.id.tv_change_value_sale);
+        mEtReceipValue = findViewById(R.id.et_change_amount_received);
+        mButClear = findViewById(R.id.but_change_clear);
+        mTvChangeValue = findViewById(R.id.tv_change_value_change);
+        mTvChangeValueLabel = findViewById(R.id.tv_change_value_change_label);
     }
 
     private void initItents() {
 
         Log.v(TAG, "initItents");
 
-        Intent intentTroco = getIntent();
+        Intent intentChange = getIntent();
 
-        if (intentTroco.hasExtra(VALOR_VENDA_TROCO)) {
+        if (intentChange.hasExtra(ConstIntents.INTENT_MONEY_BACK)) {
 
-            mValorVenda = intentTroco.getDoubleExtra(VALOR_VENDA_TROCO, Const.NUMBER_ZERO);
+            mSellValue = intentChange.getDoubleExtra(ConstIntents.INTENT_MONEY_BACK, Const.NUMBER_ZERO);
         }
     }
 
-    private void calcularTroco() {
+    private void initListener() {
 
-        Log.v(TAG, "calcularTroco");
+        mEtReceipValue.setOnTouchListener(this);
 
-        mValorRecebido = currencyToDouble(mEtValorRecebido.getText().toString().trim());
-        mTextoErro = String.format(getResources().getString(R.string.valor_maior), doubleToCurrency(mValorVenda));
-
-        if (mValorVenda != 0 && mValorRecebido != 0) {
-
-            if (mValorVenda > mValorRecebido) {
-
-                mEtValorRecebido.setError(mTextoErro);
-                mTvTrocoLabel.setText("");
-                mTvTroco.setText("");
-
-            } else {
-
-                mTvTroco.setText(doubleToCurrency(mValorRecebido - mValorVenda));
-                mTvTrocoLabel.setText(getString(R.string.valor_troco));
-                mEtValorRecebido.setError(null);
-            }
-        }
+        mButClear.setOnClickListener(this);
     }
 
-    private void showKeyboard(EditText meuEdit) {
+    private void showKeyboard(EditText myEdit) {
 
         Log.v(TAG, "showKeyboard");
 
-        if (meuEdit != null) {
+        if (myEdit != null) {
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
 
-                imm.showSoftInput(meuEdit, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(myEdit, InputMethodManager.SHOW_IMPLICIT);
             }
         }
     }
@@ -134,9 +114,9 @@ public class MoneyBackActivity extends AppCompatActivity implements
         switch (view.getId()) {
 
             case R.id.et_change_amount_received:
-                mEtValorRecebido.requestFocus();
-                mEtValorRecebido.setSelection(mEtValorRecebido.getText().length());
-                showKeyboard(mEtValorRecebido);
+                mEtReceipValue.requestFocus();
+                mEtReceipValue.setSelection(mEtReceipValue.getText().length());
+                showKeyboard(mEtReceipValue);
                 return true;
 
             default:
@@ -144,11 +124,11 @@ public class MoneyBackActivity extends AppCompatActivity implements
         }
     }
 
-    private void controleTextWatcher() {
+    private void watcherControl() {
 
-        Log.v(TAG, "controleTextWatcher");
+        Log.v(TAG, "watcherControl");
 
-        mEtValorRecebido.addTextChangedListener(new TextWatcher() {
+        mEtReceipValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -158,17 +138,17 @@ public class MoneyBackActivity extends AppCompatActivity implements
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
 
-                if (isFormatarCurrencyAtualizado) {
-                    isFormatarCurrencyAtualizado = false;
+                if (isFormatCurrencyUpdate) {
+                    isFormatCurrencyUpdate = false;
                     return;
                 }
 
-                isFormatarCurrencyAtualizado = true;
+                isFormatCurrencyUpdate = true;
 
-                mEtValorRecebido.setText(currencyToStringToCurrency(charSequence.toString().trim()));
-                mEtValorRecebido.setSelection(mEtValorRecebido.getText().length());
+                mEtReceipValue.setText(currencyToStringToCurrency(charSequence.toString().trim()));
+                mEtReceipValue.setSelection(mEtReceipValue.getText().length());
 
-                calcularTroco();
+                changeValueCalculate();
             }
 
             @Override
@@ -177,8 +157,7 @@ public class MoneyBackActivity extends AppCompatActivity implements
             }
         });
 
-
-        mTvTroco.addTextChangedListener(new TextWatcher() {
+        mTvChangeValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -187,18 +166,19 @@ public class MoneyBackActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                // Controle do tamanho da fonte, de acordo com a quantida de digitos
                 if (count > 11) {
-                    mTvTroco.setTextSize(44);
+                    mTvChangeValue.setTextSize(44);
                 } else if (count > 10) {
-                    mTvTroco.setTextSize(48);
+                    mTvChangeValue.setTextSize(48);
                 } else if (count > 9) {
-                    mTvTroco.setTextSize(52);
+                    mTvChangeValue.setTextSize(52);
                 } else if (count > 8) {
-                    mTvTroco.setTextSize(56);
+                    mTvChangeValue.setTextSize(56);
                 } else if (count > 7) {
-                    mTvTroco.setTextSize(64);
+                    mTvChangeValue.setTextSize(64);
                 } else {
-                    mTvTroco.setTextSize(76);
+                    mTvChangeValue.setTextSize(76);
                 }
             }
 
@@ -214,16 +194,41 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
         Log.v(TAG, "onClick but limpar");
 
-
         if (view.getId() == R.id.but_change_clear) {
 
-            mValorRecebido = 0;
-            mTextoErro = "";
+            mReceipValue = 0;
+            mErrorText = "";
 
-            mEtValorRecebido.setError(null);
-            mEtValorRecebido.setText("0");
-            mTvTroco.setText("");
-            mTvTrocoLabel.setText("");
+            mEtReceipValue.setError(null);
+            mEtReceipValue.setText("0");
+            mTvChangeValue.setText("");
+            mTvChangeValueLabel.setText("");
+        }
+    }
+
+    private void changeValueCalculate() {
+
+        Log.v(TAG, "calcularTroco");
+
+        mReceipValue = currencyToDouble(mEtReceipValue.getText().toString().trim());
+        mErrorText = String.format(getString(R.string.text_change_value_larger),
+                doubleToCurrency(mSellValue)
+        );
+
+        if (mSellValue != 0 && mReceipValue != 0) {
+
+            if (mSellValue > mReceipValue) {
+
+                mEtReceipValue.setError(mErrorText);
+                mTvChangeValueLabel.setText("");
+                mTvChangeValue.setText("");
+
+            } else {
+
+                mTvChangeValue.setText(doubleToCurrency(mReceipValue - mSellValue));
+                mTvChangeValueLabel.setText(getString(R.string.text_change_label_change_value));
+                mEtReceipValue.setError(null);
+            }
         }
     }
 }

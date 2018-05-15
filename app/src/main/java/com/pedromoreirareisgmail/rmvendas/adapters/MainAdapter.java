@@ -10,161 +10,137 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
-import com.pedromoreirareisgmail.rmvendas.constant.Const;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 
 public class MainAdapter extends CursorAdapter {
 
-    /**
-     * Construtor
-     *
-     * @param context Contexto da Activity
-     */
     public MainAdapter(Context context) {
         super(context, null, 0);
     }
 
-    /**
-     * Infla os itens do layout, reaproveitando os itens
-     *
-     * @param context   Contexto da Activity que vem do construtor
-     * @param cursor    Cursor com dados de uma pesquisa no BD
-     * @param viewGroup Layout onde sera colocado os itens
-     * @return View de um unico item do viewGroup
-     */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         return LayoutInflater.from(context).inflate(R.layout.item_list_main, viewGroup, false);
     }
 
-    /**
-     * Coloca informações nos itens(views) do layout a partir de dados de um Cursor
-     *
-     * @param view    Um unico item do layout
-     * @param context Contexto da Activity
-     * @param cursor  Cursor com dados de uma pesquisa no BD
-     */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
         MainViewHolder holder = new MainViewHolder(view);
 
         /* Quantidade de produtos vendidos, sem tem adicional, se tem desconto e sem tem prazo */
-        int quantidadeProduto = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
-        double valorUnidadeProduto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
+        int quantity = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
+        double value = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
 
-        long idCliente = cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
+        long clientId = cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
 
-        String nomeCliente = "";
-        if (idCliente > 0) {
+        String clientName = "";
+        if (clientId > 0) {
 
-            nomeCliente = SearchDB.searchClientName(context, idCliente);
+            clientName = SearchDB.searchClientName(context, clientId);
         }
 
         /* Nome do produto e hora de uma venda */
-        String nomeProduto = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
-        String horaMinuto = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP));
+        String productName = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
+        String hourMinute = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP));
 
-        double valorPrecoVenda = valorUnidadeProduto * quantidadeProduto;
-        double valorAdicional = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
-        double valorDesconto = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
-        double valorAPrazo = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
-        double valorTotal = Calculus.calcularValorTotalVendaDouble(
-                quantidadeProduto,
-                valorUnidadeProduto,
-                valorAdicional,
-                valorDesconto
+        double priceSale = value * quantity;
+        double addValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
+        double discountValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
+        double forwardValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
+
+        double totalValue = Calculus.calcularValorTotalVendaDouble(
+                quantity,
+                value,
+                addValue,
+                discountValue
         );
-        double valorAVista = Calculus.CalcularValorAVistaDouble(
-                quantidadeProduto,
-                valorUnidadeProduto,
-                valorAdicional,
-                valorDesconto,
-                valorAPrazo);
+        double inCashValue = Calculus.CalcularValorAVistaDouble(
+                quantity,
+                value,
+                addValue,
+                discountValue,
+                forwardValue);
 
-        String valorVendaString = String.format(context.getResources().getString(R.string.text_item_main_valor_preco), Formatting.doubleToCurrency(valorPrecoVenda));
-        String valorAdicionalString = String.format(context.getResources().getString(R.string.text_item_main_valor_adicional), Formatting.doubleToCurrency(valorAdicional));
-        String valorDescontoString = String.format(context.getResources().getString(R.string.text_item_main_valor_desconto), Formatting.doubleToCurrency(valorDesconto));
+        String saleValueStr = String.format(context.getString(R.string.text_item_price), Formatting.doubleToCurrency(priceSale));
+        String addValueStr = String.format(context.getString(R.string.text_item_value_add), Formatting.doubleToCurrency(addValue));
+        String discountValueStr = String.format(context.getString(R.string.text_item_value_discount), Formatting.doubleToCurrency(discountValue));
 
-        String valorTotalString = String.format(context.getResources().getString(R.string.text_item_main_valor_total), Formatting.doubleToCurrency(valorTotal));
-        String valorAPrazoString = String.format(context.getResources().getString(R.string.text_item_main_valor_prazo), Formatting.doubleToCurrency(valorAPrazo));
-        String valorAVistaString = String.format(context.getResources().getString(R.string.text_item_main_valor_a_vista), Formatting.doubleToCurrency(valorAVista));
+        String totalValueStr = String.format(context.getString(R.string.text_item_value_total), Formatting.doubleToCurrency(totalValue));
+        String forwardValueStr = String.format(context.getString(R.string.text_item_value_forward), Formatting.doubleToCurrency(forwardValue));
+        String inCashValueStr = String.format(context.getString(R.string.text_item_value_in_cash), Formatting.doubleToCurrency(inCashValue));
 
-        holder.tvQuantidade.setText(String.valueOf(quantidadeProduto));
-        holder.tvNomeProduto.setText(nomeProduto);
-        holder.tvHoraMinuto.setText(TimeData.formatDateToHourAndMinute(horaMinuto));
+        holder.tvQuantity.setText(String.valueOf(quantity));
+        holder.tvProductName.setText(productName);
+        holder.tvHourMinute.setText(TimeDate.formatDateToHourAndMinute(hourMinute));
 
-        holder.tvValorVenda.setText(valorVendaString);
+        holder.tvValueSale.setText(saleValueStr);
 
-        if (valorAdicional != Const.NUMBER_ZERO) {
+        if (addValue != Const.NUMBER_ZERO) {
 
-            holder.tvValorAdicional.setText(valorAdicionalString);
+            holder.tvValueAdd.setText(addValueStr);
 
         } else {
 
-            holder.tvValorAdicional.setText(valorAdicionalString);
+            holder.tvValueAdd.setText(addValueStr);
         }
 
-        if (valorDesconto != Const.NUMBER_ZERO) {
+        if (discountValue != Const.NUMBER_ZERO) {
 
-            holder.tvValorDesconto.setText(valorDescontoString);
+            holder.tvValueDiscount.setText(discountValueStr);
 
         } else {
 
-            holder.tvValorDesconto.setText(valorDescontoString);
+            holder.tvValueDiscount.setText(discountValueStr);
         }
 
-        holder.tvValorTotal.setText(valorTotalString);
-        holder.tvValorAVIsta.setText(valorAVistaString);
+        holder.tvValueTotal.setText(totalValueStr);
+        holder.tvValueInCash.setText(inCashValueStr);
 
-        if (valorAPrazo != Const.NUMBER_ZERO) {
+        if (forwardValue != Const.NUMBER_ZERO) {
 
-            holder.tvValorAPrazo.setText(valorAPrazoString);
-            holder.tvValorAPrazoNomeCliente.setText(String.format(context.getResources().getString(R.string.text_item_main_valor_prazo_cliente), nomeCliente));
-            holder.tvValorAPrazo.setVisibility(View.VISIBLE);
-            holder.tvValorAPrazoNomeCliente.setVisibility(View.VISIBLE);
+            holder.tvValueForward.setText(forwardValueStr);
+            holder.tvValueClientNameForward.setText(String.format(context.getString(R.string.text_item_client_name_forward), clientName));
+            holder.tvValueClientNameForward.setVisibility(View.VISIBLE);
 
         } else {
 
-            holder.tvValorAPrazo.setText(valorAPrazoString);
-            holder.tvValorAPrazoNomeCliente.setText(String.format(context.getResources().getString(R.string.text_item_main_valor_prazo_cliente), nomeCliente));
-            holder.tvValorAPrazo.setVisibility(View.GONE);
-            holder.tvValorAPrazoNomeCliente.setVisibility(View.GONE);
+            holder.tvValueForward.setText(forwardValueStr);
+            holder.tvValueClientNameForward.setText(String.format(context.getString(R.string.text_item_client_name_forward), clientName));
+            holder.tvValueClientNameForward.setVisibility(View.GONE);
         }
     }
 
-    /*
-     *   Cria o ViewHolder para gerenciar a criação de itens(views)
-     */
     class MainViewHolder {
 
-        final TextView tvQuantidade;
-        final TextView tvNomeProduto;
-        final TextView tvHoraMinuto;
-        final TextView tvValorVenda;
-        final TextView tvValorAdicional;
-        final TextView tvValorDesconto;
-        final TextView tvValorTotal;
-        final TextView tvValorAVIsta;
-        final TextView tvValorAPrazo;
-        final TextView tvValorAPrazoNomeCliente;
+        private final TextView tvQuantity;
+        private final TextView tvProductName;
+        private final TextView tvHourMinute;
+        private final TextView tvValueSale;
+        private final TextView tvValueAdd;
+        private final TextView tvValueDiscount;
+        private final TextView tvValueTotal;
+        private final TextView tvValueInCash;
+        private final TextView tvValueForward;
+        private final TextView tvValueClientNameForward;
 
         public MainViewHolder(View view) {
 
-            tvQuantidade = view.findViewById(R.id.tv_main_valor_quantidade);
-            tvNomeProduto = view.findViewById(R.id.tv_main_nome_produto);
-            tvHoraMinuto = view.findViewById(R.id.tv_main_data_hora);
-            tvValorVenda = view.findViewById(R.id.tv_main_valor_venda);
-            tvValorAdicional = view.findViewById(R.id.tv_main_valor_adicional);
-            tvValorDesconto = view.findViewById(R.id.tv_main_valor_desconto);
-            tvValorTotal = view.findViewById(R.id.tv_main_valor_total);
-            tvValorAVIsta = view.findViewById(R.id.tv_main_valor_a_vista);
-            tvValorAPrazo = view.findViewById(R.id.tv_main_valor_a_prazo);
-            tvValorAPrazoNomeCliente = view.findViewById(R.id.tv_main_valor_a_prazo_nome_cliente);
+            tvQuantity = view.findViewById(R.id.tv_main_value_quantity);
+            tvProductName = view.findViewById(R.id.tv_main_product_name);
+            tvHourMinute = view.findViewById(R.id.tv_main_hour_minute);
+            tvValueSale = view.findViewById(R.id.tv_main_value_sale);
+            tvValueAdd = view.findViewById(R.id.tv_main_value_add);
+            tvValueDiscount = view.findViewById(R.id.tv_main_value_discount);
+            tvValueTotal = view.findViewById(R.id.tv_main_value_total);
+            tvValueInCash = view.findViewById(R.id.tv_main_value_in_cash);
+            tvValueForward = view.findViewById(R.id.tv_main_value_forward);
+            tvValueClientNameForward = view.findViewById(R.id.tv_main_value_client_name_forward);
         }
     }
 }

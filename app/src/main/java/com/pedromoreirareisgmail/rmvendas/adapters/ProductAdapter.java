@@ -39,8 +39,8 @@ public class ProductAdapter extends CursorAdapter {
 
     class ProductViewHolder {
 
-        private TextView tvName;
-        private TextView tvPrice;
+        private final TextView tvName;
+        private final TextView tvPrice;
 
         public ProductViewHolder(View view) {
 

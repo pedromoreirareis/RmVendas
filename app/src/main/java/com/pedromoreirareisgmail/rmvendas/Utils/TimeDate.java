@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class TimeData {
+public class TimeDate {
 
     /**
      * Obtem data e hora do sistema

@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
@@ -34,7 +36,6 @@ public class Messages {
         builder.setMessage(message);
         builder.create().show();
     }
-
 
     /**
      * Geral
@@ -88,7 +89,6 @@ public class Messages {
 
         builderSelection.create().show();
     }
-
 
     /**
      * Pesquisa divida cliente
@@ -159,7 +159,7 @@ public class Messages {
                                     Toast.makeText(
                                             context,
                                             String.format(
-                                                    context.getString(R.string.dialog_edit_del_conf_credit)
+                                                    context.getString(R.string.dialog_edit_del_conf_debt)
                                                     , Formatting.doubleToCurrency(receivable)),
                                             Toast.LENGTH_LONG
                                     ).show();
@@ -179,14 +179,14 @@ public class Messages {
 
 
         // Cria um novo Dialog para confirmar exclusão
-        AlertDialog.Builder buidelrDelete =
+        AlertDialog.Builder builderDelete =
                 new AlertDialog.Builder(context);
 
-        buidelrDelete.setTitle(R.string.dialog_edit_del_conf_delete_title);
-        buidelrDelete.setMessage("\n" + messageDelete);
+        builderDelete.setTitle(R.string.dialog_edit_del_conf_delete_title);
+        builderDelete.setMessage("\n" + messageDelete);
 
         // Exclusão confirmada
-        buidelrDelete.setPositiveButton(
+        builderDelete.setPositiveButton(
 
                 R.string.dialog_edit_del_conf_delete_del,
                 new DialogInterface.OnClickListener() {
@@ -202,16 +202,20 @@ public class Messages {
                         if (deletes > 0) {
 
                             // Sucesso
-                            Toast.makeText(context,
+                            Toast.makeText(
+                                    context,
                                     R.string.dialog_edit_del_sucess,
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_SHORT
+                            ).show();
 
                         } else {
 
                             // Erro
-                            Toast.makeText(context,
+                            Toast.makeText(
+                                    context,
                                     R.string.dialog_edit_del_error,
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_SHORT
+                            ).show();
 
                         }
                     }
@@ -219,14 +223,103 @@ public class Messages {
         );
 
         // Exclusão cancelada
-        buidelrDelete.setNegativeButton(
+        builderDelete.setNegativeButton(
                 R.string.dialog_edit_del_conf_delete_cancel,
                 null
         );
 
 
-        buidelrDelete.create().show();
+        builderDelete.create().show();
     }
+
+    public static void deleteReceive(
+            final Context context,
+            final Uri uri,
+            final String messageDelete
+    ) {
+
+
+        final AlertDialog.Builder builderSelection = new AlertDialog.Builder(context);
+
+        // Titulo do Dialog de escolha
+        builderSelection.setTitle(R.string.dialog_edit_del_title);
+
+        /* Itens de escolha do Dialog */
+        builderSelection.setItems(R.array.array_delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int item) {
+
+                        switch (item) {
+
+                            //Excluir - Exclui registro do Uri no Banco de Dados
+                            case 0:
+
+
+                                // Cria um novo Dialog para confirmar exclusão
+                                AlertDialog.Builder builderDelete = new AlertDialog.Builder(context);
+
+                                builderDelete.setTitle(R.string.dialog_edit_del_conf_delete_title);
+                                builderDelete.setMessage("\n" + messageDelete);
+
+                                // Exclusão confirmada
+                                builderDelete.setPositiveButton(
+
+                                        R.string.dialog_edit_del_conf_delete_del,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                int deletes;
+
+                                                // Exclui registro do Uri no banco de dados
+                                                deletes = context.getContentResolver().delete(
+                                                        uri,
+                                                        null,
+                                                        null);
+
+                                                if (deletes > 0) {
+
+                                                    // Sucesso
+                                                    Toast.makeText(
+                                                            context,
+                                                            R.string.dialog_edit_del_sucess,
+                                                            Toast.LENGTH_SHORT
+                                                    ).show();
+
+
+                                                } else {
+
+                                                    // Erro
+                                                    Toast.makeText(
+                                                            context,
+                                                            R.string.dialog_edit_del_error,
+                                                            Toast.LENGTH_SHORT
+                                                    ).show();
+
+                                                }
+                                            }
+                                        }
+                                );
+
+                                // Exclusão cancelada
+                                builderDelete.setNegativeButton(
+                                        R.string.dialog_edit_del_conf_delete_cancel,
+                                        null
+                                );
+
+
+                                builderDelete.create().show();
+
+                                break;
+                        }
+                    }
+                }
+        );
+
+        builderSelection.create().show();
+
+    }
+
 
     /**
      * Abre o calendário para escolha de uma data
@@ -316,10 +409,10 @@ public class Messages {
     ) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-        dialog.setTitle(R.string.dialog_alteracao_titulo);
+        dialog.setTitle(R.string.dialog_alteration_title);
 
         // Continuar editando
-        dialog.setPositiveButton(R.string.dialog_alteracao_continuar, new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(R.string.dialog_alteration_continue, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -331,9 +424,106 @@ public class Messages {
         });
 
         // Descartar edição
-        dialog.setNegativeButton(R.string.dialog_alteracao_descatar, discartClickListener);
+        dialog.setNegativeButton(R.string.dialog_alteration_discart, discartClickListener);
 
         dialog.create().show();
+    }
+
+    public static void editOurDeleteSell(
+            final Context context,
+            final View viewSnack,
+            final Uri uriSell,
+            final Uri uriReceive,
+            final String messageDelete
+    ) {
+
+        final AlertDialog.Builder builderSelection = new AlertDialog.Builder(context);
+
+        // Titulo do Dialog de escolha
+        builderSelection.setTitle(R.string.dialog_edit_del_title);
+
+        /* Itens de escolha do Dialog */
+        builderSelection.setItems(R.array.array_edit_delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int item) {
+
+                        switch (item) {
+
+
+                            // Editar - Abre um Activity para editar registro do Uri
+                            case 0:
+                                /*Intent intent = new Intent(context, classActivity);
+                                intent.setData(uriSell);
+                                context.startActivity(intent); */
+                                Snackbar.make(viewSnack, context.getString(R.string.error_no_edition_exclude),
+                                        Snackbar.LENGTH_LONG).show();
+                                break;
+
+
+                            //Excluir - Exclui registro do Uri no Banco de Dados
+                            case 1:
+
+                                // Cria um novo Dialog para confirmar exclusão
+                                AlertDialog.Builder builderDelete =
+                                        new AlertDialog.Builder(context);
+
+                                builderDelete.setTitle(R.string.dialog_edit_del_conf_delete_title);
+                                builderDelete.setMessage("\n" + messageDelete);
+
+                                // Exclusão confirmada
+                                builderDelete.setPositiveButton(
+
+                                        R.string.dialog_edit_del_conf_delete_del,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                // Exclui registro do Uri no banco de dados
+                                                int deletesSell = context.getContentResolver().delete(
+                                                        uriSell, null, null);
+
+                                                int deletesReceive = context.getContentResolver().delete(
+                                                        uriReceive, null, null);
+
+                                                if (deletesSell > 0 && deletesReceive > 0) {
+
+                                                    // Sucesso
+                                                    Toast.makeText(
+                                                            context,
+                                                            R.string.dialog_edit_del_sucess,
+                                                            Toast.LENGTH_SHORT
+                                                    ).show();
+
+                                                } else {
+
+                                                    // Erro
+                                                    Toast.makeText(
+                                                            context,
+                                                            R.string.dialog_edit_del_error,
+                                                            Toast.LENGTH_SHORT
+                                                    ).show();
+
+                                                }
+                                            }
+                                        }
+                                );
+
+                                // Exclusão cancelada
+                                builderDelete.setNegativeButton(
+                                        R.string.dialog_edit_del_conf_delete_cancel,
+                                        null
+                                );
+
+
+                                builderDelete.create().show();
+
+                                break;
+                        }
+                    }
+                }
+        );
+
+        builderSelection.create().show();
     }
 }
 

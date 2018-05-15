@@ -9,11 +9,11 @@ public class Opening implements Parcelable{
     private long id;
     private Uri uri;
     private String timestamp;
-    private Double value;
+    private double value;
 
     public Opening(){}
 
-    public Opening(long id, Uri uri, String timestamp, Double value) {
+    public Opening(long id, Uri uri, String timestamp, double value) {
         this.id = id;
         this.uri = uri;
         this.timestamp = timestamp;
@@ -24,11 +24,7 @@ public class Opening implements Parcelable{
         id = in.readLong();
         uri = in.readParcelable(Uri.class.getClassLoader());
         timestamp = in.readString();
-        if (in.readByte() == 0) {
-            value = null;
-        } else {
-            value = in.readDouble();
-        }
+        value = in.readDouble();
     }
 
     @Override
@@ -36,12 +32,7 @@ public class Opening implements Parcelable{
         dest.writeLong(id);
         dest.writeParcelable(uri, flags);
         dest.writeString(timestamp);
-        if (value == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(value);
-        }
+        dest.writeDouble(value);
     }
 
     @Override
@@ -85,11 +76,11 @@ public class Opening implements Parcelable{
         this.timestamp = timestamp;
     }
 
-    public Double getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(double value) {
         this.value = value;
     }
 }

@@ -24,7 +24,6 @@
 
     </android.support.v7.widget.CardView>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -42,8 +41,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_margin="16dp"
-            android:backgroundTint="@color/colorFabMoney"
-            app:srcCompat="@drawable/ic_money_receive" />
+            app:backgroundTint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_playlist_add_white" />
 
         <include layout="@layout/empty_view" />
 

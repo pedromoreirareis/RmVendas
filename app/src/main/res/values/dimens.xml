@@ -14,6 +14,7 @@
     <dimen name="margin_default_16">16dp</dimen>
     <dimen name="margin_default_24">24dp</dimen>
     <dimen name="margin_default_32">32dp</dimen>
+    <dimen name="margin_default_36">36dp</dimen>
     <dimen name="margin_default_48">48dp</dimen>
 
     <!-- Espaçamentos de margin e padding padrões -->

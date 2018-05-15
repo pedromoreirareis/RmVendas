@@ -10,13 +10,13 @@ public class CashMove implements Parcelable {
     private Uri uri;
     private String timestamp;
     private int type;
-    private Double value;
+    private double value;
     private String description;
 
     public CashMove() {
     }
 
-    public CashMove(long id, Uri uri, String timestamp, int type, Double value, String description) {
+    public CashMove(long id, Uri uri, String timestamp, int type, double value, String description) {
         this.id = id;
         this.uri = uri;
         this.timestamp = timestamp;
@@ -30,11 +30,7 @@ public class CashMove implements Parcelable {
         uri = in.readParcelable(Uri.class.getClassLoader());
         timestamp = in.readString();
         type = in.readInt();
-        if (in.readByte() == 0) {
-            value = null;
-        } else {
-            value = in.readDouble();
-        }
+        value = in.readDouble();
         description = in.readString();
     }
 
@@ -44,12 +40,7 @@ public class CashMove implements Parcelable {
         dest.writeParcelable(uri, flags);
         dest.writeString(timestamp);
         dest.writeInt(type);
-        if (value == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(value);
-        }
+        dest.writeDouble(value);
         dest.writeString(description);
     }
 
@@ -102,11 +93,11 @@ public class CashMove implements Parcelable {
         this.type = type;
     }
 
-    public Double getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(double value) {
         this.value = value;
     }
 

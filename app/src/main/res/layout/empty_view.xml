@@ -11,7 +11,7 @@
             android:layout_width="@dimen/image_empty_196"
             android:layout_height="@dimen/image_empty_196"
             android:layout_centerInParent="true"
-            android:contentDescription="@string/image_desc_rm" />
+            android:contentDescription="@string/descr_rm" />
 
         <TextView
             android:id="@+id/tv_empty_view"

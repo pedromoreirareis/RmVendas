@@ -1,17 +1,9 @@
 package com.pedromoreirareisgmail.rmvendas.Utils;
 
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
-import com.pedromoreirareisgmail.rmvendas.db.DbHelper;
-
 import java.text.NumberFormat;
-
-import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class Calculus {
 

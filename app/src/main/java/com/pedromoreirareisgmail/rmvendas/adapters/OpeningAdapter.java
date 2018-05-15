@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 
 public class OpeningAdapter extends CursorAdapter {
@@ -34,13 +34,13 @@ public class OpeningAdapter extends CursorAdapter {
         String hour = cursor.getString(cursor.getColumnIndex(EntryOpening.COLUMN_TIMESTAMP));
 
         holder.tvValue.setText(Formatting.doubleToCurrency(value));
-        holder.tvHour.setText(TimeData.formatDateToHourAndMinute(hour));
+        holder.tvHour.setText(TimeDate.formatDateToHourAndMinute(hour));
     }
 
     class OpeningViewHolder {
 
-        private TextView tvValue;
-        private TextView tvHour;
+        private final TextView tvValue;
+        private final TextView tvHour;
 
         public OpeningViewHolder(View view) {
 

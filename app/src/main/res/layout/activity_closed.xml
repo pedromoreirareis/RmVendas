@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.pedromoreirareisgmail.rmvendas.activitys.ClosedActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,14 +14,15 @@
         android:paddingBottom="@dimen/margin_default_16"
         android:paddingEnd="@dimen/margin_default_16"
         android:paddingStart="@dimen/margin_default_16"
-        android:paddingTop="@dimen/margin_default_8">
+        android:paddingTop="@dimen/margin_default_4">
 
+        <!-- SALDO  -->
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default_16"
-            android:elevation="@dimen/margin_default_16"
-            app:cardCornerRadius="8dp">
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="8dp"
+            app:elevation="@dimen/margin_default_16">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,13 +37,14 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_default_16"
+                    android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/colorRed"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
 
                     <TextView
-                        style="@style/TituloFechamento"
+                        style="@style/textViewClosed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -49,17 +52,16 @@
                         android:paddingEnd="@dimen/margin_default_16"
                         android:paddingStart="@dimen/margin_default_16"
                         android:paddingTop="@dimen/margin_default_4"
-                        android:text="@string/text_fechamento_titulo_caixa"
+                        android:text="@string/text_closed_title_balance"
                         android:textColor="@color/colorWhite" />
 
                 </android.support.v7.widget.CardView>
 
                 <TextView
-                    android:id="@+id/tv_fechamento_saldo_final"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_balance_value_end"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:textColor="@color/colorBlack" />
 
 
@@ -68,12 +70,13 @@
         </android.support.v7.widget.CardView>
 
 
+        <!-- MOVIMENTO DE CAIXA -->
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default_16"
-            android:elevation="@dimen/margin_default_16"
-            app:cardCornerRadius="8dp">
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="8dp"
+            app:elevation="@dimen/margin_default_16">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,12 +90,13 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_default_16"
+                    android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/colorRed"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
                     <TextView
-                        style="@style/TituloFechamento"
+                        style="@style/textViewClosed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -100,45 +104,45 @@
                         android:paddingEnd="@dimen/margin_default_16"
                         android:paddingStart="@dimen/margin_default_16"
                         android:paddingTop="@dimen/margin_default_4"
-                        android:text="@string/text_fechamento_titulo_movimento"
+                        android:text="@string/text_closed_title_cashmove"
                         android:textColor="@color/colorWhite" />
 
                 </android.support.v7.widget.CardView>
 
                 <TextView
-                    android:id="@+id/tv_fechamento_valor_total_vendas"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_cashmove_sale_value_total"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_valor_vendas_vista"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_cashmove_in_cash_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_saldo_inicial"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_cashmove_balance_start_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_entrada"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_cashmove_add_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_retirada"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_cashmove_remove_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorRed" />
@@ -148,12 +152,14 @@
 
         </android.support.v7.widget.CardView>
 
+
+        <!-- INFORMAÇÕES ADICIONAIS -->
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default_16"
-            android:elevation="@dimen/margin_default_16"
-            app:cardCornerRadius="8dp">
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="8dp"
+            app:elevation="@dimen/margin_default_16">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -167,12 +173,13 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_default_16"
+                    android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/colorRed"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
                     <TextView
-                        style="@style/TituloFechamento"
+                        style="@style/textViewClosed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -180,22 +187,22 @@
                         android:paddingEnd="@dimen/margin_default_16"
                         android:paddingStart="@dimen/margin_default_16"
                         android:paddingTop="@dimen/margin_default_4"
-                        android:text="@string/text_fechamento_titulo_informacoes"
+                        android:text="@string/text_closed_title_info_add"
                         android:textColor="@color/colorWhite" />
 
                 </android.support.v7.widget.CardView>
 
                 <TextView
-                    android:id="@+id/tv_fechamento_vendas"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_inf_sale_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_vendidos"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_inf_solds_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
@@ -203,32 +210,32 @@
 
 
                 <TextView
-                    android:id="@+id/tv_fechamento_vendidos_vista"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_inf_sold_in_cash_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_adicional"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_inf_add_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_descontos"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_inf_discount_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorRed" />
 
                 <TextView
-                    android:id="@+id/tv_fechamento_prazo"
-                    style="@style/TituloFechamento"
+                    android:id="@+id/tv_closed_inf_forward_value"
+                    style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorRed" />
@@ -237,18 +244,21 @@
 
         </android.support.v7.widget.CardView>
 
+
+        <!-- CLIENTES VENDA A PRAZO  -->
         <android.support.v7.widget.CardView
-            android:id="@+id/cv_fechamento_clientes_prazo"
+            android:id="@+id/cv_closed_client_forward"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default_8"
-            android:elevation="@dimen/margin_default_16"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:elevation="@dimen/margin_default_16">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_16"
                 android:layout_marginEnd="@dimen/margin_default_4"
                 android:layout_marginStart="@dimen/margin_default_4"
                 android:layout_marginTop="@dimen/margin_default_4"
@@ -257,12 +267,13 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_default_16"
+                    android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/colorRed"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
                     <TextView
-                        style="@style/TituloFechamento"
+                        style="@style/textViewClosed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -270,13 +281,13 @@
                         android:paddingEnd="@dimen/margin_default_16"
                         android:paddingStart="@dimen/margin_default_16"
                         android:paddingTop="@dimen/margin_default_4"
-                        android:text="@string/text_fechamento_titulo_clientes"
+                        android:text="@string/text_closed_title_client"
                         android:textColor="@color/colorWhite" />
 
                 </android.support.v7.widget.CardView>
 
                 <TextView
-                    android:id="@+id/tv_fechamento_clientes_a_prazo"
+                    android:id="@+id/tv_closed_client_forward"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -292,6 +303,5 @@
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
-
 
 </ScrollView>

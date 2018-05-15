@@ -6,7 +6,8 @@
     android:paddingTop="@dimen/margin_default_24"
     android:paddingBottom="@dimen/margin_default_24"
     android:paddingStart="@dimen/margin_default_16"
-    android:paddingEnd="@dimen/margin_default_16">
+    android:paddingEnd="@dimen/margin_default_16"
+    android:baselineAligned="false">
 
 
     <LinearLayout

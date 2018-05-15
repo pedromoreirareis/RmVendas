@@ -1,6 +1,7 @@
 package com.pedromoreirareisgmail.rmvendas.db;
 
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -29,11 +30,11 @@ public class Crud {
 
         if (newUri != null) {
 
-            Toast.makeText(context, R.string.msg_inserido_sucesso, Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(context, R.string.msg_insert_sucess, Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(context, R.string.msg_inserido_erro, Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(context, R.string.msg_insert_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -52,12 +53,38 @@ public class Crud {
 
         if (updates > 0) {
 
-            Toast.makeText(context, R.string.msg_editado_sucesso, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.msg_edit_sucess, Toast.LENGTH_SHORT).show();
 
         } else {
 
-            Toast.makeText(context, R.string.msg_editado_erro, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.msg_edit_error, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Enviar dados ao Provider para inserção de um registro
+     *
+     * @param context Contexto da Activity
+     * @param uri     Uri do registro a ser inserido - parte do Uri
+     * @param values  Dados a ser inserido
+     * @return uri para identificar id inserido
+     */
+    public static Long insertReceiveSell(Context context, Uri uri, ContentValues values) {
+
+        Log.v(TAG, "CRUD INSERT - inserir registro");
+
+        Uri newUri = context.getContentResolver().insert(uri, values);
+
+        if (newUri != null) {
+
+            Toast.makeText(context, R.string.msg_insert_sucess, Toast.LENGTH_SHORT).show();
+
+        } else {
+
+            Toast.makeText(context, R.string.msg_insert_error, Toast.LENGTH_SHORT).show();
+        }
+
+        return ContentUris.parseId(newUri);
     }
 
 }

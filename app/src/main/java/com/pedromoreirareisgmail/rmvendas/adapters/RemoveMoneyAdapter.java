@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
 public class RemoveMoneyAdapter extends CursorAdapter {
@@ -35,15 +35,15 @@ public class RemoveMoneyAdapter extends CursorAdapter {
         String description = cursor.getString(cursor.getColumnIndex(EntryCashMove.COLUMN_DESCRIPTION));
 
         holder.tvValue.setText(Formatting.doubleToCurrency(value));
-        holder.tvHour.setText(TimeData.formatDateToHourAndMinute(hour));
+        holder.tvHour.setText(TimeDate.formatDateToHourAndMinute(hour));
         holder.tvDescription.setText(description);
     }
 
     class RemoveViewHolder {
 
-        private TextView tvValue;
-        private TextView tvHour;
-        private TextView tvDescription;
+        private final TextView tvValue;
+        private final TextView tvHour;
+        private final TextView tvDescription;
 
         private RemoveViewHolder(View view) {
 

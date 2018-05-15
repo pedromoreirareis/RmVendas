@@ -25,7 +25,7 @@ import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
 import com.pedromoreirareisgmail.rmvendas.models.Receive;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
+import static com.pedromoreirareisgmail.rmvendas.Utils.TimeDate.getDateTime;
 import static com.pedromoreirareisgmail.rmvendas.constant.Const.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
 import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_CREDIT;
@@ -59,7 +59,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
         initViews();
         initListenerAndObject();
-        initTitleData();
+        initTitleDate();
 
         // Controla a entrada de caracteres nos edits
         watcherControl();
@@ -109,7 +109,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         mEtValue.setOnTouchListener(this);
     }
 
-    private void initTitleData() {
+    private void initTitleDate() {
 
         /* Coloca o nome do cliente no titulo da Activity*/
         setTitle(client.getName());

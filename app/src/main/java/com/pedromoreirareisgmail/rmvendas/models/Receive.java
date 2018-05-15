@@ -13,12 +13,13 @@ public class Receive implements Parcelable{
     private String timestamp;
     private int type;
     private String description;
-    private Double value;
+    private double value;
 
     public Receive() {
     }
 
-    public Receive(long id, Uri uri, long clientId, String clientName, String timestamp, int type, String description, Double value) {
+    public Receive(long id, Uri uri, long clientId, String clientName, String timestamp, int type,
+                   String description, double value) {
         this.id = id;
         this.uri = uri;
         this.clientId = clientId;
@@ -37,11 +38,7 @@ public class Receive implements Parcelable{
         timestamp = in.readString();
         type = in.readInt();
         description = in.readString();
-        if (in.readByte() == 0) {
-            value = null;
-        } else {
-            value = in.readDouble();
-        }
+        value = in.readDouble();
     }
 
     @Override
@@ -53,12 +50,7 @@ public class Receive implements Parcelable{
         dest.writeString(timestamp);
         dest.writeInt(type);
         dest.writeString(description);
-        if (value == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(value);
-        }
+        dest.writeDouble(value);
     }
 
     @Override
@@ -134,11 +126,11 @@ public class Receive implements Parcelable{
         this.description = description;
     }
 
-    public Double getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(double value) {
         this.value = value;
     }
 }

@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.adapters.RemoveMoneyAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
@@ -63,7 +63,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         initViews();
         emptyLayout();
         initListenerAndObject();
-        initTitleData();
+        initTitleDate();
 
         // Inicia o gerenciamento de dados no BD - Busca de dados
         getLoaderManager().initLoader(ConstLoader.LOADER_LIST_REMOVE_MONEY, null, this);
@@ -87,7 +87,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_remove_money_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_money_down);
+        mIvEmpty.setImageResource(R.drawable.ic_money_arrow_down);
         mIvEmpty.setContentDescription(getString(R.string.descr_remove_money_empty));
         mListView.setEmptyView(mEmptyView);
     }
@@ -111,20 +111,20 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         mListView.setOnItemClickListener(this);
     }
 
-    private void initTitleData() {
+    private void initTitleDate() {
 
-        Log.v(TAG, "initTitleData");
+        Log.v(TAG, "initTitleDate");
 
         //  Obtem a data calendário do Dialog
         getCalendarDate();
 
         // Coloca o titulo e data na Activity, e define data da pesquisa no BD
         setTitle(String.format(getString(R.string.title_remove_money_list),
-                TimeData.getDateTitleBr())
+                TimeDate.getDateTitleBr())
         );
 
         // Recebe a data do dia para pesquisa no banco de dados
-        mSearchDateDB = TimeData.formatDateSearch(TimeData.getDateTime());
+        mSearchDateDB = TimeDate.formatDateSearch(TimeDate.getDateTime());
     }
 
     @Override
@@ -168,7 +168,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         };
 
         // O que sera pesquisado em casa coluna
-        String selection = EntryCashMove.COLUMN_TYPE + " = ? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ?";
+        String selection = EntryCashMove.COLUMN_TYPE + " = ? AND " + EntryCashMove.COLUMN_TIMESTAMP + " LIKE ? ";
 
         // Dados para a pesquisa em cada coluna
         String[] selectionArgs = new String[]{String.valueOf(TYPE_REMOVE_MONEY_CASHMOVE), mSearchDateDB + "%"};
@@ -221,7 +221,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
                 getString(R.string.dialog_inf_add_remove_money_list),
                 Formatting.doubleToCurrency(value),
                 description,
-                TimeData.formatDateToHourAndMinute(timestamp)
+                TimeDate.formatDateToHourAndMinute(timestamp)
         );
 
         Messages.displayData(mContext, title, message);
@@ -244,7 +244,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
                 getString(R.string.dialog_edit_del_message_delete_add_remove_money),
                 description,
                 Formatting.doubleToCurrency(value),
-                TimeData.formatDateToHourAndMinute(timestamp)
+                TimeDate.formatDateToHourAndMinute(timestamp)
         );
 
         Messages.editOurDelete(
@@ -267,11 +267,11 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
                 Log.v(TAG, "getCalendarDate");
 
-                mSearchDateDB = TimeData.getDateSearchDB(year, month, day);
+                mSearchDateDB = TimeDate.getDateSearchDB(year, month, day);
 
                 setTitle(
                         String.format(getString(R.string.title_remove_money_list),
-                                TimeData.getDateTitleBr(year, month, day))
+                                TimeDate.getDateTitleBr(year, month, day))
                 );
 
                 getLoaderManager().restartLoader(

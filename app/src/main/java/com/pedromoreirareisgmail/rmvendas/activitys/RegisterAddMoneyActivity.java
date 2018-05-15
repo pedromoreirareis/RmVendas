@@ -35,7 +35,7 @@ import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.CashMove;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.TimeData.getDateTime;
+import static com.pedromoreirareisgmail.rmvendas.Utils.TimeDate.getDateTime;
 
 public class RegisterAddMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,

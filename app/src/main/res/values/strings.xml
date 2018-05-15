@@ -35,10 +35,10 @@
 
 
     <!-- ****************************   Menus - Title *******************************************-->
-    <string name="menu_salvar_title">Salvar</string>
-    <string name="menu_data_title">Data</string>
-    <string name="menu_pesquisar_title">Pesquisar</string>
-    <string name="menu_telefone_cliente_title">Ligar</string>
+    <string name="menu_save_title">Salvar</string>
+    <string name="menu_date_title">Data</string>
+    <string name="menu_search_title">Pesquisar</string>
+    <string name="menu_fone_title">Ligar</string>
 
 
     <!-- ***************************   Drawer - Toggle ******************************************-->
@@ -47,35 +47,31 @@
 
 
     <!-- **********************    Menus Navigation Drawer - Title ***************************** -->
-    <string name="menu_entrada_title_drawer">Entrada</string>
-    <string name="menu_retirada_title_drawer">Retirada</string>
-    <string name="menu_saldo_inicial_title_drawer">Saldo inicial</string>
-    <string name="menu_fechamento_title_drawer">Fechamento</string>
-    <string name="menu_produtos_title_drawer">Produtos</string>
-    <string name="menu_clientes_title_drawer">Clientes</string>
-    <string name="menu_registro_receber_title_drawer">Registro</string>
-    <string name="menu_cadastros_title_drawer">Cadastros</string>
-    <string name="menu_receber_title_drawer">A Receber</string>
-    <string name="menu_caixa_title_drawer">Caixa</string>
+    <string name="menu_add_money_title_drawer">Entrada</string>
+    <string name="menu_remove_money_title_drawer">Retirada</string>
+    <string name="menu_balance_start_title_drawer">Saldo inicial</string>
+    <string name="menu_closed_title_drawer">Fechamento</string>
+    <string name="menu_product_title_drawer">Produtos</string>
+    <string name="menu_client_title_drawer">Clientes</string>
+    <string name="menu_registers_title_drawer">Cadastros</string>
+    <string name="menu_box_title_drawer">Caixa</string>
 
 
     <!-- ************************    Descricao das Imagens ************************************* -->
     <string name="descr_add_money_empty">Imagem de um cifrão e um seta para cima</string>
+    <string name="descr_hand_money_empty">Imagem de uma mão clicando</string>
     <string name="descr_remove_money_empty">Imagem de um cifrão e um seta para baixo</string>
     <string name="descr_opening_empty">Imagem de duas mãos segurando um cifrão</string>
-    <string name="descr_product_empty">Imagem de uma lista vazia</string>
+    <string name="descr_product_empty">Imagem de código de barras</string>
     <string name="descr_product_sale_empty">Imagem de um coração partido</string>
     <string name="descr_client_empty">Imagem cliente</string>
     <string name="descr_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
-
-
-    <string name="image_desc_main_empty">Imagem de um bolo</string>
-
-
-    <string name="image_desc_rm">Rm Vendas</string>
+    <string name="descr_main_empty">Imagem de um bolo</string>
+    <string name="descr_rm">Rm Vendas</string>
 
 
     <!-- *******************************  Textos  ********************************************** -->
+    <string name="text_receive_list_empty">Nenhum registro cadastrado ainda !!!</string>
     <string name="text_add_money_empty">Nenhuma entrada cadastrada !!!</string>
     <string name="text_remove_money_empty">Nenhuma retirada cadastrada !!!</string>
     <string name="text_opening_empty">Saldo inicial não foi cadastrado !!!</string>
@@ -89,55 +85,48 @@
     <string name="text_receive_debit">Venda</string>
     <string name="text_receiv_list_balance">Saldo: %1$s</string>
     <string name="text_receiv_list_balance_empty">Não há registros!!!</string>
-    <string name="text_forward_sell">Venda a prazo - %1$s %2$s</string>
-
-    <string name="text_clientes_list_empty">Nenhum cliente cadastrado !!!</string>
-
-
-    <string name="text_adicional">Adicional</string>
-    <string name="text_desconto">Desconto</string>
-    <string name="text_a_prazo">A prazo</string>
-
-    <string name="text_msg_as"> às </string>
-    <string name="text_valor_dois_pontos"> Valor: </string>
-
-
-
-    <string name="text_vend_quant_prazo_cliente">Cliente</string>
-    <string name="text_vend_quant_nome_produto">%1$s  %2$s</string>
+    <string name="text_forward_sell">Venda a prazo  -  %1$s  %2$s</string>
+    <string name="text_change_value_larger">Esse valor deve ser igual ou maior que %1$s </string>
+    <string name="text_change_label_change_value">O valor do Troco é:</string>
+    <string name="text_client_list_empty">Nenhum cliente cadastrado !!!</string>
+    <string name="text_delete_item_sale">%1$s %2$s</string>
+    <string name="text_closed_client_name_forward">%1$s \n </string>
+    <string name="text_add">Adicional</string>
+    <string name="text_discount">Desconto</string>
+    <string name="text_forward">A prazo</string>
+    <string name="text_client">Cliente</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
-    <string name="text_item_main_valor_preco">Preço.......:  %1$s</string>
-    <string name="text_item_main_valor_adicional">Adicional.:  %1$s</string>
-    <string name="text_item_main_valor_desconto">Desconto.:  %1$s</string>
-    <string name="text_item_main_valor_total">Total.......:  %1$s</string>
-    <string name="text_item_main_valor_a_vista">A vista....:  %1$s</string>
-    <string name="text_item_main_valor_prazo">A prazo...:  %1$s</string>
-    <string name="text_item_main_valor_prazo_cliente">Cliente.....:  %1$s</string>
+    <string name="text_item_price">Preço.......:  %1$s</string>
+    <string name="text_item_value_add">Adicional.:  %1$s</string>
+    <string name="text_item_value_discount">Desconto.:  %1$s</string>
+    <string name="text_item_value_total">Total.......:  %1$s</string>
+    <string name="text_item_value_in_cash">A vista....:  %1$s</string>
+    <string name="text_item_value_forward">A prazo...:  %1$s</string>
+    <string name="text_item_client_name_forward">Cliente.....:  %1$s</string>
 
 
-    <!-- ************************    Fechamento - Activity Fechamento ************************** -->
-    <string name="text_fechamento_saldo_final">Saldo final..........:    %1$s</string>
-    <string name="text_fechamento_vendas_a_vista">Vendas a vista.....:    %1$s</string>
-    <string name="text_fechamento_vendas_total">Total vendas........:    %1$s</string>
-    <string name="text_fechamento_saldo_inicial">Saldo inicial........:    %1$s</string>
-    <string name="text_fechamento_entradas">Entradas.............:    %1$s</string>
-    <string name="text_fechamento_retiradas">Retiradas............:    %1$s</string>
-    <string name="text_fechamento_vendas">Vendas...............:    %1$s</string>
-    <string name="text_fechamento_produtos_vendidos">Vendidos............:    %1$s</string>
-    <string name="text_fechamento_produtos_vendidos_avista">Vendidos a vista..:    %1$s</string>
-    <string name="text_fechamento_adicional">Adicional............:    %1$s</string>
-    <string name="text_fechamento_descontos">Descontos...........:    %1$s</string>
-    <string name="text_fechamento_a_prazo">A prazo...............:    %1$s</string>
-    <string name="text_fechamento_clientes_nome">%1$s</string>
+    <!-- ****************************    Fechamento - Titles *********************************** -->
+    <string name="text_closed_title_balance">Saldo</string>
+    <string name="text_closed_title_cashmove">Movimento de caixa </string>
+    <string name="text_closed_title_info_add">Informações Adicionais </string>
+    <string name="text_closed_title_client">Clientes - Venda a prazo </string>
 
-
-    <string name="text_fechamento_titulo_quantidades">Quantidades vendidas </string>
-    <string name="text_fechamento_titulo_movimento">Movimento de caixa </string>
-    <string name="text_fechamento_titulo_informacoes">Informações Adicionais </string>
-    <string name="text_fechamento_titulo_caixa">Saldo</string>
-    <string name="text_fechamento_titulo_clientes">Clientes - Venda a prazo </string>
+    <!-- ****************************  Fechamento - Resultado  ********************************* -->
+    <string name="text_closed_client_name">%1$s</string>
+    <string name="text_closed_add_money">Entradas.............:    %1$s</string>
+    <string name="text_closed_remove_money">Retiradas............:    %1$s</string>
+    <string name="text_closed_balance_start">Saldo inicial........:    %1$s</string>
+    <string name="text_closed_sale">Vendas...............:    %1$s</string>
+    <string name="text_closed_sale_in_cash">Vendas a vista.....:    %1$s</string>
+    <string name="text_closed_sale_total">Total vendas........:    %1$s</string>
+    <string name="text_closed_quantity_product_sold">Vendidos............:    %1$s</string>
+    <string name="text_closed_quantity_product_sold_in_cash">Vendidos a vista..:    %1$s</string>
+    <string name="text_closed_add">Adicional............:    %1$s</string>
+    <string name="text_closed_discount">Descontos...........:    %1$s</string>
+    <string name="text_closed_forward">A prazo...............:    %1$s</string>
+    <string name="text_closed_balance_end">Saldo final..........:    %1$s</string>
 
 
     <!--############################################################################################
@@ -154,21 +143,19 @@
     <string name="hint_change_value_amount">Valor Recebido</string>
     <string name="hint_product_name">Nome</string>
     <string name="hint_product_price">Preço R$</string>
-
-
-    <string name="hint_quantidade">Quantidade</string>
+    <string name="hint_quantity">Quantidade</string>
 
     <!-- ************************    Mensagens Edição ****************************************** -->
-    <string name="msg_inserido_sucesso">Inserido com sucesso</string>
-    <string name="msg_inserido_erro">Erro ao inserir</string>
-    <string name="msg_editado_sucesso">Editado com sucesso</string>
-    <string name="msg_editado_erro">Erro ao editar</string>
+    <string name="msg_insert_sucess">Inserido com sucesso</string>
+    <string name="msg_insert_error">Erro ao inserir</string>
+    <string name="msg_edit_sucess">Editado com sucesso</string>
+    <string name="msg_edit_error">Erro ao editar</string>
 
 
     <!-- ************************    Mensagens dialog alterações ******************************* -->
-    <string name="dialog_alteracao_titulo">Descartar as alterações?</string>
-    <string name="dialog_alteracao_continuar">Continuar editando</string>
-    <string name="dialog_alteracao_descatar">Descartar</string>
+    <string name="dialog_alteration_title">Descartar as alterações?</string>
+    <string name="dialog_alteration_continue">Continuar editando</string>
+    <string name="dialog_alteration_discart">Descartar</string>
 
 
     <!--TODO: Aqui temos que usar o Formatações de Strings String.format xliff-->
@@ -181,6 +168,7 @@
     <string name="dialog_edit_del_conf_delete_cancel">Cancelar</string>
     <string name="dialog_edit_del_conf_credit">Cliente não pode ser excluido. Tem crédito no valor : %1$s</string>
     <string name="dialog_edit_del_conf_debt">Cliente não pode ser excluido. Tem dívida no valor : %1$s</string>
+
 
     <string name="dialog_edit_del_message_delete_opening">
         Saldo inicial
@@ -200,6 +188,13 @@
         Valor:   %2$s
     </string>
 
+    <string name="dialog_edit_del_message_delete_receive">
+        Cliente: %1$s
+        \n\nTipo: %2$s
+        \n\nDescrição: %3$s
+        \n\nValor: %4$s
+        \n\nData: %5$s
+    </string>
 
     <!-- ************************    Mensagens dialog informações ****************************** -->
     <string name="dialog_inf_title_add_money">Entradas</string>
@@ -257,24 +252,8 @@
     <string name="error_valide_value_forward">Digite um valor a prazo válido</string>
     <string name="error_client_name_empty">Pesquise um cliente</string>
     <string name="error_no_edition">Edição de venda a prazo não permitida</string>
-
-
-
-
-
-
-
-    <string name="error_campo_vazio_valor">Digite o valor</string>
-
-
-
-
-
-
-
-
-
-    <string name="error_campo_lenght_nome_5">O nome deve ter no mínio 5 caracteres</string>
+    <string name="error_no_edition_exclude">Edição de venda a prazo não permitida. Se necessário exclua o registro.</string>
+    <string name="error_name_lenght_5">O nome deve ter no mínio 5 caracteres</string>
 
 
     <!-- ###########################################################################################
@@ -297,13 +276,4 @@
     <string name="log_e_delete">Erro ao excluir registro. Uri: %1$s </string>
 
 
-    <!-- *******************************************************************************************
-
-                               ACTIVITY TROCO
-
-         ********************************************************************************************-->
-
-
-    <string name="valor_troco">O valor do Troco é:</string>
-    <string name="valor_maior">Esse valor deve ser igual ou maior que %1$s </string>
 </resources>

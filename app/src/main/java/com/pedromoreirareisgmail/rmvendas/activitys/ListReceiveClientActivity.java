@@ -1,6 +1,7 @@
 package com.pedromoreirareisgmail.rmvendas.activitys;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.adapters.ReceiveAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
@@ -34,7 +35,8 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 public class ListReceiveClientActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         FloatingActionButton.OnClickListener,
-        ListView.OnItemClickListener {
+        ListView.OnItemClickListener,
+        ListView.OnItemLongClickListener {
 
     private TextView mTvBalance;
     private ListView mListView;
@@ -61,7 +63,7 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
         initViews();
         emptyLayout();
         initListenerAndObject();
-        initTitleData();
+        initTitleDate();
 
         getLoaderManager().initLoader(ConstLoader.LOADER_LIST_RECEIVE_CLIENT, null, this);
     }
@@ -79,9 +81,9 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
     private void emptyLayout() {
 
         // Layout vazio - Cadastro sem registros
-        mTvEmpty.setText(R.string.text_add_money_empty); //TODO: trocar os icones
-        mIvEmpty.setImageResource(R.drawable.ic_money_up);
-        mIvEmpty.setContentDescription(getString(R.string.descr_add_money_empty));
+        mTvEmpty.setText(R.string.text_receive_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_money_payment);
+        mIvEmpty.setContentDescription(getString(R.string.descr_hand_money_empty));
         mListView.setEmptyView(mEmptyView);
     }
 
@@ -107,10 +109,12 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
         }
 
         mFab.setOnClickListener(this);
+
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
     }
 
-    private void initTitleData() {
+    private void initTitleDate() {
 
         setTitle(client.getName());
     }
@@ -129,20 +133,18 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             /* Abre o App de telefone para fazer ligação para o cliente, no numero que esta
-             * cadastrado
-             */
+             * cadastrado */
             case R.id.action_fone_cliente:
 
-                //TODO: TROCAR PARA ACTION_CALL - ligar direto verificar commons intents
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + client.getFone()));
+
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
 
                 return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -199,6 +201,8 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        resetVariables();
+
         if (loader.getId() == ConstLoader.LOADER_LIST_RECEIVE_CLIENT && cursor.moveToFirst()) {
 
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -212,26 +216,27 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
                     mCredit = mCredit + cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
                 }
 
-                mBalance = mCredit - mDebit;
-
-                if (mBalance < 0) {
-
-                    mTvBalance.setTextColor(getResources().getColor(R.color.colorRed));
-                    mTvBalance.setText(String.format(getString(
-                            R.string.text_receiv_list_balance),
-                            Formatting.doubleToCurrency(mBalance)
-                    ));
-
-                } else {
-
-                    mTvBalance.setTextColor(getResources().getColor(R.color.colorBlue));
-                    mTvBalance.setText(String.format(
-                            getString(R.string.text_receiv_list_balance),
-                            Formatting.doubleToCurrency(mBalance)
-                    ));
-                }
-
                 cursor.moveToNext();
+            }
+
+
+            mBalance = mCredit - mDebit;
+
+            if (mBalance < 0) {
+
+                mTvBalance.setTextColor(getResources().getColor(R.color.colorRed));
+                mTvBalance.setText(String.format(getString(
+                        R.string.text_receiv_list_balance),
+                        Formatting.doubleToCurrency(mBalance)
+                ));
+
+            } else {
+
+                mTvBalance.setTextColor(getResources().getColor(R.color.colorBlue));
+                mTvBalance.setText(String.format(
+                        getString(R.string.text_receiv_list_balance),
+                        Formatting.doubleToCurrency(mBalance)
+                ));
             }
 
         } else {
@@ -244,10 +249,18 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
         mAdapter.swapCursor(cursor);
     }
 
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
         mAdapter.swapCursor(null);
+    }
+
+    private void resetVariables() {
+
+        mCredit = 0;
+        mDebit = 0;
+        mBalance = 0;
     }
 
     @Override
@@ -274,12 +287,54 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
 
         String message = String.format(
                 getString(R.string.dialog_inf_receive),
-                TimeData.formatDateBr(date),
-                TimeData.formatDateToHourAndMinute(hour),
+                TimeDate.formatDateBr(date),
+                TimeDate.formatDateToHourAndMinute(hour),
                 description,
                 Formatting.doubleToCurrency(value)
         );
 
         Messages.displayData(mContext, title, message);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+        Uri uri = ContentUris.withAppendedId(EntryReceive.CONTENT_URI_RECEIVE, id);
+        Cursor cursor = mAdapter.getCursor();
+
+        String clientName = cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_CLIENT_NAME));
+        String description = cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION));
+        int type = cursor.getInt(cursor.getColumnIndex(EntryReceive.COLUMN_TYPE));
+        Double value = cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
+        String timestamp = cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_TIMESTAMP));
+
+        String typeString;
+
+        if (type == ConstDB.TYPE_DEBIT) { // Debito - venda a prazo
+
+            typeString = "A prazo";
+
+        } else { // Credito - recebimento
+
+            typeString = "Recebimento";
+        }
+
+        String messageDelete = String.format(
+                getString(R.string.dialog_edit_del_message_delete_receive),
+                clientName,
+                typeString,
+                description,
+                Formatting.doubleToCurrency(value),
+                TimeDate.formatDateBr(timestamp)
+        );
+
+        Messages.deleteReceive(
+                mContext,
+                uri,
+                messageDelete
+        );
+
+        return true;
     }
 }

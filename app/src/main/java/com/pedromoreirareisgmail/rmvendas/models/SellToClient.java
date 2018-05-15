@@ -7,14 +7,14 @@ import android.os.Parcelable;
 public class SellToClient implements Parcelable {
 
     private Uri uriInitial;
-    private Double unitValue;
+    private double unitValue;
     private Long clientId;
 
     public SellToClient(){
 
     }
 
-    public SellToClient(Uri uriInitial, Double unitValue, Long clientId) {
+    public SellToClient(Uri uriInitial, double unitValue, Long clientId) {
         this.uriInitial = uriInitial;
         this.unitValue = unitValue;
         this.clientId = clientId;
@@ -22,11 +22,7 @@ public class SellToClient implements Parcelable {
 
     protected SellToClient(Parcel in) {
         uriInitial = in.readParcelable(Uri.class.getClassLoader());
-        if (in.readByte() == 0) {
-            unitValue = null;
-        } else {
-            unitValue = in.readDouble();
-        }
+        unitValue = in.readDouble();
         if (in.readByte() == 0) {
             clientId = null;
         } else {
@@ -37,12 +33,7 @@ public class SellToClient implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(uriInitial, flags);
-        if (unitValue == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(unitValue);
-        }
+        dest.writeDouble(unitValue);
         if (clientId == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -76,11 +67,11 @@ public class SellToClient implements Parcelable {
         this.uriInitial = uriInitial;
     }
 
-    public Double getUnitValue() {
+    public double getUnitValue() {
         return unitValue;
     }
 
-    public void setUnitValue(Double unitValue) {
+    public void setUnitValue(double unitValue) {
         this.unitValue = unitValue;
     }
 

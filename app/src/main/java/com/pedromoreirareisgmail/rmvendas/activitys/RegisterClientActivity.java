@@ -30,12 +30,14 @@ import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
 
+import java.util.Objects;
+
 
 public class RegisterClientActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnEditorActionListener {
 
-    public static final String TAG = ConstTag.TAG_MAIN + RegisterClientActivity.class.getSimpleName();
+    private static final String TAG = ConstTag.TAG_MAIN + RegisterClientActivity.class.getSimpleName();
 
     private EditText mEtName;
     private EditText mEtFone;
@@ -152,14 +154,15 @@ public class RegisterClientActivity extends AppCompatActivity implements
 
                                 if (client.getCalled() == Const.CALL_LIST_CLIENT) {
 
-                                    Intent intentCalled = NavUtils.getParentActivityIntent(
-                                            RegisterClientActivity.this);
-                                    NavUtils.navigateUpTo(RegisterClientActivity.this, intentCalled);
+                                    Intent intentCalled = NavUtils.getParentActivityIntent(RegisterClientActivity.this);
+
+                                    // Volta para activity que chamou
+                                    NavUtils.navigateUpTo(RegisterClientActivity.this, Objects.requireNonNull(intentCalled));
 
                                 } else {
 
-                                    Intent intentCalled = new Intent(
-                                            RegisterClientActivity.this, ListClientSaleActivity.class);
+                                    Intent intentCalled = new Intent(RegisterClientActivity.this, ListClientSaleActivity.class);
+
                                     NavUtils.navigateUpTo(RegisterClientActivity.this, intentCalled);
                                 }
 

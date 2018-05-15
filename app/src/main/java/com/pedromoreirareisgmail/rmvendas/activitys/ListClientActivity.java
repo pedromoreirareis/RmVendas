@@ -85,8 +85,8 @@ public class ListClientActivity extends AppCompatActivity implements
         Log.v(TAG, "emptyLayout");
 
         // Layout vazio - Cadastro sem registros
-        mTvEmpty.setText(R.string.text_clientes_list_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_money_up); //TODO: mudar icone dos clientes
+        mTvEmpty.setText(R.string.text_client_list_empty);
+        mIvEmpty.setImageResource(R.drawable.ic_people_red);
         mIvEmpty.setContentDescription(getString(R.string.descr_client_empty));
         mListView.setEmptyView(mEmptyView);
     }
@@ -139,7 +139,7 @@ public class ListClientActivity extends AppCompatActivity implements
         };
 
         // Coluna onde havera a busca
-        String selection = EntryClient.COLUMN_NAME + " LIKE ?";
+        String selection = EntryClient.COLUMN_NAME + " LIKE ? ";
 
         // Parametro da busca
         String[] selectionArgs = new String[]{"%" + mSearchDB + "%"};

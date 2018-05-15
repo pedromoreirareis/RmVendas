@@ -33,7 +33,7 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
-import com.pedromoreirareisgmail.rmvendas.Utils.TimeData;
+import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
@@ -43,7 +43,6 @@ import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
-import com.pedromoreirareisgmail.rmvendas.models.Client;
 import com.pedromoreirareisgmail.rmvendas.models.Receive;
 import com.pedromoreirareisgmail.rmvendas.models.Sell;
 import com.pedromoreirareisgmail.rmvendas.models.SellToClient;
@@ -86,13 +85,11 @@ public class SellActivity extends AppCompatActivity implements
     private LinearLayout mLayoutForward;
 
     private Uri mUriInitial = null;
-    //private Uri mUriClient = null;
+    private Uri mUriClient = null;
+    private double mProductValue;
 
     private Context mContext;
-    private Client client;
     private Sell sell;
-
-    // private double mProductValue = 0;
 
     private String mValorTotalBundle = "";
 
@@ -133,6 +130,7 @@ public class SellActivity extends AppCompatActivity implements
         // Instancia estado da Activity se tiver salvo
         verifySavedInstanceState(savedInstanceState);
 
+        Log.v(TAG, "onCreate - watcherControl");
         // Controle da entrada dos edits
         watcherControl();
 
@@ -145,10 +143,13 @@ public class SellActivity extends AppCompatActivity implements
         // Foco no edit Quantity
         mEtQuantity.setSelectAllOnFocus(true);
 
+        Log.v(TAG, "onCreate - ControlViews");
         // Tira o foco e coloca valor zero nos edits
         ControlViews.noFocusAndZero(mEtAdd);
         ControlViews.noFocusAndZero(mEtDiscount);
         ControlViews.noFocusAndZero(mEtForward);
+
+        Log.v(TAG, "onCreate - FIM");
     }
 
     private void initViews() {
@@ -182,8 +183,7 @@ public class SellActivity extends AppCompatActivity implements
 
         sell = new Sell();
 
-        client = new Client();
-        client.setId(Const.ONE_LESS);
+        sell.setClientId(Const.ONE_LESS);
 
         // Recebe dados de ListProductSaleActivity
         Intent intentInitial = getIntent();
@@ -194,6 +194,7 @@ public class SellActivity extends AppCompatActivity implements
             // Verificar se vai adicionar ou editar venda
             isAddProduct = intentInitial.getBooleanExtra(ConstIntents.INTENT_ADD_SELL, true);
         }
+
     }
 
     private void verifySavedInstanceState(Bundle savedInstanceState) {
@@ -202,13 +203,15 @@ public class SellActivity extends AppCompatActivity implements
 
         if (savedInstanceState != null) {
 
-            Log.v(TAG, "savedInstanceState != null");
+            Log.v(TAG, "verifySavedInstanceState savedInstanceState != null");
+
+            sell = new Sell();
 
             // Tiver dados salvos no Objeto savedInstanceState captura os dados e repassa a Activity
-            client = savedInstanceState.getParcelable(Const.SELL_SAVED_INSTANCE_STATE);
-            if (client != null) {
+            sell = savedInstanceState.getParcelable(Const.SELL_SAVED_INSTANCE_STATE);
+            if (sell != null) {
 
-                mTvClientName.setText(client.getName());
+                mTvClientName.setText(sell.getClientName());
             }
 
         }
@@ -221,14 +224,14 @@ public class SellActivity extends AppCompatActivity implements
         Log.v(TAG, "onSaveInstanceState");
 
         // Salva dados no estado da aplicação para ser usados no retorno da Acitivyt
-        if (client.getId() != Const.ONE_LESS && !client.getName().isEmpty()) {
+        if (sell.getClientId() != Const.ONE_LESS && !sell.getClientName().isEmpty()) {
 
-            Client clientOut = new Client();
+            Sell sellOut = new Sell();
 
-            clientOut.setId(client.getId());
-            clientOut.setName(client.getName());
+            sellOut.setClientId(sell.getClientId());
+            sellOut.setClientName(sell.getClientName());
 
-            outState.putParcelable(Const.SELL_SAVED_INSTANCE_STATE, clientOut);
+            outState.putParcelable(Const.SELL_SAVED_INSTANCE_STATE, sellOut);
         }
     }
 
@@ -265,12 +268,12 @@ public class SellActivity extends AppCompatActivity implements
                     ListClientSaleActivity.class
             );
 
-            client.setId(Const.ONE_LESS);
-            client.setName("");
+            sell.setClientId(Const.ONE_LESS);
+            sell.setClientName("");
 
             SellToClient sellToClient = new SellToClient();
             sellToClient.setUriInitial(mUriInitial);
-            sellToClient.setUnitValue(sell.getPrice());
+            sellToClient.setUnitValue(mProductValue);
 
             intentClientList.putExtra(ConstIntents.INTENT_SELL_TO_CLIENT, sellToClient);
 
@@ -294,16 +297,16 @@ public class SellActivity extends AppCompatActivity implements
 
                 Log.v(TAG, "onActivityResult -  data != null ");
 
-                client = new Client();
+                sell = new Sell();
                 SellToClient sellToClient = new SellToClient();
 
                 if (data.hasExtra(ConstIntents.INTENT_CLIENT_TO_SELL)) {
 
                     sellToClient = data.getParcelableExtra(ConstIntents.INTENT_CLIENT_TO_SELL);
 
-                    client.setId(sellToClient.getClientId());
-                    //mUriClient = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, client.getId());
-                    client.setUri(ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, client.getId()));
+                    sell.setPrice(sellToClient.getUnitValue());
+                    sell.setClientId(sellToClient.getClientId());
+                    mUriClient = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, sell.getClientId());
                     getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_CLIENT, null, this);
 
                 }
@@ -446,7 +449,7 @@ public class SellActivity extends AppCompatActivity implements
 
             return new CursorLoader(
                     mContext,
-                    client.getUri(),
+                    mUriClient,
                     projection,
                     null,
                     null,
@@ -459,6 +462,27 @@ public class SellActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        /* Faz pesquisa pelo id de um produto e econtra o seu nome e seu valor e colocar nos
+         * respectivos campos*/
+        if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_ADD && cursor.moveToFirst()) {
+
+            Log.v(TAG, "onLoadFinished - LOADER_VENDA_ADICIONAR");
+
+            sell.setName(cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)));
+            sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE)));
+            mProductValue = sell.getPrice();
+
+            mTvProductName.setText(sell.getName());
+
+            mTvTotalValue.setText(
+                    calcularValorTotalVendaString(
+                            editToString(mEtQuantity),
+                            mProductValue,
+                            editToString(mEtAdd),
+                            editToString(mEtDiscount),
+                            editToString(mEtForward)));
+        }
 
         /* Retorna dados de uma venda especifica, e coloca resultados em seus respectivos
          * campos, de forma que possa ser feita a edicao*/
@@ -475,10 +499,11 @@ public class SellActivity extends AppCompatActivity implements
             sell.setDiscountValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)));
             sell.setForwardValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
             sell.setReceiveId(cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_RECEIVE_ID)));
+            mProductValue = sell.getPrice();
 
             double totalValueDB = Calculus.calcularValorTotalVendaDouble(
                     sell.getQuantity(),
-                    sell.getPrice(),
+                    mProductValue,
                     sell.getAddValue(),
                     sell.getDiscountValue()
             );
@@ -486,13 +511,13 @@ public class SellActivity extends AppCompatActivity implements
             sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)));
             sell.setClientId(cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID)));
 
-            client.setId(sell.getClientId());
-            client.setUri(ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, client.getId()));
+            mUriClient = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, sell.getClientId());
 
-            if (client.getId() > 0) {
-                sell.setClientName(SearchDB.searchClientName(mContext, client.getId()));
-                client.setName(sell.getClientName());
-                mTvClientName.setText(client.getName());
+
+            if (sell.getClientId() > 0) {
+
+                sell.setClientName(SearchDB.searchClientName(mContext, sell.getClientId()));
+                mTvClientName.setText(sell.getClientName());
             }
 
             mTvProductName.setText(sell.getName());
@@ -542,39 +567,15 @@ public class SellActivity extends AppCompatActivity implements
             mEtQuantity.requestFocus();
         }
 
-        /* Faz pesquisa pelo id de um produto e econtra o seu nome e seu valor e colocar nos
-         * respectivos campos*/
-        if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_ADD && cursor.moveToFirst()) {
 
-            Log.v(TAG, "onLoadFinished - LOADER_VENDA_ADICIONAR");
-
-            sell.setName(cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)));
-            sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE)));
-
-            mTvProductName.setText(sell.getName());
-
-            if (sell.getPrice() == null) {
-
-                sell.setPrice(0.0);
-            }
-
-            mTvTotalValue.setText(
-                    calcularValorTotalVendaString(
-                            editToString(mEtQuantity),
-                            sell.getPrice(),
-                            editToString(mEtAdd),
-                            editToString(mEtDiscount),
-                            editToString(mEtForward)));
-        }
 
         /* Faz pesquisa dos dados do cliente */
         if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_CLIENT && cursor.moveToFirst()) {
 
             Log.v(TAG, "onLoadFinished - LOADER_CLIENTE");
 
-            client.setName(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME)));
-            sell.setClientName(client.getName());
-            mTvClientName.setText(client.getName());
+            sell.setClientName(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME)));
+            mTvClientName.setText(sell.getClientName());
 
             mTvTotalValue.setText(mValorTotalBundle);
         }
@@ -665,14 +666,10 @@ public class SellActivity extends AppCompatActivity implements
                     idDataChanged = true;
                 }
 
-                if (sell.getPrice() == null) {
-
-                    sell.setPrice(0.0);
-                }
 
                 mTvTotalValue.setText(calcularValorTotalVendaString(
                         charSequenceToString(charSequence),
-                        sell.getPrice(),
+                        mProductValue,
                         editToString(mEtAdd),
                         editToString(mEtDiscount),
                         editToString(mEtForward)));
@@ -709,14 +706,9 @@ public class SellActivity extends AppCompatActivity implements
                     idDataChanged = true;
                 }
 
-                if (sell.getPrice() == null) {
-
-                    sell.setPrice(0.0);
-                }
-
                 mTvTotalValue.setText(calcularValorTotalVendaString(
                         editToString(mEtQuantity),
-                        sell.getPrice(),
+                        mProductValue,
                         charSequenceToString(charSequence),
                         editToString(mEtDiscount),
                         editToString(mEtForward)));
@@ -743,7 +735,7 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                double sellValueAdd = editToInteger(mEtQuantity) * sell.getPrice() +
+                double sellValueAdd = editToInteger(mEtQuantity) * mProductValue +
                         editToDouble(mEtAdd);
 
                 if (charSequenceToDouble(charSequence) > sellValueAdd) {
@@ -764,14 +756,10 @@ public class SellActivity extends AppCompatActivity implements
                     idDataChanged = true;
                 }
 
-                if (sell.getPrice() == null) {
-
-                    sell.setPrice(0.0);
-                }
 
                 mTvTotalValue.setText(calcularValorTotalVendaString(
                         editToString(mEtQuantity),
-                        sell.getPrice(),
+                        mProductValue,
                         editToString(mEtAdd),
                         charSequenceToString(charSequence),
                         editToString(mEtForward)));
@@ -801,8 +789,8 @@ public class SellActivity extends AppCompatActivity implements
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
 
-                double sellValueDiscount =
-                        editToInteger(mEtQuantity) * sell.getPrice() + editToDouble(mEtAdd) - editToDouble(mEtDiscount);
+                double sellValueDiscount = editToInteger(mEtQuantity) * mProductValue +
+                        editToDouble(mEtAdd) - editToDouble(mEtDiscount);
 
                 if (charSequenceToDouble(charSequence) / 100 > sellValueDiscount) {
 
@@ -822,14 +810,10 @@ public class SellActivity extends AppCompatActivity implements
                     idDataChanged = true;
                 }
 
-                if (sell.getPrice() == null) {
-
-                    sell.setPrice(0.0);
-                }
 
                 mTvTotalValue.setText(calcularValorTotalVendaString(
                         editToString(mEtQuantity),
-                        sell.getPrice(),
+                        mProductValue,
                         editToString(mEtAdd),
                         editToString(mEtDiscount),
                         charSequenceToString(charSequence)));
@@ -929,7 +913,7 @@ public class SellActivity extends AppCompatActivity implements
                     mLayoutForward.setVisibility(View.GONE);
                     mEtForward.setText("0");
                     mTvClientName.setText("");
-                    client.setName("");
+                    sell.setClientName("");
                 }
 
             }
@@ -1014,34 +998,19 @@ public class SellActivity extends AppCompatActivity implements
 
 
             // Deve se realizar a busca de um cliente para venda a prazo
-            if (client.getName().isEmpty()) {
+            if (clientName.isEmpty()) {
 
                 Snackbar.make(mButClient, getString(R.string.error_client_name_empty), Snackbar.LENGTH_LONG).show();
                 return;
             }
 
             // Deve se realizar a busca de um cliente para venda a prazo
-            if (client.getId() == -1) {
+            if (sell.getClientId() == Const.ONE_LESS) {
 
                 Snackbar.make(mButClient, getString(R.string.error_client_name_empty), Snackbar.LENGTH_LONG).show();
                 return;
             }
         }
-
-        //TODO usar receiveID para poder excluir ou eidtar uma venda a prazo
-
-
-        Receive receive = new Receive();
-        receive.setClientId(sell.getClientId());
-        receive.setClientName(clientName);
-        receive.setType(ConstDB.TYPE_DEBIT);
-        receive.setValue(forwardValueDouble);
-        receive.setDescription(String.format(
-                getString(R.string.text_forward_sell),
-                quantity,
-                productName
-        ));
-
 
         sell.setClientName(clientName);
         sell.setQuantity(quantityInteger);
@@ -1050,21 +1019,7 @@ public class SellActivity extends AppCompatActivity implements
         sell.setDiscountValue(discountValueDouble);
         sell.setForwardValue(forwardValueDouble);
         sell.setClientName(clientName);
-
-        // Se tiver venda a prazo Objeto values
-        ContentValues valuesForward = new ContentValues();
-
-
-        // Venda a prazo
-        if (isCheckForward) {
-
-            valuesForward.put(EntryReceive.COLUMN_CLIENT_ID, receive.getClientId());
-            valuesForward.put(EntryReceive.COLUMN_CLIENT_NAME, receive.getClientId());
-            valuesForward.put(EntryReceive.COLUMN_TYPE, receive.getType());
-            valuesForward.put(EntryReceive.COLUMN_VALUE, receive.getValue());
-            valuesForward.put(EntryReceive.COLUMN_DESCRIPTION, receive.getDescription());
-        }
-
+        sell.setPrice(mProductValue);
 
         // Coloca dados em um objeto values para ser salvo no BD
         ContentValues valuesSell = new ContentValues();
@@ -1076,28 +1031,48 @@ public class SellActivity extends AppCompatActivity implements
         valuesSell.put(EntrySeel.COLUMN_FORWARD_VALUE, sell.getForwardValue());
 
 
-        if (isCheckForward) {
 
-            valuesForward.put(EntryReceive.COLUMN_TIMESTAMP, TimeData.getDateTime());
 
-            valuesSell.put(EntrySeel.COLUMN_CLIENT_ID, client.getId());
-        }
-
-        // Salva dados no BD
         if (isAddProduct) {
 
-            valuesSell.put(EntrySeel.COLUMN_TIMESTAMP, TimeData.getDateTime());
+
+            if(isCheckForward){
+
+                Receive receive = new Receive();
+
+                receive.setClientId(sell.getClientId());
+                receive.setClientName(clientName);
+                receive.setType(ConstDB.TYPE_DEBIT);
+                receive.setValue(forwardValueDouble);
+                receive.setDescription(String.format(getString(R.string.text_forward_sell), quantity, productName));
+
+                ContentValues valuesForward = new ContentValues();
+                valuesForward.put(EntryReceive.COLUMN_CLIENT_ID, receive.getClientId());
+                valuesForward.put(EntryReceive.COLUMN_CLIENT_NAME, receive.getClientName());
+                valuesForward.put(EntryReceive.COLUMN_TYPE, receive.getType());
+                valuesForward.put(EntryReceive.COLUMN_VALUE, receive.getValue());
+                valuesForward.put(EntryReceive.COLUMN_DESCRIPTION, receive.getDescription());
+
+                valuesForward.put(EntryReceive.COLUMN_TIMESTAMP, TimeDate.getDateTime());
+
+                long receiveId = Crud.insertReceiveSell(mContext,EntryReceive.CONTENT_URI_RECEIVE,valuesForward);
+
+                valuesSell.put(EntrySeel.COLUMN_CLIENT_NAME, sell.getClientName());
+                valuesSell.put(EntrySeel.COLUMN_CLIENT_ID, sell.getClientId());
+                valuesSell.put(EntrySeel.COLUMN_RECEIVE_ID,receiveId);
+
+            }
+
+
+            valuesSell.put(EntrySeel.COLUMN_TIMESTAMP, TimeDate.getDateTime());
 
             Crud.insert(mContext, EntrySeel.CONTENT_URI_SELL, valuesSell);
 
-            if (isCheckForward) {
-
-                Crud.insert(mContext, EntryReceive.CONTENT_URI_RECEIVE, valuesForward);
-            }
 
             Log.v(TAG, "saveDataDB - inserir");
 
         } else {
+
 
             if (isCheckForward) {
 
@@ -1113,6 +1088,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 Log.v(TAG, "saveDataDB - editar");
             }
+
         }
 
         Log.v(TAG, "saveDataDB - Fim");
