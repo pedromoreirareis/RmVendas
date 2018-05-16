@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,8 +26,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         Button.OnClickListener {
 
-    private static final String TAG = MoneyBackActivity.class.getSimpleName();
-
     private EditText mEtReceipValue;
     private TextView mTvSellValue;
     private TextView mTvChangeValue;
@@ -46,8 +43,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_money_back);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         initItents();
         initListener();
@@ -63,8 +58,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         mTvSellValue = findViewById(R.id.tv_change_value_sale);
         mEtReceipValue = findViewById(R.id.et_change_amount_received);
         mButClear = findViewById(R.id.but_change_clear);
@@ -73,8 +66,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
     }
 
     private void initItents() {
-
-        Log.v(TAG, "initItents");
 
         Intent intentChange = getIntent();
 
@@ -93,8 +84,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
     private void showKeyboard(EditText myEdit) {
 
-        Log.v(TAG, "showKeyboard");
-
         if (myEdit != null) {
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -108,8 +97,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
-        Log.v(TAG, "onTouch");
 
         switch (view.getId()) {
 
@@ -126,8 +113,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
     private void watcherControl() {
 
-        Log.v(TAG, "watcherControl");
-
         mEtReceipValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -136,7 +121,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
 
                 if (isFormatCurrencyUpdate) {
                     isFormatCurrencyUpdate = false;
@@ -192,8 +176,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        Log.v(TAG, "onClick but limpar");
-
         if (view.getId() == R.id.but_change_clear) {
 
             mReceipValue = 0;
@@ -207,8 +189,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
     }
 
     private void changeValueCalculate() {
-
-        Log.v(TAG, "calcularTroco");
 
         mReceipValue = currencyToDouble(mEtReceipValue.getText().toString().trim());
         mErrorText = String.format(getString(R.string.text_change_value_larger),

@@ -12,7 +12,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +29,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.CashMove;
@@ -41,8 +39,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + RegisterRemoveMoneyActivity.class.getSimpleName();
 
     private EditText mEtValue;
     private EditText mEtDescription;
@@ -57,8 +53,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_remove_money);
-
-        Log.v(TAG, "onCreate");
 
         initViews();
         initListenerAndObject();
@@ -92,20 +86,14 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
         }
     }
 
-
     private void initViews() {
-
-        Log.v(TAG, "initViews");
 
         // Referencia itens do layout
         mEtValue = findViewById(R.id.et_value);
         mEtDescription = findViewById(R.id.et_description);
     }
 
-
     private void initListenerAndObject() {
-
-        Log.v(TAG, "initListenerAndObject");
 
         // Contexto da Activity
         mContext = RegisterRemoveMoneyActivity.this;
@@ -127,16 +115,12 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_save, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         switch (item.getItemId()) {
 
@@ -171,8 +155,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        Log.v(TAG, "onBackPressed");
-
         if (!isDataChanged) {
 
             super.onBackPressed();
@@ -188,15 +170,11 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
      * Recebe dados do edits, faz validações, coloca dados no objeto values e salva no BD*/
     private void saveDataDB() {
 
-        Log.v(TAG, "saveDataDB - Inicio");
-
-        Log.v(TAG, "saveDataDB - captureData");
         String value = mEtValue.getText().toString().trim();
         String description = mEtDescription.getText().toString().trim();
 
         double valueDouble = Formatting.currencyToDouble(value);
 
-        Log.v(TAG, "saveDataDB - validateCashMove");
         // Valor não pode ser zero
         if (valueDouble == Const.NUMBER_ZERO) {
 
@@ -221,8 +199,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
             return;
         }
 
-        Log.v(TAG, "saveDataDB - cashMove");
-
         cashMove.setValue(valueDouble);
         cashMove.setDescription(description);
 
@@ -240,26 +216,18 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
 
             Crud.insert(mContext, EntryCashMove.CONTENT_URI_CASHMOVE, values);
 
-            Log.v(TAG, "saveDataDB - inserir");
-
         } else { /* Editando Registro */
 
             values.put(EntryCashMove.COLUMN_TIMESTAMP, cashMove.getTimestamp());
 
             Crud.update(mContext, cashMove.getUri(), values);
-
-            Log.v(TAG, "saveDataDB - editar");
         }
-
-        Log.v(TAG, "saveDataDB - Fim");
 
         finish();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 EntryCashMove._ID,
@@ -282,8 +250,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         if (cursor.moveToFirst()) {
 
             cashMove.setValue(cursor.getDouble(cursor.getColumnIndex(EntryCashMove.COLUMN_VALUE)));
@@ -298,14 +264,11 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        Log.v(TAG, "onLoaderReset");
 
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
-        Log.v(TAG, "onTouch");
 
         switch (view.getId()) {
 
@@ -325,8 +288,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
 
-        Log.v(TAG, "onEditorAction");
-
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
             saveDataDB();
@@ -339,8 +300,6 @@ public class RegisterRemoveMoneyActivity extends AppCompatActivity implements
     /* Verifica a entrada de caracteres em um edit
      */
     private void watcherControl() {
-
-        Log.v(TAG, "watcherControl");
 
         /* Os caracteres que entram no mEtValue são apenas numeros
          * Na entrada de caracteres envia para fazer uma formatação, para que os caracteres sejam

@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
@@ -34,9 +32,6 @@ import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
 
 public class ClosedActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static final String TAG = ConstTag.TAG_MAIN + ClosedActivity.class.getSimpleName();
-
 
     private TextView mTvValueBalanceStart;
     private TextView mTvValueAddMoney;
@@ -78,8 +73,7 @@ public class ClosedActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closed);
 
-        Log.v(TAG, "onCreate");
-
+        // Contexto da Activity
         mContext = ClosedActivity.this;
 
         initViews();
@@ -92,8 +86,6 @@ public class ClosedActivity extends AppCompatActivity implements
     }
 
     private void initViews() {
-
-        Log.v(TAG, "initViews");
 
         // Referencia os itens do layout
         mTvValueBalanceStart = findViewById(R.id.tv_closed_cashmove_balance_start_value);
@@ -127,8 +119,6 @@ public class ClosedActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_date, menu);
 
         return true;
@@ -136,8 +126,6 @@ public class ClosedActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         switch (item.getItemId()) {
 
@@ -155,8 +143,6 @@ public class ClosedActivity extends AppCompatActivity implements
 
         /* Pesquisa todas as entradas e retiradas na data pesquisada */
         if (loaderId == ConstLoader.LOADER_CLOSED_CASHMOVE) {
-
-            Log.v(TAG, "onCreateLoader - LOADER_ENTRADAS_RETIRADAS");
 
             String[] projection = new String[]{
                     EntryCashMove._ID,
@@ -183,8 +169,6 @@ public class ClosedActivity extends AppCompatActivity implements
         /* Pesquisa o saldo inicial na data pesquisada */
         if (loaderId == ConstLoader.LOADER_CLOSED_OPENING) {
 
-            Log.v(TAG, "onCreateLoader - LOADER_SALDO_INICIAL");
-
             String[] projection = {
                     EntryOpening._ID,
                     EntryOpening.COLUMN_VALUE,
@@ -207,8 +191,6 @@ public class ClosedActivity extends AppCompatActivity implements
 
         /* Pesquisa vendas realizada na data pesquisada */
         if (loaderId == ConstLoader.LOADER_CLOSED_SELL) {
-
-            Log.v(TAG, "onCreateLoader - LOADER_VENDAS");
 
             String[] projection = {
                     EntrySeel._ID,
@@ -246,11 +228,8 @@ public class ClosedActivity extends AppCompatActivity implements
 
         /* Entradas e Retiradas
          * Soma todas as entradas e coloca valor em uma varivel
-         * Soma todas as retiradas e coloca valor em uma variavel
-         */
+         * Soma todas as retiradas e coloca valor em uma variavel */
         if (loader.getId() == ConstLoader.LOADER_CLOSED_CASHMOVE && cursor.moveToFirst()) {
-
-            Log.v(TAG, "onLoadFinished - LOADER_ENTRADAS_RETIRADAS");
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
@@ -270,13 +249,10 @@ public class ClosedActivity extends AppCompatActivity implements
 
                 cursor.moveToNext();
             }
-
         }
 
         /* Valor do saldo inicial */
         if (loader.getId() == ConstLoader.LOADER_CLOSED_OPENING && cursor.moveToFirst()) {
-
-            Log.v(TAG, "onLoadFinished - LOADER_SALDO_INICIAL");
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
@@ -303,15 +279,12 @@ public class ClosedActivity extends AppCompatActivity implements
          * Com os dados obtidos e feito o calculo do valor obtido em todas a vendas*/
         if (loader.getId() == ConstLoader.LOADER_CLOSED_SELL && cursor.moveToFirst()) {
 
-            Log.v(TAG, "onLoadFinished - LOADER_VENDAS");
-
             mQuantitySale = cursor.getCount();
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 mQuantitySold = mQuantitySold +
                         cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
-
 
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)) != NUMBER_ZERO) {
 
@@ -325,7 +298,6 @@ public class ClosedActivity extends AppCompatActivity implements
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
                 }
 
-
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) == NUMBER_ZERO) {
 
                     mValueSaleInCash = mValueSaleInCash + Calculus.CalcularValorAVistaDouble(
@@ -336,11 +308,8 @@ public class ClosedActivity extends AppCompatActivity implements
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE))
                     );
 
-
                     mQuantitySoldInCash = mQuantitySoldInCash + cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
-
                 }
-
 
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) != NUMBER_ZERO) {
 
@@ -359,8 +328,6 @@ public class ClosedActivity extends AppCompatActivity implements
                             getString(R.string.text_closed_client_name_forward),
                             SearchDB.searchClientName(ClosedActivity.this, idCliente)
                     ));
-
-
                 }
 
                 mValueSaleTotal = mValueSaleTotal + Calculus.calcularValorTotalVendaDouble(
@@ -371,8 +338,6 @@ public class ClosedActivity extends AppCompatActivity implements
                 );
 
                 cursor.moveToNext();
-
-
             }
 
             if (!mClientNameForward.isEmpty()) {
@@ -384,10 +349,9 @@ public class ClosedActivity extends AppCompatActivity implements
 
                 mCvClientNameForward.setVisibility(View.GONE);
             }
-
         }
 
-
+        // Coloca nas TextView resultados dos dados obtidos
         mTvValueAddMoney.setText(String.format(getString(R.string.text_closed_add_money), preco.format(mValueAddMoney)));
         mTvValueRemoveMoney.setText(String.format(getString(R.string.text_closed_remove_money), preco.format(mValueRemoveMoney)));
         mTvValueBalanceStart.setText(String.format(getString(R.string.text_closed_balance_start), preco.format(mValueBalanceStart)));
@@ -400,14 +364,9 @@ public class ClosedActivity extends AppCompatActivity implements
         mTvValueDiscount.setText(String.format(getString(R.string.text_closed_discount), preco.format(mValueDiscount)));
         mTvValueSaleForward.setText(String.format(getString(R.string.text_closed_forward), preco.format(mValueSaleForward)));
 
-        // Calculo Saldo Final - Valor que usuario deve ter no caixa
+        // Calcula Saldo Final - Valor que usuario deve ter no caixa
         mValueBalanceEnd = mValueAddMoney + mValueBalanceStart + mValueSaleInCash - mValueRemoveMoney;
-
-        // Coloca nas TextView resultados dos dados obtidos
-
         mTvValueBalanceEnd.setText(String.format(getString(R.string.text_closed_balance_end), preco.format(mValueBalanceEnd)));
-
-
     }
 
     @Override
@@ -415,24 +374,20 @@ public class ClosedActivity extends AppCompatActivity implements
 
     }
 
-
     /*
      * Escolha no calendário uma data que será utilizada para pesquisar no banco de dados. Essa
      * data será formatada para tipo do Brasil e será apresentada no titulo, e iniciará uma
      * pesquisa para verificar se há dados para esta data
      *
      * Ao escolher uma nova data para pesquisa, os valores de variaveis são zerados e e reiniciada a
-     * pesquisa de todos os Loaders
-     */
+     * pesquisa de todos os Loaders*/
     private void getCalendarDate() {
-
-        Log.v(TAG, "getCalendarDate");
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                zeraVariaveisValores();
+                clearVariables();
 
                 mDateSearchDB = TimeDate.getDateSearchDB(year, month, day);
 
@@ -442,16 +397,12 @@ public class ClosedActivity extends AppCompatActivity implements
                 resetSearch();
             }
         };
-
     }
 
     /* Zera os valores das variaveis
      * Ao zera o valor evitar ter uma pesquisa com valores duplicados
      */
-    private void zeraVariaveisValores() {
-
-        Log.v(TAG, "pegarDataDialogCalendario");
-
+    private void clearVariables() {
 
         mValueBalanceEnd = 0;
         mValueSaleInCash = 0;
@@ -469,8 +420,7 @@ public class ClosedActivity extends AppCompatActivity implements
         mTvClientNameForward.setText("");
     }
 
-    /* Faz a pesquisa novamente com todos os Loaders
-     */
+    /* Faz a pesquisa novamente com todos os Loaders */
     private void resetSearch() {
 
         getLoaderManager().restartLoader(ConstLoader.LOADER_CLOSED_CASHMOVE, null, ClosedActivity.this);

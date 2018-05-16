@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.adapters.RemoveMoneyAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 
 import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_REMOVE_MONEY_CASHMOVE;
@@ -38,8 +36,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         ListView.OnItemLongClickListener,
         ListView.OnItemClickListener,
         FloatingActionButton.OnClickListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + ListRemoveMoneyActivity.class.getSimpleName();
 
     private View mEmptyView;
     private TextView mTvEmpty;
@@ -58,8 +54,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_remove_money);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         emptyLayout();
         initListenerAndObject();
@@ -71,8 +65,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         // Referencia itens do layout
         mFab = findViewById(R.id.fab_add);
         mTvEmpty = findViewById(R.id.tv_empty_view);
@@ -83,8 +75,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
     private void emptyLayout() {
 
-        Log.v(TAG, "emptyLayout");
-
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_remove_money_empty);
         mIvEmpty.setImageResource(R.drawable.ic_money_arrow_down);
@@ -93,8 +83,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
     }
 
     private void initListenerAndObject() {
-
-        Log.v(TAG, "initListenerAndObject");
 
         // Contexto da Activity
         mContext = ListRemoveMoneyActivity.this;
@@ -113,8 +101,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
     private void initTitleDate() {
 
-        Log.v(TAG, "initTitleDate");
-
         //  Obtem a data calendário do Dialog
         getCalendarDate();
 
@@ -130,8 +116,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_date, menu);
 
         return true;
@@ -139,8 +123,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         // Abre o caléndaria para obter data
         switch (item.getItemId()) {
@@ -155,8 +137,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Log.v(TAG, "onCreateLoader");
 
         // Colunas que serao retornadas
         String[] projection = {
@@ -189,16 +169,12 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         // Envia dados retornados do BD para o adapter e ListView
         mAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
-        Log.v(TAG, "onLoaderReset");
 
         // Se loader foi redefinido não passa nenhum dado ao adapter
         mAdapter.swapCursor(null);
@@ -207,8 +183,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
     /* Ao clicar vair abir um Dialog com o valor e descrição da Retirada */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemClick");
 
         Cursor cursor = mAdapter.getCursor();
 
@@ -230,8 +204,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
     /* No click longo sera aberto um Dialog com opção Editar ou Excluir */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(EntryCashMove.CONTENT_URI_CASHMOVE, id);
         Cursor cursor = mAdapter.getCursor();
@@ -265,8 +237,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                Log.v(TAG, "getCalendarDate");
-
                 mSearchDateDB = TimeDate.getDateSearchDB(year, month, day);
 
                 setTitle(
@@ -285,8 +255,6 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View view) {
-
-        Log.v(TAG, "onClick - FloatingActionButton");
 
         switch (view.getId()) {
 

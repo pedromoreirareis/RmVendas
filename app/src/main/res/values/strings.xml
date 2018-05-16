@@ -64,21 +64,22 @@
     <string name="descr_opening_empty">Imagem de duas mãos segurando um cifrão</string>
     <string name="descr_product_empty">Imagem de código de barras</string>
     <string name="descr_product_sale_empty">Imagem de um coração partido</string>
-    <string name="descr_client_empty">Imagem cliente</string>
+    <string name="descr_client_empty">Imagem de uma interrogação</string>
     <string name="descr_logo">Logotipo da empresa. Um bolo saindo fumaça.</string>
     <string name="descr_main_empty">Imagem de um bolo</string>
     <string name="descr_rm">Rm Vendas</string>
+    <string name="descr_woman">Uma confeiteira</string>
 
 
     <!-- *******************************  Textos  ********************************************** -->
-    <string name="text_receive_list_empty">Nenhum registro cadastrado ainda !!!</string>
-    <string name="text_add_money_empty">Nenhuma entrada cadastrada !!!</string>
-    <string name="text_remove_money_empty">Nenhuma retirada cadastrada !!!</string>
-    <string name="text_opening_empty">Saldo inicial não foi cadastrado !!!</string>
-    <string name="text_product_empty">Nenhum produto cadastrado !!!</string>
-    <string name="text_product_sale_empty">Que pena… não há produtos cadastrados !!!</string>
-    <string name="text_main_empty">Nenhuma venda realizada !!!</string>
-    <string name="text_client_search_empty">Nenhum cliente para essa pesquisa !!!</string>
+    <string name="text_receive_list_empty">Beleza!!!   Uhull !!! \nEsse cliente nunca comprou fiado!!!</string>
+    <string name="text_add_money_empty">Eita!!!  \nHoje você não cadastrou nenhuma entrada, ainda !!!</string>
+    <string name="text_remove_money_empty">Beleza!!! \nNão foi presciso fazer nenhuma retirada hoje !!!</string>
+    <string name="text_opening_empty">Vamos incluir o saldo inicial do dia ???</string>
+    <string name="text_product_empty">Como vender?\nNenhum produto cadastrado ainda !!!</string>
+    <string name="text_product_sale_empty">Que pena!!! Você não pode vender, ainda.\nVocê não tem nenhum produto cadastrado!!!</string>
+    <string name="text_main_empty"> Ei, psiu!!! \nVamos fazer a primeira venda hoje !!!</string>
+    <string name="text_client_search_empty">Adicione esse cliente.\nAinda não tem nenhum cliente com esse nome.</string>
     <string name="text_change_value_sale">Valor da Venda</string>
     <string name="text_change_clear">Limpar</string>
     <string name="text_receive_credit">Recebimento</string>
@@ -88,7 +89,7 @@
     <string name="text_forward_sell">Venda a prazo  -  %1$s  %2$s</string>
     <string name="text_change_value_larger">Esse valor deve ser igual ou maior que %1$s </string>
     <string name="text_change_label_change_value">O valor do Troco é:</string>
-    <string name="text_client_list_empty">Nenhum cliente cadastrado !!!</string>
+    <string name="text_client_list_empty">Uai!  Cadê os clientes ?\nQue pena, ainda nenhum cliente cadastrado !!!</string>
     <string name="text_delete_item_sale">%1$s %2$s</string>
     <string name="text_closed_client_name_forward">%1$s \n </string>
     <string name="text_add">Adicional</string>

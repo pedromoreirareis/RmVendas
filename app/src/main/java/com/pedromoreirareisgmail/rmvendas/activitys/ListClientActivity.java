@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +26,6 @@ import com.pedromoreirareisgmail.rmvendas.adapters.ClientAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
 
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
@@ -38,8 +36,6 @@ public class ListClientActivity extends AppCompatActivity implements
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + ListClientActivity.class.getSimpleName();
 
     private View mEmptyView;
     private TextView mTvEmpty;
@@ -57,8 +53,6 @@ public class ListClientActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_client);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         emptyLayout();
         initListenerAndObject();
@@ -69,31 +63,24 @@ public class ListClientActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         // Referencia itens do layout
         mFab = findViewById(R.id.fab_add);
         mTvEmpty = findViewById(R.id.tv_empty_view);
         mIvEmpty = findViewById(R.id.iv_empty_view);
         mListView = findViewById(R.id.lv_list);
         mEmptyView = findViewById(R.id.empty_view);
-
     }
 
     private void emptyLayout() {
 
-        Log.v(TAG, "emptyLayout");
-
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_client_list_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_people_red);
+        mIvEmpty.setImageResource(R.drawable.ic_question);
         mIvEmpty.setContentDescription(getString(R.string.descr_client_empty));
         mListView.setEmptyView(mEmptyView);
     }
 
     private void initListenerAndObject() {
-
-        Log.v(TAG, "initListenerAndObject");
 
         // Contexto da Activity
         mContext = ListClientActivity.this;
@@ -113,8 +100,6 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
@@ -128,8 +113,6 @@ public class ListClientActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        Log.v(TAG, "onCreateLoader");
 
         // Colunas que serao retornadas
         String[] projection = {
@@ -160,8 +143,6 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        Log.v(TAG, "onLoadFinished");
-
         // Dados da busca serao repassados ao adapter e listview
         mAdapter.swapCursor(data);
     }
@@ -169,16 +150,12 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        Log.v(TAG, "onLoaderReset");
-
         // Se a busca for redefinida não faz nada
         mAdapter.swapCursor(null);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemClick");
 
         Uri uri = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, id);
         Cursor cursor = mAdapter.getCursor();
@@ -201,8 +178,6 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Log.v(TAG, "onItemLongClick");
-
         Uri uri = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, id);
         Cursor cursor = mAdapter.getCursor();
 
@@ -224,15 +199,11 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-        Log.v(TAG, "onQueryTextSubmit");
-
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
-        Log.v(TAG, "onQueryTextChange");
 
         mSearchDB = newText;
 
@@ -251,8 +222,6 @@ public class ListClientActivity extends AppCompatActivity implements
         switch (view.getId()) {
 
             case R.id.fab_add:
-
-                Log.v(TAG, "onClick - FloatingActionButton");
 
                 Intent intentRegisterClient = new Intent(
                         mContext,

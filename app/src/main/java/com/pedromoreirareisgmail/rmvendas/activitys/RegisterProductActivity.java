@@ -12,7 +12,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +28,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Product;
@@ -40,8 +38,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnEditorActionListener,
         EditText.OnTouchListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + RegisterProductActivity.class.getSimpleName();
 
     private EditText mEtName;
     private EditText mEtPrice;
@@ -55,8 +51,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_product);
-
-        Log.v(TAG, "onCreate");
 
         initViews();
         initListenerAndObject();
@@ -104,8 +98,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         // Referencia itens do layout
         mEtName = findViewById(R.id.et_register_product_name);
         mEtPrice = findViewById(R.id.et_register_product_price);
@@ -114,8 +106,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_save, menu);
 
         return true;
@@ -123,8 +113,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         switch (item.getItemId()) {
 
@@ -159,8 +147,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        Log.v(TAG, "onBackPressed");
-
         if (!isDataChanged) {
 
             super.onBackPressed();
@@ -172,8 +158,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
     }
 
     private void saveDataDB() {
-
-        Log.v(TAG, "saveDataDB - Inicio");
 
         String name = mEtName.getText().toString().trim();
         String price = mEtPrice.getText().toString().trim();
@@ -215,26 +199,18 @@ public class RegisterProductActivity extends AppCompatActivity implements
         // Salva dados no BD
         if (product.getUri() == null) { // Adicionar
 
-            Log.v(TAG, "saveDataDB - inserir");
-
             Crud.insert(mContext, EntryProduct.CONTENT_URI_PRODUCT, values);
 
         } else { // Editar
 
-            Log.v(TAG, "saveDataDB - editar");
-
             Crud.update(mContext, product.getUri(), values);
         }
-
-        Log.v(TAG, "saveDataDB - Fim");
 
         finish();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 EntryProduct._ID,
@@ -255,8 +231,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         if (cursor.moveToFirst()) {
 
             product.setName(cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)));
@@ -275,8 +249,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
 
-        Log.v(TAG, "onEditorAction");
-
         // Salva dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
@@ -289,8 +261,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
     /* Verifica entrada de caracteres nos edits e formata os caracteres se necessario */
     private void watcherControl() {
-
-        Log.v(TAG, "watcherControl");
 
         /* No edit mEtValor e permitido a entrada apenas de numeros
          * Captura a entrada dos caracteres de numero no edit e faz a formatação para moeda
@@ -331,8 +301,6 @@ public class RegisterProductActivity extends AppCompatActivity implements
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
-        Log.v(TAG, "onTouch");
 
         int id = view.getId();
 

@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,15 +24,12 @@ import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
 public class ListProductSaleActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + ListProductSaleActivity.class.getSimpleName();
 
     private View mEmptyView;
     private TextView mTvEmpty;
@@ -51,8 +47,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product_sale);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         emptyLayout();
         initListenerAndObject();
@@ -63,8 +57,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         // Referencia itens do layout
         mTvEmpty = findViewById(R.id.tv_empty_view);
         mIvEmpty = findViewById(R.id.iv_empty_view);
@@ -74,8 +66,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
     private void emptyLayout() {
 
-        Log.v(TAG, "emptyLayout");
-
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_product_sale_empty);
         mIvEmpty.setImageResource(R.drawable.ic_heart_broken);
@@ -84,8 +74,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
     }
 
     private void initListenerAndObject() {
-
-        Log.v(TAG, "initListenerAndObject");
 
         // Contexto da Activity
         mContext = ListProductSaleActivity.this;
@@ -101,8 +89,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
@@ -116,8 +102,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Log.v(TAG, "onCreateLoader");
 
         // Colunas que serao retornadas
         String[] projection = {
@@ -148,8 +132,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         // Passa retorno da pesquisa para o adapter e listview
         mAdapter.swapCursor(cursor);
     }
@@ -157,16 +139,12 @@ public class ListProductSaleActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        Log.v(TAG, "onLoaderReset");
-
         // Se pesquisa redefinida não faz nada
         mAdapter.swapCursor(null);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemClick");
 
         Uri uri = ContentUris.withAppendedId(EntryProduct.CONTENT_URI_PRODUCT, id);
 
@@ -190,8 +168,6 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
-        Log.v(TAG, "onQueryTextChange");
 
         mSearchDB = newText;
 

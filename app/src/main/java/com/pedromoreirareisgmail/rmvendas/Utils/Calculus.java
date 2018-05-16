@@ -7,7 +7,6 @@ import java.text.NumberFormat;
 
 public class Calculus {
 
-
     /**
      * Retorna uma string em formato currency com o valor de venda do produto que será apresentado
      * para o usuário. O valor é calculado automaticamente, ao escolher quantidade, valor adicional,

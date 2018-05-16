@@ -16,7 +16,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -63,9 +62,6 @@ public class SellActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         Button.OnClickListener {
 
-    private static final String TAG = SellActivity.class.getSimpleName();
-
-
     private final NumberFormat mFormatCurrency = NumberFormat.getCurrencyInstance();
 
     private TextView mTvQuantity;
@@ -102,14 +98,10 @@ public class SellActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         initObject();
 
         if (isAddProduct) { // Adicionar
-
-            Log.v(TAG, "mAdicionarProdutoBD - Adicionar :" + mUriInitial.toString());
 
             setTitle(R.string.title_sell_add);
             getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_ADD, null, this);
@@ -121,8 +113,6 @@ public class SellActivity extends AppCompatActivity implements
 
         if (!isAddProduct) { // Editar
 
-            Log.v(TAG, "!mAdicionarProdutoBD - Editar");
-
             setTitle(R.string.title_sell_edit);
             getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_EDIT, null, this);
         }
@@ -130,7 +120,6 @@ public class SellActivity extends AppCompatActivity implements
         // Instancia estado da Activity se tiver salvo
         verifySavedInstanceState(savedInstanceState);
 
-        Log.v(TAG, "onCreate - watcherControl");
         // Controle da entrada dos edits
         watcherControl();
 
@@ -143,18 +132,14 @@ public class SellActivity extends AppCompatActivity implements
         // Foco no edit Quantity
         mEtQuantity.setSelectAllOnFocus(true);
 
-        Log.v(TAG, "onCreate - ControlViews");
         // Tira o foco e coloca valor zero nos edits
         ControlViews.noFocusAndZero(mEtAdd);
         ControlViews.noFocusAndZero(mEtDiscount);
         ControlViews.noFocusAndZero(mEtForward);
 
-        Log.v(TAG, "onCreate - FIM");
     }
 
     private void initViews() {
-
-        Log.v(TAG, "initViews");
 
         // Referencia itens do layout
         mTvQuantity = findViewById(R.id.tv_sell_quantity);
@@ -176,8 +161,6 @@ public class SellActivity extends AppCompatActivity implements
 
     private void initObject() {
 
-        Log.v(TAG, "initObject");
-
         // Contexto da Activity
         mContext = SellActivity.this;
 
@@ -194,16 +177,11 @@ public class SellActivity extends AppCompatActivity implements
             // Verificar se vai adicionar ou editar venda
             isAddProduct = intentInitial.getBooleanExtra(ConstIntents.INTENT_ADD_SELL, true);
         }
-
     }
 
     private void verifySavedInstanceState(Bundle savedInstanceState) {
 
-        Log.v(TAG, "verifySavedInstanceState");
-
         if (savedInstanceState != null) {
-
-            Log.v(TAG, "verifySavedInstanceState savedInstanceState != null");
 
             sell = new Sell();
 
@@ -213,15 +191,12 @@ public class SellActivity extends AppCompatActivity implements
 
                 mTvClientName.setText(sell.getClientName());
             }
-
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        Log.v(TAG, "onSaveInstanceState");
 
         // Salva dados no estado da aplicação para ser usados no retorno da Acitivyt
         if (sell.getClientId() != Const.ONE_LESS && !sell.getClientName().isEmpty()) {
@@ -236,8 +211,6 @@ public class SellActivity extends AppCompatActivity implements
     }
 
     private void initListener() {
-
-        Log.v(TAG, "initListener");
 
         // Botão abre activity ListClientSaleActivity, para selecionar cliente para venda a prazo
         mButClient.setOnClickListener(this);
@@ -256,8 +229,6 @@ public class SellActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View view) {
-
-        Log.v(TAG, "onClick - but_vend_quant_cliente");
 
         /* Abre activity para buscar cliente para uma venda a prazo */
         if (view.getId() == R.id.but_sell_client) {
@@ -288,14 +259,10 @@ public class SellActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.v(TAG, "onActivityResult");
-
         // Recebe os dados do cliente para venda a prazo
         if (requestCode == Const.COD_RESULT_CLIENT_SELL && resultCode == RESULT_OK) {
 
             if (data != null) {
-
-                Log.v(TAG, "onActivityResult -  data != null ");
 
                 sell = new Sell();
                 SellToClient sellToClient = new SellToClient();
@@ -324,8 +291,6 @@ public class SellActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_save, menu);
 
         return true;
@@ -333,8 +298,6 @@ public class SellActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         switch (item.getItemId()) {
 
@@ -369,8 +332,6 @@ public class SellActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        Log.v(TAG, "onBackPressed");
-
         if (!idDataChanged) {
 
             super.onBackPressed();
@@ -387,8 +348,6 @@ public class SellActivity extends AppCompatActivity implements
 
         /* Adicionar Venda */
         if (iLoader == ConstLoader.LOADER_REGISTER_SELL_ADD) {
-
-            Log.v(TAG, "onCreateLoader - LOADER_VENDA_ADICIONAR");
 
             String[] projection = {
                     EntryProduct._ID,
@@ -408,8 +367,6 @@ public class SellActivity extends AppCompatActivity implements
 
         /* Editar Venda */
         if (iLoader == ConstLoader.LOADER_REGISTER_SELL_EDIT) {
-
-            Log.v(TAG, "onCreateLoader - LOADER_VENDA_EDITAR");
 
             String[] projection = {
                     EntrySeel._ID,
@@ -438,8 +395,6 @@ public class SellActivity extends AppCompatActivity implements
         /* Pesquisa dados do cliente para venda a prazo */
         if (iLoader == ConstLoader.LOADER_REGISTER_SELL_CLIENT) {
 
-            Log.v(TAG, "onCreateLoader - LOADER_CLIENTE");
-
             // Trazer todos os dados de um clientes especifico indentificado pelo mUriInitial
             String[] projection = {
                     EntryClient._ID,
@@ -467,8 +422,6 @@ public class SellActivity extends AppCompatActivity implements
          * respectivos campos*/
         if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_ADD && cursor.moveToFirst()) {
 
-            Log.v(TAG, "onLoadFinished - LOADER_VENDA_ADICIONAR");
-
             sell.setName(cursor.getString(cursor.getColumnIndex(EntryProduct.COLUMN_NAME)));
             sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntryProduct.COLUMN_PRICE)));
             mProductValue = sell.getPrice();
@@ -487,8 +440,6 @@ public class SellActivity extends AppCompatActivity implements
         /* Retorna dados de uma venda especifica, e coloca resultados em seus respectivos
          * campos, de forma que possa ser feita a edicao*/
         if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_EDIT && cursor.moveToFirst()) {
-
-            Log.v(TAG, "onLoadFinished - LOADER_VENDA_EDITAR");
 
             sell.setName(cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME)));
             sell.setTimestamp(cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP)));
@@ -572,8 +523,6 @@ public class SellActivity extends AppCompatActivity implements
         /* Faz pesquisa dos dados do cliente */
         if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_CLIENT && cursor.moveToFirst()) {
 
-            Log.v(TAG, "onLoadFinished - LOADER_CLIENTE");
-
             sell.setClientName(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME)));
             mTvClientName.setText(sell.getClientName());
 
@@ -584,13 +533,10 @@ public class SellActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        Log.v(TAG, "onLoaderReset");
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
-        Log.v(TAG, "onTouch");
 
         switch (view.getId()) {
 
@@ -637,8 +583,6 @@ public class SellActivity extends AppCompatActivity implements
 
     /* Verifica a entrada de caracteres nos edits*/
     private void watcherControl() {
-
-        Log.v(TAG, "watcherControl");
 
         /* Edits tem apenas caracteres numericos em seu teclado
          * Apos a entrada de caracteres, e feita a formatação para o estilo moeda para ser
@@ -764,7 +708,6 @@ public class SellActivity extends AppCompatActivity implements
                         charSequenceToString(charSequence),
                         editToString(mEtForward)));
 
-
                 if (isFormatCurrencyUpdate) {
 
                     isFormatCurrencyUpdate = false;
@@ -804,12 +747,10 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
 
-
                 if (!idDataChanged) {
 
                     idDataChanged = true;
                 }
-
 
                 mTvTotalValue.setText(calcularValorTotalVendaString(
                         editToString(mEtQuantity),
@@ -841,8 +782,6 @@ public class SellActivity extends AppCompatActivity implements
 
     /* Veifica se houve alteração no estado do Switch */
     private void switchControl() {
-
-        Log.v(TAG, "");
 
         /* Se Switch estiver Checked fica visivel edit para entrada de valores
          * Se Switch não estiver Checked o edit para entrada de dados fica invisivel */
@@ -915,14 +854,11 @@ public class SellActivity extends AppCompatActivity implements
                     mTvClientName.setText("");
                     sell.setClientName("");
                 }
-
             }
         });
     }
 
     private void saveDataDB() {
-
-        Log.v(TAG, "saveDataDB - Inicio");
 
         // Captura os valores nos edits
         String productName = mTvProductName.getText().toString().trim();
@@ -996,7 +932,6 @@ public class SellActivity extends AppCompatActivity implements
                 return;
             }
 
-
             // Deve se realizar a busca de um cliente para venda a prazo
             if (clientName.isEmpty()) {
 
@@ -1030,11 +965,7 @@ public class SellActivity extends AppCompatActivity implements
         valuesSell.put(EntrySeel.COLUMN_DISCOUNT_VALUE, sell.getDiscountValue());
         valuesSell.put(EntrySeel.COLUMN_FORWARD_VALUE, sell.getForwardValue());
 
-
-
-
         if (isAddProduct) {
-
 
             if(isCheckForward){
 
@@ -1063,16 +994,11 @@ public class SellActivity extends AppCompatActivity implements
 
             }
 
-
             valuesSell.put(EntrySeel.COLUMN_TIMESTAMP, TimeDate.getDateTime());
 
             Crud.insert(mContext, EntrySeel.CONTENT_URI_SELL, valuesSell);
 
-
-            Log.v(TAG, "saveDataDB - inserir");
-
         } else {
-
 
             if (isCheckForward) {
 
@@ -1085,13 +1011,8 @@ public class SellActivity extends AppCompatActivity implements
                 valuesSell.put(EntrySeel.COLUMN_TIMESTAMP, sell.getTimestamp());
 
                 Crud.update(mContext, mUriInitial, valuesSell);
-
-                Log.v(TAG, "saveDataDB - editar");
             }
-
         }
-
-        Log.v(TAG, "saveDataDB - Fim");
 
         finish();
     }

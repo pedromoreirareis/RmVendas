@@ -10,7 +10,6 @@ public class Verify {
 
     public static boolean dataChanged(EditText editText) {
 
-
         // Caso tenha alguma alteração no texto, informa que os dados foram alterados
         editText.addTextChangedListener(new TextWatcher() {
             @Override

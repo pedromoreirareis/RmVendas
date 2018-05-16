@@ -54,7 +54,6 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
     private double mDebit = 0;
     private double mBalance = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +69,7 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
 
     private void initViews() {
 
+        // Referencia as views do layout
         mTvBalance = findViewById(R.id.tv_receive_client_balance);
         mListView = findViewById(R.id.lv_list_receive_client);
         mFab = findViewById(R.id.fab_receive_receip);
@@ -99,13 +99,13 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
         // Instancia o Objeto Client
         client = new Client();
 
+        // Recebe dados do cliente
         Intent intent = getIntent();
         client.setUri(intent.getData());
 
         if (intent.hasExtra(ConstIntents.INTENT_CLIENT_DATA)) {
 
             client = intent.getParcelableExtra(ConstIntents.INTENT_CLIENT_DATA);
-
         }
 
         mFab.setOnClickListener(this);
@@ -132,8 +132,7 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
 
         switch (item.getItemId()) {
 
-            /* Abre o App de telefone para fazer ligação para o cliente, no numero que esta
-             * cadastrado */
+            /* Abre o App  para fazer ligação para o cliente, no numero que esta cadastrado */
             case R.id.action_fone_cliente:
 
                 Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -154,7 +153,6 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
 
         switch (view.getId()) {
 
-
             case R.id.fab_receive_receip:
 
                 Intent intent = new Intent(mContext, RegisterReceiveActivity.class);
@@ -166,8 +164,6 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
                 break;
 
         }
-
-
     }
 
     @Override
@@ -218,7 +214,6 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
 
                 cursor.moveToNext();
             }
-
 
             mBalance = mCredit - mDebit;
 
@@ -298,7 +293,6 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
 
         Uri uri = ContentUris.withAppendedId(EntryReceive.CONTENT_URI_RECEIVE, id);
         Cursor cursor = mAdapter.getCursor();

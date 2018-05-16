@@ -8,7 +8,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +19,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
 import com.pedromoreirareisgmail.rmvendas.models.Receive;
@@ -35,8 +33,6 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 public class RegisterReceiveActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
         Button.OnClickListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + RegisterReceiveActivity.class.getSimpleName();
 
     private Button mButSell;
     private Button mButReceip;
@@ -55,8 +51,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_receive);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         initListenerAndObject();
         initTitleDate();
@@ -69,8 +63,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
     }
 
     private void initViews() {
-
-        Log.v(TAG, "initViews");
 
         // Referencia os itens do layout
         mButSell = findViewById(R.id.but_receive_debit);
@@ -118,8 +110,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Log.v(TAG, "onOptionsItemSelected");
-
         switch (item.getItemId()) {
 
             /* Menu Up
@@ -152,8 +142,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        Log.v(TAG, "onBackPressed");
-
         dadosAlterados();
 
         if (!isDataChaged) {
@@ -172,8 +160,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
      * Se o campo descrição não estiver vazio, e considerado que os dados foram alterados*/
     private void dadosAlterados() {
 
-        Log.v(TAG, "dadosAlterados");
-
         String description = mEtDescription.getText().toString().trim();
         String value = mEtValue.getText().toString().trim();
 
@@ -183,8 +169,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
     }
 
     private void saveDataDB(int type) {
-
-        Log.v(TAG, "saveDataDB - Inicio");
 
         String description = mEtDescription.getText().toString().trim();
         String value = mEtValue.getText().toString().trim();
@@ -236,14 +220,10 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         Crud.insert(mContext, EntryReceive.CONTENT_URI_RECEIVE, values);
 
         finish();
-
-        Log.v(TAG, "saveDataDB - Fim");
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
-        Log.v(TAG, "onTouch");
 
         int id = view.getId();
 
@@ -263,8 +243,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
     /* Controla a entrada de caracteres */
     private void watcherControl() {
-
-        Log.v(TAG, "watcherControl");
 
         /* Nesse edit entrara apenas caracteres numericos. Ao entrar um caracteres ele sera capturado
          * e enviado para formatação, e sera apresentao ao usuario em formato moeda (currency)*/
@@ -298,8 +276,6 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View view) {
-
-        Log.v(TAG, "onCreateLoader");
 
         switch (view.getId()) {
 

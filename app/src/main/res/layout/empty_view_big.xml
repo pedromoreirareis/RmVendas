@@ -2,25 +2,25 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
-        android:id="@+id/empty_view"
+        android:id="@+id/empty_view_big"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/iv_empty_view"
-            android:layout_width="@dimen/image_empty_196"
-            android:layout_height="@dimen/image_empty_196"
+            android:id="@+id/iv_empty_view_big"
+            android:layout_width="@dimen/image_empty_256"
+            android:layout_height="@dimen/image_empty_256"
             android:layout_centerInParent="true"
-            android:contentDescription="@string/descr_rm" />
+            android:contentDescription="@string/descr_woman" />
 
         <TextView
-            android:id="@+id/tv_empty_view"
+            android:id="@+id/tv_empty_view_big"
             style="@style/TextEmpty"
             android:maxLines="2"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_empty_view"
+            android:layout_below="@+id/iv_empty_view_big"
             android:layout_marginTop="8dp" />
 
     </RelativeLayout>

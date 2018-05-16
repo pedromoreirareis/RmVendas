@@ -12,23 +12,20 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
-import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.CONTENT_AUTORITY;
 
 
 public class Provider extends ContentProvider {
 
-    private static final String TAG = ConstTag.TAG_MAIN + Provider.class.getSimpleName();
+    private static final String TAG = Provider.class.getSimpleName();
 
-    /* Uri de todas as linhas da tabela - MATCH_PRODUCTS = 100; */
-    /* Uri de uma unica linha do BD - MATCH_PRODUCT_ID = 101; */
     private static final int MATCH_PRODUCTS = 100;
     private static final int MATCH_PRODUCT_ID = 101;
 
@@ -52,8 +49,6 @@ public class Provider extends ContentProvider {
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        /*  com.pedromoreirareisgmail.minhasvendas/tableName/       - Uri geral toda a tabela */
-        /*  com.pedromoreirareisgmail.minhasvendas/TableName/id     - Uri especifico uma unica linha */
 
         sUriMatcher.addURI(CONTENT_AUTORITY, EntryProduct.TABLE_PRODUCT, MATCH_PRODUCTS);
         sUriMatcher.addURI(CONTENT_AUTORITY, EntryProduct.TABLE_PRODUCT + "/#", MATCH_PRODUCT_ID);
@@ -74,7 +69,6 @@ public class Provider extends ContentProvider {
         sUriMatcher.addURI(CONTENT_AUTORITY, EntryReceive.TABLE_RECEIVE + "/#", MATCH_RECEIVE_ID);
     }
 
-
     private DbHelper mDbHelper;
 
     /**
@@ -84,8 +78,6 @@ public class Provider extends ContentProvider {
      */
     @Override
     public boolean onCreate() {
-
-        Log.v(TAG, "onCreate: Criando instancia DbHelper - Para Gerênciar Banco de Dados");
 
         /* Cria uma nova instancia do banco de dados */
         mDbHelper = new DbHelper(getContext());
@@ -128,8 +120,6 @@ public class Provider extends ContentProvider {
                         sortOrder
                 );
 
-                Log.v(TAG, "QUERY PRODUCTS: Pesquisando todos os produtos");
-
                 break;
 
             case MATCH_PRODUCT_ID:
@@ -148,11 +138,7 @@ public class Provider extends ContentProvider {
                         sortOrder
                 );
 
-                Log.v(TAG, "QUERY PRODUCTS: Pesquisando um unico Produto");
-
                 break;
-
-
 
             /* CASHMOVE */
             case MATCH_CASHMOVE:
@@ -166,8 +152,6 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
-
-                Log.v(TAG, "QUERY CASHMOVE: Pesquisando todas Entradas e Retiradas");
 
                 break;
 
@@ -187,10 +171,7 @@ public class Provider extends ContentProvider {
                         sortOrder
                 );
 
-                Log.v(TAG, "QUERY CASHMOVE: Pesquisando uma unica Entrada ou Retirada");
-
                 break;
-
 
             /* OPENING */
             case MATCH_OPENING:
@@ -204,8 +185,6 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
-
-                Log.v(TAG, "QUERY OPENING: Pesquisando todos os Saldos Iniciais");
 
                 break;
 
@@ -225,10 +204,7 @@ public class Provider extends ContentProvider {
                         sortOrder
                 );
 
-                Log.v(TAG, "QUERY OPENING: Pesquisando um unico Saldo Inicial");
-
                 break;
-
 
             /* SELL */
             case MATCH_SELL:
@@ -242,8 +218,6 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
-
-                Log.v(TAG, "QUERY SELL: Pesquisando todas as Vendas");
 
                 break;
 
@@ -263,10 +237,7 @@ public class Provider extends ContentProvider {
                         sortOrder
                 );
 
-                Log.v(TAG, "QUERY SELL: Pesquisando uma unica venda");
-
                 break;
-
 
             /* CLIENT */
             case MATCH_CLIENT:
@@ -280,8 +251,6 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
-
-                Log.v(TAG, "QUERY CLIENT: Pesquisando todos os Clientes");
 
                 break;
 
@@ -301,8 +270,6 @@ public class Provider extends ContentProvider {
                         sortOrder
                 );
 
-                Log.v(TAG, "QUERY CLIENT: Pesquisando um unico Cliente");
-
                 break;
 
             /* RECEIVE */
@@ -317,8 +284,6 @@ public class Provider extends ContentProvider {
                         null,
                         sortOrder
                 );
-
-                Log.v(TAG, "QUERY RECEIVE: Pesquisando todos os A Receber");
 
                 break;
 
@@ -338,10 +303,7 @@ public class Provider extends ContentProvider {
                         sortOrder
                 );
 
-                Log.v(TAG, "QUERY RECEIVE: Pesquisando um unico A Receber");
-
                 break;
-
 
             /* DEFAULT */
             default:
@@ -438,8 +400,6 @@ public class Provider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
-        Log.v(TAG, "INSERT - INSERINDO UM NOVO REGISTRO");
-
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
@@ -488,8 +448,6 @@ public class Provider extends ContentProvider {
      */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-
-        Log.v(TAG, "DELETE - EXCLUINDO REGISTRO(S)");
 
         final int match = sUriMatcher.match(uri);
 
@@ -570,8 +528,6 @@ public class Provider extends ContentProvider {
      */
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-
-        Log.v(TAG, "UPDATE - ATUALIZANDO REGISTRO(S)");
 
         final int match = sUriMatcher.match(uri);
 
@@ -698,7 +654,6 @@ public class Provider extends ContentProvider {
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-
         int updates = db.update(
                 tableName,
                 values, selection,
@@ -793,7 +748,6 @@ public class Provider extends ContentProvider {
         }
 
         return deletes;
-
     }
 
     /**

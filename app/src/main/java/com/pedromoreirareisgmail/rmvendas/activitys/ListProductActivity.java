@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 
 public class ListProductActivity extends AppCompatActivity implements
@@ -35,8 +33,6 @@ public class ListProductActivity extends AppCompatActivity implements
         ListView.OnItemLongClickListener,
         SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + ListProductActivity.class.getSimpleName();
 
     private View mEmptyView;
     private TextView mTvEmpty;
@@ -54,8 +50,6 @@ public class ListProductActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         emptyLayout();
         initListenersAndObjects();
@@ -70,8 +64,6 @@ public class ListProductActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         //  Faz referencia aos itens do layout
         mFab = findViewById(R.id.fab_add);
         mTvEmpty = findViewById(R.id.tv_empty_view);
@@ -82,8 +74,6 @@ public class ListProductActivity extends AppCompatActivity implements
 
     private void emptyLayout() {
 
-        Log.v(TAG, "emptyLayout");
-
         //  layout vazio - cadastro sem registros
         mTvEmpty.setText(R.string.text_product_empty);
         mIvEmpty.setImageResource(R.drawable.ic_barcode_search_black);
@@ -93,8 +83,7 @@ public class ListProductActivity extends AppCompatActivity implements
 
     private void initListenersAndObjects() {
 
-        Log.v(TAG, "initListenersAndObjects");
-
+        // Contexto da Activity
         mContext = ListProductActivity.this;
 
         // Cria o adapter e colocar o adapter no Listview
@@ -112,8 +101,6 @@ public class ListProductActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         // Referencia o menu de pesquisa
@@ -128,8 +115,6 @@ public class ListProductActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Log.v(TAG, "onCreateLoader");
 
         // Colunas que serao retornadas
         String[] projection = {
@@ -160,16 +145,12 @@ public class ListProductActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         // Envia dados retornados do BD para o adapter e ListView
         mAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
-        Log.v(TAG, "onLoaderReset");
 
         // Se loader foi redefinido não passa nenhum dado ao adapter
         mAdapter.swapCursor(null);
@@ -178,8 +159,6 @@ public class ListProductActivity extends AppCompatActivity implements
     /* Ao clicar vair abir um Dialog com o valor e descrição da Entrada */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemClick");
 
         Cursor cursor = mAdapter.getCursor();
 
@@ -199,8 +178,6 @@ public class ListProductActivity extends AppCompatActivity implements
     /* No click longo sera aberto um Dialog com opção Editar ou Excluir */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(EntryProduct.CONTENT_URI_PRODUCT, id);
         Cursor cursor = mAdapter.getCursor();
@@ -226,15 +203,11 @@ public class ListProductActivity extends AppCompatActivity implements
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-        Log.v(TAG, "onQueryTextSubmit");
-
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
-        Log.v(TAG, "onQueryTextChange");
 
         // Ao digitar o searchView sera atualizada mSearchView
         mSearchDB = newText;

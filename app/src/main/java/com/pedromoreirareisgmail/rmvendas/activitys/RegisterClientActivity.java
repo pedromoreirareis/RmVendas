@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Verify;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
@@ -36,8 +34,6 @@ import java.util.Objects;
 public class RegisterClientActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnEditorActionListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + RegisterClientActivity.class.getSimpleName();
 
     private EditText mEtName;
     private EditText mEtFone;
@@ -52,8 +48,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_client);
-
-        Log.v(TAG, "onCreate");
 
         initViews();
         initListenerAndObject();
@@ -80,16 +74,12 @@ public class RegisterClientActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         // Referencia itens do layout
         mEtName = findViewById(R.id.et_client_name);
         mEtFone = findViewById(R.id.et_client_fone);
     }
 
     private void initListenerAndObject() {
-
-        Log.v(TAG, "initListenerAndObject");
 
         // Contexto da activity
         mContext = RegisterClientActivity.this;
@@ -113,8 +103,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_save, menu);
 
         return true;
@@ -122,8 +110,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         switch (item.getItemId()) {
 
@@ -165,7 +151,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
 
                                     NavUtils.navigateUpTo(RegisterClientActivity.this, intentCalled);
                                 }
-
                             }
                         };
 
@@ -186,8 +171,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        Log.v(TAG, "onBackPressed");
-
         if (!isDataChanged) {
 
             super.onBackPressed();
@@ -199,8 +182,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
     }
 
     private void saveDataDB() {
-
-        Log.v(TAG, "saveDataDB");
 
         String name = mEtName.getText().toString().trim();
         String fone = mEtFone.getText().toString().trim();
@@ -240,7 +221,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
         client.setName(name);
         client.setFone(fone);
 
-
         ContentValues values = new ContentValues();
         values.put(EntryClient.COLUMN_NAME, client.getName());
         values.put(EntryClient.COLUMN_FONE, client.getFone());
@@ -259,8 +239,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 EntryClient._ID,
@@ -281,8 +259,6 @@ public class RegisterClientActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         // Pega nome e telefone do cliente e coloca nos Edits, caso esteja editando
         if (cursor.moveToFirst()) {
 
@@ -297,14 +273,11 @@ public class RegisterClientActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        Log.v(TAG, "onLoaderReset");
     }
 
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-        Log.v(TAG, "onEditorAction");
 
         // Salvar dados no banco de dados
         if (actionId == EditorInfo.IME_ACTION_DONE) {

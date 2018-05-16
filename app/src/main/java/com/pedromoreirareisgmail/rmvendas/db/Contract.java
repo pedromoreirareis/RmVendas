@@ -21,7 +21,6 @@ public class Contract {
     // Autoridade para o vendas provider
     protected static final String CONTENT_AUTORITY = "com.pedromoreirareisgmail.rmvendas";
 
-
     // Um content:// para o vendas provider
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTORITY);
 

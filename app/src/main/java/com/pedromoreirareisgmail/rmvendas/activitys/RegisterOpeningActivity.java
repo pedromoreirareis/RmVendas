@@ -12,7 +12,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +26,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Opening;
@@ -39,8 +37,6 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
         EditText.OnEditorActionListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + RegisterOpeningActivity.class.getSimpleName();
 
     private EditText mEtValue;
 
@@ -54,8 +50,6 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_opening);
-
-        Log.v(TAG, "onCreate");
 
         initViews();
         initListenerAndObject();
@@ -78,18 +72,13 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         ControlViews.noFocusAndZero(mEtValue);
     }
 
-
     private void initViews() {
-
-        Log.v(TAG, "initViews");
 
         // Referencia intens do layout
         mEtValue = findViewById(R.id.et_value);
     }
 
     private void initListenerAndObject() {
-
-        Log.v(TAG, "initListenerAndObject");
 
         // Contexto da Activity
         mContext = RegisterOpeningActivity.this;
@@ -112,16 +101,12 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_save, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         switch (item.getItemId()) {
 
@@ -158,8 +143,6 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        Log.v(TAG, "onBackPressed");
-
         if (!isDataChaged) {
 
             super.onBackPressed();
@@ -172,8 +155,6 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     }
 
     private void saveDataDB() {
-
-        Log.v(TAG, "saveDataDB - Inicio");
 
         String value = mEtValue.getText().toString().trim();
 
@@ -199,26 +180,18 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
             Crud.insert(mContext, EntryOpening.CONTENT_URI_OPENING, values);
 
-            Log.v(TAG, "saveDataDB - inserir");
-
         } else { // Editar
 
             values.put(EntryOpening.COLUMN_TIMESTAMP, opening.getTimestamp());
 
             Crud.update(mContext, opening.getUri(), values);
-
-            Log.v(TAG, "saveDataDB - editar");
         }
-
-        Log.v(TAG, "saveDataDB - Fim");
 
         finish();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 EntryOpening._ID,
@@ -239,8 +212,6 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         if (cursor.moveToFirst()) {
 
             opening.setValue(cursor.getDouble(cursor.getColumnIndex(EntryOpening.COLUMN_VALUE)));
@@ -253,13 +224,10 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        Log.v(TAG, "onLoaderReset");
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
-        Log.v(TAG, "onTouch");
 
         switch (view.getId()) {
 
@@ -278,8 +246,6 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
 
-        Log.v(TAG, "onEditorAction");
-
         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
             saveDataDB();
@@ -291,8 +257,6 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
     /* Verifica a entrada de caracteres nos edits*/
     private void watcherControl() {
-
-        Log.v(TAG, "watcherControl");
 
         /* O teclado para esse edit possui apenas numeros, faz a captura desses caracteres e formata
          * para o estilo moeda (currency) para ser apresentado ao usuario*/

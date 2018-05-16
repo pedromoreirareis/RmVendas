@@ -6,7 +6,6 @@
     <dimen name="nav_header_height">160dp</dimen>
 
     <!-- Espaçamentos de margin e padding padrões -->
-    <dimen name="margin_default_1">1dp</dimen>
     <dimen name="margin_default_2">2dp</dimen>
     <dimen name="margin_default_4">4dp</dimen>
     <dimen name="margin_default_8">8dp</dimen>
@@ -22,5 +21,6 @@
 
     <!-- Dimensões de Alturas e Larguras de margin e padding -->
     <dimen name="image_empty_196">196dp</dimen>
+    <dimen name="image_empty_256">256dp</dimen>
 
 </resources>

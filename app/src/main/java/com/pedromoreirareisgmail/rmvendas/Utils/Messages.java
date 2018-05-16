@@ -20,7 +20,6 @@ import java.util.Calendar;
 
 public class Messages {
 
-
     /**
      * Cria um Dialog simples para exibir informações ao usuario
      *
@@ -66,7 +65,6 @@ public class Messages {
                     public void onClick(DialogInterface dialogInterface, int item) {
 
                         switch (item) {
-
 
                             // Editar - Abre um Activity para editar registro do Uri
                             case 0:
@@ -121,7 +119,6 @@ public class Messages {
                     public void onClick(DialogInterface dialogInterface, int item) {
 
                         switch (item) {
-
 
                             // Editar - Abre um Activity para editar registro do Uri
                             case 0:
@@ -228,7 +225,6 @@ public class Messages {
                 null
         );
 
-
         builderDelete.create().show();
     }
 
@@ -253,7 +249,6 @@ public class Messages {
 
                             //Excluir - Exclui registro do Uri no Banco de Dados
                             case 0:
-
 
                                 // Cria um novo Dialog para confirmar exclusão
                                 AlertDialog.Builder builderDelete = new AlertDialog.Builder(context);
@@ -307,7 +302,6 @@ public class Messages {
                                         null
                                 );
 
-
                                 builderDelete.create().show();
 
                                 break;
@@ -319,7 +313,6 @@ public class Messages {
         builderSelection.create().show();
 
     }
-
 
     /**
      * Abre o calendário para escolha de uma data
@@ -352,7 +345,6 @@ public class Messages {
      * @param activity activity que sera fechada caso for descartar as alterações
      */
     public static void backPressed(final Context context, final Activity activity) {
-
 
         DialogInterface.OnClickListener discartClickListener =
                 new DialogInterface.OnClickListener() {
@@ -448,7 +440,6 @@ public class Messages {
                     public void onClick(DialogInterface dialogInterface, int item) {
 
                         switch (item) {
-
 
                             // Editar - Abre um Activity para editar registro do Uri
                             case 0:

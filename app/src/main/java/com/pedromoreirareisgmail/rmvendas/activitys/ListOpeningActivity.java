@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.adapters.OpeningAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 
 public class ListOpeningActivity extends AppCompatActivity implements
@@ -36,8 +34,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
         ListView.OnItemLongClickListener,
         ListView.OnItemClickListener,
         FloatingActionButton.OnClickListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + ListOpeningActivity.class.getSimpleName();
 
     private View mEmptyView;
     private TextView mTvEmpty;
@@ -56,8 +52,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_opening);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         emptyLayout();
         initListenerAndObject();
@@ -68,8 +62,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
     }
 
     private void initTitleDate() {
-
-        Log.v(TAG, "initTitleDate");
 
         //  Obtem a data calendário do Dialog
         getCalendarDate();
@@ -86,8 +78,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         //  Faz referencia aos itens do layout
         mFab = findViewById(R.id.fab_add);
         mTvEmpty = findViewById(R.id.tv_empty_view);
@@ -98,8 +88,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
     private void emptyLayout() {
 
-        Log.v(TAG, "emptyLayout");
-
         //  layout vazio - cadastro sem registros
         mTvEmpty.setText(R.string.text_opening_empty);
         mIvEmpty.setImageResource(R.drawable.ic_money_two_hands);
@@ -108,8 +96,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
     }
 
     private void initListenerAndObject() {
-
-        Log.v(TAG, "initListenerAndObject");
 
         // Contexto da Activity
         mContext = ListOpeningActivity.this;
@@ -129,8 +115,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_date, menu);
 
         return true;
@@ -139,12 +123,10 @@ public class ListOpeningActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Log.v(TAG, "onOptionsItemSelected");
-
         switch (item.getItemId()) {
 
             case R.id.action_date:
-                Messages.dialogCalendar(ListOpeningActivity.this, mDateSetListener);
+                Messages.dialogCalendar(mContext, mDateSetListener);
                 return true;
         }
 
@@ -153,8 +135,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Log.v(TAG, "onCreateLoader");
 
         // Colunas que serao retornadas
         String[] projection = {
@@ -182,8 +162,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         // Passa os dados retonados da pesquisa para o adapter e listview
         mAdapter.swapCursor(cursor);
 
@@ -201,8 +179,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        Log.v(TAG, "onLoaderReset");
-
         // Se loader foi redefinido não passa nenhum dado ao adapter
         mAdapter.swapCursor(null);
     }
@@ -210,8 +186,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
     /* Ao clicar vair abir um Dialog com o valor, saldo inicial e hora do registro */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemClick");
 
         Cursor cursor = mAdapter.getCursor();
 
@@ -233,8 +207,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
     /* No click longo sera aberto um Dialog com opção Editar ou Excluir */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemLongClick");
 
         Uri uri = ContentUris.withAppendedId(EntryOpening.CONTENT_URI_OPENING, id);
         Cursor cursor = mAdapter.getCursor();
@@ -262,8 +234,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
      * no formato usado no Barsil e sera mostrada no titulo da Activity*/
     private void getCalendarDate() {
 
-        Log.v(TAG, "getCalendarDate");
-
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -286,8 +256,6 @@ public class ListOpeningActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View view) {
-
-        Log.v(TAG, "onClick - FloatingActionButton");
 
         switch (view.getId()) {
 

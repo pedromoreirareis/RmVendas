@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.pedromoreirareisgmail.rmvendas.adapters.ClientAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
 import com.pedromoreirareisgmail.rmvendas.models.SellToClient;
@@ -35,9 +33,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + ListClientSaleActivity.class.getSimpleName();
-
 
     private TextView mTvEmpty;
     private ImageView mIvEmpty;
@@ -56,8 +51,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_client);
 
-        Log.v(TAG, "onCreate");
-
         initViews();
         emptyLayout();
         initListenerAndObject();
@@ -67,8 +60,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     }
 
     private void initViews() {
-
-        Log.v(TAG, "initViews");
 
         // Referencia itens do layout
         mFab = findViewById(R.id.fab_add);
@@ -80,11 +71,9 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
     private void emptyLayout() {
 
-        Log.v(TAG, "emptyLayout");
-
         // Layout vazio - Cadastro sem registros
         mTvEmpty.setText(R.string.text_client_search_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_money_arrow_up);
+        mIvEmpty.setImageResource(R.drawable.ic_question);
         mIvEmpty.setContentDescription(getString(R.string.descr_client_empty));
         mListView.setEmptyView(mEmptyView);
     }
@@ -116,8 +105,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
@@ -132,13 +119,9 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Log.v(TAG, "onOptionsItemSelected");
-
         switch (item.getItemId()) {
 
             case android.R.id.home:
-
-                Log.v(TAG, "onOptionsItemSelected - android.R.id.home");
 
                 Intent intentSell = new Intent();
                 intentSell.putExtra(ConstIntents.INTENT_CLIENT_TO_SELL, sellToClient);
@@ -151,14 +134,11 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         }
 
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        Log.v(TAG, "onCreateLoader");
 
         String[] projection = {
                 EntryClient._ID,
@@ -183,15 +163,11 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        Log.v(TAG, "onLoadFinished");
-
         mAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
-        Log.v(TAG, "onLoaderReset");
 
         mAdapter.swapCursor(null);
     }
@@ -204,8 +180,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
-        Log.v(TAG, "onQueryTextChange");
 
         mSearch = newText;
 
@@ -220,9 +194,6 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-        Log.v(TAG, "onItemClick");
 
         Cursor cursor = mAdapter.getCursor();
 
@@ -239,10 +210,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-
         if (view.getId() == R.id.fab_add) {
-
-            Log.v(TAG, "OnClick - FloatingActionButton");
 
             Intent intentRegisterClient = new Intent(
                     mContext,

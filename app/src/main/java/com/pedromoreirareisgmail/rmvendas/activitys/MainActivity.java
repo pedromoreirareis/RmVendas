@@ -19,7 +19,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +35,6 @@ import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.adapters.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
-import com.pedromoreirareisgmail.rmvendas.constant.ConstTag;
 import com.pedromoreirareisgmail.rmvendas.db.Contract;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
 
@@ -47,8 +45,6 @@ public class MainActivity extends AppCompatActivity
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener {
-
-    private static final String TAG = ConstTag.TAG_MAIN + MainActivity.class.getSimpleName();
 
     private Toolbar mToolbar;
     private FloatingActionButton mFab;
@@ -71,8 +67,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Log.v(TAG, "onCreate");
 
         initViews();
         emptyLayout();
@@ -110,8 +104,6 @@ public class MainActivity extends AppCompatActivity
 
     private void initViews() {
 
-        Log.v(TAG, "initViews");
-
         // Referencia os itens Navegação Menu lateral
         mToolbar = findViewById(R.id.toolbar);
         mFab = findViewById(R.id.fab_add);
@@ -119,25 +111,24 @@ public class MainActivity extends AppCompatActivity
         mNavigationview = findViewById(R.id.nav_view);
 
         // Referencia os itens do layout
-        mTvEmpty = findViewById(R.id.tv_empty_view);
-        mIvEmpty = findViewById(R.id.iv_empty_view);
+        mTvEmpty = findViewById(R.id.tv_empty_view_big);
+        mIvEmpty = findViewById(R.id.iv_empty_view_big);
         mListview = findViewById(R.id.lv_list);
-        mEmptyView = findViewById(R.id.empty_view);
+        mEmptyView = findViewById(R.id.empty_view_big);
     }
 
     private void emptyLayout() {
 
-        Log.v(TAG, "emptyLayout");
-
         // EmptyView sera acionado se não houver nenhum registro no listview
         mTvEmpty.setText(R.string.text_main_empty);
-        mIvEmpty.setImageResource(R.drawable.ic_cake_cornmeal);
+        mIvEmpty.setImageResource(R.drawable.ic_woman_small);
         mIvEmpty.setContentDescription(getString(R.string.descr_main_empty));
         mListview.setEmptyView(mEmptyView);
     }
 
     private void initListenerAndObject() {
 
+        // Contexto da Activity
         mContext = MainActivity.this;
 
         // Cria o adapter e o ListView
@@ -165,8 +156,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        Log.v(TAG, "onBackPressed");
-
         // Referencia o o Drawer
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
@@ -184,8 +173,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.v(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.main_search_data, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search_main);
@@ -199,8 +186,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v(TAG, "onOptionsItemSelected");
 
         switch (item.getItemId()) {
 
@@ -219,8 +204,6 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        Log.v(TAG, "onNavigationItemSelected");
 
         int id = item.getItemId();
 
@@ -296,8 +279,6 @@ public class MainActivity extends AppCompatActivity
          * Se mSearchDB estiver vazio, trara dados apenas da data que estiver em mSearchDateDB */
         if (mSearchDB.length() > 0) {
 
-            Log.v(TAG, "onCreateLoader - Data + Nome");
-
             // Paramentro da pesquisa - Pesquisa por data e nome do produto
             selection = EntrySeel.COLUMN_TIMESTAMP + " LIKE ?  AND " + EntrySeel.COLUMN_NAME + " LIKE ?";
 
@@ -308,8 +289,6 @@ public class MainActivity extends AppCompatActivity
             sortOrder = EntrySeel.COLUMN_TIMESTAMP + " DESC";
 
         } else {
-
-            Log.v(TAG, "onCreateLoader - Nome (Data ja capturada e em memoria)");
 
             selection = EntrySeel.COLUMN_TIMESTAMP + " LIKE ?";
             selectionArgs = new String[]{mSearchDateDB + "%"};
@@ -329,15 +308,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v(TAG, "onLoadFinished");
-
         mAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
-        Log.v(TAG, "onLoaderReset");
 
         mAdapter.swapCursor(null);
     }
@@ -345,8 +320,6 @@ public class MainActivity extends AppCompatActivity
     /* Obtem a data que sera utilizada para pesquisa no banco de dados. Sera formatada
      * no formato usado no Barsil e sera mostrada no titulo da Activity*/
     private void getCalendarDate() {
-
-        Log.v(TAG, "getCalendarDate");
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -368,15 +341,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-        Log.v(TAG, "onQueryTextSubmit");
-
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
-        Log.v(TAG, "onQueryTextChange");
 
         mSearchDB = newText;
 
@@ -388,8 +357,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
 
-        Log.v(TAG, "onClick");
-
         if (view.getId() == R.id.fab_add) {
 
             Intent intentAddSell = new Intent(mContext, ListProductSaleActivity.class);
@@ -400,8 +367,6 @@ public class MainActivity extends AppCompatActivity
     /* Envia dados para calculo do troco do cliente */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "ListView onItemClick");
 
         Cursor cursor = mAdapter.getCursor();
 
@@ -428,8 +393,6 @@ public class MainActivity extends AppCompatActivity
     /* Abre dialog para escolha de edição ou exclusão */
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.v(TAG, "onItemLongClick");
 
         Cursor cursor = mAdapter.getCursor();
 
@@ -462,9 +425,7 @@ public class MainActivity extends AppCompatActivity
                     uriSell,
                     messageDelete
             );
-
         }
-
 
         return true;
     }
