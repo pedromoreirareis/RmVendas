@@ -166,7 +166,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.MainActivity" />
         </activity>
-
         <activity
             android:name=".activitys.ListReceiveClientActivity"
             android:parentActivityName=".activitys.ListClientActivity"
@@ -174,6 +173,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.ListClientActivity" />
+        </activity>
+
+        <activity
+            android:name=".activitys.SettingsActivity"
+            android:parentActivityName=".activitys.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activitys.MainActivity" />
+
         </activity>
 
         <provider

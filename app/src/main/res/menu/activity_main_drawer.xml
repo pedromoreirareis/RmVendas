@@ -37,4 +37,15 @@
         </menu>
     </item>
 
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_action_settings"
+                android:icon="@drawable/ic_settings_black"
+                android:title="@string/menu_settings_title_drawer" />
+
+        </menu>
+    </item>
+
 </menu>

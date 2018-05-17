@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -68,6 +70,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //TODO: implementar Activity de coonfigurações para poder exportar e importar dados para firebase
+        //TODO: implementar Login Google firebase com conta google
+        //TODO: implementar exportação de produtos para firebase atraves do cnpj pu cpf
+        //TODO: implementar importação dos produtos firebase com cpf ou cnpj
+        //TODO: Buscar todos os produtos, atraves de um cursor, colocar em uma lista de objetos e exportar para firebase de uma unica vez - ver como fazer pelo pChat exportando mais de um dados
+        //TODO: Buscar dados do firebase colocar em uma lista de objetos, (fazer busca e comparação de ID) ou excluir produtos cadastrados e depois salvar todos no banco de dados - informar ao usuario que os produtos serão excluidos
+
         initViews();
         emptyLayout();
 
@@ -95,11 +104,45 @@ public class MainActivity extends AppCompatActivity
          * O Drawer é o ViewGroup e NavigationView é uma view do Drawer*/
         mNavigationview.setNavigationItemSelectedListener(this);
 
+
         initListenerAndObject();
         initTitleDate();
 
         // Inicia Pesquisa no banco de dados
         getLoaderManager().initLoader(ConstLoader.LOADER_MAIN, null, this);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        getSettings();
+    }
+
+    private void getSettings() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String companyName = prefs.getString(getString(R.string.pref_key_compnay_name), "");
+        String companyCnpj = prefs.getString(getString(R.string.pref_key_cnpj), "");
+
+        View navView = mNavigationview.getHeaderView(0);
+
+        TextView tvCompanyName = navView.findViewById(R.id.nav_company_name);
+        TextView tvCompanyCnpj = navView.findViewById(R.id.nav_company_cnpj);
+
+        if (!companyName.isEmpty()) {
+
+            tvCompanyName.setVisibility(View.VISIBLE);
+            tvCompanyName.setText(String.format(getString(R.string.text_nav_company_name), companyName));
+        }
+
+        if (!companyCnpj.isEmpty()) {
+
+            tvCompanyCnpj.setVisibility(View.VISIBLE);
+            tvCompanyCnpj.setText(String.format(getString(R.string.text_nav_company_cnpj), companyCnpj));
+        }
+
     }
 
     private void initViews() {
@@ -173,7 +216,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main_search_data, menu);
+        getMenuInflater().inflate(R.menu.main_search_date, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search_main);
 
@@ -237,6 +280,11 @@ public class MainActivity extends AppCompatActivity
             // Click no menu Clientes
             case R.id.nav_action_list_clientes:
                 startActivity(new Intent(mContext, ListClientActivity.class));
+                break;
+
+            // Click no menu Configurações
+            case R.id.nav_action_settings:
+                startActivity(new Intent(mContext, SettingsActivity.class));
                 break;
         }
 

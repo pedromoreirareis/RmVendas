@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditTextPreference
+        android:inputType="textCapWords"
+        android:key="@string/pref_key_compnay_name"
+        android:singleLine="true"
+        android:title="@string/pref_title_compnay_name"/>
+
+    <EditTextPreference
+        android:digits="0123456789"
+        android:inputType="number"
+        android:key="@string/pref_key_cnpj"
+        android:singleLine="true"
+        android:title="@string/pref_title_cnpj" />
+
+    <EditTextPreference
+        android:digits="0123456789"
+        android:inputType="number"
+        android:key="@string/pref_key_cpf"
+        android:singleLine="true"
+        android:title="@string/pref_title_cpf" />
+
+</PreferenceScreen>

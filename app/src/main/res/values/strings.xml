@@ -55,6 +55,7 @@
     <string name="menu_client_title_drawer">Clientes</string>
     <string name="menu_registers_title_drawer">Cadastros</string>
     <string name="menu_box_title_drawer">Caixa</string>
+    <string name="menu_settings_title_drawer">Configurações</string>
 
 
     <!-- ************************    Descricao das Imagens ************************************* -->
@@ -96,6 +97,8 @@
     <string name="text_discount">Desconto</string>
     <string name="text_forward">A prazo</string>
     <string name="text_client">Cliente</string>
+    <string name="text_nav_company_name">Empresa: %1$s</string>
+    <string name="text_nav_company_cnpj">Cnpj: %1$s</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
@@ -275,6 +278,22 @@
     <string name="log_e_insert">Erro ao inserir registro. Uri: %1$s </string>
     <string name="log_e_update">Erro ao atualizar registro. Uri: %1$s </string>
     <string name="log_e_delete">Erro ao excluir registro. Uri: %1$s </string>
+
+
+    <!-- ###########################################################################################
+
+                                        PREFERENCIAS
+
+     ############################################################################################-->
+
+    <string name="pref_title_compnay_name">Nome da Empresa</string>
+    <string name="pref_key_compnay_name" translatable="false">company_name</string>
+
+    <string name="pref_title_cnpj">CNPJ da Empresa</string>
+    <string name="pref_key_cnpj" translatable="false">company_cnpj</string>
+
+    <string name="pref_title_cpf">CPF do usuário</string>
+    <string name="pref_key_cpf" translatable="false">user_cpf</string>
 
 
 </resources>
