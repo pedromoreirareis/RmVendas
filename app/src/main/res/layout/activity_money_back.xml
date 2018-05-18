@@ -16,12 +16,10 @@
             android:baselineAligned="false"
             android:orientation="horizontal">
 
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/margin_default_16"
                 android:layout_weight="1">
 
                 <android.support.design.widget.TextInputEditText
@@ -29,6 +27,7 @@
                     style="@style/editNumber"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_default_16"
                     android:hint="@string/hint_change_value_amount"
                     android:imeOptions="actionDone"
                     android:maxLength="12"
@@ -75,7 +74,7 @@
             android:layout_marginBottom="@dimen/margin_default_16"
             android:layout_marginTop="@dimen/margin_default_48"
             android:layout_weight="1"
-            android:background="@color/colorRed"
+            android:background="@color/colorAccent"
             android:text="@string/text_change_clear"
             android:textColor="@color/colorWhite"
             android:textSize="24sp" />
@@ -105,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorRed"
+        android:background="@color/colorAccent"
         android:contentDescription="@string/descr_logo"
         android:src="@drawable/logo_rm" />
 </RelativeLayout>

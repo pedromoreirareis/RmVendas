@@ -5,30 +5,54 @@
     android:orientation="vertical"
     android:padding="@dimen/margin_default_16">
 
-    <android.support.design.widget.TextInputLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_register_product_name"
-            style="@style/editTexts"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/hint_product_name"
-            android:imeOptions="actionNext" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_register_product_name"
+                style="@style/editTexts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/hint_product_name"
+                android:imeOptions="actionNext" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/but_clear_product_name"
+            style="@style/butClear"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_register_product_price"
-            style="@style/editNumber"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/hint_product_price"
-            android:imeOptions="actionDone" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_register_product_price"
+                style="@style/editNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/hint_product_price"
+                android:imeOptions="actionDone" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/but_clear_product_price"
+            style="@style/butClear"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
 
 </LinearLayout>

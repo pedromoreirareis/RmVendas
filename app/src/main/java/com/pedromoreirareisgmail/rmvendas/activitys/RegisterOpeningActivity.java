@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryOpening;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
@@ -36,9 +38,11 @@ import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
 public class RegisterOpeningActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
-        EditText.OnEditorActionListener {
+        EditText.OnEditorActionListener,
+        View.OnClickListener {
 
     private EditText mEtValue;
+    private Button mButClearValue;
 
     private Opening opening;
     private Context mContext;
@@ -76,6 +80,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         // Referencia intens do layout
         mEtValue = findViewById(R.id.et_value);
+        mButClearValue = findViewById(R.id.but_clear_et_value);
     }
 
     private void initListenerAndObject() {
@@ -96,6 +101,8 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
         // Monitora se há toques em uma view especifica
         mEtValue.setOnTouchListener(this);
+
+        mButClearValue.setOnClickListener(this);
     }
 
     @Override
@@ -269,6 +276,16 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                // Se o valor for acima de zero,fica visivel
+                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+
+                    mButClearValue.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearValue.setVisibility(View.GONE);
+                }
+
                 if (!isDataChaged) {
 
                     isDataChaged = true;
@@ -290,5 +307,16 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.but_clear_et_value:
+                mEtValue.setText(Const.NUMBER_ZERO_STRING);
+                break;
+        }
     }
 }

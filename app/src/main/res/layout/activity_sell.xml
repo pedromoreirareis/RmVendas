@@ -60,29 +60,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/margin_default_16"
             android:paddingBottom="@dimen/margin_default_16"
             android:paddingEnd="@dimen/margin_default_16"
-            android:paddingStart="@dimen/margin_default_16">
+            android:paddingStart="@dimen/margin_default_16"
+            android:paddingTop="@dimen/margin_default_16">
 
-            <android.support.design.widget.TextInputLayout
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="@dimen/margin_default_8">
+                android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_sell_quantity"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:digits="0123456789"
-                    android:hint="@string/hint_quantity"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:selectAllOnFocus="true" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="@dimen/margin_default_8">
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_sell_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:digits="0123456789"
+                        android:hint="@string/hint_quantity"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true" />
 
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/but_clear_sell_quantity"
+                    style="@style/butClear"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,25 +111,36 @@
                     android:layout_marginTop="4dp"
                     android:text="@string/text_add" />
 
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_sell_add"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/et_sell_add_value"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/til_sell_add"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:digits="0123456789"
-                        android:hint="@string/hint_value"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:selectAllOnFocus="true" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone">
 
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/et_sell_add_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="0123456789"
+                            android:hint="@string/hint_value"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:selectAllOnFocus="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/but_clear_sell_add"
+                        style="@style/butClear"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
             </LinearLayout>
 
 
@@ -135,25 +158,36 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/text_discount" />
 
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_sell_discount"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/et_sell_discount_value"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/til_sell_discount"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:digits="0123456789"
-                        android:hint="@string/hint_value"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:selectAllOnFocus="true" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone">
 
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/et_sell_discount_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="0123456789"
+                            android:hint="@string/hint_value"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:selectAllOnFocus="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/but_clear_sell_discount"
+                        style="@style/butClear"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
             </LinearLayout>
 
 
@@ -185,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="3"
-                        android:backgroundTint="@color/colorRed"
+                        android:backgroundTint="@color/colorAccent"
                         android:drawableStart="@drawable/ic_search_white"
                         android:fontFamily="sans-serif-condensed"
                         android:text="@string/text_client"
@@ -207,23 +241,34 @@
 
                 </LinearLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_default_8">
+                    android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/et_sell_forward_value"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:digits="0123456789"
-                        android:hint="@string/hint_value"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:selectAllOnFocus="true" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default_8">
 
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/et_sell_forward_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="0123456789"
+                            android:hint="@string/hint_value"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:selectAllOnFocus="true" />
 
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/but_clear_sell_forward"
+                        style="@style/butClear"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 

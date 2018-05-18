@@ -4,19 +4,19 @@
     <item android:title="@string/menu_box_title_drawer">
         <menu>
             <item
-                android:id="@+id/nav_action_entrada"
+                android:id="@+id/action_add_money_menu"
                 android:icon="@drawable/ic_add_circle_black"
                 android:title="@string/menu_add_money_title_drawer" />
             <item
-                android:id="@+id/nav_Action_retirada"
+                android:id="@+id/action_remove_money_menu"
                 android:icon="@drawable/ic_remove_circle_black"
                 android:title="@string/menu_remove_money_title_drawer" />
             <item
-                android:id="@+id/nav_action_saldo_inicial"
+                android:id="@+id/action_opening_menu"
                 android:icon="@drawable/ic_money_receive_black"
                 android:title="@string/menu_balance_start_title_drawer" />
             <item
-                android:id="@+id/nav_action_fechamento"
+                android:id="@+id/action_closed_menu"
                 android:icon="@drawable/ic_calculator_black"
                 android:title="@string/menu_closed_title_drawer" />
         </menu>
@@ -25,12 +25,12 @@
     <item android:title="@string/menu_registers_title_drawer">
         <menu>
             <item
-                android:id="@+id/nav_action_list_clientes"
+                android:id="@+id/action_clients_menu"
                 android:icon="@drawable/ic_people_black"
                 android:title="@string/menu_client_title_drawer" />
 
             <item
-                android:id="@+id/nav_action_list_prod"
+                android:id="@+id/action_products_menu"
                 android:icon="@drawable/ic_barcode_black"
                 android:title="@string/menu_product_title_drawer" />
 
@@ -38,12 +38,18 @@
     </item>
 
 
-    <item android:title="">
+    <item android:title="@string/menu_outher_title_drawer">
+
         <menu>
             <item
-                android:id="@+id/nav_action_settings"
+                android:id="@+id/action_settings_menu"
                 android:icon="@drawable/ic_settings_black"
                 android:title="@string/menu_settings_title_drawer" />
+
+            <item
+                android:id="@+id/action_sign_out_menu"
+                android:icon="@drawable/ic_exit_to_app_black"
+                android:title="@string/menu_exit_title_drawer" />
 
         </menu>
     </item>

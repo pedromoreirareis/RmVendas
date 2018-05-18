@@ -174,7 +174,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.ListClientActivity" />
         </activity>
-
         <activity
             android:name=".activitys.SettingsActivity"
             android:parentActivityName=".activitys.MainActivity"
@@ -182,7 +181,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.MainActivity" />
-
         </activity>
 
         <provider
@@ -190,7 +188,7 @@
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
 
-
+        <activity android:name=".activitys.SignInActivity"></activity>
     </application>
 
 </manifest>

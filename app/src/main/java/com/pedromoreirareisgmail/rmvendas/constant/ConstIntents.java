@@ -19,4 +19,8 @@ public class ConstIntents {
 
     /* Identifica dados da activity Main para MoneyBack */
     public static final String INTENT_MONEY_BACK = "money_back";
+
+
+    /* Indetifica REQUEST_CODE para SignIn result na GoogleApi */
+    public static final int RC_SIGN_IN = 9001;
 }

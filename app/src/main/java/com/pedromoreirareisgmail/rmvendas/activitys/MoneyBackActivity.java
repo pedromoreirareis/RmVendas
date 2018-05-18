@@ -94,7 +94,6 @@ public class MoneyBackActivity extends AppCompatActivity implements
         }
     }
 
-
     @Override
     public boolean onTouch(View view, MotionEvent event) {
 

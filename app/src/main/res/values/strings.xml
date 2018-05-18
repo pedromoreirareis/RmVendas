@@ -55,7 +55,10 @@
     <string name="menu_client_title_drawer">Clientes</string>
     <string name="menu_registers_title_drawer">Cadastros</string>
     <string name="menu_box_title_drawer">Caixa</string>
+    <string name="menu_outher_title_drawer">Outros</string>
+    <string name="menu_about_title_drawer">Sobre</string>
     <string name="menu_settings_title_drawer">Configurações</string>
+    <string name="menu_exit_title_drawer">Sair</string>
 
 
     <!-- ************************    Descricao das Imagens ************************************* -->
@@ -97,8 +100,10 @@
     <string name="text_discount">Desconto</string>
     <string name="text_forward">A prazo</string>
     <string name="text_client">Cliente</string>
-    <string name="text_nav_company_name">Empresa: %1$s</string>
-    <string name="text_nav_company_cnpj">Cnpj: %1$s</string>
+    <string name="text_company_name">Empresa.:    %1$s</string>
+    <string name="text_company_cnpj">Cnpj........:    %1$s</string>
+    <string name="text_user_cpf">Cpf..........:    %1$s</string>
+    <string name="text_user_name">Usuário...:    %1$s</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
@@ -295,5 +300,15 @@
     <string name="pref_title_cpf">CPF do usuário</string>
     <string name="pref_key_cpf" translatable="false">user_cpf</string>
 
+
+    <!-- ###########################################################################################
+
+                                        FIREBASE
+
+     ############################################################################################-->
+    <string name="text_signin">Faça seu login</string>
+    <string name="toast_signin_failed">Erro ao fazer Login.</string>
+    <string name="toast_connection_failed">Google Play Services error.</string>
+    <string name="toast_welcome">Bem vindo, %1$s</string>
 
 </resources>

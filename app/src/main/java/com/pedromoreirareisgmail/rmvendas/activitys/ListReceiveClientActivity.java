@@ -219,7 +219,7 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
 
             if (mBalance < 0) {
 
-                mTvBalance.setTextColor(getResources().getColor(R.color.colorRed));
+                mTvBalance.setTextColor(getResources().getColor(R.color.colorAccent));
                 mTvBalance.setText(String.format(getString(
                         R.string.text_receiv_list_balance),
                         Formatting.doubleToCurrency(mBalance)

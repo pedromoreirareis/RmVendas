@@ -18,6 +18,7 @@ import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
@@ -32,10 +33,12 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class RegisterReceiveActivity extends AppCompatActivity implements
         EditText.OnTouchListener,
-        Button.OnClickListener {
+        View.OnClickListener {
 
     private Button mButSell;
     private Button mButReceip;
+    private Button mButClearValue;
+    private Button mButClearDescription;
     private EditText mEtDescription;
     private EditText mEtValue;
 
@@ -69,7 +72,8 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         mButReceip = findViewById(R.id.but_receive_credit);
         mEtDescription = findViewById(R.id.et_receive_description);
         mEtValue = findViewById(R.id.et_receive_value);
-
+        mButClearValue = findViewById(R.id.but_clear_receive_value);
+        mButClearDescription = findViewById(R.id.but_clear_receive_description);
     }
 
     private void initListenerAndObject() {
@@ -255,6 +259,16 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
 
+                // Se o valor for acima de zero,fica visivel
+                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+
+                    mButClearValue.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearValue.setVisibility(View.GONE);
+                }
+
                 if (isFormatCurrencyUpdate) {
 
                     isFormatCurrencyUpdate = false;
@@ -265,6 +279,32 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
                 mEtValue.setText(Formatting.currencyToStringToCurrency(charSequence.toString().trim()));
                 mEtValue.setSelection(mEtValue.getText().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                // Se tiver algum caracter no edit, but clear fica visisvel
+                if (charSequence.length() > 0) {
+
+                    mButClearDescription.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearDescription.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -285,6 +325,14 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
             case R.id.but_receive_credit:
                 saveDataDB(TYPE_CREDIT);
+                break;
+
+            case R.id.but_clear_receive_description:
+                mEtDescription.setText(Const.EMPTY_STRING);
+                break;
+
+            case R.id.but_clear_receive_value:
+                mEtValue.setText(Const.NUMBER_ZERO_STRING);
                 break;
         }
     }

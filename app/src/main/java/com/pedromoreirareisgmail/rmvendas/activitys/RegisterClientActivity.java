@@ -11,10 +11,14 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -33,10 +37,14 @@ import java.util.Objects;
 
 public class RegisterClientActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
-        EditText.OnEditorActionListener {
+        EditText.OnEditorActionListener,
+        View.OnClickListener {
 
     private EditText mEtName;
     private EditText mEtFone;
+
+    private Button mButClearName;
+    private Button mButClearFone;
 
     private Context mContext;
     private Client client;
@@ -64,6 +72,9 @@ public class RegisterClientActivity extends AppCompatActivity implements
             getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_CLIENT, null, this);
         }
 
+        // Faz controle de entrada de dados no edit
+        watcherControl();
+
         // Verifica se houve alteração nos caracteres do edit
         if (!isDataChanged) {
 
@@ -77,6 +88,8 @@ public class RegisterClientActivity extends AppCompatActivity implements
         // Referencia itens do layout
         mEtName = findViewById(R.id.et_client_name);
         mEtFone = findViewById(R.id.et_client_fone);
+        mButClearName = findViewById(R.id.but_clear_register_client_name);
+        mButClearFone = findViewById(R.id.but_clear_register_client_fone);
     }
 
     private void initListenerAndObject() {
@@ -98,6 +111,9 @@ public class RegisterClientActivity extends AppCompatActivity implements
         }
 
         mEtFone.setOnEditorActionListener(this);
+
+        mButClearName.setOnClickListener(this);
+        mButClearFone.setOnClickListener(this);
     }
 
     @Override
@@ -286,5 +302,73 @@ public class RegisterClientActivity extends AppCompatActivity implements
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.but_clear_register_client_name:
+                mEtName.setText(Const.EMPTY_STRING);
+                break;
+
+            case R.id.but_clear_register_client_fone:
+                mEtFone.setText(Const.EMPTY_STRING);
+                break;
+        }
+    }
+
+    private void watcherControl() {
+
+        mEtName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                if (charSequence.length() > 0) {
+
+                    mButClearName.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearName.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtFone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                if (charSequence.length() > 0) {
+
+                    mButClearFone.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearFone.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 }

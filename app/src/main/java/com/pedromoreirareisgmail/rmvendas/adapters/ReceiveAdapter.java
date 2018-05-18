@@ -54,9 +54,9 @@ public class ReceiveAdapter extends CursorAdapter {
 
         } else {
 
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.colorRed));
-            holder.tvDescription.setTextColor(context.getResources().getColor(R.color.colorRed));
-            holder.tvValue.setTextColor(context.getResources().getColor(R.color.colorRed));
+            holder.tvDate.setTextColor(context.getResources().getColor(R.color.colorAccent));
+            holder.tvDescription.setTextColor(context.getResources().getColor(R.color.colorAccent));
+            holder.tvValue.setTextColor(context.getResources().getColor(R.color.colorAccent));
 
             holder.tvDate.setText(date);
             holder.tvDescription.setText(description);

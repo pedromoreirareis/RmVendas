@@ -45,7 +45,7 @@ public class ClientAdapter extends CursorAdapter {
         if (receivable < 0) {
 
             //Cliente em debito - fonte do registro do valor fica vermelha
-            holder.tvValueReceive.setTextColor(context.getResources().getColor(R.color.colorRed));
+            holder.tvValueReceive.setTextColor(context.getResources().getColor(R.color.colorAccent));
             holder.tvValueReceive.setText(Formatting.doubleToCurrency(receivable));
 
         } else {

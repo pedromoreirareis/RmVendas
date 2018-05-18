@@ -60,7 +60,7 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 public class SellActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
-        Button.OnClickListener {
+        View.OnClickListener {
 
     private final NumberFormat mFormatCurrency = NumberFormat.getCurrencyInstance();
 
@@ -73,6 +73,10 @@ public class SellActivity extends AppCompatActivity implements
     private EditText mEtDiscount;
     private EditText mEtForward;
     private Button mButClient;
+    private Button mButClearQuantity;
+    private Button mButClearAdd;
+    private Button mButClearDiscount;
+    private Button mButClearForward;
     private Switch mSwitchAdd;
     private Switch mSwitchDiscount;
     private Switch mSwitchForward;
@@ -157,6 +161,11 @@ public class SellActivity extends AppCompatActivity implements
         mLayoutDiscount = findViewById(R.id.til_sell_discount);
         mLayoutAdd = findViewById(R.id.til_sell_add);
         mLayoutForward = findViewById(R.id.til_sell_forward);
+
+        mButClearQuantity = findViewById(R.id.but_clear_sell_quantity);
+        mButClearAdd = findViewById(R.id.but_clear_sell_add);
+        mButClearDiscount = findViewById(R.id.but_clear_sell_discount);
+        mButClearForward = findViewById(R.id.but_clear_sell_forward);
     }
 
     private void initObject() {
@@ -225,32 +234,57 @@ public class SellActivity extends AppCompatActivity implements
         mSwitchAdd.setOnTouchListener(this);
         mSwitchDiscount.setOnTouchListener(this);
         mSwitchForward.setOnTouchListener(this);
+
+        // Listener para clear edits
+        mButClearQuantity.setOnClickListener(this);
+        mButClearAdd.setOnClickListener(this);
+        mButClearDiscount.setOnClickListener(this);
+        mButClearForward.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
         /* Abre activity para buscar cliente para uma venda a prazo */
-        if (view.getId() == R.id.but_sell_client) {
 
+        switch (view.getId()) {
 
-            Intent intentClientList = new Intent(
-                    mContext,
-                    ListClientSaleActivity.class
-            );
+            case R.id.but_sell_client:
+                Intent intentClientList = new Intent(
+                        mContext,
+                        ListClientSaleActivity.class
+                );
 
-            sell.setClientId(Const.ONE_LESS);
-            sell.setClientName("");
+                sell.setClientId(Const.ONE_LESS);
+                sell.setClientName("");
 
-            SellToClient sellToClient = new SellToClient();
-            sellToClient.setUriInitial(mUriInitial);
-            sellToClient.setUnitValue(mProductValue);
+                SellToClient sellToClient = new SellToClient();
+                sellToClient.setUriInitial(mUriInitial);
+                sellToClient.setUnitValue(mProductValue);
 
-            intentClientList.putExtra(ConstIntents.INTENT_SELL_TO_CLIENT, sellToClient);
+                intentClientList.putExtra(ConstIntents.INTENT_SELL_TO_CLIENT, sellToClient);
 
-            startActivityForResult(intentClientList, Const.COD_RESULT_CLIENT_SELL);
+                startActivityForResult(intentClientList, Const.COD_RESULT_CLIENT_SELL);
 
-            ControlViews.hideKeyboard(mContext, mButClient);
+                ControlViews.hideKeyboard(mContext, mButClient);
+                break;
+
+            case R.id.but_clear_sell_quantity:
+                mEtQuantity.setText(Const.EMPTY_STRING);
+                break;
+
+            case R.id.but_clear_sell_add:
+                mEtAdd.setText(Const.NUMBER_ZERO_STRING);
+                break;
+
+            case R.id.but_clear_sell_discount:
+                mEtDiscount.setText(Const.NUMBER_ZERO_STRING);
+                break;
+
+            case R.id.but_clear_sell_forward:
+                mEtForward.setText(Const.NUMBER_ZERO_STRING);
+                break;
+
         }
 
     }
@@ -593,11 +627,20 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                // Se tiver algum caracter no edit, but clear fica visisvel
+                if (charSequence.length() > 0) {
+
+                    mButClearQuantity.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearQuantity.setVisibility(View.GONE);
+                }
 
                 if (mEtQuantity.length() > Const.NUMBER_ZERO) {
 
@@ -644,6 +687,17 @@ public class SellActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                // Se o valor for acima de zero,fica visivel
+                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+
+                    mButClearAdd.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearAdd.setVisibility(View.GONE);
+                }
+
 
                 if (!idDataChanged) {
 
@@ -694,6 +748,16 @@ public class SellActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                // Se o valor for acima de zero,fica visivel
+                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+
+                    mButClearDiscount.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearDiscount.setVisibility(View.GONE);
+                }
 
                 if (!idDataChanged) {
 
@@ -746,6 +810,16 @@ public class SellActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                // Se o valor for acima de zero,fica visivel
+                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+
+                    mButClearForward.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearForward.setVisibility(View.GONE);
+                }
 
                 if (!idDataChanged) {
 
@@ -967,7 +1041,7 @@ public class SellActivity extends AppCompatActivity implements
 
         if (isAddProduct) {
 
-            if(isCheckForward){
+            if (isCheckForward) {
 
                 Receive receive = new Receive();
 
@@ -986,11 +1060,11 @@ public class SellActivity extends AppCompatActivity implements
 
                 valuesForward.put(EntryReceive.COLUMN_TIMESTAMP, TimeDate.getDateTime());
 
-                long receiveId = Crud.insertReceiveSell(mContext,EntryReceive.CONTENT_URI_RECEIVE,valuesForward);
+                long receiveId = Crud.insertReceiveSell(mContext, EntryReceive.CONTENT_URI_RECEIVE, valuesForward);
 
                 valuesSell.put(EntrySeel.COLUMN_CLIENT_NAME, sell.getClientName());
                 valuesSell.put(EntrySeel.COLUMN_CLIENT_ID, sell.getClientId());
-                valuesSell.put(EntrySeel.COLUMN_RECEIVE_ID,receiveId);
+                valuesSell.put(EntrySeel.COLUMN_RECEIVE_ID, receiveId);
 
             }
 

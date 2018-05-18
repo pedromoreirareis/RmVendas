@@ -30,6 +30,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
@@ -46,7 +52,13 @@ public class MainActivity extends AppCompatActivity
         ListView.OnItemLongClickListener,
         ListView.OnItemClickListener,
         SearchView.OnQueryTextListener,
-        FloatingActionButton.OnClickListener {
+        FloatingActionButton.OnClickListener,
+        GoogleApiClient.OnConnectionFailedListener {
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAnalytics mAnalytics;
 
     private Toolbar mToolbar;
     private FloatingActionButton mFab;
@@ -62,6 +74,7 @@ public class MainActivity extends AppCompatActivity
 
     private String mSearchDateDB = null;
     private String mSearchDB = "";
+    private String mUserName = "";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -76,6 +89,11 @@ public class MainActivity extends AppCompatActivity
         //TODO: implementar importação dos produtos firebase com cpf ou cnpj
         //TODO: Buscar todos os produtos, atraves de um cursor, colocar em uma lista de objetos e exportar para firebase de uma unica vez - ver como fazer pelo pChat exportando mais de um dados
         //TODO: Buscar dados do firebase colocar em uma lista de objetos, (fazer busca e comparação de ID) ou excluir produtos cadastrados e depois salvar todos no banco de dados - informar ao usuario que os produtos serão excluidos
+
+        // Instancia FirebaseAuth e verifica se usuario esta logado
+        initFirebase();
+        initGoogleApiClient();
+        initFirebaseAnalytics();
 
         initViews();
         emptyLayout();
@@ -104,45 +122,40 @@ public class MainActivity extends AppCompatActivity
          * O Drawer é o ViewGroup e NavigationView é uma view do Drawer*/
         mNavigationview.setNavigationItemSelectedListener(this);
 
+        mUserName = mUser.getDisplayName();
 
         initListenerAndObject();
         initTitleDate();
+
 
         // Inicia Pesquisa no banco de dados
         getLoaderManager().initLoader(ConstLoader.LOADER_MAIN, null, this);
     }
 
+    private void initFirebase() {
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
 
-        getSettings();
+        if (mUser == null) { // Não esta logado
+
+            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+            finish();
+            return;
+        }
     }
 
-    private void getSettings() {
+    private void initGoogleApiClient() {
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String companyName = prefs.getString(getString(R.string.pref_key_compnay_name), "");
-        String companyCnpj = prefs.getString(getString(R.string.pref_key_cnpj), "");
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
+    }
 
-        View navView = mNavigationview.getHeaderView(0);
+    private void initFirebaseAnalytics() {
 
-        TextView tvCompanyName = navView.findViewById(R.id.nav_company_name);
-        TextView tvCompanyCnpj = navView.findViewById(R.id.nav_company_cnpj);
-
-        if (!companyName.isEmpty()) {
-
-            tvCompanyName.setVisibility(View.VISIBLE);
-            tvCompanyName.setText(String.format(getString(R.string.text_nav_company_name), companyName));
-        }
-
-        if (!companyCnpj.isEmpty()) {
-
-            tvCompanyCnpj.setVisibility(View.VISIBLE);
-            tvCompanyCnpj.setText(String.format(getString(R.string.text_nav_company_cnpj), companyCnpj));
-        }
-
+        mAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     private void initViews() {
@@ -197,6 +210,34 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        getSettings();
+    }
+
+    private void getSettings() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String companyName = prefs.getString(getString(R.string.pref_key_compnay_name), "");
+
+        TextView tvUserName = mNavigationview.getHeaderView(0).findViewById(R.id.tv_nav_user_name);
+        TextView tvCompanyName = mNavigationview.getHeaderView(0).findViewById(R.id.tv_nav_company_name);
+
+        if (!mUserName.isEmpty()) {
+
+            tvUserName.setVisibility(View.VISIBLE);
+            tvUserName.setText(mUserName);
+        }
+
+        if (!companyName.isEmpty()) {
+
+            tvCompanyName.setVisibility(View.VISIBLE);
+            tvCompanyName.setText(String.format(getString(R.string.text_company_name), companyName));
+        }
+    }
+
+    @Override
     public void onBackPressed() {
 
         // Referencia o o Drawer
@@ -216,7 +257,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main_search_date, menu);
+        getMenuInflater().inflate(R.menu.menu_search_date, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search_main);
 
@@ -253,39 +294,48 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
 
             // Click no menu Entrada
-            case R.id.nav_action_entrada:
+            case R.id.action_add_money_menu:
                 startActivity(new Intent(mContext, ListAddMoneytActivity.class));
                 break;
 
             // Click no menu Retirada
-            case R.id.nav_Action_retirada:
+            case R.id.action_remove_money_menu:
                 startActivity(new Intent(mContext, ListRemoveMoneyActivity.class));
                 break;
 
             // Click no menu Saldo Inicial
-            case R.id.nav_action_saldo_inicial:
+            case R.id.action_opening_menu:
                 startActivity(new Intent(mContext, ListOpeningActivity.class));
                 break;
 
             // Click no menu Fechamento
-            case R.id.nav_action_fechamento:
+            case R.id.action_closed_menu:
                 startActivity(new Intent(mContext, ClosedActivity.class));
                 break;
 
             // Click no menu Produtos
-            case R.id.nav_action_list_prod:
+            case R.id.action_products_menu:
                 startActivity(new Intent(mContext, ListProductActivity.class));
                 break;
 
             // Click no menu Clientes
-            case R.id.nav_action_list_clientes:
+            case R.id.action_clients_menu:
                 startActivity(new Intent(mContext, ListClientActivity.class));
                 break;
 
             // Click no menu Configurações
-            case R.id.nav_action_settings:
+            case R.id.action_settings_menu:
                 startActivity(new Intent(mContext, SettingsActivity.class));
                 break;
+
+            // Sair da conta Google
+            case R.id.action_sign_out_menu:
+                mAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                mUser = null;
+                startActivity(new Intent(mContext, SignInActivity.class));
+                finish();
+
         }
 
         // Apos o click o Drawer é fechado
@@ -476,5 +526,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

@@ -24,6 +24,7 @@ public class Const {
 
     /* Numeros em formtado string para ser usados em Edits */
     public static final String NUMBER_ZERO_STRING = "0";
+    public static final String EMPTY_STRING = "";
     public static final String A_UNIT_STRING = "1";
 
     /* Identificador para savedInstanceState da Activity Sell */

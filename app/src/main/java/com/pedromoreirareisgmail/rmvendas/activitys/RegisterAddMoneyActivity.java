@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -38,10 +39,13 @@ import static com.pedromoreirareisgmail.rmvendas.Utils.TimeDate.getDateTime;
 public class RegisterAddMoneyActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         EditText.OnTouchListener,
-        EditText.OnEditorActionListener {
+        EditText.OnEditorActionListener,
+        View.OnClickListener {
 
     private EditText mEtValue;
     private EditText mEtDescription;
+    private Button mButClearValue;
+    private Button mButClearDescription;
 
     private Context mContext;
     private CashMove cashMove;
@@ -91,6 +95,8 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         // Referencia itens do layout
         mEtValue = findViewById(R.id.et_value);
         mEtDescription = findViewById(R.id.et_description);
+        mButClearValue = findViewById(R.id.but_clear_et_value);
+        mButClearDescription = findViewById(R.id.but_clear_et_description);
     }
 
 
@@ -110,6 +116,10 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
         // Monitora toques no edit de valor
         mEtValue.setOnTouchListener(this);
+
+        // Ao clicar zera o valor do edit 
+        mButClearValue.setOnClickListener(this);
+        mButClearDescription.setOnClickListener(this);
     }
 
     @Override
@@ -275,13 +285,11 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
             /* Recebe o foco, coloca o cursor no fim da string e se teclado tiver fechado abre ele */
             case R.id.et_value:
-
-                view.performClick();
-
                 mEtValue.requestFocus();
                 mEtValue.setSelection(mEtValue.getText().length());
                 ControlViews.showKeyboard(mContext, mEtValue);
                 return true;
+
             default:
                 return false;
         }
@@ -304,6 +312,16 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                // Se o valor for acima de zero,fica visivel
+                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+
+                    mButClearValue.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearValue.setVisibility(View.GONE);
+                }
 
                 // Verifica alteração de dados no Edit
                 if (!isDataChanged) {
@@ -328,6 +346,32 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
 
             }
         });
+
+        mEtDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                // Se tiver algum caracter no edit, but clear fica visisvel
+                if (charSequence.length() > 0) {
+
+                    mButClearDescription.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearDescription.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -341,5 +385,20 @@ public class RegisterAddMoneyActivity extends AppCompatActivity implements
         }
 
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.but_clear_et_value:
+                mEtValue.setText(Const.NUMBER_ZERO_STRING);
+                break;
+
+            case R.id.but_clear_et_description:
+                mEtDescription.setText(Const.EMPTY_STRING);
+                break;
+        }
     }
 }
