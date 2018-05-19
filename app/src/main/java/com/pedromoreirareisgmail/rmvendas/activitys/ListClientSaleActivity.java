@@ -107,7 +107,7 @@ public class ListClientSaleActivity extends AppCompatActivity implements
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_search);
+        MenuItem menuItem = menu.findItem(R.id.action_search_menu_search);
 
         final SearchView searchView = (SearchView) menuItem.getActionView();
 
@@ -124,6 +124,9 @@ public class ListClientSaleActivity extends AppCompatActivity implements
             case android.R.id.home:
 
                 Intent intentSell = new Intent();
+
+                sellToClient.setClientId(Const.NO_ID_CLIENT_TO_SELL);
+
                 intentSell.putExtra(ConstIntents.INTENT_CLIENT_TO_SELL, sellToClient);
 
                 setResult(RESULT_OK, intentSell);
@@ -210,20 +213,41 @@ public class ListClientSaleActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.fab_add) {
 
-            Intent intentRegisterClient = new Intent(
-                    mContext,
-                    RegisterClientActivity.class
-            );
+        switch (view.getId()) {
 
-            Client client = new Client();
+            case R.id.fab_add:
 
-            client.setCalled(Const.CALL_LIST_CLIENT_SALE);
+                Intent intentRegisterClient = new Intent(
+                        mContext,
+                        RegisterClientActivity.class
+                );
 
-            intentRegisterClient.putExtra(ConstIntents.INTENT_CALLED_CLIENT, client);
+                Client client = new Client();
 
-            startActivity(intentRegisterClient);
+                client.setCalled(Const.CALL_LIST_CLIENT_SALE);
+
+                intentRegisterClient.putExtra(ConstIntents.INTENT_CALLED_CLIENT, client);
+
+                startActivity(intentRegisterClient);
+                break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+
+        Intent intentSell = new Intent();
+
+        sellToClient.setClientId(Const.NO_ID_CLIENT_TO_SELL);
+
+        intentSell.putExtra(ConstIntents.INTENT_CLIENT_TO_SELL, sellToClient);
+
+        setResult(RESULT_OK, intentSell);
+
+        super.onBackPressed();
+    }
+
+
 }

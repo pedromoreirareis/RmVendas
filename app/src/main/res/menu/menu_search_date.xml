@@ -4,18 +4,18 @@
 
 
     <item
-        android:id="@+id/action_search_main"
+        android:id="@+id/action_search_menu_search_date"
         android:icon="@drawable/ic_search_white"
         android:orderInCategory="1"
-        android:title="@string/menu_search_title"
+        android:title="@string/search_title_menu"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
-        android:id="@+id/action_data_main"
+        android:id="@+id/action_date_menu_search_date"
         android:icon="@drawable/ic_calendar_white"
         android:orderInCategory="2"
-        android:title="@string/menu_date_title"
+        android:title="@string/date_title_menu"
         app:showAsAction="ifRoom" />
 
 </menu>

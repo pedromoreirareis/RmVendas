@@ -68,13 +68,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/margin_default_8">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="@dimen/margin_default_8">
+                    android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/et_sell_quantity"
@@ -113,13 +113,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/til_sell_add"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
@@ -141,6 +141,7 @@
                         android:layout_centerVertical="true" />
 
                 </RelativeLayout>
+
             </LinearLayout>
 
 
@@ -160,13 +161,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/til_sell_discount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
@@ -243,12 +244,12 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_default_8">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_default_8">
+                        android:layout_height="wrap_content">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/et_sell_forward_value"

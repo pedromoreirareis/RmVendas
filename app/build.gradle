@@ -30,6 +30,7 @@ dependencies {
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -44,6 +45,7 @@ dependencies {
 
     // Firebase Librarys
     implementation "com.google.firebase:firebase-auth:$firebaseLibraryVersion"
+    implementation "com.google.firebase:firebase-firestore:$firebaseLibraryVersion"
 
     // Firebase Ui Librarys
     implementation "com.firebaseui:firebase-ui-auth:$firebaseUiLibraryVersion"

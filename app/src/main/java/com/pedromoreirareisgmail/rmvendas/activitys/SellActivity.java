@@ -94,7 +94,7 @@ public class SellActivity extends AppCompatActivity implements
     private String mValorTotalBundle = "";
 
     private boolean isAddProduct = false;
-    private boolean idDataChanged = false;
+    private boolean isDataChanged = false;
     private boolean isFormatCurrencyUpdate = false;
     private boolean isFormatIntegerUpdate = false;
 
@@ -307,9 +307,17 @@ public class SellActivity extends AppCompatActivity implements
 
                     sell.setPrice(sellToClient.getUnitValue());
                     sell.setClientId(sellToClient.getClientId());
-                    mUriClient = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, sell.getClientId());
-                    getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_CLIENT, null, this);
 
+
+                    if (sell.getClientId() == Const.NO_ID_CLIENT_TO_SELL) { // Não realiza pesquisa
+
+                        Snackbar.make(mButClient, getString(R.string.error_no_id_client), Snackbar.LENGTH_LONG).show();
+
+                    } else { // Faz pesquisa
+
+                        mUriClient = ContentUris.withAppendedId(EntryClient.CONTENT_URI_CLIENT, sell.getClientId());
+                        getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_CLIENT, null, this);
+                    }
                 }
 
                 mValorTotalBundle = calcularValorTotalVendaString(
@@ -318,6 +326,7 @@ public class SellActivity extends AppCompatActivity implements
                         editToString(mEtAdd),
                         editToString(mEtDiscount),
                         editToString(mEtForward));
+
             }
         }
     }
@@ -336,7 +345,7 @@ public class SellActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             // Salva dados no BD
-            case R.id.action_salvar:
+            case R.id.action_save_menu_save:
                 saveDataDB();
                 return true;
 
@@ -344,7 +353,7 @@ public class SellActivity extends AppCompatActivity implements
              * Verifica se houve alteração, se houve abre um Dialog para verificar se deseja descatar
              * as alterações e sair da activity ou se deseja continuar na activity e continua alterando*/
             case android.R.id.home:
-                if (!idDataChanged) {
+                if (!isDataChanged) {
 
                     NavUtils.navigateUpFromSameTask(this);
                     return true;
@@ -366,7 +375,7 @@ public class SellActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        if (!idDataChanged) {
+        if (!isDataChanged) {
 
             super.onBackPressed();
         }
@@ -599,15 +608,15 @@ public class SellActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.switch_sell_add:
-                idDataChanged = true;
+                isDataChanged = true;
                 return false;
 
             case R.id.switch_sell_discount:
-                idDataChanged = true;
+                isDataChanged = true;
                 return false;
 
             case R.id.switch_sell_forward:
-                idDataChanged = true;
+                isDataChanged = true;
                 return false;
 
             default:
@@ -648,9 +657,9 @@ public class SellActivity extends AppCompatActivity implements
                     charSequence = String.valueOf(numero);
                 }
 
-                if (!idDataChanged) {
+                if (!isDataChanged) {
 
-                    idDataChanged = true;
+                    isDataChanged = true;
                 }
 
 
@@ -699,9 +708,9 @@ public class SellActivity extends AppCompatActivity implements
                 }
 
 
-                if (!idDataChanged) {
+                if (!isDataChanged) {
 
-                    idDataChanged = true;
+                    isDataChanged = true;
                 }
 
                 mTvTotalValue.setText(calcularValorTotalVendaString(
@@ -759,9 +768,9 @@ public class SellActivity extends AppCompatActivity implements
                     mButClearDiscount.setVisibility(View.GONE);
                 }
 
-                if (!idDataChanged) {
+                if (!isDataChanged) {
 
-                    idDataChanged = true;
+                    isDataChanged = true;
                 }
 
 
@@ -821,9 +830,9 @@ public class SellActivity extends AppCompatActivity implements
                     mButClearForward.setVisibility(View.GONE);
                 }
 
-                if (!idDataChanged) {
+                if (!isDataChanged) {
 
-                    idDataChanged = true;
+                    isDataChanged = true;
                 }
 
                 mTvTotalValue.setText(calcularValorTotalVendaString(

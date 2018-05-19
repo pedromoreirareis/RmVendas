@@ -26,6 +26,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 
+import java.util.Objects;
+
 public class SignInActivity extends AppCompatActivity implements
         View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {
@@ -72,7 +74,7 @@ public class SignInActivity extends AppCompatActivity implements
         if (authResult != null) {
 
             FirebaseUser user = authResult.getUser();
-            Toast.makeText(this, String.format(getString(R.string.toast_welcome), user.getEmail()), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, String.format(getString(R.string.msg_welcome), user.getEmail()), Toast.LENGTH_LONG).show();
 
             startActivity(new Intent(mContext, MainActivity.class));
         }
@@ -107,7 +109,7 @@ public class SignInActivity extends AppCompatActivity implements
             if (result.isSuccess()) {
 
                 GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                firebaseAuthWithGoogle(Objects.requireNonNull(account));
 
             } else {
 
@@ -129,7 +131,7 @@ public class SignInActivity extends AppCompatActivity implements
 
                             Toast.makeText(
                                     mContext,
-                                    getString(R.string.toast_signin_failed),
+                                    getString(R.string.msg_signin_failed),
                                     Toast.LENGTH_LONG
                             ).show();
 
@@ -146,6 +148,6 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-        Toast.makeText(mContext, getString(R.string.toast_connection_failed), Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, getString(R.string.msg_connection_failed), Toast.LENGTH_LONG).show();
     }
 }

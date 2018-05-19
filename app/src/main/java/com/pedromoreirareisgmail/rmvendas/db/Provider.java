@@ -456,7 +456,7 @@ public class Provider extends ContentProvider {
             /* PRODUCT */
             case MATCH_PRODUCTS:
 
-                deleteRegisterAll(uri, EntryProduct.TABLE_PRODUCT, selection, selectionArgs);
+                return deleteRegisterAll(uri, EntryProduct.TABLE_PRODUCT, selection, selectionArgs);
 
             case MATCH_PRODUCT_ID:
 

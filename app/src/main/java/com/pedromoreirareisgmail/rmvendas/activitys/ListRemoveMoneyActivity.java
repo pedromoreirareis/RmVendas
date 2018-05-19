@@ -127,7 +127,7 @@ public class ListRemoveMoneyActivity extends AppCompatActivity implements
         // Abre o caléndaria para obter data
         switch (item.getItemId()) {
 
-            case R.id.action_date:
+            case R.id.action_date_menu_date:
                 Messages.dialogCalendar(mContext, mDateSetListener);
                 return true;
         }

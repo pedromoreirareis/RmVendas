@@ -91,7 +91,7 @@ public class ListProductSaleActivity extends AppCompatActivity implements
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_search);
+        MenuItem menuItem = menu.findItem(R.id.action_search_menu_search);
 
         final SearchView searchView = (SearchView) menuItem.getActionView();
 

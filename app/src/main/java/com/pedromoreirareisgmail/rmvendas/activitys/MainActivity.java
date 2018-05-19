@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -36,9 +34,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.pedromoreirareisgmail.rmvendas.Fire.FireUtils;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.PrefsUser;
 import com.pedromoreirareisgmail.rmvendas.Utils.TimeDate;
 import com.pedromoreirareisgmail.rmvendas.adapters.MainAdapter;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
@@ -218,8 +218,7 @@ public class MainActivity extends AppCompatActivity
 
     private void getSettings() {
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String companyName = prefs.getString(getString(R.string.pref_key_compnay_name), "");
+        String companyName = PrefsUser.getCompanyName(mContext);
 
         TextView tvUserName = mNavigationview.getHeaderView(0).findViewById(R.id.tv_nav_user_name);
         TextView tvCompanyName = mNavigationview.getHeaderView(0).findViewById(R.id.tv_nav_company_name);
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity
 
         getMenuInflater().inflate(R.menu.menu_search_date, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_search_main);
+        MenuItem menuItem = menu.findItem(R.id.action_search_menu_search_date);
 
         SearchView searchView = (SearchView) menuItem.getActionView();
 
@@ -274,7 +273,7 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
 
             // Item Calendario - Abre para fazer uma pesquisa por data no BD vendas
-            case R.id.action_data_main:
+            case R.id.action_date_menu_search_date:
                 Messages.dialogCalendar(
                         mContext,
                         mDateSetListener
@@ -294,42 +293,42 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
 
             // Click no menu Entrada
-            case R.id.action_add_money_menu:
+            case R.id.action_add_money_menu_drawer:
                 startActivity(new Intent(mContext, ListAddMoneytActivity.class));
                 break;
 
             // Click no menu Retirada
-            case R.id.action_remove_money_menu:
+            case R.id.action_remove_money_menu_drawer:
                 startActivity(new Intent(mContext, ListRemoveMoneyActivity.class));
                 break;
 
             // Click no menu Saldo Inicial
-            case R.id.action_opening_menu:
+            case R.id.action_opening_menu_drawer:
                 startActivity(new Intent(mContext, ListOpeningActivity.class));
                 break;
 
             // Click no menu Fechamento
-            case R.id.action_closed_menu:
+            case R.id.action_closed_menu_drawer:
                 startActivity(new Intent(mContext, ClosedActivity.class));
                 break;
 
             // Click no menu Produtos
-            case R.id.action_products_menu:
+            case R.id.action_products_menu_drawer:
                 startActivity(new Intent(mContext, ListProductActivity.class));
                 break;
 
             // Click no menu Clientes
-            case R.id.action_clients_menu:
+            case R.id.action_clients_menu_drawer:
                 startActivity(new Intent(mContext, ListClientActivity.class));
                 break;
 
             // Click no menu Configurações
-            case R.id.action_settings_menu:
+            case R.id.action_settings_menu_drawer:
                 startActivity(new Intent(mContext, SettingsActivity.class));
                 break;
 
             // Sair da conta Google
-            case R.id.action_sign_out_menu:
+            case R.id.action_sign_out_menu_drawer:
                 mAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 mUser = null;
@@ -499,13 +498,15 @@ public class MainActivity extends AppCompatActivity
         Uri uriSell = ContentUris.withAppendedId(EntrySeel.CONTENT_URI_SELL, id);
         Uri uriReceive = ContentUris.withAppendedId(Contract.EntryReceive.CONTENT_URI_RECEIVE, receiveId);
 
-        String messageDelete = String.format(
-                getString(R.string.text_delete_item_sale),
-                cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
-                cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME))
-        );
+        String messageDelete;
+
 
         if (receiveId > 0) {
+
+            messageDelete = String.format(
+                    getString(R.string.text_delete_item_sale_receive),
+                    cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
+                    cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME)));
 
             Messages.editOurDeleteSell(
                     mContext,
@@ -516,6 +517,11 @@ public class MainActivity extends AppCompatActivity
             );
 
         } else {
+
+            messageDelete = String.format(
+                    getString(R.string.text_delete_item_sale),
+                    cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
+                    cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME)));
 
             Messages.editOurDelete(
                     mContext,
@@ -531,5 +537,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FireUtils.firebaseSetNull();
     }
 }

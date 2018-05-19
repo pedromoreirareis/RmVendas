@@ -133,7 +133,7 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             /* Abre o App  para fazer ligação para o cliente, no numero que esta cadastrado */
-            case R.id.action_fone_cliente:
+            case R.id.action_fone_menu_client_fone:
 
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + client.getFone()));

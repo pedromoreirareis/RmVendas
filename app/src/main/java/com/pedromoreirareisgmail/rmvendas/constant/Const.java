@@ -35,4 +35,7 @@ public class Const {
     /* Identifica se é uma nova venda */
     public static final boolean CALL_SELL_ADD = true;
 
+
+    /*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ LONG @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+    public static final Long NO_ID_CLIENT_TO_SELL = -1L;
 }

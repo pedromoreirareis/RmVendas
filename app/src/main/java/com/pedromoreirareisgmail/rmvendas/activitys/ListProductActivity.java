@@ -19,13 +19,19 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
+import com.pedromoreirareisgmail.rmvendas.Utils.Net;
+import com.pedromoreirareisgmail.rmvendas.Utils.PrefsUser;
+import com.pedromoreirareisgmail.rmvendas.Utils.Sync;
 import com.pedromoreirareisgmail.rmvendas.adapters.ProductAdapter;
+import com.pedromoreirareisgmail.rmvendas.constant.Const;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
+import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 
 public class ListProductActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -101,16 +107,80 @@ public class ListProductActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_search_sync, menu);
 
         // Referencia o menu de pesquisa
-        MenuItem menuItem = menu.findItem(R.id.action_search);
+        MenuItem menuItem = menu.findItem(R.id.action_search_menu_search_sync);
 
         //  Instancia o SearchView e diz que quem vai tratar o esse metodo é a Activity
         final SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(this);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+
+            case R.id.action_export_menu_search_sync:
+
+                if (Net.verifyConnect(mContext)) {
+
+                    exportProducts();
+
+                } else {
+
+                    Toast.makeText(mContext, getString(R.string.error_no_internet), Toast.LENGTH_SHORT).show();
+                }
+
+
+                return true;
+
+            case R.id.action_import_menu_search_sync:
+
+                if (Net.verifyConnect(mContext)) {
+
+                    Sync.importProduct(mContext);
+
+                } else {
+
+                    Toast.makeText(mContext, getString(R.string.error_no_internet), Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void exportProducts() {
+
+
+        String companyID = PrefsUser.getCompanyCnpj(mContext);
+
+        // Se não tiver CNPJ - Não exporta
+        if (companyID.isEmpty()) {
+
+            Toast.makeText(mContext, getString(R.string.msg_no_cnpj), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Cursor cursor = SearchDB.searchProductExport(mContext);
+
+        // Tabela vazia - Não exporta
+        if (cursor.getCount() == Const.NUMBER_ZERO) {
+
+            Toast.makeText(mContext, getString(R.string.msg_no_data_export), Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        Sync.exportProduct(mContext, companyID, cursor);
     }
 
     @Override

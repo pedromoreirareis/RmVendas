@@ -118,7 +118,7 @@ public class RegisterOpeningActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             // Salva dados no DB
-            case R.id.action_salvar:
+            case R.id.action_save_menu_save:
                 saveDataDB();
                 return true;
 

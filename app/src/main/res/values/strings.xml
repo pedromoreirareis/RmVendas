@@ -35,10 +35,12 @@
 
 
     <!-- ****************************   Menus - Title *******************************************-->
-    <string name="menu_save_title">Salvar</string>
-    <string name="menu_date_title">Data</string>
-    <string name="menu_search_title">Pesquisar</string>
-    <string name="menu_fone_title">Ligar</string>
+    <string name="save_title_menu">Salvar</string>
+    <string name="date_title_menu">Data</string>
+    <string name="search_title_menu">Pesquisar</string>
+    <string name="export_title_menu">Exportar BACKUP</string>
+    <string name="import_title_menu">Restaurar BACKUP</string>
+    <string name="fone_title_menu">Ligar</string>
 
 
     <!-- ***************************   Drawer - Toggle ******************************************-->
@@ -95,6 +97,7 @@
     <string name="text_change_label_change_value">O valor do Troco é:</string>
     <string name="text_client_list_empty">Uai!  Cadê os clientes ?\nQue pena, ainda nenhum cliente cadastrado !!!</string>
     <string name="text_delete_item_sale">%1$s %2$s</string>
+    <string name="text_delete_item_sale_receive">%1$s %2$s\n\nTambém será excluído o registro \'a prazo\', dessa venda.</string>
     <string name="text_closed_client_name_forward">%1$s \n </string>
     <string name="text_add">Adicional</string>
     <string name="text_discount">Desconto</string>
@@ -153,6 +156,7 @@
     <string name="hint_product_name">Nome</string>
     <string name="hint_product_price">Preço R$</string>
     <string name="hint_quantity">Quantidade</string>
+    <string name="hint_company_cnpj">CNPJ</string>
 
     <!-- ************************    Mensagens Edição ****************************************** -->
     <string name="msg_insert_sucess">Inserido com sucesso</string>
@@ -161,10 +165,27 @@
     <string name="msg_edit_error">Erro ao editar</string>
 
 
+    <!-- ************************    Exportar e Importar *************************************** -->
+    <string name="msg_wait">Aguarde!!!</string>
+    <string name="msg_init_export_product">Fazendo BACKUP. Exportando sua lista de produtos.</string>
+    <string name="msg_init_import_product">Restaurar BACKUP. Baixando sua lista de produtos.</string>
+    <string name="msg_import_product_null">Não há BACKUP salvo, para restaurar.</string>
+    <string name="msg_delete_product_to_backup">Restaurar BACKUP. Baixando sua lista de produtos.</string>
+    <string name="msg_export_id_name">%1$s - %2$s</string>
+    <string name="msg_digite_cnpj">Digite o CNPJ da empresa que você trabalha para confimar a importação.</string>
+    <string name="msg_export_sucess">Backup realizado com sucesso.</string>
+    <string name="msg_sucess_insert_product">%1$s produtos de um total de %2$s, foram inseridos com sucesso.</string>
+
+
     <!-- ************************    Mensagens dialog alterações ******************************* -->
     <string name="dialog_alteration_title">Descartar as alterações?</string>
     <string name="dialog_alteration_continue">Continuar editando</string>
     <string name="dialog_alteration_discart">Descartar</string>
+    <string name="dialog_sync_product_title"> Produtos</string>
+    <string name="dialog_sync_export_product_message">Fazer BACKUP dos produtos</string>
+    <string name="dialog_sync_import_product_message">Restaurar BACKUP de seus produtos</string>
+    <string name="dialog_sync_cancel">Cancelar</string>
+    <string name="dialog_sync_confirm">Confirmar</string>
 
 
     <!--TODO: Aqui temos que usar o Formatações de Strings String.format xliff-->
@@ -263,7 +284,11 @@
     <string name="error_no_edition">Edição de venda a prazo não permitida</string>
     <string name="error_no_edition_exclude">Edição de venda a prazo não permitida. Se necessário exclua o registro.</string>
     <string name="error_name_lenght_5">O nome deve ter no mínio 5 caracteres</string>
-
+    <string name="error_no_id_client">Escolha um cliente, para realizar a venda a prazo.</string>
+    <string name="error_cnpj_invalide">Importação não realizada. O CNPJ digitado inválido.</string>
+    <string name="error_export_backup">Erro ao realizar backup. Tente novamente.</string>
+    <string name="error_import_backup">Erro ao restaurar backup. Tente novamente.</string>
+    <string name="error_no_internet">Verifique sua conexão com a internet. Erro!!!</string>
 
     <!-- ###########################################################################################
 
@@ -307,8 +332,10 @@
 
      ############################################################################################-->
     <string name="text_signin">Faça seu login</string>
-    <string name="toast_signin_failed">Erro ao fazer Login.</string>
-    <string name="toast_connection_failed">Google Play Services error.</string>
-    <string name="toast_welcome">Bem vindo, %1$s</string>
+    <string name="msg_signin_failed">Erro ao fazer Login.</string>
+    <string name="msg_connection_failed">Google Play Services error.</string>
+    <string name="msg_welcome">Bem vindo, %1$s</string>
+    <string name="msg_no_data_export">Não há dados para exportar</string>
+    <string name="msg_no_cnpj">Antes de exportar, você de adicionar o CNPJ da empresa.</string>
 
 </resources>

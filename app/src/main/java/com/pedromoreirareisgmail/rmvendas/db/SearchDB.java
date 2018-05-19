@@ -8,10 +8,36 @@ import android.database.sqlite.SQLiteDatabase;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
+import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 
 public class SearchDB {
+
+
+    public static Cursor searchProductExport(Context context) {
+
+        DbHelper mDbHelper = new DbHelper(context);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                EntryProduct._ID,
+                EntryProduct.COLUMN_NAME,
+                EntryProduct.COLUMN_PRICE
+        };
+
+        String orderBy = EntryProduct._ID;
+
+        return db.query(
+                EntryProduct.TABLE_PRODUCT,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                orderBy);
+    }
 
 
     public static String searchClientName(Context context, long id) {

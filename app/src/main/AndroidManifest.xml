@@ -188,7 +188,7 @@
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="true" />
 
-        <activity android:name=".activitys.SignInActivity"></activity>
+        <activity android:name=".activitys.SignInActivity"/>
     </application>
 
 </manifest>

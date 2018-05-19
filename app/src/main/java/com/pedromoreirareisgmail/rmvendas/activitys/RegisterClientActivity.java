@@ -130,7 +130,7 @@ public class RegisterClientActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
 
             // Botão salvar
-            case R.id.action_salvar:
+            case R.id.action_save_menu_save:
                 saveDataDB();
                 return true;
 

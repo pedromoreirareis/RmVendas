@@ -129,7 +129,7 @@ public class ClosedActivity extends AppCompatActivity implements
 
         switch (item.getItemId()) {
 
-            case R.id.action_date:
+            case R.id.action_date_menu_date:
                 Messages.dialogCalendar(mContext, mDateSetListener);
                 break;
 
