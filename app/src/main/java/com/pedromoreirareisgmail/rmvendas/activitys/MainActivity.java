@@ -31,7 +31,6 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pedromoreirareisgmail.rmvendas.Fire.FireUtils;
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseAnalytics mAnalytics;
 
     private Toolbar mToolbar;
     private FloatingActionButton mFab;
@@ -83,17 +81,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO: implementar Activity de coonfigurações para poder exportar e importar dados para firebase
-        //TODO: implementar Login Google firebase com conta google
-        //TODO: implementar exportação de produtos para firebase atraves do cnpj pu cpf
-        //TODO: implementar importação dos produtos firebase com cpf ou cnpj
-        //TODO: Buscar todos os produtos, atraves de um cursor, colocar em uma lista de objetos e exportar para firebase de uma unica vez - ver como fazer pelo pChat exportando mais de um dados
-        //TODO: Buscar dados do firebase colocar em uma lista de objetos, (fazer busca e comparação de ID) ou excluir produtos cadastrados e depois salvar todos no banco de dados - informar ao usuario que os produtos serão excluidos
-
         // Instancia FirebaseAuth e verifica se usuario esta logado
         initFirebase();
         initGoogleApiClient();
-        initFirebaseAnalytics();
 
         initViews();
         emptyLayout();
@@ -151,11 +141,6 @@ public class MainActivity extends AppCompatActivity
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
-    }
-
-    private void initFirebaseAnalytics() {
-
-        mAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     private void initViews() {

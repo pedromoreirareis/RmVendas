@@ -32,26 +32,25 @@ public class SettingsActivity extends AppCompatActivity {
 
             case android.R.id.home:
 
-                //TODO: antes tem de deletar DB FIRESTORE   - Delete userName
+                if (!PrefsUser.getCompanyCnpj(mContext).isEmpty()) {
 
-                User user = new User();
+                    User user = new User();
 
-                user.setName(Fire.getUser().getDisplayName());
-                user.setCpf(PrefsUser.getCompanyCpf(mContext));
-                user.setFone(Fire.getUser().getPhoneNumber());
-                user.setCompanyId(PrefsUser.getCompanyCnpj(mContext));
-                user.setCompanyName(PrefsUser.getCompanyName(mContext));
-                user.setToken(Fire.getDeviceToken());
+                    user.setName(Fire.getUser().getDisplayName());
+                    user.setCpf(PrefsUser.getCompanyCpf(mContext));
+                    user.setCompanyId(PrefsUser.getCompanyCnpj(mContext));
+                    user.setCompanyName(PrefsUser.getCompanyName(mContext));
+                    user.setToken(Fire.getDeviceToken());
 
-
-                Fire.getRefColUser(user.getCompanyId()).document(user.getName())
-                        .set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    Fire.getRefColUser(user.getCompanyId()).document(user.getName())
+                            .set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
 
-                    }
-                });
+                        }
+                    });
+                }
 
                 finish();
 

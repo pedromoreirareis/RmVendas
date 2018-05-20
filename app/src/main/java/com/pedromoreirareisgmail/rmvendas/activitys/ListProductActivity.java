@@ -129,13 +129,12 @@ public class ListProductActivity extends AppCompatActivity implements
 
                 if (Net.verifyConnect(mContext)) {
 
-                    exportProducts();
+                    exportProducts(PrefsUser.getCompanyCnpj(mContext));
 
                 } else {
 
                     Toast.makeText(mContext, getString(R.string.error_no_internet), Toast.LENGTH_SHORT).show();
                 }
-
 
                 return true;
 
@@ -143,7 +142,7 @@ public class ListProductActivity extends AppCompatActivity implements
 
                 if (Net.verifyConnect(mContext)) {
 
-                    Sync.importProduct(mContext);
+                    importProducts(PrefsUser.getCompanyCnpj(mContext));
 
                 } else {
 
@@ -157,16 +156,12 @@ public class ListProductActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void exportProducts() {
-
-
-        String companyID = PrefsUser.getCompanyCnpj(mContext);
+    private void exportProducts(String companyID) {
 
         // Se não tiver CNPJ - Não exporta
         if (companyID.isEmpty()) {
 
-            Toast.makeText(mContext, getString(R.string.msg_no_cnpj), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, getString(R.string.msg_no_cnpj_export), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -182,6 +177,21 @@ public class ListProductActivity extends AppCompatActivity implements
 
         Sync.exportProduct(mContext, companyID, cursor);
     }
+
+
+    private void importProducts(String companyID) {
+
+        // Se não tiver CNPJ - Não exporta
+        if (companyID.isEmpty()) {
+
+            Toast.makeText(mContext, getString(R.string.msg_no_cnpj_import), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Sync.importProduct(mContext, companyID);
+
+    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

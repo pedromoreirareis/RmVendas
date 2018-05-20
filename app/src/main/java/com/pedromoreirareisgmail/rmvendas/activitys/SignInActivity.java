@@ -37,8 +37,6 @@ public class SignInActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
 
-    private SignInButton mSignInButton;
-
     private Context mContext;
 
     @Override
@@ -50,7 +48,7 @@ public class SignInActivity extends AppCompatActivity implements
         mContext = SignInActivity.this;
 
         // Referencia button no layout
-        mSignInButton = findViewById(R.id.but_sign_in);
+        SignInButton mSignInButton = findViewById(R.id.but_sign_in);
 
         // Instancia o Listener
         mSignInButton.setOnClickListener(this);

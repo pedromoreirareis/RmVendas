@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/app_name"
@@ -183,12 +184,15 @@
                 android:value=".activitys.MainActivity" />
         </activity>
 
+        <activity android:name=".activitys.SignInActivity"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name=".db.Provider"
             android:authorities="com.pedromoreirareisgmail.rmvendas"
-            android:exported="true" />
+            android:exported="false" />
 
-        <activity android:name=".activitys.SignInActivity"/>
+
     </application>
 
 </manifest>

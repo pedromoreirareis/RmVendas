@@ -4,7 +4,6 @@
     android:layout_height="match_parent">
 
     <EditTextPreference
-        android:id="@+id/etpName"
         android:inputType="textCapWords"
         android:key="@string/pref_key_compnay_name"
         android:singleLine="true"

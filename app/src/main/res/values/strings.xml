@@ -58,7 +58,6 @@
     <string name="menu_registers_title_drawer">Cadastros</string>
     <string name="menu_box_title_drawer">Caixa</string>
     <string name="menu_outher_title_drawer">Outros</string>
-    <string name="menu_about_title_drawer">Sobre</string>
     <string name="menu_settings_title_drawer">Configurações</string>
     <string name="menu_exit_title_drawer">Sair</string>
 
@@ -104,9 +103,6 @@
     <string name="text_forward">A prazo</string>
     <string name="text_client">Cliente</string>
     <string name="text_company_name">Empresa.:    %1$s</string>
-    <string name="text_company_cnpj">Cnpj........:    %1$s</string>
-    <string name="text_user_cpf">Cpf..........:    %1$s</string>
-    <string name="text_user_name">Usuário...:    %1$s</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
@@ -115,7 +111,7 @@
     <string name="text_item_value_discount">Desconto.:  %1$s</string>
     <string name="text_item_value_total">Total.......:  %1$s</string>
     <string name="text_item_value_in_cash">A vista....:  %1$s</string>
-    <string name="text_item_value_forward">A prazo...:  %1$s</string>
+    <string name="text_item_value_forward">A prazo…:  %1$s</string>
     <string name="text_item_client_name_forward">Cliente.....:  %1$s</string>
 
 
@@ -167,11 +163,11 @@
 
     <!-- ************************    Exportar e Importar *************************************** -->
     <string name="msg_wait">Aguarde!!!</string>
+    <string name="msg_delete_export_product">Preparando para sistema para fazer BACKUP.</string>
     <string name="msg_init_export_product">Fazendo BACKUP. Exportando sua lista de produtos.</string>
     <string name="msg_init_import_product">Restaurar BACKUP. Baixando sua lista de produtos.</string>
     <string name="msg_import_product_null">Não há BACKUP salvo, para restaurar.</string>
-    <string name="msg_delete_product_to_backup">Restaurar BACKUP. Baixando sua lista de produtos.</string>
-    <string name="msg_export_id_name">%1$s - %2$s</string>
+    <string name="msg_export_id_name">%1$s - %2$s.</string>
     <string name="msg_digite_cnpj">Digite o CNPJ da empresa que você trabalha para confimar a importação.</string>
     <string name="msg_export_sucess">Backup realizado com sucesso.</string>
     <string name="msg_sucess_insert_product">%1$s produtos de um total de %2$s, foram inseridos com sucesso.</string>
@@ -183,7 +179,6 @@
     <string name="dialog_alteration_discart">Descartar</string>
     <string name="dialog_sync_product_title"> Produtos</string>
     <string name="dialog_sync_export_product_message">Fazer BACKUP dos produtos</string>
-    <string name="dialog_sync_import_product_message">Restaurar BACKUP de seus produtos</string>
     <string name="dialog_sync_cancel">Cancelar</string>
     <string name="dialog_sync_confirm">Confirmar</string>
 
@@ -331,11 +326,11 @@
                                         FIREBASE
 
      ############################################################################################-->
-    <string name="text_signin">Faça seu login</string>
     <string name="msg_signin_failed">Erro ao fazer Login.</string>
     <string name="msg_connection_failed">Google Play Services error.</string>
     <string name="msg_welcome">Bem vindo, %1$s</string>
     <string name="msg_no_data_export">Não há dados para exportar</string>
-    <string name="msg_no_cnpj">Antes de exportar, você de adicionar o CNPJ da empresa.</string>
+    <string name="msg_no_cnpj_export">Antes de fazer BACKUP, você de adicionar o CNPJ da empresa.</string>
+    <string name="msg_no_cnpj_import">Antes de restaurar BACKUP, você de adicionar o CNPJ da empresa.</string>
 
 </resources>

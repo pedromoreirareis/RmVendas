@@ -14,7 +14,7 @@ public class Fire {
     private static FirebaseAuth auth;
     private static FirebaseUser user;
 
-    private static FirebaseFirestore refRoot;
+
     private static CollectionReference refColProduct;
     private static CollectionReference refColUser;
 
@@ -52,21 +52,12 @@ public class Fire {
         return user;
     }
 
-    public static FirebaseFirestore getRefRoot() {
-
-        if (refRoot == null) {
-
-            refRoot = FirebaseFirestore.getInstance();
-        }
-
-        return refRoot;
-    }
 
     public static CollectionReference getRefColProduct(String CompanyID) {
 
         if (refColProduct == null) {
 
-            refColProduct = getRefRoot().collection(ConstFire.FIRE_COL_COMPANY).document(CompanyID).collection(ConstFire.FIRE_COL_PRODUCT);
+            refColProduct = FirebaseFirestore.getInstance().collection(ConstFire.FIRE_COL_COMPANY).document(CompanyID).collection(ConstFire.FIRE_COL_PRODUCT);
         }
 
         return refColProduct;
@@ -77,7 +68,7 @@ public class Fire {
 
         if (refColUser == null) {
 
-            refColUser = getRefRoot().collection(ConstFire.FIRE_COL_COMPANY).document(CompanyID).collection(ConstFire.FIRE_COL_USERS);
+            refColUser = FirebaseFirestore.getInstance().collection(ConstFire.FIRE_COL_COMPANY).document(CompanyID).collection(ConstFire.FIRE_COL_USERS);
         }
 
         return refColUser;
@@ -99,9 +90,6 @@ public class Fire {
         Fire.user = null;
     }
 
-    public static void setRefRoot() {
-        Fire.refRoot = null;
-    }
 
     public static void setRefColProduct() {
         Fire.refColProduct = null;

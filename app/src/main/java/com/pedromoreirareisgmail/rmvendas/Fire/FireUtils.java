@@ -8,7 +8,6 @@ public class FireUtils {
         Fire.setDeviceToken();
         Fire.setAuth();
         Fire.setUser();
-        Fire.setRefRoot();
         Fire.setRefColProduct();
         Fire.setRefColUser();
     }
