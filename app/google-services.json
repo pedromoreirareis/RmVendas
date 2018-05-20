@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "714304311303",
+    "firebase_url": "https://rmvendas-6cacf.firebaseio.com",
+    "project_id": "rmvendas-6cacf",
+    "storage_bucket": "rmvendas-6cacf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714304311303:android:5f4559a5c917a50a",
+        "android_client_info": {
+          "package_name": "com.pedromoreirareisgmail.rmvendas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714304311303-eu1irckdv17u42rgou1kdtfb1s522l3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pedromoreirareisgmail.rmvendas",
+            "certificate_hash": "fc68dd41f2c3f993dc732c988fa43e764d7b13ba"
+          }
+        },
+        {
+          "client_id": "714304311303-5vidhofq7a96fphvb5fk2sa3mig29v80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9KByOZ0lA00GUrr6psaMuegSYI770MTM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714304311303-5vidhofq7a96fphvb5fk2sa3mig29v80.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
