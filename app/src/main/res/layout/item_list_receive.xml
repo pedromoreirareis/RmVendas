@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/tv_a_receber_list_data"
+        android:id="@+id/tv_receive_list_date"
         style="@style/textViewDescriptionRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 
 
     <TextView
-        android:id="@+id/tv_a_receber_list_descricao"
+        android:id="@+id/tv_receive_list_description"
         style="@style/textViewDescriptionRight"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -34,7 +34,7 @@
         android:maxLines="1" />
 
     <TextView
-        android:id="@+id/tv_a_receber_list_valor"
+        android:id="@+id/tv_receive_list_value"
         style="@style/textViewBold"
         android:layout_width="0dp"
         android:layout_height="match_parent"

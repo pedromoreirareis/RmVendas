@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pedromoreirareisgmail.rmvendas.Fire.FireUtils;
@@ -44,6 +45,8 @@ import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstLoader;
 import com.pedromoreirareisgmail.rmvendas.db.Contract;
 import com.pedromoreirareisgmail.rmvendas.db.Contract.EntrySeel;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -70,9 +73,9 @@ public class MainActivity extends AppCompatActivity
     private Context mContext;
     private MainAdapter mAdapter;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     private String mSearchDateDB = null;
     private String mSearchDB = "";
-    private String mUserName = "";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity
          * O Drawer é o ViewGroup e NavigationView é uma view do Drawer*/
         mNavigationview.setNavigationItemSelectedListener(this);
 
-        mUserName = mUser.getDisplayName();
+
 
         initListenerAndObject();
         initTitleDate();
@@ -126,6 +129,8 @@ public class MainActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         if (mUser == null) { // Não esta logado
 
@@ -208,16 +213,16 @@ public class MainActivity extends AppCompatActivity
         TextView tvUserName = mNavigationview.getHeaderView(0).findViewById(R.id.tv_nav_user_name);
         TextView tvCompanyName = mNavigationview.getHeaderView(0).findViewById(R.id.tv_nav_company_name);
 
-        if (!mUserName.isEmpty()) {
+        if (!Objects.requireNonNull(mUser.getDisplayName()).isEmpty()) {
 
             tvUserName.setVisibility(View.VISIBLE);
-            tvUserName.setText(mUserName);
+            tvUserName.setText(mUser.getDisplayName());
         }
 
         if (!companyName.isEmpty()) {
 
             tvCompanyName.setVisibility(View.VISIBLE);
-            tvCompanyName.setText(String.format(getString(R.string.text_company_name), companyName));
+            tvCompanyName.setText(companyName);
         }
     }
 

@@ -7,6 +7,6 @@
         android:icon="@drawable/ic_done_white"
         android:orderInCategory="100"
         android:title="@string/save_title_menu"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

@@ -86,8 +86,6 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.but_sign_in:
                 signIn();
                 break;
-            default:
-                return;
         }
     }
 

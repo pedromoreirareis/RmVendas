@@ -8,7 +8,7 @@
 
 
     <!-- *****************************   Title do App *******************************************-->
-    <string name="app_name">Rm Vendas</string>
+    <string name="app_name">rVendas</string>
 
     <!-- ***************************   Title Activitys ******************************************-->
     <string name="title_add_money_list">Entradas  %1$s</string>
@@ -32,6 +32,7 @@
     <string name="title_client_list">Clientes</string>
     <string name="title_client_list_sell">Clientes Cadastrados</string>
     <string name="title_changed_money">Troco</string>
+    <string name="title_settings">Configurações</string>
 
 
     <!-- ****************************   Menus - Title *******************************************-->
@@ -102,7 +103,6 @@
     <string name="text_discount">Desconto</string>
     <string name="text_forward">A prazo</string>
     <string name="text_client">Cliente</string>
-    <string name="text_company_name">Empresa.:    %1$s</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->

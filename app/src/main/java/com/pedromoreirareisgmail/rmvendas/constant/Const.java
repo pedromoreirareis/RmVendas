@@ -12,13 +12,14 @@ public class Const {
     public static final int MIN_CARACT_10 = 10;
     public static final int MIN_NUM_FONE_8 = 8;
     public static final double NUMBER_ZERO = 0;
+    public static final double NUMBER_ONE = 1;
 
     /* Identifica a Activity de origem */
     public static final int CALL_LIST_CLIENT = 50;
     public static final int CALL_LIST_CLIENT_SALE = 51;
 
     /*Códigos de Result - startActivityForResult*/
-    public static final int COD_RESULT_CLIENT_SELL = 10001;
+    public static final int PICK_COD_RESULT_CLIENT_SELL = 10001;
 
     /*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ STRINGS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
 

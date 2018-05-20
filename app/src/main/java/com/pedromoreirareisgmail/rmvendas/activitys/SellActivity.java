@@ -242,6 +242,7 @@ public class SellActivity extends AppCompatActivity implements
         mButClearForward.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View view) {
 
@@ -264,7 +265,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 intentClientList.putExtra(ConstIntents.INTENT_SELL_TO_CLIENT, sellToClient);
 
-                startActivityForResult(intentClientList, Const.COD_RESULT_CLIENT_SELL);
+                startActivityForResult(intentClientList, Const.PICK_COD_RESULT_CLIENT_SELL);
 
                 ControlViews.hideKeyboard(mContext, mButClient);
                 break;
@@ -294,7 +295,7 @@ public class SellActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         // Recebe os dados do cliente para venda a prazo
-        if (requestCode == Const.COD_RESULT_CLIENT_SELL && resultCode == RESULT_OK) {
+        if (requestCode == Const.PICK_COD_RESULT_CLIENT_SELL && resultCode == RESULT_OK) {
 
             if (data != null) {
 
@@ -578,12 +579,15 @@ public class SellActivity extends AppCompatActivity implements
 
     }
 
+
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+
 
         switch (view.getId()) {
 
             case R.id.et_sell_quantity:
+
                 mEtQuantity.requestFocus();
                 mEtQuantity.setSelection(mEtQuantity.getText().length());
                 ControlViews.showKeyboard(mContext, mEtQuantity);
@@ -622,6 +626,7 @@ public class SellActivity extends AppCompatActivity implements
             default:
                 return false;
         }
+
     }
 
     /* Verifica a entrada de caracteres nos edits*/

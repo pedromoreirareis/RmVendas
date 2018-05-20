@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        configrVendas {
+            keyAlias 'KeyrVendas'
+            keyPassword 'pmr151217120608'
+            storeFile file('C:/ANDROID/APKS/rVendas/KeyrVendas.jks')
+            storePassword 'pmr151217'
+        }
+    }
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
     defaultConfig {
@@ -13,8 +21,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false //Mudar para true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'  // mudar => 'android-optimize.txt'
+            minifyEnabled true //Mudar para true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // mudar => 'android-optimize.txt'
         }
     }
 }
@@ -27,14 +36,10 @@ ext {
 }
 
 dependencies {
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
-
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     // Android Librarys
     implementation "com.android.support:appcompat-v7:$androidLibraryVersion"
     implementation "com.android.support:support-v4:$androidLibraryVersion"
@@ -46,11 +51,10 @@ dependencies {
     // Firebase Librarys
     implementation "com.google.firebase:firebase-auth:$firebaseLibraryVersion"
     implementation "com.google.firebase:firebase-firestore:$firebaseLibraryVersion"
+    implementation "com.google.firebase:firebase-core:$firebaseLibraryVersion"
 
     // Firebase Ui Librarys
     implementation "com.firebaseui:firebase-ui-auth:$firebaseUiLibraryVersion"
-
-
     testImplementation 'junit:junit:4.12'
 }
 

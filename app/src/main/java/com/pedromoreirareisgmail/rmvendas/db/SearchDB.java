@@ -14,6 +14,33 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
 public class SearchDB {
 
+    public static int searchCountPorduct(Context context) {
+
+        DbHelper mDbHelper = new DbHelper(context);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                EntryProduct._ID
+        };
+
+
+        Cursor cursor = db.query(
+                EntryProduct.TABLE_PRODUCT,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+
+        return count;
+    }
+
 
     public static Cursor searchProductExport(Context context) {
 

@@ -26,4 +26,6 @@ public class ConstLoader {
     public static final int LOADER_CLOSED_CASHMOVE = 4001;
     public static final int LOADER_CLOSED_OPENING = 4002;
     public static final int LOADER_CLOSED_SELL = 4003;
+
+    public static final int LOADER_LIST_CONTACT = 5003;
 }

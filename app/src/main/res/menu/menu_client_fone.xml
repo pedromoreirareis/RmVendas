@@ -6,6 +6,6 @@
         android:icon="@drawable/ic_call_white"
         android:orderInCategory="100"
         android:title="@string/fone_title_menu"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

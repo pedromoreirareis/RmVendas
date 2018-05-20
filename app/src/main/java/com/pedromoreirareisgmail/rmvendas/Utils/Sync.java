@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.pedromoreirareisgmail.rmvendas.Fire.Fire;
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
+import com.pedromoreirareisgmail.rmvendas.db.SearchDB;
 import com.pedromoreirareisgmail.rmvendas.models.ProductSync;
 
 import java.util.ArrayList;
@@ -204,9 +205,7 @@ public class Sync {
                     // Verifica se CompanyID digitado é o que esta salvo no FIRESTORE */
                     if (!userCompanyID.equals(companyID)) {
 
-                        etCompanyID.setError(context.getString(R.string.error_cnpj_invalide));
                         Toast.makeText(context, context.getText(R.string.error_cnpj_invalide), Toast.LENGTH_SHORT).show();
-                        return;
 
                     } else {
 
@@ -245,11 +244,17 @@ public class Sync {
 
                                     } else { // Apagar Produtos DB e salvar backup restaurado no lugar
 
-                                        /* Apaga dados do DB SQLite */
-                                        int deletes = context.getContentResolver().delete(EntryProduct.CONTENT_URI_PRODUCT, null, null);
+                                        int countProduct = SearchDB.searchCountPorduct(context);
+
+                                        int deletes = 0;
+
+                                        if (countProduct > 0) {
+                                            /* Apaga dados do DB SQLite */
+                                            deletes = context.getContentResolver().delete(EntryProduct.CONTENT_URI_PRODUCT, null, null);
+                                        }
 
                                         /* Se excluir dados do SQLite com sucesso */
-                                        if (deletes > 0) {
+                                        if (deletes > 0 || countProduct == 0) {
 
                                             int quantityInsert = 0;
 

@@ -100,9 +100,9 @@ public class ListClientActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_search_client, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_search_menu_search);
+        MenuItem menuItem = menu.findItem(R.id.action_search_menu_search_client);
 
         final SearchView searchView = (SearchView) menuItem.getActionView();
 

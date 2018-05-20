@@ -72,9 +72,9 @@ public class ReceiveAdapter extends CursorAdapter {
 
         public ReceivedHolder(View view) {
 
-            tvValue = view.findViewById(R.id.tv_a_receber_list_valor);
-            tvDate = view.findViewById(R.id.tv_a_receber_list_data);
-            tvDescription = view.findViewById(R.id.tv_a_receber_list_descricao);
+            tvValue = view.findViewById(R.id.tv_receive_list_value);
+            tvDate = view.findViewById(R.id.tv_receive_list_date);
+            tvDescription = view.findViewById(R.id.tv_receive_list_description);
         }
     }
 }
