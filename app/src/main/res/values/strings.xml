@@ -284,6 +284,8 @@
     <string name="error_export_backup">Erro ao realizar backup. Tente novamente.</string>
     <string name="error_import_backup">Erro ao restaurar backup. Tente novamente.</string>
     <string name="error_no_internet">Verifique sua conexão com a internet. Erro!!!</string>
+    <string name="error_signin_failed_no_account">Erro no Login. Nenhuma conta encontrada.</string>
+    <string name="error_signin_failed">Erro ao fazer Login. Tente novamente.</string>
 
     <!-- ###########################################################################################
 
@@ -326,7 +328,6 @@
                                         FIREBASE
 
      ############################################################################################-->
-    <string name="msg_signin_failed">Erro ao fazer Login.</string>
     <string name="msg_connection_failed">Google Play Services error.</string>
     <string name="msg_welcome">Bem vindo, %1$s</string>
     <string name="msg_no_data_export">Não há dados para exportar</string>

@@ -63,7 +63,7 @@ public class Contract {
 
         /* Criando tabela */
         public static final String CREATE_TABLE_CASHMOVE =
-                "CREATE TABLE IF NOT EXISTS " + TABLE_CASHMOVE
+                "CREATE TABLE " + TABLE_CASHMOVE
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
@@ -99,7 +99,7 @@ public class Contract {
         public static final String COLUMN_VALUE = "value";
 
         public static final String CREATE_TABLE_OPENING =
-                "CREATE TABLE IF NOT EXISTS " + TABLE_OPENING
+                "CREATE TABLE " + TABLE_OPENING
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
@@ -132,7 +132,7 @@ public class Contract {
         public static final String COLUMN_PRICE = "price";
 
         public static final String CREATE_TABLE_PRODUCT =
-                "CREATE TABLE IF NOT EXISTS " + TABLE_PRODUCT
+                "CREATE TABLE " + TABLE_PRODUCT
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_NAME + " TEXT NOT NULL, "
@@ -165,7 +165,7 @@ public class Contract {
         public static final String COLUMN_FONE = "fone";
 
         public static final String CREATE_TABLE_CLIENT =
-                " CREATE TABLE IF NOT EXISTS " + TABLE_CLIENT
+                " CREATE TABLE " + TABLE_CLIENT
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_NAME + " TEXT NOT NULL, "
@@ -207,7 +207,7 @@ public class Contract {
 
 
         public static final String CREATE_TABLE_SELL =
-                "CREATE TABLE IF NOT EXISTS " + TABLE_SELL
+                "CREATE TABLE " + TABLE_SELL
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
@@ -253,7 +253,7 @@ public class Contract {
 
 
         public static final String CREATE_TABLE_RECEIVE =
-                " CREATE TABLE IF NOT EXISTS " + TABLE_RECEIVE
+                " CREATE TABLE " + TABLE_RECEIVE
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "

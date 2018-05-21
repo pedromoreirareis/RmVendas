@@ -21,9 +21,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.pedromoreirareisgmail.rmvendas.R;
+import com.pedromoreirareisgmail.rmvendas.Utils.Net;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
 
 import java.util.Objects;
@@ -44,11 +44,13 @@ public class SignInActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        // Contexto da Activity
         mContext = SignInActivity.this;
 
         // Referencia button no layout
         SignInButton mSignInButton = findViewById(R.id.but_sign_in);
+
+        // Definindo tamanho do Button
+        mSignInButton.setSize(SignInButton.SIZE_WIDE);
 
         // Instancia o Listener
         mSignInButton.setOnClickListener(this);
@@ -63,19 +65,7 @@ public class SignInActivity extends AppCompatActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
 
-
         mAuth = FirebaseAuth.getInstance();
-    }
-
-    private void handleFirebaseAuthResult(AuthResult authResult) {
-
-        if (authResult != null) {
-
-            FirebaseUser user = authResult.getUser();
-            Toast.makeText(this, String.format(getString(R.string.msg_welcome), user.getEmail()), Toast.LENGTH_LONG).show();
-
-            startActivity(new Intent(mContext, MainActivity.class));
-        }
     }
 
     @Override
@@ -84,7 +74,16 @@ public class SignInActivity extends AppCompatActivity implements
         switch (v.getId()) {
 
             case R.id.but_sign_in:
-                signIn();
+
+                if (Net.verifyConnect(mContext)) {
+
+                    signIn();
+
+                } else {
+
+                    Toast.makeText(mContext, getString(R.string.error_no_internet), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }
@@ -102,6 +101,7 @@ public class SignInActivity extends AppCompatActivity implements
         if (requestCode == ConstIntents.RC_SIGN_IN) {
 
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
             if (result.isSuccess()) {
 
                 GoogleSignInAccount account = result.getSignInAccount();
@@ -109,6 +109,7 @@ public class SignInActivity extends AppCompatActivity implements
 
             } else {
 
+                Toast.makeText(mContext, getString(R.string.error_signin_failed_no_account), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Google Sign In Failed.");
             }
         }
@@ -123,23 +124,26 @@ public class SignInActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if (!task.isSuccessful()) {
+                        if (task.isSuccessful()) {
 
-                            Toast.makeText(
-                                    mContext,
-                                    getString(R.string.msg_signin_failed),
-                                    Toast.LENGTH_LONG
-                            ).show();
+                            if (mAuth.getCurrentUser() != null) {
+
+                                startActivity(new Intent(mContext, MainActivity.class));
+                                finish();
+                            }
 
                         } else {
 
-                            startActivity(new Intent(mContext, MainActivity.class));
+                            Toast.makeText(
+                                    mContext,
+                                    getString(R.string.error_signin_failed),
+                                    Toast.LENGTH_LONG
+                            ).show();
                         }
 
                     }
                 });
     }
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

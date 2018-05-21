@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity
     private Context mContext;
     private MainAdapter mAdapter;
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     private String mSearchDateDB = null;
     private String mSearchDB = "";
 
@@ -84,9 +83,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Instancia FirebaseAuth e verifica se usuario esta logado
-        initFirebase();
-        initGoogleApiClient();
+        // Verifica se usuario esta logado
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        if (mUser == null) { // Não esta logado
+
+            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+            finish();
+            return;
+        }
+
+        // Utilizado para sair da conta google
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
 
         initViews();
         emptyLayout();
@@ -116,37 +128,10 @@ public class MainActivity extends AppCompatActivity
         mNavigationview.setNavigationItemSelectedListener(this);
 
 
-
         initListenerAndObject();
         initTitleDate();
-
-
-        // Inicia Pesquisa no banco de dados
-        getLoaderManager().initLoader(ConstLoader.LOADER_MAIN, null, this);
     }
 
-    private void initFirebase() {
-
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        if (mUser == null) { // Não esta logado
-
-            startActivity(new Intent(MainActivity.this, SignInActivity.class));
-            finish();
-            return;
-        }
-    }
-
-    private void initGoogleApiClient() {
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
-    }
 
     private void initViews() {
 
@@ -204,9 +189,14 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
         getSettings();
+
+        // Inicia Pesquisa no banco de dados
+        getLoaderManager().initLoader(ConstLoader.LOADER_MAIN, null, this);
     }
 
     private void getSettings() {
+
+        FirebaseAnalytics.getInstance(this);
 
         String companyName = PrefsUser.getCompanyName(mContext);
 
@@ -324,6 +314,7 @@ public class MainActivity extends AppCompatActivity
                 mUser = null;
                 startActivity(new Intent(mContext, SignInActivity.class));
                 finish();
+                break;
 
         }
 

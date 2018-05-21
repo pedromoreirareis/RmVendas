@@ -11,8 +11,8 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryClient;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryProduct;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
-
 public class SearchDB {
+
 
     public static int searchCountPorduct(Context context) {
 
@@ -95,7 +95,6 @@ public class SearchDB {
         String name = cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME));
 
         cursor.close();
-        db.close();
 
         return name;
     }
@@ -163,7 +162,6 @@ public class SearchDB {
         }
 
         cursor.close();
-        db.close();
 
         return total;
     }

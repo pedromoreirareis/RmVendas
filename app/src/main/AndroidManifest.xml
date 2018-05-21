@@ -3,6 +3,8 @@
     package="com.pedromoreirareisgmail.rmvendas">
 
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -14,6 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/app_name"
@@ -194,7 +201,6 @@
             android:name=".db.Provider"
             android:authorities="com.pedromoreirareisgmail.rmvendas"
             android:exported="false" />
-
 
     </application>
 

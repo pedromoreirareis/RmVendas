@@ -14,7 +14,7 @@ import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 public class DbHelper extends SQLiteOpenHelper {
 
     /* Nome do banco de dados */
-    private static final String DB_NAME = "vendas.db";
+    private static final String DB_NAME = "sale.db";
 
     /* Versão do banco de dados*/
     private static final int DB_VERSION = 1;
@@ -25,8 +25,10 @@ public class DbHelper extends SQLiteOpenHelper {
      * @param context contexto
      */
     public DbHelper(Context context) {
+
         super(context, DB_NAME, null, DB_VERSION);
     }
+
 
     /**
      * Cria o banco de dados - Cria as tabelas do banco de dados se elas não existem
@@ -36,10 +38,10 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        db.execSQL(EntrySeel.CREATE_TABLE_SELL);
         db.execSQL(EntryProduct.CREATE_TABLE_PRODUCT);
         db.execSQL(EntryCashMove.CREATE_TABLE_CASHMOVE);
         db.execSQL(EntryOpening.CREATE_TABLE_OPENING);
-        db.execSQL(EntrySeel.CREATE_TABLE_SELL);
         db.execSQL(Contract.EntryClient.CREATE_TABLE_CLIENT);
         db.execSQL(EntryReceive.CREATE_TABLE_RECEIVE);
     }
