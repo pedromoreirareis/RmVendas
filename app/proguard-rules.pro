@@ -23,5 +23,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# quickstart-android *** firebase auth
+-keepattributes Signature
+-keepattributes *Annotation*
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
+
+
 -keep public class android.support.v7.widget.** { *; }
 -keep class android.support.v7.widget.SearchView { *; }
+-keep class android.support.v7.widget.RecyclerView { *; }
+-keep class com.pedromoreirareisgmail.rmvendas.models.**{*;}
+-keep class com.pedromoreirareisgmail.rmvendas.adapters.**{*;}
+-keep class com.firebase.** { *; }
