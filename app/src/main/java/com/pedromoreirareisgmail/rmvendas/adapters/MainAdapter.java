@@ -31,6 +31,12 @@ public class MainAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
+        //TODO: receber dados com vendas com cartão de credito e mostar ao usuario
+        //TODO: fazer calculos para mostar corretamente os descontos, vendas a vista, vendas a prazo e vendas no cartão
+        //TODO: criar novas strings e tavez campos para mostar que a venda foi no cartão - novo lugar do valor de venda a vista mostar a palavra "CARTAO"
+
+
+
         MainViewHolder holder = new MainViewHolder(view);
 
         /* Quantidade de produtos vendidos, sem tem adicional, se tem desconto e sem tem prazo */

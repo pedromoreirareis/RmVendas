@@ -57,7 +57,14 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int versaoAtual, int novaVersao) {
 
+        if (versaoAtual < 2) {
+            //TODO: Atualizar banco de dados para nova versao
+        }
+        //TODO: verificar se e melhor adicionar uma coluna ou uma tabela para vendas no cartão
+        //TODO: talvez crar uma nova tabelas para as vendas no cartão seja bom e mais facil e mostar qual cliente comprou - ver se é melhor
+
         // Implementar quando for Atualizar o banco de dados
+
 
     }
 }

@@ -101,8 +101,12 @@
     <string name="text_closed_client_name_forward">%1$s \n </string>
     <string name="text_add">Adicional</string>
     <string name="text_discount">Desconto</string>
+    <string name="text_card">Cartão</string>
     <string name="text_forward">A prazo</string>
     <string name="text_client">Cliente</string>
+
+    <string name="text_receive_add_money_description">Pagamento.: %1$s - %2$s</string>
+    <string name="text_receive_add_money_toast">Pagamento de %1$s adicionado nas ENTRADAS do dia.</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->

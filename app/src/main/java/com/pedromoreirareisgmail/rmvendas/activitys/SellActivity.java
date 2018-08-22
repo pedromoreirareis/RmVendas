@@ -72,16 +72,20 @@ public class SellActivity extends AppCompatActivity implements
     private EditText mEtAdd;
     private EditText mEtDiscount;
     private EditText mEtForward;
+    private EditText mEtCard;
     private Button mButClient;
     private Button mButClearQuantity;
     private Button mButClearAdd;
     private Button mButClearDiscount;
     private Button mButClearForward;
+    private Button mButClearCard;
     private Switch mSwitchAdd;
     private Switch mSwitchDiscount;
     private Switch mSwitchForward;
+    private Switch mSwitchCard;
     private TextInputLayout mLayoutAdd;
     private TextInputLayout mLayoutDiscount;
+    private TextInputLayout mLayoutCard;
     private LinearLayout mLayoutForward;
 
     private Uri mUriInitial = null;
@@ -140,6 +144,7 @@ public class SellActivity extends AppCompatActivity implements
         ControlViews.noFocusAndZero(mEtAdd);
         ControlViews.noFocusAndZero(mEtDiscount);
         ControlViews.noFocusAndZero(mEtForward);
+        ControlViews.noFocusAndZero(mEtCard);
 
     }
 
@@ -155,17 +160,21 @@ public class SellActivity extends AppCompatActivity implements
         mEtDiscount = findViewById(R.id.et_sell_discount_value);
         mEtAdd = findViewById(R.id.et_sell_add_value);
         mEtForward = findViewById(R.id.et_sell_forward_value);
+        mEtCard = findViewById(R.id.et_sell_card_value);
         mSwitchAdd = findViewById(R.id.switch_sell_add);
         mSwitchDiscount = findViewById(R.id.switch_sell_discount);
         mSwitchForward = findViewById(R.id.switch_sell_forward);
+        mSwitchCard = findViewById(R.id.switch_sell_card);
         mLayoutDiscount = findViewById(R.id.til_sell_discount);
         mLayoutAdd = findViewById(R.id.til_sell_add);
         mLayoutForward = findViewById(R.id.til_sell_forward);
+        mLayoutCard = findViewById(R.id.til_sell_card);
 
         mButClearQuantity = findViewById(R.id.but_clear_sell_quantity);
         mButClearAdd = findViewById(R.id.but_clear_sell_add);
         mButClearDiscount = findViewById(R.id.but_clear_sell_discount);
         mButClearForward = findViewById(R.id.but_clear_sell_forward);
+        mButClearCard = findViewById(R.id.but_clear_sell_card);
     }
 
     private void initObject() {
@@ -229,17 +238,20 @@ public class SellActivity extends AppCompatActivity implements
         mEtAdd.setOnTouchListener(this);
         mEtDiscount.setOnTouchListener(this);
         mEtForward.setOnTouchListener(this);
+        mEtCard.setOnTouchListener(this);
 
         // Monitora toques nos Switchs
         mSwitchAdd.setOnTouchListener(this);
         mSwitchDiscount.setOnTouchListener(this);
         mSwitchForward.setOnTouchListener(this);
+        mSwitchCard.setOnTouchListener(this);
 
         // Listener para clear edits
         mButClearQuantity.setOnClickListener(this);
         mButClearAdd.setOnClickListener(this);
         mButClearDiscount.setOnClickListener(this);
         mButClearForward.setOnClickListener(this);
+        mButClearCard.setOnClickListener(this);
     }
 
 
@@ -286,8 +298,10 @@ public class SellActivity extends AppCompatActivity implements
                 mEtForward.setText(Const.NUMBER_ZERO_STRING);
                 break;
 
+            case R.id.but_clear_sell_card:
+                mEtCard.setText(Const.NUMBER_ZERO_STRING);
+                break;
         }
-
     }
 
     @Override
@@ -321,6 +335,7 @@ public class SellActivity extends AppCompatActivity implements
                     }
                 }
 
+                //TODO: Calcular Valor total venda - sellActivity
                 mValorTotalBundle = calcularValorTotalVendaString(
                         editToString(mEtQuantity),
                         sellToClient.getUnitValue(),
@@ -420,6 +435,7 @@ public class SellActivity extends AppCompatActivity implements
                     EntrySeel.COLUMN_ADD_VALUE,
                     EntrySeel.COLUMN_DISCOUNT_VALUE,
                     EntrySeel.COLUMN_FORWARD_VALUE,
+                    //TODO: Acrecentar EntrySeel.COLUMN_CARD_VALUE
                     EntrySeel.COLUMN_CLIENT_ID,
                     EntrySeel.COLUMN_PRICE,
                     EntrySeel.COLUMN_CLIENT_NAME,
@@ -472,6 +488,7 @@ public class SellActivity extends AppCompatActivity implements
 
             mTvProductName.setText(sell.getName());
 
+            //TODO: Calcular valor venda total
             mTvTotalValue.setText(
                     calcularValorTotalVendaString(
                             editToString(mEtQuantity),
@@ -493,9 +510,12 @@ public class SellActivity extends AppCompatActivity implements
             sell.setAddValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)));
             sell.setDiscountValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)));
             sell.setForwardValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
+            //TODO: ACrescentar sell.setCardValue
+
             sell.setReceiveId(cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_RECEIVE_ID)));
             mProductValue = sell.getPrice();
 
+            //TODO: Ver esse calcular se precisa mexer
             double totalValueDB = Calculus.calcularValorTotalVendaDouble(
                     sell.getQuantity(),
                     mProductValue,
@@ -557,6 +577,8 @@ public class SellActivity extends AppCompatActivity implements
                 mLayoutForward.setVisibility(View.GONE);
             }
 
+            //TODO: Fazer verificação aqui sem cardValue != Const.NUMBER_ZERO ou se == Const.NUMBER_ZERO
+
             mTvTotalValue.setText(mFormatCurrency.format(totalValueDB));
 
             mEtQuantity.requestFocus();
@@ -611,6 +633,13 @@ public class SellActivity extends AppCompatActivity implements
                 ControlViews.showKeyboard(mContext, mEtForward);
                 return true;
 
+            //TODO: Controle de touch no editCardValue
+            case R.id.et_sell_card_value:
+                mEtCard.requestFocus();
+                mEtCard.setSelection(mEtCard.getText().length());
+                ControlViews.showKeyboard(mContext, mEtCard);
+                return true;
+
             case R.id.switch_sell_add:
                 isDataChanged = true;
                 return false;
@@ -620,6 +649,11 @@ public class SellActivity extends AppCompatActivity implements
                 return false;
 
             case R.id.switch_sell_forward:
+                isDataChanged = true;
+                return false;
+
+            //TODO: Controle de touch no switch cardValue
+            case R.id.switch_sell_card:
                 isDataChanged = true;
                 return false;
 
@@ -865,7 +899,15 @@ public class SellActivity extends AppCompatActivity implements
             }
         });
 
+
+        //TODO: fazer controle de wathcher do editCardValue
+
     }
+
+
+    //TODO: fazer controle do switch para vendas no cartão
+    //TODO: calculos para fazer a vendas no cartão
+    //TODO: fazer calculos dos valores do edits ao fazer as alterações de valores em cada edit
 
 
     /* Veifica se houve alteração no estado do Switch */
@@ -877,7 +919,7 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
-                if (isChecked) { // Se tiver checked
+                if (isChecked) { // Se der checked
 
                     mLayoutAdd.setVisibility(View.VISIBLE);
 
@@ -889,7 +931,7 @@ public class SellActivity extends AppCompatActivity implements
                     mEtAdd.requestFocus();
 
 
-                } else { // Se não tiver checked
+                } else { // Se retirar checked
 
                     mLayoutAdd.setVisibility(View.GONE);
                     mEtAdd.setText("0");
@@ -901,7 +943,7 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
-                if (isChecked) { // Se tiver checked
+                if (isChecked) { // Se der checked
 
                     mLayoutDiscount.setVisibility(View.VISIBLE);
 
@@ -912,7 +954,7 @@ public class SellActivity extends AppCompatActivity implements
 
                     mEtDiscount.requestFocus();
 
-                } else { // Se não tiver checked
+                } else { // Se retirar checked
 
                     mLayoutDiscount.setVisibility(View.GONE);
                     mEtDiscount.setText("0");
@@ -924,7 +966,7 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if (isChecked) { // Se tiver checked
+                if (isChecked) { // Se der checked
 
                     mLayoutForward.setVisibility(View.VISIBLE);
 
@@ -935,7 +977,7 @@ public class SellActivity extends AppCompatActivity implements
 
                     mEtForward.requestFocus();
 
-                } else { // Se não tiver checked
+                } else { // Se retirar checked
 
                     mLayoutForward.setVisibility(View.GONE);
                     mEtForward.setText("0");
@@ -944,6 +986,34 @@ public class SellActivity extends AppCompatActivity implements
                 }
             }
         });
+
+
+        //TODO: Controle de Check do Switch CardValue
+        mSwitchCard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) { // Se der checked
+
+                    mLayoutCard.setVisibility(View.VISIBLE);
+
+                    if (isAddProduct) {
+
+                        mEtCard.setError("0");
+
+                    }
+
+                    mEtCard.requestFocus();
+
+                } else { // Se retirar checked
+
+                    mLayoutCard.setVisibility(View.GONE);
+                    mEtCard.setText("0");
+                }
+            }
+        });
+
+
     }
 
     private void saveDataDB() {
@@ -955,12 +1025,14 @@ public class SellActivity extends AppCompatActivity implements
         String discountValue = mEtDiscount.getText().toString().trim();
         String forwardValue = mEtForward.getText().toString().trim();
         String clientName = mTvClientName.getText().toString();
+        //TODO: buscar valor do cardValue salvar DB
 
 
         // Verifica se os Switch estão checked
         boolean isCheckAdd = mSwitchAdd.isChecked();
         boolean isCheckDiscount = mSwitchDiscount.isChecked();
         boolean isCheckForward = mSwitchForward.isChecked();
+        //TODO: verificar checked cardValue
 
         // Campo não pode ser vazio
         if (quantity.isEmpty()) {
@@ -981,10 +1053,13 @@ public class SellActivity extends AppCompatActivity implements
             return;
         }
 
+        //TODO: fazer controle entrada de dados cardvalue
+
         // Converte as String dos campos valorAdicional, valorDesconto  e valorPrazo para double
         double addValueDouble = Formatting.currencyToDouble(addValue);
         double discountValueDouble = Formatting.currencyToDouble(discountValue);
         double forwardValueDouble = Formatting.currencyToDouble(forwardValue);
+        //TODO: Fazer formatação dos dados do cardvalue
 
         // Se Switch adicional estiver Checked
         if (isCheckAdd) {
@@ -1035,6 +1110,10 @@ public class SellActivity extends AppCompatActivity implements
             }
         }
 
+        //TODO: verificar se cardvalue esta checked para capturar dados
+
+        //TODO: colocar dados no objeto Sell
+
         sell.setClientName(clientName);
         sell.setQuantity(quantityInteger);
         sell.setName(productName);
@@ -1044,6 +1123,7 @@ public class SellActivity extends AppCompatActivity implements
         sell.setClientName(clientName);
         sell.setPrice(mProductValue);
 
+        //TODO: colocar dados do objeto Sell em Conent value
         // Coloca dados em um objeto values para ser salvo no BD
         ContentValues valuesSell = new ContentValues();
         valuesSell.put(EntrySeel.COLUMN_NAME, sell.getName());
@@ -1053,6 +1133,8 @@ public class SellActivity extends AppCompatActivity implements
         valuesSell.put(EntrySeel.COLUMN_DISCOUNT_VALUE, sell.getDiscountValue());
         valuesSell.put(EntrySeel.COLUMN_FORWARD_VALUE, sell.getForwardValue());
 
+
+        //TODO: Salvar dados de produto novo e de edição
         if (isAddProduct) {
 
             if (isCheckForward) {

@@ -15,15 +15,19 @@ public class Sell implements Parcelable{
     private double addValue;
     private double discountValue;
     private double forwardValue;
+    private double cardValue;
     private long clientId;
     private String clientName;
     private long receiveId;
 
+
     public Sell() {
     }
 
-    public Sell(long id, Uri uri, String timestamp, String name, double price, int quantity, double addValue,
-                double discountValue, double forwardValue, long clientId, String clientName, long receiveId) {
+    public Sell(long id, Uri uri, String timestamp, String name, double price, int quantity,
+                double addValue, double discountValue, double forwardValue, double cardValue,
+                long clientId, String clientName, long receiveId) {
+
         this.id = id;
         this.uri = uri;
         this.timestamp = timestamp;
@@ -33,6 +37,7 @@ public class Sell implements Parcelable{
         this.addValue = addValue;
         this.discountValue = discountValue;
         this.forwardValue = forwardValue;
+        this.cardValue = cardValue;
         this.clientId = clientId;
         this.clientName = clientName;
         this.receiveId = receiveId;
@@ -48,6 +53,7 @@ public class Sell implements Parcelable{
         addValue = in.readDouble();
         discountValue = in.readDouble();
         forwardValue = in.readDouble();
+        cardValue = in.readDouble();
         clientId = in.readLong();
         clientName = in.readString();
         receiveId = in.readLong();
@@ -64,6 +70,7 @@ public class Sell implements Parcelable{
         dest.writeDouble(addValue);
         dest.writeDouble(discountValue);
         dest.writeDouble(forwardValue);
+        dest.writeDouble(cardValue);
         dest.writeLong(clientId);
         dest.writeString(clientName);
         dest.writeLong(receiveId);
@@ -156,6 +163,14 @@ public class Sell implements Parcelable{
 
     public void setForwardValue(double forwardValue) {
         this.forwardValue = forwardValue;
+    }
+
+    public double getCardValue() {
+        return cardValue;
+    }
+
+    public void setCardValue(double cardValue) {
+        this.cardValue = cardValue;
     }
 
     public long getClientId() {

@@ -63,7 +63,7 @@ public class Contract {
 
         /* Criando tabela */
         public static final String CREATE_TABLE_CASHMOVE =
-                "CREATE TABLE " + TABLE_CASHMOVE
+                "CREATE TABLE IF NOT EXISTS " + TABLE_CASHMOVE
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
@@ -99,7 +99,7 @@ public class Contract {
         public static final String COLUMN_VALUE = "value";
 
         public static final String CREATE_TABLE_OPENING =
-                "CREATE TABLE " + TABLE_OPENING
+                "CREATE TABLE IF NOT EXISTS " + TABLE_OPENING
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
@@ -132,7 +132,7 @@ public class Contract {
         public static final String COLUMN_PRICE = "price";
 
         public static final String CREATE_TABLE_PRODUCT =
-                "CREATE TABLE " + TABLE_PRODUCT
+                "CREATE TABLE IF NOT EXISTS " + TABLE_PRODUCT
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_NAME + " TEXT NOT NULL, "
@@ -165,7 +165,7 @@ public class Contract {
         public static final String COLUMN_FONE = "fone";
 
         public static final String CREATE_TABLE_CLIENT =
-                " CREATE TABLE " + TABLE_CLIENT
+                " CREATE TABLE IF NOT EXISTS " + TABLE_CLIENT
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_NAME + " TEXT NOT NULL, "
@@ -201,13 +201,19 @@ public class Contract {
         public static final String COLUMN_ADD_VALUE = "additional";
         public static final String COLUMN_DISCOUNT_VALUE = "discount";
         public static final String COLUMN_FORWARD_VALUE = "forward";
+
+
+        //TODO: Criar COLUMN_CARD_VALUE para valor compra com cartão
+        public static final String COLUMN_CARD_VALUE = "forward";
+
         public static final String COLUMN_CLIENT_ID = "client_id";
         public static final String COLUMN_CLIENT_NAME = "client_name";
         public static final String COLUMN_RECEIVE_ID = "receive_id";
 
 
+
         public static final String CREATE_TABLE_SELL =
-                "CREATE TABLE " + TABLE_SELL
+                "CREATE TABLE IF NOT EXISTS " + TABLE_SELL
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "
@@ -217,6 +223,7 @@ public class Contract {
                         + COLUMN_ADD_VALUE + " REAL, "
                         + COLUMN_DISCOUNT_VALUE + " REAL, "
                         + COLUMN_FORWARD_VALUE + " REAL, "
+                        + COLUMN_CARD_VALUE + " REAL, "
                         + COLUMN_CLIENT_ID + " INTEGER, "
                         + COLUMN_CLIENT_NAME + " TEXT, "
                         + COLUMN_RECEIVE_ID + " INTEGER "
@@ -253,7 +260,7 @@ public class Contract {
 
 
         public static final String CREATE_TABLE_RECEIVE =
-                " CREATE TABLE " + TABLE_RECEIVE
+                " CREATE TABLE IF NOT EXISTS " + TABLE_RECEIVE
                         + " ( "
                         + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + COLUMN_TIMESTAMP + " TEXT NOT NULL, "

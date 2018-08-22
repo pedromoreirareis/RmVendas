@@ -85,6 +85,10 @@ public class ClosedActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(ConstLoader.LOADER_CLOSED_SELL, null, this);
     }
 
+    //TODO: no fechamento fazer calculos para apresentacao da vendas com cartão
+    //TODO: criar novos campos para apresentar a vendas no cartão
+    //TODO: talvez mostar quais clientes compraram com cartão
+
     private void initViews() {
 
         // Referencia os itens do layout

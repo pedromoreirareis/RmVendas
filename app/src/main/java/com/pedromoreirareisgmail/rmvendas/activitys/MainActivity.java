@@ -328,6 +328,8 @@ public class MainActivity extends AppCompatActivity
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
 
+        //TODO: Buscar dados de vendas com cartão e passar para o adapter
+
         // Define quais colunas retornaram dados
         String[] projection = new String[]{
                 EntrySeel._ID,

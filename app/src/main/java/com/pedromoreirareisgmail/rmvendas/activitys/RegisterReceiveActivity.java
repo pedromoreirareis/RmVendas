@@ -13,13 +13,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.pedromoreirareisgmail.rmvendas.R;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
 import com.pedromoreirareisgmail.rmvendas.constant.Const;
+import com.pedromoreirareisgmail.rmvendas.constant.ConstDB;
 import com.pedromoreirareisgmail.rmvendas.constant.ConstIntents;
+import com.pedromoreirareisgmail.rmvendas.db.Contract.EntryCashMove;
 import com.pedromoreirareisgmail.rmvendas.db.Crud;
 import com.pedromoreirareisgmail.rmvendas.models.Client;
 import com.pedromoreirareisgmail.rmvendas.models.Receive;
@@ -203,6 +206,7 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
             return;
         }
 
+
         receive.setClientId(client.getId());
         receive.setClientName(client.getName());
         receive.setDescription(description);
@@ -220,8 +224,36 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         values.put(EntryReceive.COLUMN_TYPE, receive.getType());
         values.put(EntryReceive.COLUMN_VALUE, receive.getValue());
 
+
         // Salva dados no BD
         Crud.insert(mContext, EntryReceive.CONTENT_URI_RECEIVE, values);
+
+
+        // Salva dados na Entrada do dia quando cliente fizer um pagamento
+        if (type == ConstDB.TYPE_CREDIT) {
+
+            ContentValues valuesAddMoney = new ContentValues();
+
+            String descriptionSell = String.format(
+                    getString(R.string.text_receive_add_money_description),
+                    receive.getClientName(),
+                    receive.getDescription()
+            );
+
+            valuesAddMoney.put(EntryCashMove.COLUMN_VALUE, receive.getValue());
+            valuesAddMoney.put(EntryCashMove.COLUMN_TYPE, ConstDB.TYPE_ADD_MONEY_CASHMOVE);
+            valuesAddMoney.put(EntryCashMove.COLUMN_TIMESTAMP, receive.getTimestamp());
+            valuesAddMoney.put(EntryCashMove.COLUMN_DESCRIPTION, descriptionSell);
+
+            Crud.insert(mContext, EntryCashMove.CONTENT_URI_CASHMOVE, valuesAddMoney);
+
+            Toast.makeText
+                    (mContext,
+                            String.format(getString(R.string.text_receive_add_money_toast), receive.getClientName()),
+                            Toast.LENGTH_LONG
+                    ).show();
+
+        }
 
         finish();
     }
