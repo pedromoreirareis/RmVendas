@@ -238,6 +238,10 @@ public class Contract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE +
                         "/" + CONTENT_AUTORITY +
                         "/" + PATH_SELL;
+
+
+        //TODO: Colocar aqui o comando de alteração da tabela para usar no DbHelper - algo tipo: ALTER_TABLE_SELL = "ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + EMAIL + " TEXT "
+
     }
 
 

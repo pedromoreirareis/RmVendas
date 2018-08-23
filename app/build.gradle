@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         configrVendas {
-            keyAlias '@@@@@'
-            keyPassword '@@@@@'
-            storeFile file('@@@@@')
-            storePassword '@@@@@'
+            keyAlias 'KeyrVendas'
+            keyPassword 'pmr151217120608'
+            storeFile file('C:/ANDROID/APKS/rVendas/KeyrVendas.jks')
+            storePassword 'pmr151217'
         }
     }
     compileSdkVersion 27

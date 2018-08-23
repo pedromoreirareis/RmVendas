@@ -435,6 +435,7 @@ public class SellActivity extends AppCompatActivity implements
                     EntrySeel.COLUMN_ADD_VALUE,
                     EntrySeel.COLUMN_DISCOUNT_VALUE,
                     EntrySeel.COLUMN_FORWARD_VALUE,
+
                     //TODO: Acrecentar EntrySeel.COLUMN_CARD_VALUE
                     EntrySeel.COLUMN_CLIENT_ID,
                     EntrySeel.COLUMN_PRICE,
