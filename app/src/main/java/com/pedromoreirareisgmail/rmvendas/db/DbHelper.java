@@ -51,22 +51,17 @@ public class DbHelper extends SQLiteOpenHelper {
      * Ex: Inclui um nova coluna em uma tabelas, exclui ou inclui tabelas
      *
      * @param db          banco de dados
-     * @param versaoAtual versão atual do banco de dados
-     * @param novaVersao  versão nova versão do banco de dados
+     * @param oldVersion versão atual do banco de dados
+     * @param newVersion  versão nova versão do banco de dados
      */
     @Override
-    public void onUpgrade(SQLiteDatabase db, int versaoAtual, int novaVersao) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        if (versaoAtual < 2) {
-            //TODO: Atualizar banco de dados para nova versao
+        if (oldVersion < 2) {
 
-            //  usar o comando acrescentado em Contract
+            // Adiciona COLUMN_CARD_VALUE a versão 2 do banco de dados
+            db.execSQL(EntrySeel.ALTER_TABLE_SELL_ADD_COLUMN_CARD);
+
         }
-        //TODO: verificar se e melhor adicionar uma coluna ou uma tabela para vendas no cartão
-        //TODO: talvez crar uma nova tabelas para as vendas no cartão seja bom e mais facil e mostar qual cliente comprou - ver se é melhor
-
-        // Implementar quando for Atualizar o banco de dados
-
-
     }
 }

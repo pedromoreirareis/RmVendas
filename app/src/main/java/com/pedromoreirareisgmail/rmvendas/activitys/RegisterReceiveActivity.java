@@ -30,7 +30,8 @@ import com.pedromoreirareisgmail.rmvendas.models.Receive;
 import static com.pedromoreirareisgmail.rmvendas.Utils.TimeDate.getDateTime;
 import static com.pedromoreirareisgmail.rmvendas.constant.Const.MIN_CARACT_10;
 import static com.pedromoreirareisgmail.rmvendas.constant.Const.NUMBER_ZERO;
-import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_CREDIT;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_CREDIT_CARD;
+import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_CREDIT_CASH;
 import static com.pedromoreirareisgmail.rmvendas.constant.ConstDB.TYPE_DEBIT;
 import static com.pedromoreirareisgmail.rmvendas.db.Contract.EntryReceive;
 
@@ -39,7 +40,8 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private Button mButSell;
-    private Button mButReceip;
+    private Button mButReceipCash;
+    private Button mButReceipCard;
     private Button mButClearValue;
     private Button mButClearDescription;
     private EditText mEtDescription;
@@ -72,7 +74,8 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
 
         // Referencia os itens do layout
         mButSell = findViewById(R.id.but_receive_debit);
-        mButReceip = findViewById(R.id.but_receive_credit);
+        mButReceipCash = findViewById(R.id.but_receive_credit_cash);
+        mButReceipCard = findViewById(R.id.but_receive_credit_card);
         mEtDescription = findViewById(R.id.et_receive_description);
         mEtValue = findViewById(R.id.et_receive_value);
         mButClearValue = findViewById(R.id.but_clear_receive_value);
@@ -102,7 +105,8 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         mButSell.setOnClickListener(this);
 
         /* Botão click recebimento */
-        mButReceip.setOnClickListener(this);
+        mButReceipCash.setOnClickListener(this);
+        mButReceipCard.setOnClickListener(this);
 
         // Monitora se houve toque em mEtValue
         mEtValue.setOnTouchListener(this);
@@ -207,11 +211,27 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         }
 
 
+        /* Indica se o registro é um crédito ou um débito do cliente */
+        int typeReceive = -1;
+        if (type == TYPE_DEBIT) {
+
+            typeReceive = TYPE_DEBIT;
+
+        } else if (type == TYPE_CREDIT_CASH) {
+
+            typeReceive = TYPE_CREDIT_CASH;
+
+        } else if (type == TYPE_CREDIT_CARD) {
+
+            typeReceive = TYPE_CREDIT_CASH;
+            description = getString(R.string.text_receive_decription_card) + description;
+        }
+
         receive.setClientId(client.getId());
         receive.setClientName(client.getName());
         receive.setDescription(description);
         receive.setTimestamp(getDateTime());
-        receive.setType(type);
+        receive.setType(typeReceive);
         receive.setValue(valueDouble);
 
         // Cria objeto values a recebe dados em campos tipo chave valor para salvar no BD
@@ -229,8 +249,8 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
         Crud.insert(mContext, EntryReceive.CONTENT_URI_RECEIVE, values);
 
 
-        // Salva dados na Entrada do dia quando cliente fizer um pagamento
-        if (type == ConstDB.TYPE_CREDIT) {
+        // Salva dados na Entrada do dia quando cliente fizer um pagamento em dinheiro
+        if (type == ConstDB.TYPE_CREDIT_CASH) {
 
             ContentValues valuesAddMoney = new ContentValues();
 
@@ -355,8 +375,12 @@ public class RegisterReceiveActivity extends AppCompatActivity implements
                 saveDataDB(TYPE_DEBIT);
                 break;
 
-            case R.id.but_receive_credit:
-                saveDataDB(TYPE_CREDIT);
+            case R.id.but_receive_credit_cash:
+                saveDataDB(TYPE_CREDIT_CASH);
+                break;
+
+            case R.id.but_receive_credit_card:
+                saveDataDB(TYPE_CREDIT_CARD);
                 break;
 
             case R.id.but_clear_receive_description:

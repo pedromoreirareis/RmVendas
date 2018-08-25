@@ -304,7 +304,7 @@ public class ClosedActivity extends AppCompatActivity implements
 
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) == NUMBER_ZERO) {
 
-                    mValueSaleInCash = mValueSaleInCash + Calculus.CalcularValorAVistaDouble(
+                    mValueSaleInCash = mValueSaleInCash + Calculus.calculateInCashValueDouble(
                             cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
@@ -320,7 +320,7 @@ public class ClosedActivity extends AppCompatActivity implements
                     mValueSaleForward = mValueSaleForward +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
 
-                    mValueSaleInCash = mValueSaleInCash + Calculus.CalcularValorAVistaDouble(
+                    mValueSaleInCash = mValueSaleInCash + Calculus.calculateInCashValueDouble(
                             cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
@@ -334,7 +334,7 @@ public class ClosedActivity extends AppCompatActivity implements
                     ));
                 }
 
-                mValueSaleTotal = mValueSaleTotal + Calculus.calcularValorTotalVendaDouble(
+                mValueSaleTotal = mValueSaleTotal + Calculus.calculateSaleValueDouble(
                         cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                         cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                         cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),

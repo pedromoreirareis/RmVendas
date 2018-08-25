@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context="com.pedromoreirareisgmail.rmvendas.activitys.SellActivity">
 
+    <!-- Visualização da venda  -->
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,38 +22,77 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default_8"
-            android:orientation="horizontal">
+            android:layout_marginBottom="@dimen/margin_default_4"
+            android:layout_marginEnd="@dimen/margin_default_8"
+            android:layout_marginStart="@dimen/margin_default_8"
+            android:layout_marginTop="@dimen/margin_default_4"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_sell_quantity"
-                style="@style/textViewSell"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/margin_default_8"
-                android:paddingStart="@dimen/margin_default_2" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_sell_product_name"
-                style="@style/textViewSell"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                <!-- quantity -->
+                <TextView
+                    android:id="@+id/tv_sell_quantity"
+                    style="@style/textViewSell"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_default_8" />
 
-            <TextView
-                android:id="@+id/tv_sell_total_value"
-                style="@style/textViewSell"
-                android:layout_width="wrap_content"
+                <!-- productName -->
+                <TextView
+                    android:id="@+id/tv_sell_product_name"
+                    style="@style/textViewSell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_8"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <!-- Valor da venda -->
+                <TextView
+                    android:id="@+id/tv_sell_sale_value"
+                    style="@style/textViewSell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_default_12"
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/margin_default_8"
+                    android:drawableStart="@drawable/ic_shopping_cart"
+                    android:gravity="center_vertical|end"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <!-- Valor a vista -->
+                <TextView
+                    android:id="@+id/tv_sell_in_cash_value"
+                    style="@style/textViewSell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_12"
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/margin_default_8"
+                    android:drawableStart="@drawable/ic_monetization"
+                    android:gravity="center_vertical|end"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
         </LinearLayout>
+
 
     </android.support.v7.widget.CardView>
 
 
+    <!-- Entrada de dados -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -64,7 +104,7 @@
             android:paddingBottom="@dimen/margin_default_16"
             android:paddingEnd="@dimen/margin_default_16"
             android:paddingStart="@dimen/margin_default_16"
-            android:paddingTop="@dimen/margin_default_16">
+            android:paddingTop="@dimen/margin_default_8">
 
             <!-- Quantidade -->
             <RelativeLayout
@@ -100,9 +140,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/margin_default_16"
                 android:layout_weight="1"
                 android:baselineAligned="false"
-                android:layout_marginBottom="@dimen/margin_default_16"
                 android:orientation="vertical">
 
                 <Switch
@@ -149,8 +189,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/margin_default_16"
-                android:baselineAligned="false"
                 android:layout_weight="1"
+                android:baselineAligned="false"
                 android:orientation="vertical">
 
                 <Switch
@@ -164,10 +204,10 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputLayout
-                        android:layout_marginTop="@dimen/margin_default_8"
                         android:id="@+id/til_sell_discount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default_8"
                         android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
@@ -204,8 +244,8 @@
                 android:id="@+id/til_sell_forward"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:layout_marginBottom="@dimen/margin_default_16"
+                android:orientation="vertical"
                 android:visibility="gone">
 
                 <LinearLayout

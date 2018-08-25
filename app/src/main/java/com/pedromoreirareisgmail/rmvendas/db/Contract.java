@@ -193,6 +193,8 @@ public class Contract {
                 PATH_SELL
         );
 
+        /* COLUMN_CARD_VALUE - Versão 2 do DB */
+
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_TIMESTAMP = "timestamp";
         public static final String COLUMN_NAME = "name";
@@ -201,15 +203,10 @@ public class Contract {
         public static final String COLUMN_ADD_VALUE = "additional";
         public static final String COLUMN_DISCOUNT_VALUE = "discount";
         public static final String COLUMN_FORWARD_VALUE = "forward";
-
-
-        //TODO: Criar COLUMN_CARD_VALUE para valor compra com cartão
-        public static final String COLUMN_CARD_VALUE = "forward";
-
+        public static final String COLUMN_CARD_VALUE = "card";
         public static final String COLUMN_CLIENT_ID = "client_id";
         public static final String COLUMN_CLIENT_NAME = "client_name";
         public static final String COLUMN_RECEIVE_ID = "receive_id";
-
 
 
         public static final String CREATE_TABLE_SELL =
@@ -239,9 +236,9 @@ public class Contract {
                         "/" + CONTENT_AUTORITY +
                         "/" + PATH_SELL;
 
-
-        //TODO: Colocar aqui o comando de alteração da tabela para usar no DbHelper - algo tipo: ALTER_TABLE_SELL = "ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + EMAIL + " TEXT "
-
+        // Adicionando a coluna cartão na Versão 2 do Banco de Dados
+        public static final String ALTER_TABLE_SELL_ADD_COLUMN_CARD =
+                "ALTER TABLE " + TABLE_SELL + " ADD COLUMN " + COLUMN_CARD_VALUE + " REAL";
     }
 
 
@@ -274,10 +271,6 @@ public class Contract {
                         + COLUMN_CLIENT_ID + " INTEGER, "
                         + COLUMN_CLIENT_NAME + " TEXT "
                         + " ); ";
-
-                       /* + " FOREIGN KEY ( " + COLUMN_CLIENT_ID + " ) REFERENCES " + EntryClient.TABLE_CLIENT + " ( " + EntryClient._ID + " ) "
-                        + " ); ";*/
-
 
         public static final String CONTENT_ITEM_TYPE_RECEIVE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +

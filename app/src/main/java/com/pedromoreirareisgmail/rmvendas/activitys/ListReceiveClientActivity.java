@@ -271,7 +271,7 @@ public class ListReceiveClientActivity extends AppCompatActivity implements
         String description = cursor.getString(cursor.getColumnIndex(EntryReceive.COLUMN_DESCRIPTION));
         Double value = cursor.getDouble(cursor.getColumnIndex(EntryReceive.COLUMN_VALUE));
 
-        if (type == ConstDB.TYPE_CREDIT) { // Credito
+        if (type == ConstDB.TYPE_CREDIT_CASH) { // Credito
 
             title = getString(R.string.text_receive_credit);
 

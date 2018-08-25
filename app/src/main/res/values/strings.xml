@@ -90,6 +90,7 @@
     <string name="text_change_clear">Limpar</string>
     <string name="text_receive_credit">Recebimento</string>
     <string name="text_receive_debit">Venda</string>
+    <string name="text_receive_decription_card">NO CARTÃO - </string>
     <string name="text_receiv_list_balance">Saldo: %1$s</string>
     <string name="text_receiv_list_balance_empty">Não há registros!!!</string>
     <string name="text_forward_sell">Venda a prazo  -  %1$s  %2$s</string>
@@ -105,17 +106,18 @@
     <string name="text_forward">A prazo</string>
     <string name="text_client">Cliente</string>
 
-    <string name="text_receive_add_money_description">Pagamento.: %1$s - %2$s</string>
+    <string name="text_receive_add_money_description">Recebi.: %1$s - %2$s</string>
     <string name="text_receive_add_money_toast">Pagamento de %1$s adicionado nas ENTRADAS do dia.</string>
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
-    <string name="text_item_price">Preço.......:  %1$s</string>
+    <string name="text_item_price">SubTotal.....:  %1$s</string>
     <string name="text_item_value_add">Adicional.:  %1$s</string>
     <string name="text_item_value_discount">Desconto.:  %1$s</string>
     <string name="text_item_value_total">Total.......:  %1$s</string>
     <string name="text_item_value_in_cash">A vista....:  %1$s</string>
     <string name="text_item_value_forward">A prazo…:  %1$s</string>
+    <string name="text_item_value_card">No cartão…:  %1$s</string>
     <string name="text_item_client_name_forward">Cliente.....:  %1$s</string>
 
 
@@ -187,7 +189,6 @@
     <string name="dialog_sync_confirm">Confirmar</string>
 
 
-    <!--TODO: Aqui temos que usar o Formatações de Strings String.format xliff-->
     <!-- ************************    Mensagens dialog excluir ********************************** -->
     <string name="dialog_edit_del_title">O que deseja?</string>
     <string name="dialog_edit_del_conf_delete_title">Realmente deseja excluir?</string>
@@ -274,11 +275,13 @@
     <string name="error_lenght_fone_8">O telefone deve ter no mínimo 8 dígitos</string>
     <string name="error_length_name_3">O nome deve ter no mínimo 3 caracteres</string>
     <string name="error_discount_value_greater_sale">O valor do desconto não pode ser maior que %1$s</string>
+    <string name="error_card_value_greater_sale">O valor no cartão não pode ser maior que %1$s</string>
     <string name="error_forward_value_greater_sale">O valor do desconto não pode ser maior que %1$s</string>
     <string name="error_empty_quantity">Digite a quantidade</string>
     <string name="error_valide_value_add">Digite um valor adicional válido</string>
     <string name="error_valide_value_discount">Digite um valor de desconto válido</string>
     <string name="error_valide_value_forward">Digite um valor a prazo válido</string>
+    <string name="error_valide_value_card">Digite um valor no cartão válido</string>
     <string name="error_client_name_empty">Pesquise um cliente</string>
     <string name="error_no_edition">Edição de venda a prazo não permitida</string>
     <string name="error_no_edition_exclude">Edição de venda a prazo não permitida. Se necessário exclua o registro.</string>

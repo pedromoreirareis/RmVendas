@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity
 
         Cursor cursor = mAdapter.getCursor();
 
-        double sightSaleValue = Calculus.CalcularValorAVistaDouble(
+        double sightSaleValue = Calculus.calculateInCashValueDouble(
                 cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                 cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                 cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),

@@ -30,6 +30,7 @@
                 app:cardCornerRadius="8dp"
                 app:elevation="16dp">
 
+                <!-- Quantidade e Nome do Produto -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_main_value_quantity"
+                        android:id="@+id/tv_main_quantity_value"
                         style="@style/textViewBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                         android:textColor="@color/colorWhite" />
 
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
             <LinearLayout
@@ -79,23 +81,25 @@
                     android:layout_marginBottom="@dimen/margin_default_4"
                     android:background="@color/colorAccent" />
 
-                <!-- Linha 1 -->
+
+                <!-- Linha 1 - A vista / SubTotal() -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <!-- A vista -->
                     <TextView
-                        android:id="@+id/tv_main_value_in_cash"
+                        android:id="@+id/tv_main_in_cash_value"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_money_black" />
 
-
+                    <!-- Preco (Subtotal) -->
                     <TextView
-                        android:id="@+id/tv_main_value_sale"
+                        android:id="@+id/tv_main_sale_subtotal_value"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -104,24 +108,24 @@
 
                 </LinearLayout>
 
-                <!-- Linha 2 -->
+                <!-- Linha 2 - A prazo / Adicional -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-
+                    <!-- A prazo -->
                     <TextView
-                        android:id="@+id/tv_main_value_forward"
+                        android:id="@+id/tv_main_forward_value"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_money_black" />
 
-
+                    <!-- Adicional -->
                     <TextView
-                        android:id="@+id/tv_main_value_add"
+                        android:id="@+id/tv_main_add_value"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -129,24 +133,46 @@
                         android:drawableStart="@drawable/ic_money_black" />
                 </LinearLayout>
 
-                <!-- Linha 3 -->
+                <!-- Linha 3 - Cartão / Desconto -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-
+                    <!-- Cartao -->
                     <TextView
-                        android:id="@+id/tv_main_value_total"
+                        android:id="@+id/tv_main_card_value"
+                        style="@style/textViewDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_credit_card_black" />
+
+                    <!-- Desconto -->
+                    <TextView
+                        android:id="@+id/tv_main_discount_value"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_money_black" />
 
+                </LinearLayout>
+                <!-- Linha 4 - Total Geral -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <!-- View vazia -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <!-- Total -->
                     <TextView
-                        android:id="@+id/tv_main_value_discount"
+                        android:id="@+id/tv_main_sale_total_value"
                         style="@style/textViewDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -162,6 +188,7 @@
                     android:layout_marginBottom="@dimen/margin_default_4"
                     android:background="@color/colorAccent" />
 
+                <!-- Nome cliente -->
                 <TextView
                     android:id="@+id/tv_main_value_client_name_forward"
                     style="@style/textViewDescription"

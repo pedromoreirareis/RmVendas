@@ -31,17 +31,11 @@ public class MainAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        //TODO: receber dados com vendas com cartão de credito e mostar ao usuario
-        //TODO: fazer calculos para mostar corretamente os descontos, vendas a vista, vendas a prazo e vendas no cartão
-        //TODO: criar novas strings e tavez campos para mostar que a venda foi no cartão - novo lugar do valor de venda a vista mostar a palavra "CARTAO"
-
-
-
         MainViewHolder holder = new MainViewHolder(view);
 
         /* Quantidade de produtos vendidos, sem tem adicional, se tem desconto e sem tem prazo */
         int quantity = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
-        double value = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
+        double productValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE));
 
         long clientId = cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
 
@@ -55,71 +49,76 @@ public class MainAdapter extends CursorAdapter {
         String productName = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_NAME));
         String hourMinute = cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_TIMESTAMP));
 
-        double priceSale = value * quantity;
+        double subTotalSaleValue = productValue * quantity;
         double addValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
         double discountValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
         double forwardValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
 
-        double totalValue = Calculus.calcularValorTotalVendaDouble(
+        double cardValue = -1;
+
+        if (cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE)).isEmpty()) {
+
+            cardValue = Const.NUMBER_ZERO;
+
+        } else {
+
+            cardValue = cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE));
+        }
+
+        double totalSaleValue = Calculus.calculateSaleValueDouble(
                 quantity,
-                value,
+                productValue,
                 addValue,
                 discountValue
         );
-        double inCashValue = Calculus.CalcularValorAVistaDouble(
+        double inCashValue = Calculus.calculateInCashValueDouble(
                 quantity,
-                value,
+                productValue,
                 addValue,
                 discountValue,
-                forwardValue);
+                forwardValue,
+                cardValue);
 
-        String saleValueStr = String.format(context.getString(R.string.text_item_price), Formatting.doubleToCurrency(priceSale));
+
+        String inCashValueStr = String.format(context.getString(R.string.text_item_value_in_cash), Formatting.doubleToCurrency(inCashValue));
+        String subTotalSaleValueStr = String.format(context.getString(R.string.text_item_price), Formatting.doubleToCurrency(subTotalSaleValue));
+
+        String forwardValueStr = String.format(context.getString(R.string.text_item_value_forward), Formatting.doubleToCurrency(forwardValue));
         String addValueStr = String.format(context.getString(R.string.text_item_value_add), Formatting.doubleToCurrency(addValue));
+
+        String cardValueStr = String.format(context.getString(R.string.text_item_value_card), Formatting.doubleToCurrency(cardValue));
         String discountValueStr = String.format(context.getString(R.string.text_item_value_discount), Formatting.doubleToCurrency(discountValue));
 
-        String totalValueStr = String.format(context.getString(R.string.text_item_value_total), Formatting.doubleToCurrency(totalValue));
-        String forwardValueStr = String.format(context.getString(R.string.text_item_value_forward), Formatting.doubleToCurrency(forwardValue));
-        String inCashValueStr = String.format(context.getString(R.string.text_item_value_in_cash), Formatting.doubleToCurrency(inCashValue));
+        String totalSaleValueStr = String.format(context.getString(R.string.text_item_value_total), Formatting.doubleToCurrency(totalSaleValue));
+
 
         holder.tvQuantity.setText(String.valueOf(quantity));
         holder.tvProductName.setText(productName);
         holder.tvHourMinute.setText(TimeDate.formatDateToHourAndMinute(hourMinute));
 
-        holder.tvValueSale.setText(saleValueStr);
-
-        if (addValue != Const.NUMBER_ZERO) {
-
-            holder.tvValueAdd.setText(addValueStr);
-
-        } else {
-
-            holder.tvValueAdd.setText(addValueStr);
-        }
-
-        if (discountValue != Const.NUMBER_ZERO) {
-
-            holder.tvValueDiscount.setText(discountValueStr);
-
-        } else {
-
-            holder.tvValueDiscount.setText(discountValueStr);
-        }
-
-        holder.tvValueTotal.setText(totalValueStr);
-        holder.tvValueInCash.setText(inCashValueStr);
+        holder.tvInCashValue.setText(inCashValueStr);
+        holder.tvSaleSubTotalValue.setText(subTotalSaleValueStr);
 
         if (forwardValue != Const.NUMBER_ZERO) {
 
-            holder.tvValueForward.setText(forwardValueStr);
-            holder.tvValueClientNameForward.setText(String.format(context.getString(R.string.text_item_client_name_forward), clientName));
-            holder.tvValueClientNameForward.setVisibility(View.VISIBLE);
+            holder.tvForwardValue.setText(forwardValueStr);
+            holder.tvClientNameForwardValue.setText(String.format(context.getString(R.string.text_item_client_name_forward), clientName));
+            holder.tvClientNameForwardValue.setVisibility(View.VISIBLE);
 
         } else {
 
-            holder.tvValueForward.setText(forwardValueStr);
-            holder.tvValueClientNameForward.setText(String.format(context.getString(R.string.text_item_client_name_forward), clientName));
-            holder.tvValueClientNameForward.setVisibility(View.GONE);
+            holder.tvForwardValue.setText(forwardValueStr);
+            holder.tvClientNameForwardValue.setText(String.format(context.getString(R.string.text_item_client_name_forward), clientName));
+            holder.tvClientNameForwardValue.setVisibility(View.GONE);
         }
+        holder.tvAddValue.setText(addValueStr);
+
+
+        holder.tvCardValue.setText(cardValueStr);
+        holder.tvDiscountValue.setText(discountValueStr);
+
+        holder.tvSaleTotalValue.setText(totalSaleValueStr);
+
     }
 
     class MainViewHolder {
@@ -127,26 +126,30 @@ public class MainAdapter extends CursorAdapter {
         private final TextView tvQuantity;
         private final TextView tvProductName;
         private final TextView tvHourMinute;
-        private final TextView tvValueSale;
-        private final TextView tvValueAdd;
-        private final TextView tvValueDiscount;
-        private final TextView tvValueTotal;
-        private final TextView tvValueInCash;
-        private final TextView tvValueForward;
-        private final TextView tvValueClientNameForward;
+        private final TextView tvInCashValue;
+        private final TextView tvSaleSubTotalValue;
+        private final TextView tvForwardValue;
+        private final TextView tvAddValue;
+        private final TextView tvCardValue;
+        private final TextView tvDiscountValue;
+        private final TextView tvSaleTotalValue;
+
+
+        private final TextView tvClientNameForwardValue;
 
         public MainViewHolder(View view) {
 
-            tvQuantity = view.findViewById(R.id.tv_main_value_quantity);
+            tvQuantity = view.findViewById(R.id.tv_main_quantity_value);
             tvProductName = view.findViewById(R.id.tv_main_product_name);
             tvHourMinute = view.findViewById(R.id.tv_main_hour_minute);
-            tvValueSale = view.findViewById(R.id.tv_main_value_sale);
-            tvValueAdd = view.findViewById(R.id.tv_main_value_add);
-            tvValueDiscount = view.findViewById(R.id.tv_main_value_discount);
-            tvValueTotal = view.findViewById(R.id.tv_main_value_total);
-            tvValueInCash = view.findViewById(R.id.tv_main_value_in_cash);
-            tvValueForward = view.findViewById(R.id.tv_main_value_forward);
-            tvValueClientNameForward = view.findViewById(R.id.tv_main_value_client_name_forward);
+            tvInCashValue = view.findViewById(R.id.tv_main_in_cash_value);
+            tvSaleSubTotalValue = view.findViewById(R.id.tv_main_sale_subtotal_value);
+            tvForwardValue = view.findViewById(R.id.tv_main_forward_value);
+            tvAddValue = view.findViewById(R.id.tv_main_add_value);
+            tvCardValue = view.findViewById(R.id.tv_main_card_value);
+            tvDiscountValue = view.findViewById(R.id.tv_main_discount_value);
+            tvSaleTotalValue = view.findViewById(R.id.tv_main_sale_total_value);
+            tvClientNameForwardValue = view.findViewById(R.id.tv_main_value_client_name_forward);
         }
     }
 }

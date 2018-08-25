@@ -28,7 +28,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.pedromoreirareisgmail.rmvendas.R;
-import com.pedromoreirareisgmail.rmvendas.Utils.Calculus;
 import com.pedromoreirareisgmail.rmvendas.Utils.ControlViews;
 import com.pedromoreirareisgmail.rmvendas.Utils.Formatting;
 import com.pedromoreirareisgmail.rmvendas.Utils.Messages;
@@ -48,7 +47,10 @@ import com.pedromoreirareisgmail.rmvendas.models.SellToClient;
 
 import java.text.NumberFormat;
 
-import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calcularValorTotalVendaString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calculateInCashValueDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calculateInCashValueString;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calculateSaleValueDouble;
+import static com.pedromoreirareisgmail.rmvendas.Utils.Calculus.calculateSaleValueString;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.charSequenceToDouble;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.charSequenceToString;
 import static com.pedromoreirareisgmail.rmvendas.Utils.Formatting.editToDouble;
@@ -66,7 +68,8 @@ public class SellActivity extends AppCompatActivity implements
 
     private TextView mTvQuantity;
     private TextView mTvProductName;
-    private TextView mTvTotalValue;
+    private TextView mTvInCashValue;
+    private TextView mTvSaleValue;
     private TextView mTvClientName;
     private EditText mEtQuantity;
     private EditText mEtAdd;
@@ -95,7 +98,8 @@ public class SellActivity extends AppCompatActivity implements
     private Context mContext;
     private Sell sell;
 
-    private String mValorTotalBundle = "";
+    private String mInCashValue = "";
+    private String mSaleValue = "";
 
     private boolean isAddProduct = false;
     private boolean isDataChanged = false;
@@ -153,23 +157,27 @@ public class SellActivity extends AppCompatActivity implements
         // Referencia itens do layout
         mTvQuantity = findViewById(R.id.tv_sell_quantity);
         mTvProductName = findViewById(R.id.tv_sell_product_name);
-        mTvTotalValue = findViewById(R.id.tv_sell_total_value);
+        mTvInCashValue = findViewById(R.id.tv_sell_in_cash_value);
+        mTvSaleValue = findViewById(R.id.tv_sell_sale_value);
         mTvClientName = findViewById(R.id.tv_sell_client_name);
-        mButClient = findViewById(R.id.but_sell_client);
+
         mEtQuantity = findViewById(R.id.et_sell_quantity);
         mEtDiscount = findViewById(R.id.et_sell_discount_value);
         mEtAdd = findViewById(R.id.et_sell_add_value);
         mEtForward = findViewById(R.id.et_sell_forward_value);
         mEtCard = findViewById(R.id.et_sell_card_value);
+
         mSwitchAdd = findViewById(R.id.switch_sell_add);
         mSwitchDiscount = findViewById(R.id.switch_sell_discount);
         mSwitchForward = findViewById(R.id.switch_sell_forward);
         mSwitchCard = findViewById(R.id.switch_sell_card);
+
         mLayoutDiscount = findViewById(R.id.til_sell_discount);
         mLayoutAdd = findViewById(R.id.til_sell_add);
         mLayoutForward = findViewById(R.id.til_sell_forward);
         mLayoutCard = findViewById(R.id.til_sell_card);
 
+        mButClient = findViewById(R.id.but_sell_client);
         mButClearQuantity = findViewById(R.id.but_clear_sell_quantity);
         mButClearAdd = findViewById(R.id.but_clear_sell_add);
         mButClearDiscount = findViewById(R.id.but_clear_sell_discount);
@@ -230,7 +238,7 @@ public class SellActivity extends AppCompatActivity implements
 
     private void initListener() {
 
-        // Botão abre activity ListClientSaleActivity, para selecionar cliente para venda a prazo
+        // Abre activity ListClientSaleActivity, para selecionar cliente para venda a prazo
         mButClient.setOnClickListener(this);
 
         // Monitora toques nos edits
@@ -258,11 +266,11 @@ public class SellActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
 
-        /* Abre activity para buscar cliente para uma venda a prazo */
-
         switch (view.getId()) {
 
+            /* Abre activity para buscar cliente para uma venda a prazo */
             case R.id.but_sell_client:
+
                 Intent intentClientList = new Intent(
                         mContext,
                         ListClientSaleActivity.class
@@ -281,6 +289,7 @@ public class SellActivity extends AppCompatActivity implements
 
                 ControlViews.hideKeyboard(mContext, mButClient);
                 break;
+
 
             case R.id.but_clear_sell_quantity:
                 mEtQuantity.setText(Const.EMPTY_STRING);
@@ -335,14 +344,22 @@ public class SellActivity extends AppCompatActivity implements
                     }
                 }
 
-                //TODO: Calcular Valor total venda - sellActivity
-                mValorTotalBundle = calcularValorTotalVendaString(
+                // Valor a vista
+                mInCashValue = calculateInCashValueString(
                         editToString(mEtQuantity),
                         sellToClient.getUnitValue(),
                         editToString(mEtAdd),
                         editToString(mEtDiscount),
-                        editToString(mEtForward));
+                        editToString(mEtForward),
+                        editToString(mEtCard));
 
+                // Valor de venda
+                mSaleValue = calculateSaleValueString(
+                        editToString(mEtQuantity),
+                        sellToClient.getUnitValue(),
+                        editToString(mEtAdd),
+                        editToString(mEtDiscount)
+                );
             }
         }
     }
@@ -435,8 +452,7 @@ public class SellActivity extends AppCompatActivity implements
                     EntrySeel.COLUMN_ADD_VALUE,
                     EntrySeel.COLUMN_DISCOUNT_VALUE,
                     EntrySeel.COLUMN_FORWARD_VALUE,
-
-                    //TODO: Acrecentar EntrySeel.COLUMN_CARD_VALUE
+                    EntrySeel.COLUMN_CARD_VALUE,
                     EntrySeel.COLUMN_CLIENT_ID,
                     EntrySeel.COLUMN_PRICE,
                     EntrySeel.COLUMN_CLIENT_NAME,
@@ -476,6 +492,7 @@ public class SellActivity extends AppCompatActivity implements
         return null;
     }
 
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
@@ -489,14 +506,15 @@ public class SellActivity extends AppCompatActivity implements
 
             mTvProductName.setText(sell.getName());
 
-            //TODO: Calcular valor venda total
-            mTvTotalValue.setText(
-                    calcularValorTotalVendaString(
-                            editToString(mEtQuantity),
-                            mProductValue,
-                            editToString(mEtAdd),
-                            editToString(mEtDiscount),
-                            editToString(mEtForward)));
+
+            displayCalculateSaleValueAndInCash(
+                    editToString(mEtQuantity),
+                    mProductValue,
+                    editToString(mEtAdd),
+                    editToString(mEtDiscount),
+                    editToString(mEtForward),
+                    editToString(mEtCard));
+
         }
 
         /* Retorna dados de uma venda especifica, e coloca resultados em seus respectivos
@@ -511,17 +529,33 @@ public class SellActivity extends AppCompatActivity implements
             sell.setAddValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)));
             sell.setDiscountValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)));
             sell.setForwardValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
-            //TODO: ACrescentar sell.setCardValue
+
+            if (cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE)).isEmpty()) {
+
+                sell.setCardValue(Const.NUMBER_ZERO);
+
+            } else {
+
+                sell.setCardValue(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE)));
+            }
 
             sell.setReceiveId(cursor.getLong(cursor.getColumnIndex(EntrySeel.COLUMN_RECEIVE_ID)));
             mProductValue = sell.getPrice();
 
-            //TODO: Ver esse calcular se precisa mexer
-            double totalValueDB = Calculus.calcularValorTotalVendaDouble(
+            double saleValueDB = calculateSaleValueDouble(
                     sell.getQuantity(),
                     mProductValue,
                     sell.getAddValue(),
                     sell.getDiscountValue()
+            );
+
+            double inCashValueDB = calculateInCashValueDouble(
+                    sell.getQuantity(),
+                    mProductValue,
+                    sell.getAddValue(),
+                    sell.getDiscountValue(),
+                    sell.getForwardValue(),
+                    sell.getCardValue()
             );
 
             sell.setPrice(cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)));
@@ -564,7 +598,6 @@ public class SellActivity extends AppCompatActivity implements
                 mLayoutDiscount.setVisibility(View.GONE);
             }
 
-
             if (sell.getForwardValue() != Const.NUMBER_ZERO) { // Tem valor a prazo
 
                 mSwitchForward.setChecked(true);
@@ -578,14 +611,24 @@ public class SellActivity extends AppCompatActivity implements
                 mLayoutForward.setVisibility(View.GONE);
             }
 
-            //TODO: Fazer verificação aqui sem cardValue != Const.NUMBER_ZERO ou se == Const.NUMBER_ZERO
 
-            mTvTotalValue.setText(mFormatCurrency.format(totalValueDB));
+            if (sell.getCardValue() != Const.NUMBER_ZERO) { // Tem valor no cartão
+
+                mSwitchCard.setChecked(true);
+                mLayoutCard.setVisibility(View.VISIBLE);
+                mEtCard.setText(mFormatCurrency.format(sell.getCardValue()));
+
+            } else { // Não tem valor no cartão
+
+                mSwitchCard.setChecked(false);
+                mLayoutCard.setVisibility(View.GONE);
+            }
+
+            mTvInCashValue.setText(mFormatCurrency.format(inCashValueDB));
+            mTvSaleValue.setText(mFormatCurrency.format(saleValueDB));
 
             mEtQuantity.requestFocus();
         }
-
-
 
         /* Faz pesquisa dos dados do cliente */
         if (loader.getId() == ConstLoader.LOADER_REGISTER_SELL_CLIENT && cursor.moveToFirst()) {
@@ -593,7 +636,8 @@ public class SellActivity extends AppCompatActivity implements
             sell.setClientName(cursor.getString(cursor.getColumnIndex(EntryClient.COLUMN_NAME)));
             mTvClientName.setText(sell.getClientName());
 
-            mTvTotalValue.setText(mValorTotalBundle);
+            mTvInCashValue.setText(mInCashValue);
+            mTvSaleValue.setText(mSaleValue);
         }
     }
 
@@ -634,7 +678,6 @@ public class SellActivity extends AppCompatActivity implements
                 ControlViews.showKeyboard(mContext, mEtForward);
                 return true;
 
-            //TODO: Controle de touch no editCardValue
             case R.id.et_sell_card_value:
                 mEtCard.requestFocus();
                 mEtCard.setSelection(mEtCard.getText().length());
@@ -653,7 +696,6 @@ public class SellActivity extends AppCompatActivity implements
                 isDataChanged = true;
                 return false;
 
-            //TODO: Controle de touch no switch cardValue
             case R.id.switch_sell_card:
                 isDataChanged = true;
                 return false;
@@ -663,6 +705,41 @@ public class SellActivity extends AppCompatActivity implements
         }
 
     }
+
+
+    /**
+     * Apresenta os valores da venda
+     *
+     * @param quantity     quantidade do produto
+     * @param productValue valor de cada unidade
+     * @param add          valor adicional, se existir
+     * @param discount     valor do desconto, se existir
+     * @param forward      valor a prazo, se existir
+     * @param card         valor no cartão, se existir
+     */
+    private void displayCalculateSaleValueAndInCash(String quantity, double productValue,
+                                                    String add, String discount,
+                                                    String forward, String card) {
+        // Apresenta valor a vista
+        mTvInCashValue.setText(
+                calculateInCashValueString(
+                        quantity,
+                        productValue,
+                        add,
+                        discount,
+                        forward,
+                        card));
+
+        // Apresenta valor de venda
+        mTvSaleValue.setText(
+                calculateSaleValueString(
+                        quantity,
+                        productValue,
+                        add,
+                        card));
+
+    }
+
 
     /* Verifica a entrada de caracteres nos edits*/
     private void watcherControl() {
@@ -702,13 +779,13 @@ public class SellActivity extends AppCompatActivity implements
                     isDataChanged = true;
                 }
 
-
-                mTvTotalValue.setText(calcularValorTotalVendaString(
+                displayCalculateSaleValueAndInCash(
                         charSequenceToString(charSequence),
                         mProductValue,
                         editToString(mEtAdd),
                         editToString(mEtDiscount),
-                        editToString(mEtForward)));
+                        editToString(mEtForward),
+                        editToString(mEtCard));
 
                 if (isFormatIntegerUpdate) {
 
@@ -738,7 +815,7 @@ public class SellActivity extends AppCompatActivity implements
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 // Se o valor for acima de zero,fica visivel
-                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+                if (charSequenceToDouble(charSequence) > 0) {
 
                     mButClearAdd.setVisibility(View.VISIBLE);
 
@@ -753,12 +830,14 @@ public class SellActivity extends AppCompatActivity implements
                     isDataChanged = true;
                 }
 
-                mTvTotalValue.setText(calcularValorTotalVendaString(
+                displayCalculateSaleValueAndInCash(
                         editToString(mEtQuantity),
                         mProductValue,
                         charSequenceToString(charSequence),
                         editToString(mEtDiscount),
-                        editToString(mEtForward)));
+                        editToString(mEtForward),
+                        editToString(mEtCard)
+                );
 
                 if (isFormatCurrencyUpdate) {
 
@@ -782,14 +861,15 @@ public class SellActivity extends AppCompatActivity implements
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                double sellValueAdd = editToInteger(mEtQuantity) * mProductValue +
+                // maxDiscountValue = quantity*productValue + addValue
+                double maxDiscountValue = editToInteger(mEtQuantity) * mProductValue +
                         editToDouble(mEtAdd);
 
-                if (charSequenceToDouble(charSequence) > sellValueAdd) {
+                if (charSequenceToDouble(charSequence) > maxDiscountValue) {
 
                     mEtDiscount.setError(String.format(
                             getString(R.string.error_discount_value_greater_sale),
-                            Formatting.doubleToCurrency(sellValueAdd))
+                            Formatting.doubleToCurrency(maxDiscountValue))
                     );
                 }
 
@@ -799,7 +879,7 @@ public class SellActivity extends AppCompatActivity implements
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 // Se o valor for acima de zero,fica visivel
-                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+                if (charSequenceToDouble(charSequence) > 0) {
 
                     mButClearDiscount.setVisibility(View.VISIBLE);
 
@@ -813,13 +893,14 @@ public class SellActivity extends AppCompatActivity implements
                     isDataChanged = true;
                 }
 
-
-                mTvTotalValue.setText(calcularValorTotalVendaString(
+                displayCalculateSaleValueAndInCash(
                         editToString(mEtQuantity),
                         mProductValue,
                         editToString(mEtAdd),
                         charSequenceToString(charSequence),
-                        editToString(mEtForward)));
+                        editToString(mEtForward),
+                        editToString(mEtCard)
+                );
 
                 if (isFormatCurrencyUpdate) {
 
@@ -839,20 +920,20 @@ public class SellActivity extends AppCompatActivity implements
             }
         });
 
-
         mEtForward.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
 
-                double sellValueDiscount = editToInteger(mEtQuantity) * mProductValue +
-                        editToDouble(mEtAdd) - editToDouble(mEtDiscount);
+                // maxForwardValue = quantity*productValue + addValue - discountValue - cardValue
+                double maxForwardValue = editToInteger(mEtQuantity) * mProductValue +
+                        editToDouble(mEtAdd) - editToDouble(mEtDiscount) - editToDouble(mEtCard);
 
-                if (charSequenceToDouble(charSequence) / 100 > sellValueDiscount) {
+                if (charSequenceToDouble(charSequence) / 100 > maxForwardValue) {
 
                     mEtDiscount.setError(String.format(
                             getString(R.string.error_forward_value_greater_sale),
-                            Formatting.doubleToCurrency(sellValueDiscount))
+                            Formatting.doubleToCurrency(maxForwardValue))
                     );
                 }
             }
@@ -861,7 +942,7 @@ public class SellActivity extends AppCompatActivity implements
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
 
                 // Se o valor for acima de zero,fica visivel
-                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+                if (charSequenceToDouble(charSequence) > 0) {
 
                     mButClearForward.setVisibility(View.VISIBLE);
 
@@ -875,12 +956,14 @@ public class SellActivity extends AppCompatActivity implements
                     isDataChanged = true;
                 }
 
-                mTvTotalValue.setText(calcularValorTotalVendaString(
+                displayCalculateSaleValueAndInCash(
                         editToString(mEtQuantity),
                         mProductValue,
                         editToString(mEtAdd),
                         editToString(mEtDiscount),
-                        charSequenceToString(charSequence)));
+                        charSequenceToString(charSequence),
+                        editToString(mEtCard)
+                );
 
                 if (isFormatCurrencyUpdate) {
                     isFormatCurrencyUpdate = false;
@@ -900,16 +983,71 @@ public class SellActivity extends AppCompatActivity implements
             }
         });
 
+        mEtCard.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
-        //TODO: fazer controle de wathcher do editCardValue
+                // maxCardValue = quantity*productValue + addValue - discountValue - forwardValue
+                double maxCardValue = editToInteger(mEtQuantity) * mProductValue +
+                        editToDouble(mEtAdd) - editToDouble(mEtDiscount) - editToDouble(mEtForward);
+
+                if (charSequenceToDouble(charSequence) > maxCardValue) {
+
+                    mEtDiscount.setError(String.format(
+                            getString(R.string.error_card_value_greater_sale),
+                            Formatting.doubleToCurrency(maxCardValue))
+                    );
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                // Se o valor for acima de zero,fica visivel
+                if (Formatting.charSequenceToDouble(charSequence) > 0) {
+
+                    mButClearCard.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    mButClearCard.setVisibility(View.GONE);
+                }
+
+                if (!isDataChanged) {
+
+                    isDataChanged = true;
+                }
+
+
+                displayCalculateSaleValueAndInCash(
+                        editToString(mEtQuantity),
+                        mProductValue,
+                        editToString(mEtAdd),
+                        editToString(mEtDiscount),
+                        editToString(mEtForward),
+                        charSequenceToString(charSequence)
+                );
+
+
+                if (isFormatCurrencyUpdate) {
+
+                    isFormatCurrencyUpdate = false;
+                    return;
+                }
+
+                isFormatCurrencyUpdate = true;
+
+                mEtCard.setText(Formatting.currencyToStringToCurrency(charSequenceToString(charSequence)));
+                mEtCard.setSelection(mEtCard.getText().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable charSequence) {
+
+            }
+        });
 
     }
-
-
-    //TODO: fazer controle do switch para vendas no cartão
-    //TODO: calculos para fazer a vendas no cartão
-    //TODO: fazer calculos dos valores do edits ao fazer as alterações de valores em cada edit
-
 
     /* Veifica se houve alteração no estado do Switch */
     private void switchControl() {
@@ -988,8 +1126,6 @@ public class SellActivity extends AppCompatActivity implements
             }
         });
 
-
-        //TODO: Controle de Check do Switch CardValue
         mSwitchCard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -1017,6 +1153,7 @@ public class SellActivity extends AppCompatActivity implements
 
     }
 
+
     private void saveDataDB() {
 
         // Captura os valores nos edits
@@ -1025,15 +1162,14 @@ public class SellActivity extends AppCompatActivity implements
         String addValue = mEtAdd.getText().toString().trim();
         String discountValue = mEtDiscount.getText().toString().trim();
         String forwardValue = mEtForward.getText().toString().trim();
+        String cardValue = mEtCard.getText().toString().trim();
         String clientName = mTvClientName.getText().toString();
-        //TODO: buscar valor do cardValue salvar DB
-
 
         // Verifica se os Switch estão checked
         boolean isCheckAdd = mSwitchAdd.isChecked();
         boolean isCheckDiscount = mSwitchDiscount.isChecked();
         boolean isCheckForward = mSwitchForward.isChecked();
-        //TODO: verificar checked cardValue
+        boolean isCheckedCard = mSwitchCard.isChecked();
 
         // Campo não pode ser vazio
         if (quantity.isEmpty()) {
@@ -1054,15 +1190,13 @@ public class SellActivity extends AppCompatActivity implements
             return;
         }
 
-        //TODO: fazer controle entrada de dados cardvalue
-
         // Converte as String dos campos valorAdicional, valorDesconto  e valorPrazo para double
         double addValueDouble = Formatting.currencyToDouble(addValue);
         double discountValueDouble = Formatting.currencyToDouble(discountValue);
         double forwardValueDouble = Formatting.currencyToDouble(forwardValue);
-        //TODO: Fazer formatação dos dados do cardvalue
+        double cardValueDouble = Formatting.currencyToDouble(cardValue);
 
-        // Se Switch adicional estiver Checked
+        // Se Switch add estiver Checked
         if (isCheckAdd) {
 
             // O valor desse campo deve ser positivo
@@ -1074,7 +1208,7 @@ public class SellActivity extends AppCompatActivity implements
             }
         }
 
-        // Se Switch desconto estiver Checked
+        // Se Switch discount estiver Checked
         if (isCheckDiscount) {
 
             // O valor desse campo deve ser positivo
@@ -1086,6 +1220,8 @@ public class SellActivity extends AppCompatActivity implements
             }
         }
 
+
+        // Se Switch forward estiver Checked
         if (isCheckForward) {
 
             // O valor desse campo deve ser positivo
@@ -1111,9 +1247,18 @@ public class SellActivity extends AppCompatActivity implements
             }
         }
 
-        //TODO: verificar se cardvalue esta checked para capturar dados
+        // Se Switch card estiver Checked
+        if (isCheckedCard) {
 
-        //TODO: colocar dados no objeto Sell
+            // O valor desse campo deve ser positivo
+            if (cardValueDouble == 0) {
+
+                mEtCard.setError(getString(R.string.error_valide_value_card));
+                mEtCard.requestFocus();
+                return;
+            }
+        }
+
 
         sell.setClientName(clientName);
         sell.setQuantity(quantityInteger);
@@ -1121,10 +1266,10 @@ public class SellActivity extends AppCompatActivity implements
         sell.setAddValue(addValueDouble);
         sell.setDiscountValue(discountValueDouble);
         sell.setForwardValue(forwardValueDouble);
+        sell.setCardValue(cardValueDouble);
         sell.setClientName(clientName);
         sell.setPrice(mProductValue);
 
-        //TODO: colocar dados do objeto Sell em Conent value
         // Coloca dados em um objeto values para ser salvo no BD
         ContentValues valuesSell = new ContentValues();
         valuesSell.put(EntrySeel.COLUMN_NAME, sell.getName());
@@ -1133,9 +1278,8 @@ public class SellActivity extends AppCompatActivity implements
         valuesSell.put(EntrySeel.COLUMN_ADD_VALUE, sell.getAddValue());
         valuesSell.put(EntrySeel.COLUMN_DISCOUNT_VALUE, sell.getDiscountValue());
         valuesSell.put(EntrySeel.COLUMN_FORWARD_VALUE, sell.getForwardValue());
+        valuesSell.put(EntrySeel.COLUMN_CARD_VALUE, sell.getCardValue());
 
-
-        //TODO: Salvar dados de produto novo e de edição
         if (isAddProduct) {
 
             if (isCheckForward) {
@@ -1187,5 +1331,6 @@ public class SellActivity extends AppCompatActivity implements
 
         finish();
     }
+
 
 }

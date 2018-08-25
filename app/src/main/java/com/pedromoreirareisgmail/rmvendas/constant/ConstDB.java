@@ -8,5 +8,6 @@ public class ConstDB {
 
     /* DEBIT / CREDIT - indica se é um credito ou debito para o cliente*/
     public static final int TYPE_DEBIT = 0;
-    public static final int TYPE_CREDIT = 1;
+    public static final int TYPE_CREDIT_CASH = 1;
+    public static final int TYPE_CREDIT_CARD = 2;
 }

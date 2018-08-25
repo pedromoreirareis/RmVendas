@@ -42,7 +42,7 @@ public class ReceiveAdapter extends CursorAdapter {
 
         /*  Recebimento - fonte do registro fica Azul
          *   Venda - fonte do registro fica vermelha*/
-        if (type == ConstDB.TYPE_CREDIT) {
+        if (type == ConstDB.TYPE_CREDIT_CASH) {
 
             holder.tvDate.setTextColor(context.getResources().getColor(R.color.colorBlue));
             holder.tvDescription.setTextColor(context.getResources().getColor(R.color.colorBlue));
