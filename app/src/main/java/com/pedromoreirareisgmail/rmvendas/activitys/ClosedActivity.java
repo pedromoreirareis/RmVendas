@@ -390,6 +390,7 @@ public class ClosedActivity extends AppCompatActivity implements
         mTvValueAdd.setText(String.format(getString(R.string.text_closed_add), preco.format(mValueAdd)));
         mTvValueDiscount.setText(String.format(getString(R.string.text_closed_discount), preco.format(mValueDiscount)));
         mTvValueSaleForward.setText(String.format(getString(R.string.text_closed_forward), preco.format(mValueSaleForward)));
+        mTvValueSaleCard.setText(String.format(getString(R.string.text_closed_cartao), preco.format(mValueSaleCard)));
 
         // Calcula Saldo Final - Valor que usuario deve ter no caixa
         mValueBalanceEnd = mValueAddMoney + mValueBalanceStart + mValueSaleInCash - mValueRemoveMoney;

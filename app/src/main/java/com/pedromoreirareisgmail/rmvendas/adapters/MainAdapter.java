@@ -56,7 +56,7 @@ public class MainAdapter extends CursorAdapter {
 
         double cardValue = -1;
 
-        if (cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE)).isEmpty()) {
+        if (cursor.getString(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE)) == null) {
 
             cardValue = Const.NUMBER_ZERO;
 

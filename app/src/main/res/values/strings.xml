@@ -111,13 +111,13 @@
 
 
     <!-- ************************    Fechamento - Itens do Listview **************************** -->
-    <string name="text_item_price">SubTotal.....:  %1$s</string>
+    <string name="text_item_price">SubTotal..:  %1$s</string>
     <string name="text_item_value_add">Adicional.:  %1$s</string>
     <string name="text_item_value_discount">Desconto.:  %1$s</string>
     <string name="text_item_value_total">Total.......:  %1$s</string>
     <string name="text_item_value_in_cash">A vista....:  %1$s</string>
     <string name="text_item_value_forward">A prazo…:  %1$s</string>
-    <string name="text_item_value_card">No cartão…:  %1$s</string>
+    <string name="text_item_value_card">Cartão....:  %1$s</string>
     <string name="text_item_client_name_forward">Cliente.....:  %1$s</string>
 
 
@@ -140,6 +140,7 @@
     <string name="text_closed_add">Adicional............:    %1$s</string>
     <string name="text_closed_discount">Descontos...........:    %1$s</string>
     <string name="text_closed_forward">A prazo...............:    %1$s</string>
+    <string name="text_closed_cartao">Cartão................:    %1$s</string>
     <string name="text_closed_balance_end">Saldo final..........:    %1$s</string>
 
 
