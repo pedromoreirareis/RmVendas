@@ -328,8 +328,6 @@ public class MainActivity extends AppCompatActivity
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
 
-        //TODO: Buscar dados de vendas com cartão e passar para o adapter
-
         // Define quais colunas retornaram dados
         String[] projection = new String[]{
                 EntrySeel._ID,
@@ -339,6 +337,7 @@ public class MainActivity extends AppCompatActivity
                 EntrySeel.COLUMN_DISCOUNT_VALUE,
                 EntrySeel.COLUMN_ADD_VALUE,
                 EntrySeel.COLUMN_FORWARD_VALUE,
+                EntrySeel.COLUMN_CARD_VALUE,
                 EntrySeel.COLUMN_CLIENT_ID,
                 EntrySeel.COLUMN_PRICE,
                 EntrySeel.COLUMN_RECEIVE_ID
@@ -450,20 +449,21 @@ public class MainActivity extends AppCompatActivity
 
         Cursor cursor = mAdapter.getCursor();
 
-        double sightSaleValue = Calculus.calculateInCashValueDouble(
+        double inCashSaleValue = Calculus.calculateInCashValueDouble(
                 cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                 cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                 cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
                 cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)),
-                cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE))
+                cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)),
+                cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE))
         );
 
-        if (sightSaleValue > 0) {
+        if (inCashSaleValue > 0) {
 
             Intent intentChange = new Intent(mContext, MoneyBackActivity.class);
 
             Bundle bundle = new Bundle();
-            bundle.putDouble(ConstIntents.INTENT_MONEY_BACK, sightSaleValue);
+            bundle.putDouble(ConstIntents.INTENT_MONEY_BACK, inCashSaleValue);
 
             intentChange.putExtras(bundle);
             startActivity(intentChange);

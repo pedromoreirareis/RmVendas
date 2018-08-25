@@ -57,6 +57,7 @@
 
                 </android.support.v7.widget.CardView>
 
+                <!-- SALDO FINAL -->
                 <TextView
                     android:id="@+id/tv_closed_balance_value_end"
                     style="@style/textViewClosed"
@@ -109,6 +110,7 @@
 
                 </android.support.v7.widget.CardView>
 
+                <!-- TOTAL VENDAS -->
                 <TextView
                     android:id="@+id/tv_closed_cashmove_sale_value_total"
                     style="@style/textViewClosed"
@@ -116,6 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_default_8" />
 
+                <!-- VENDAS A VISTA -->
                 <TextView
                     android:id="@+id/tv_closed_cashmove_in_cash_value"
                     style="@style/textViewClosed"
@@ -124,6 +127,7 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
+                <!-- SALDO INICIAL -->
                 <TextView
                     android:id="@+id/tv_closed_cashmove_balance_start_value"
                     style="@style/textViewClosed"
@@ -132,6 +136,7 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
+                <!-- ENTRADAS -->
                 <TextView
                     android:id="@+id/tv_closed_cashmove_add_value"
                     style="@style/textViewClosed"
@@ -140,6 +145,7 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
+                <!-- RETIRADAS -->
                 <TextView
                     android:id="@+id/tv_closed_cashmove_remove_value"
                     style="@style/textViewClosed"
@@ -192,6 +198,7 @@
 
                 </android.support.v7.widget.CardView>
 
+                <!-- VENDAS -->
                 <TextView
                     android:id="@+id/tv_closed_inf_sale_value"
                     style="@style/textViewClosed"
@@ -200,6 +207,7 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
+                <!-- VENDIDOS -->
                 <TextView
                     android:id="@+id/tv_closed_inf_solds_value"
                     style="@style/textViewClosed"
@@ -208,7 +216,7 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
-
+                <!-- VENDIDOS A VISTA -->
                 <TextView
                     android:id="@+id/tv_closed_inf_sold_in_cash_value"
                     style="@style/textViewClosed"
@@ -217,6 +225,7 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlack" />
 
+                <!-- ADICIONAL -->
                 <TextView
                     android:id="@+id/tv_closed_inf_add_value"
                     style="@style/textViewClosed"
@@ -225,6 +234,7 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorBlue" />
 
+                <!-- DESCONTO -->
                 <TextView
                     android:id="@+id/tv_closed_inf_discount_value"
                     style="@style/textViewClosed"
@@ -233,12 +243,21 @@
                     android:layout_marginBottom="@dimen/margin_default_8"
                     android:textColor="@color/colorAccent" />
 
+                <!-- A PRAZO -->
                 <TextView
                     android:id="@+id/tv_closed_inf_forward_value"
                     style="@style/textViewClosed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorBlack" />
+
+                <!-- NO CARTAO -->
+                <TextView
+                    android:id="@+id/tv_closed_inf_card_value"
+                    style="@style/textViewClosed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack" />
 
             </LinearLayout>
 
@@ -286,6 +305,7 @@
 
                 </android.support.v7.widget.CardView>
 
+                <!--NOME CLIENTES -->
                 <TextView
                     android:id="@+id/tv_closed_client_forward"
                     android:layout_width="match_parent"

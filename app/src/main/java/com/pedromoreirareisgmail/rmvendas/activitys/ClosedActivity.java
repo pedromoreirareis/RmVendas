@@ -39,6 +39,7 @@ public class ClosedActivity extends AppCompatActivity implements
     private TextView mTvValueDiscount;
     private TextView mTvValueAdd;
     private TextView mTvValueSaleForward;
+    private TextView mTvValueSaleCard;
     private TextView mTvValueTotalSale;
     private TextView mTvValueSaleInCash;
     private TextView mTvValueBalanceEnd;
@@ -58,6 +59,7 @@ public class ClosedActivity extends AppCompatActivity implements
     private double mValueDiscount = 0;
     private double mValueAdd = 0;
     private double mValueSaleForward = 0;
+    private double mValueSaleCard = 0;
     private int mQuantitySale = 0;
     private int mQuantitySold = 0;
     private int mQuantitySoldInCash = 0;
@@ -87,7 +89,6 @@ public class ClosedActivity extends AppCompatActivity implements
 
     //TODO: no fechamento fazer calculos para apresentacao da vendas com cartão
     //TODO: criar novos campos para apresentar a vendas no cartão
-    //TODO: talvez mostar quais clientes compraram com cartão
 
     private void initViews() {
 
@@ -100,6 +101,7 @@ public class ClosedActivity extends AppCompatActivity implements
         mTvValueDiscount = findViewById(R.id.tv_closed_inf_discount_value);
         mTvValueAdd = findViewById(R.id.tv_closed_inf_add_value);
         mTvValueSaleForward = findViewById(R.id.tv_closed_inf_forward_value);
+        mTvValueSaleCard = findViewById(R.id.tv_closed_inf_card_value);
         mTvValueBalanceEnd = findViewById(R.id.tv_closed_balance_value_end);
         mTvQuantitySale = findViewById(R.id.tv_closed_inf_sale_value);
         mTvQuantitySold = findViewById(R.id.tv_closed_inf_solds_value);
@@ -205,6 +207,7 @@ public class ClosedActivity extends AppCompatActivity implements
                     EntrySeel.COLUMN_DISCOUNT_VALUE,
                     EntrySeel.COLUMN_ADD_VALUE,
                     EntrySeel.COLUMN_FORWARD_VALUE,
+                    EntrySeel.COLUMN_CARD_VALUE,
                     EntrySeel.COLUMN_PRICE,
                     EntrySeel.COLUMN_RECEIVE_ID
             };
@@ -283,49 +286,69 @@ public class ClosedActivity extends AppCompatActivity implements
          * Com os dados obtidos e feito o calculo do valor obtido em todas a vendas*/
         if (loader.getId() == ConstLoader.LOADER_CLOSED_SELL && cursor.moveToFirst()) {
 
+            //  Quantidade de vendas
             mQuantitySale = cursor.getCount();
 
             for (int i = 0; i < cursor.getCount(); i++) {
 
+                //  Quantidade de vendidos
                 mQuantitySold = mQuantitySold +
                         cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
 
+                //  Valor adicional
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)) != NUMBER_ZERO) {
 
                     mValueAdd = mValueAdd +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE));
                 }
 
+                // Valor Desconto
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)) != NUMBER_ZERO) {
 
                     mValueDiscount = mValueDiscount +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE));
                 }
 
+                // Valor venda no cartão
+                if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE)) != NUMBER_ZERO) {
+
+                    mValueSaleCard = mValueSaleCard +
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE));
+                }
+
+                //  Venda a vista
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) == NUMBER_ZERO) {
 
+                    // A vista
                     mValueSaleInCash = mValueSaleInCash + Calculus.calculateInCashValueDouble(
                             cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)),
-                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE))
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE))
                     );
 
+                    // Vendidos a vista
                     mQuantitySoldInCash = mQuantitySoldInCash + cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY));
                 }
 
+                // Venda a Prazo
                 if (cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)) != NUMBER_ZERO) {
 
+                    // A prazo
                     mValueSaleForward = mValueSaleForward +
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE));
 
+                    // A vista
                     mValueSaleInCash = mValueSaleInCash + Calculus.calculateInCashValueDouble(
                             cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_QUANTITY)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_PRICE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_ADD_VALUE)),
                             cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_DISCOUNT_VALUE)),
-                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)));
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_FORWARD_VALUE)),
+                            cursor.getDouble(cursor.getColumnIndex(EntrySeel.COLUMN_CARD_VALUE))
+                    );
 
                     int idCliente = cursor.getInt(cursor.getColumnIndex(EntrySeel.COLUMN_CLIENT_ID));
                     mClientNameForward = mClientNameForward.concat(String.format(

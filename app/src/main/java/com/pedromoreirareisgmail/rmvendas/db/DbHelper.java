@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "sale.db";
 
     /* Versão do banco de dados*/
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 1;  // Mudei de versão 1 para 2
 
     /**
      * Construtor do Banco de dados
