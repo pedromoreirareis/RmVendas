@@ -138,6 +138,8 @@ public class ListProductActivity extends AppCompatActivity implements
 
                 return true;
 
+            //TODO: solicitar autorização para importar e exportar dados
+
             case R.id.action_import_menu_search_sync:
 
                 if (Net.verifyConnect(mContext)) {
