@@ -10,7 +10,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
@@ -114,7 +113,6 @@ public class SellActivity extends AppCompatActivity implements
         initViews();
         initObject();
 
-
         if (isAddProduct) { // Adicionar
 
             setTitle(R.string.title_sell_add);
@@ -131,12 +129,6 @@ public class SellActivity extends AppCompatActivity implements
             getLoaderManager().initLoader(ConstLoader.LOADER_REGISTER_SELL_EDIT, null, this);
         }
 
-        // Instancia estado da Activity se tiver salvo
-        // verifySavedInstanceState(savedInstanceState);
-
-        // Controle da entrada dos edits
-        watcherControl();
-
         // Controle de mudanças dos switchs
         switchControl();
 
@@ -151,7 +143,14 @@ public class SellActivity extends AppCompatActivity implements
         ControlViews.noFocusAndZero(mEtDiscount);
         ControlViews.noFocusAndZero(mEtForward);
         ControlViews.noFocusAndZero(mEtCard);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Controle da entrada dos edits
+        watcherControl();
     }
 
     private void initViews() {
@@ -207,48 +206,11 @@ public class SellActivity extends AppCompatActivity implements
         }
     }
 
-    //TODO: olhar onSaveInstanceState que nao esta funcionando
-
-    private void verifySavedInstanceState(Bundle savedInstanceState) {
-
-        if (savedInstanceState != null) {
-
-            sell = new Sell();
-
-            // Tiver dados salvos no Objeto savedInstanceState captura os dados e repassa a Activity
-            sell = savedInstanceState.getParcelable(Const.SELL_SAVED_INSTANCE_STATE);
-            if (sell != null) {
-
-                mTvClientName.setText(sell.getClientName());
-            }
-        }
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState);
-
-        if (savedInstanceState != null) {
-
-            sell = new Sell();
-
-            // Tiver dados salvos no Objeto savedInstanceState captura os dados e repassa a Activity
-            sell = savedInstanceState.getParcelable(Const.SELL_SAVED_INSTANCE_STATE);
-            if (sell != null) {
-
-                mTvClientName.setText(sell.getClientName());
-            }
-        }
-
-    }
-
-    //TODO: mehorara aqui
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         if (sell.getClientName() != null) {
-
 
             // Salva dados no estado da aplicação para ser usados no retorno da Acitivyt
             if (sell.getClientId() != Const.ONE_LESS && !sell.getClientName().isEmpty()) {
@@ -262,6 +224,19 @@ public class SellActivity extends AppCompatActivity implements
             }
         }
     }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Tiver dados salvos no Objeto savedInstanceState captura os dados e repassa a Activity
+        sell = savedInstanceState.getParcelable(Const.SELL_SAVED_INSTANCE_STATE);
+        if (sell != null) {
+
+            mTvClientName.setText(sell.getClientName());
+        }
+    }
+
 
     private void initListener() {
 
@@ -898,7 +873,6 @@ public class SellActivity extends AppCompatActivity implements
                             Formatting.doubleToCurrency(maxDiscountValue))
                     );
                 }
-
             }
 
             @Override
